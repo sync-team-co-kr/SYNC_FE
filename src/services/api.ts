@@ -1,5 +1,6 @@
 import { Cookies } from 'react-cookie';
 
+import { requiredJwtTokeninstance } from '@libs/axios/axios';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import config from 'config/config';
 
@@ -11,17 +12,28 @@ export interface User {
   username: string;
 }
 
-interface APIResponse {
-  result: string;
+interface APIResponse<Result> {
+  result: Result;
   focus?: string;
   errorMessage?: string;
+}
+
+interface AxiosRes<ResponseType> {
+  message: string;
+  result: boolean;
+  data: ResponseType;
+}
+
+interface GetUserInfoData {
+  userId: string;
+  username: string;
 }
 
 export const signupAPI = async ({
   userId,
   password,
   username,
-}: User): Promise<APIResponse> => {
+}: User): Promise<APIResponse<string>> => {
   try {
     await axios.post(`${config.backendUrl}/signup`, {
       userId,
@@ -39,14 +51,14 @@ export const signupAPI = async ({
           errorMessage: '입력된 아이디는 이미 가입된 상태입니다.',
         };
     }
-    return { result: 'error', focus: '', errorMessage: '네트워크 에러' };
+    return { result: '', focus: '', errorMessage: '네트워크 에러' };
   }
 };
 
 export const loginAPI = async ({
   userId,
   password,
-}: Omit<User, 'username'>): Promise<APIResponse> => {
+}: Omit<User, 'username'>): Promise<APIResponse<'OK' | 'error'>> => {
   try {
     const response = await axios.post(
       `${config.backendUrl}/login`,
@@ -59,12 +71,14 @@ export const loginAPI = async ({
         },
       },
     );
+    console.log(response);
     const authHeaders: string | null = response.headers.authorization;
     if (authHeaders) {
       const token = authHeaders.split(' ')[1];
-      console.log(token);
       const cookies = new Cookies(null, { path: '/' });
-      cookies.set('JWT_TOKEN', token);
+      cookies.set('JWT_TOKEN', token, {
+        maxAge: 1000 * 60 * 30,
+      });
       return { result: 'OK', focus: '', errorMessage: '' };
     }
     return { result: 'OK', focus: '', errorMessage: '' };
@@ -81,9 +95,11 @@ export const loginAPI = async ({
   }
 };
 
-export const getLoggedUserAPI = async (): Promise<APIResponse> => {
-  const response = (await axios.get(`${config.backendUrl}/api/user/my/info`, {
-    withCredentials: true,
-  })) as AxiosResponse<{ value: { username: string } }, any>;
-  return { result: response.data.value.username, focus: '', errorMessage: '' };
+export const getLoggedUserAPI = async (): Promise<
+  APIResponse<GetUserInfoData>
+> => {
+  const response = (await requiredJwtTokeninstance.get(
+    `${config.backendUrl}/user/api/info`,
+  )) as AxiosResponse<AxiosRes<GetUserInfoData>, any>;
+  return { result: response.data.data, focus: '', errorMessage: '' };
 };

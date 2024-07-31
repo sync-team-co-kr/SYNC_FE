@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Cookies } from 'react-cookie';
 import { Navigate, Outlet } from 'react-router-dom';
 
 import { useLoggedInUserStore } from '@libs/store';
@@ -12,16 +13,19 @@ const PublicLayout = () => {
     const getLoggedUser = async () => {
       try {
         const response = await getLoggedUserAPI();
-        const username = response.result;
+        const profile = response.result;
 
-        localStorage.setItem('loggedInUser', username);
-        return username || '';
+        const cookies = new Cookies(null, { path: '/' });
+        cookies.set('loggedInUser', profile, {
+          maxAge: 1000 * 60 * 30,
+        });
+        return profile || null;
       } catch (error) {
         setFailedAuth(true);
-        return '';
+        return null;
       }
     };
-    getLoggedUser().then((username) => setLoggedInUser(username));
+    getLoggedUser().then((profile) => setLoggedInUser(profile));
   }, []);
 
   if (!loggedInUser || failedAuth) return <Navigate to="/login" />;

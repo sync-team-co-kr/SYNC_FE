@@ -155,7 +155,9 @@ export default function Header() {
               <img src={profileDefault} alt="프로필 이미지" />
               <Profile>
                 <UserInfo>
-                  <UserInfoHeader>{loggedInUser || 'Name'}</UserInfoHeader>
+                  <UserInfoHeader>
+                    {loggedInUser?.username || 'Name'}
+                  </UserInfoHeader>
                   <UserInfoFooter>UI Designer</UserInfoFooter>
                 </UserInfo>
               </Profile>
