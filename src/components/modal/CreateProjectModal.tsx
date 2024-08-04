@@ -155,6 +155,16 @@ const Submit = styled.div`
   }
 `;
 
+export interface IProject {
+  projectId: number;
+  title: string;
+  subTitle: string;
+  description: string;
+  startDate: Date;
+  endDate: Date;
+  memberIds: number[];
+}
+
 function CreateProjectModal({ closeModal }: { closeModal?: setIsModalOpen }) {
   const [title, setTitle] = useState('');
   const [subTitle, setSubTitle] = useState('');
@@ -173,17 +183,14 @@ function CreateProjectModal({ closeModal }: { closeModal?: setIsModalOpen }) {
     e.preventDefault();
 
     try {
-      const response = await requiredJwtTokeninstance.post(
-        '/user/api/project',
-        {
-          title,
-          subTitle,
-          description,
-          startDate,
-          endDate,
-        },
-      );
-      console.log(response);
+      await requiredJwtTokeninstance.post('/user/api/project', {
+        title,
+        subTitle,
+        description,
+        startDate,
+        endDate,
+      });
+
       window.confirm('프로젝트가 추가되었습니다.');
     } catch (error) {
       console.log(error);

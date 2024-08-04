@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 
+import useProjectList from '@hooks/useProjectList';
 import styled from 'styled-components';
 
 const TabMenu = styled.ul`
@@ -19,9 +20,21 @@ const TabMenuItem = styled.li<{ $iscurrenttabmenu: boolean }>`
   color: ${(props) => (props.$iscurrenttabmenu ? '#202020' : '#8f8f8f')};
 `;
 
+export interface IProject {
+  projectId: number;
+  title: string;
+  subTitle: string;
+  description: string;
+  startDate: Date;
+  endDate: Date;
+  memberIds: number[];
+}
+
 const Project = () => {
   const [currentTabMenu, setCurrentTabMenu] = useState('board');
   const navigate = useNavigate();
+  const projectList = useProjectList();
+  console.log('프로젝트 목록', projectList);
 
   const handleClickTabMenu = (path: string) => {
     setCurrentTabMenu(path);

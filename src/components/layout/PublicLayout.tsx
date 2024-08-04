@@ -7,7 +7,7 @@ import { getLoggedUserAPI } from '@services/api';
 
 const PublicLayout = () => {
   const [failedAuth, setFailedAuth] = useState(false);
-  const { loggedInUser, setLoggedInUser } = useLoggedInUserStore();
+  const { setLoggedInUser } = useLoggedInUserStore();
 
   useEffect(() => {
     const getLoggedUser = async () => {
@@ -28,7 +28,7 @@ const PublicLayout = () => {
     getLoggedUser().then((profile) => setLoggedInUser(profile));
   }, []);
 
-  if (!loggedInUser || failedAuth) return <Navigate to="/login" />;
+  if (failedAuth) return <Navigate to="/login" />;
   return <Outlet />;
 };
 

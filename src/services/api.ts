@@ -18,10 +18,18 @@ interface APIResponse<Result> {
   errorMessage?: string;
 }
 
+/*
 interface AxiosRes<ResponseType> {
   message: string;
   result: boolean;
   data: ResponseType;
+}
+*/
+
+interface AxiosRes2<ResponseType> {
+  message: string;
+  result: boolean;
+  value: ResponseType;
 }
 
 interface GetUserInfoData {
@@ -71,7 +79,6 @@ export const loginAPI = async ({
         },
       },
     );
-    console.log(response);
     const authHeaders: string | null = response.headers.authorization;
     if (authHeaders) {
       const token = authHeaders.split(' ')[1];
@@ -83,6 +90,7 @@ export const loginAPI = async ({
     }
     return { result: 'OK', focus: '', errorMessage: '' };
   } catch (error) {
+    console.log(error);
     if (error instanceof AxiosError && error.response) {
       if (error.response.data.message === '아이디가 잘못되었습니다.')
         return {
@@ -95,11 +103,9 @@ export const loginAPI = async ({
   }
 };
 
-export const getLoggedUserAPI = async (): Promise<
-  APIResponse<GetUserInfoData>
-> => {
+export const getLoggedUserAPI = async () => {
   const response = (await requiredJwtTokeninstance.get(
     `${config.backendUrl}/user/api/info`,
-  )) as AxiosResponse<AxiosRes<GetUserInfoData>, any>;
-  return { result: response.data.data, focus: '', errorMessage: '' };
+  )) as AxiosResponse<AxiosRes2<GetUserInfoData>, any>;
+  return { result: response.data.value, focus: '', errorMessage: '' };
 };

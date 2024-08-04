@@ -3,12 +3,13 @@ import { CookiesProvider } from 'react-cookie';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 
-import {MainRoutes} from '@routes';
+import { MainRoutes } from '@routes';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { createGlobalStyle } from 'styled-components';
 import reset from 'styled-reset';
 
 import reportWebVitals from './reportWebVitals';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,
@@ -28,17 +29,24 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000 * 10,
+    },
+  },
+});
 
 root.render(
   <React.StrictMode>
     <GlobalStyle />
     <QueryClientProvider client={queryClient}>
-    <CookiesProvider>
-      <BrowserRouter>
-        <MainRoutes />
-      </BrowserRouter>
-    </CookiesProvider>
+      <ReactQueryDevtools initialIsOpen={false} />
+      <CookiesProvider>
+        <BrowserRouter>
+          <MainRoutes />
+        </BrowserRouter>
+      </CookiesProvider>
     </QueryClientProvider>
   </React.StrictMode>,
 );
