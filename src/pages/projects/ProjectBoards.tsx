@@ -1,11 +1,7 @@
-import { useEffect, useState } from 'react';
-
 import Add from '@assets/add.svg';
 import CreateProjectModal from '@components/modal/CreateProjectModal';
 import { useModal } from '@hooks';
-// import useModal from '@hooks/useModal';
-import { requiredJwtTokeninstance } from '@libs/axios/axios';
-import { AxiosResponse } from 'axios';
+import useProjectList from '@hooks/useProjectList';
 import styled from 'styled-components';
 
 import ProjectBoardItem from './ProjectBoardItem';
@@ -51,12 +47,6 @@ const ProjectList = styled.ul`
   gap: 20px;
 `;
 
-interface AxiosRes<ResponseType> {
-  message: string;
-  result: boolean;
-  value: ResponseType;
-}
-
 export interface Project {
   projectId: number;
   title: string;
@@ -68,33 +58,11 @@ export interface Project {
 }
 
 const ProjectBoards = () => {
-  const [projectList, setProjectList] = useState<Project[] | null>(null);
   // const [isOpen, openModal, modalRef, CreateProjectModalWrapper, closeModal] =
   //   useModal();
 
   const [openModal] = useModal();
-
-  useEffect(() => {
-    const getProjectList = async () => {
-      try {
-        const getProjectIdsResponse: AxiosResponse<
-          AxiosRes<Project[]>,
-          any
-        > = await requiredJwtTokeninstance.get(
-          `/project/api/v2?userId=abc123@gmail.com`,
-        );
-        const getProjectListResponse = await requiredJwtTokeninstance.get(
-          `http://129.213.161.199:31585/project/api/v1?projectIds=${getProjectIdsResponse.data.value.join(',')}`,
-        );
-        return getProjectListResponse.data.value;
-      } catch (error) {
-        return undefined;
-      }
-    };
-    getProjectList().then((data) => {
-      if (data) setProjectList(data);
-    });
-  }, []);
+  const { projectList } = useProjectList();
 
   return (
     <Section>

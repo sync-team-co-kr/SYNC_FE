@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 
-import useProjectList from '@hooks/useProjectList';
 import styled from 'styled-components';
 
 const TabMenu = styled.ul`
@@ -33,8 +32,6 @@ export interface IProject {
 const Project = () => {
   const [currentTabMenu, setCurrentTabMenu] = useState('board');
   const navigate = useNavigate();
-  const projectList = useProjectList();
-  console.log('프로젝트 목록', projectList);
 
   const handleClickTabMenu = (path: string) => {
     setCurrentTabMenu(path);

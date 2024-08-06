@@ -6,7 +6,7 @@ import ProjectProfile from '@assets/project-profile.png';
 import CalendarDropdown from '@components/dropdown/CalendarDropdown';
 import useDropdown from '@hooks/useDropdown';
 import { setIsModalOpen } from '@hooks/useModal';
-import { requiredJwtTokeninstance } from '@libs/axios/axios';
+import useProjectList from '@hooks/useProjectList';
 import { format } from 'date-fns';
 import styled from 'styled-components';
 
@@ -178,23 +178,18 @@ function CreateProjectModal({ closeModal }: { closeModal?: setIsModalOpen }) {
     toggleCalendarDropdown2,
     calendarDropdownRef2,
   ] = useDropdown();
+  const { createProjectMutation } = useProjectList();
 
   const handleCreateProject = async (e: React.MouseEvent<HTMLInputElement>) => {
     e.preventDefault();
 
-    try {
-      await requiredJwtTokeninstance.post('/user/api/project', {
-        title,
-        subTitle,
-        description,
-        startDate,
-        endDate,
-      });
-
-      window.confirm('프로젝트가 추가되었습니다.');
-    } catch (error) {
-      console.log(error);
-    }
+    createProjectMutation.mutate({
+      title,
+      subTitle,
+      description,
+      startDate,
+      endDate,
+    });
   };
 
   return (

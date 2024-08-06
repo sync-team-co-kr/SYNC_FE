@@ -1,12 +1,11 @@
 import { requiredJwtTokeninstance } from '@libs/axios/axios';
-import { useQuery } from '@tanstack/react-query';
+import {
+  UseMutationResult,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query';
 import { AxiosResponse } from 'axios';
-
-interface AxiosRes<ResponseType> {
-  message: string;
-  result: boolean;
-  data: ResponseType;
-}
 
 interface AxiosRes2<ResponseType> {
   message: string;
@@ -24,9 +23,29 @@ export interface IProject {
   memberIds: number[];
 }
 
-type useProjectListType = () => IProject[] | undefined;
+interface CreateProjectParams {
+  title: string;
+  subTitle: string;
+  description: string;
+  startDate: Date | null;
+  endDate: Date | null;
+}
+
+interface useProjectListResponse {
+  projectList: IProject[] | undefined;
+  createProjectMutation: UseMutationResult<
+    CreateProjectParams,
+    Error,
+    CreateProjectParams,
+    unknown
+  >;
+}
+
+type useProjectListType = () => useProjectListResponse;
 
 const useProjectList: useProjectListType = () => {
+  const queryClient = useQueryClient();
+
   const getAllProject = async () => {
     try {
       const getProjectIdsResponse: AxiosResponse<
@@ -51,7 +70,21 @@ const useProjectList: useProjectListType = () => {
     queryFn: getAllProject,
   });
 
-  return projectList;
+  const createProject = async (newProject: CreateProjectParams) => {
+    await requiredJwtTokeninstance.post('/user/api/project', {
+      ...newProject,
+    });
+    return newProject;
+  };
+
+  const createProjectMutation = useMutation({
+    mutationFn: createProject,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['projects'] });
+    },
+  });
+
+  return { projectList, createProjectMutation };
 };
 
 export default useProjectList;
