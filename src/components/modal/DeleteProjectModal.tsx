@@ -13,13 +13,13 @@ const ModalHeader = styled.article`
     line-height: normal;
   }
   p {
-    color: #a6b3be;
-    font-feature-settings: 'clig' off, 'liga' off;
-    font-family: Inter;
-    font-size: 12px;
+    color: var(--Alert-Color-Negative-Red, #ed6863);
+    /* Paragraph */
+    font-family: Pretendard;
+    font-size: 14px;
     font-style: normal;
-    font-weight: 400;
-    line-height: normal;
+    font-weight: 500;
+    line-height: 20px; /* 142.857% */
   }
 `;
 
@@ -28,6 +28,7 @@ const Form = styled.form`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-self: stretch;
   gap: 32px;
 `;
 
@@ -38,7 +39,9 @@ const InputContainer = styled.div`
   gap: 8px;
   p {
     color: #a6b3be;
-    font-feature-settings: 'clig' off, 'liga' off;
+    font-feature-settings:
+      'clig' off,
+      'liga' off;
     font-family: Inter;
     font-size: 14px;
     font-style: normal;
@@ -53,7 +56,9 @@ const InputContainer = styled.div`
     align-items: center;
     &::placeholder {
       color: #a6b3be;
-      font-feature-settings: 'clig' off, 'liga' off;
+      font-feature-settings:
+        'clig' off,
+        'liga' off;
       font-family: Inter;
       font-size: 14px;
       font-style: normal;
@@ -63,23 +68,55 @@ const InputContainer = styled.div`
   }
 `;
 
+const ButtonList = styled.div`
+  padding: 32px 0;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+`;
+
 const Submit = styled.input`
-  padding: 24px 77px;
-  background: var(--New-group-Gray, #d2dbe2);
-  border: 1px solid var(--New-group-Gray, #d2dbe2);
-  border-radius: 12px;
-  color: #343434;
-  font-family: Inter;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: normal;
+  padding: 8px 24px;
+  height: 42px;
+  background: var(--Alert-Color-Negative-Red, #ed6863);
+  border: none;
+  border-radius: 8px;
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
+
+  color: var(--Black-White-White, #fff);
+  /* Heading 5 */
+  font-family: Pretendard;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 17px; /* 121.429% */
 `;
 
-export default function DeleteProjectModal() {
+const Cancel = styled.button`
+  padding: 8px 24px;
+  height: 42px;
+  background: var(--Black-White-White, #fff);
+  border: none;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+
+  color: var(--Black-White-Black-70, #636363);
+  /* Heading 5 */
+  font-family: Pretendard;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 17px; /* 121.429% */
+`;
+
+const DeleteProjectModal = () => {
+  console.log('');
   return (
     <>
       <ModalHeader>
@@ -98,15 +135,17 @@ export default function DeleteProjectModal() {
         </InputContainer>
 
         <InputContainer>
-          <p>삭제 확인</p>
-          <input
-            type="text"
-            placeholder='"프로젝트 명"을 그대로 입력해주세요.'
-          />
+          <p>프로젝트 재입력</p>
+          <input type="text" placeholder="프로젝트 명을 그대로 입력해주세요." />
         </InputContainer>
 
-        <Submit type="submit" value="프로젝트 삭제하기" />
+        <ButtonList>
+          <Cancel>취소</Cancel>
+          <Submit type="submit" value="삭제하기" />
+        </ButtonList>
       </Form>
     </>
   );
-}
+};
+
+export default DeleteProjectModal;

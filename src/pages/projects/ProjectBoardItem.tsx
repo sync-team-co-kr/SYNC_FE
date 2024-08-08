@@ -1,6 +1,8 @@
 import projectCalendar from '@assets/calendar.svg';
 import meatballs from '@assets/meatballs.svg';
 import projectIcon from '@assets/project-icon.png';
+import ProjectDropdownMenu from '@components/dropdown/ProjectDropdownMenu';
+import useDropdown from '@hooks/useDropdown';
 import generateNormalDate from '@utils/generateNormalDate';
 import styled from 'styled-components';
 
@@ -109,27 +111,47 @@ const ProjectBoardPeriod = styled.div`
   }
 `;
 
-const ProjectBoardItem = ({ project }: { project: Project }) => (
-  <ProjectBoard key={project.projectId}>
-    <ProjectBoardHeader>
-      <img src={projectIcon} alt="프로젝트 대표 아이콘" />
-      <ProjectBoardTitle>
-        <h5>{project.subTitle}</h5>
-        <h2>{project.title}</h2>
-      </ProjectBoardTitle>
-      <img src={meatballs} alt="보드 더보기" />
-    </ProjectBoardHeader>
-    <ProjectBoardDescription>{project.description}</ProjectBoardDescription>
+const MeatBalls = styled.div`
+  cursor: pointer;
+  position: relative;
+`;
 
-    <ProjectBoardFooter>
-      <ProjectBoardMemberList></ProjectBoardMemberList>
-      <ProjectBoardPeriod>
-        <img src={projectCalendar} alt="프로젝트 기간" />
-        <p>{generateNormalDate(project.startDate, project.endDate)}</p>
-      </ProjectBoardPeriod>
-    </ProjectBoardFooter>
-  </ProjectBoard>
-);
+const ProjectBoardItem = ({ project }: { project: Project }) => {
+  const [
+    isOpenProjectDropdownMenu,
+    toggleProjectDropdownMenu,
+    projectDropdownMenuRef,
+  ] = useDropdown();
+
+  return (
+    <ProjectBoard key={project.projectId}>
+      <ProjectBoardHeader>
+        <img src={projectIcon} alt="프로젝트 대표 아이콘" />
+        <ProjectBoardTitle>
+          <h5>{project.subTitle}</h5>
+          <h2>{project.title}</h2>
+        </ProjectBoardTitle>
+        <MeatBalls ref={projectDropdownMenuRef}>
+          <img
+            src={meatballs}
+            alt="보드 더보기"
+            onClick={toggleProjectDropdownMenu}
+          />
+          <ProjectDropdownMenu isOpen={isOpenProjectDropdownMenu} />
+        </MeatBalls>
+      </ProjectBoardHeader>
+      <ProjectBoardDescription>{project.description}</ProjectBoardDescription>
+
+      <ProjectBoardFooter>
+        <ProjectBoardMemberList></ProjectBoardMemberList>
+        <ProjectBoardPeriod>
+          <img src={projectCalendar} alt="프로젝트 기간" />
+          <p>{generateNormalDate(project.startDate, project.endDate)}</p>
+        </ProjectBoardPeriod>
+      </ProjectBoardFooter>
+    </ProjectBoard>
+  );
+};
 
 export default ProjectBoardItem;
 
