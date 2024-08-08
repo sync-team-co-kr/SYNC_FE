@@ -137,7 +137,10 @@ const ProjectBoardItem = ({ project }: { project: Project }) => {
             alt="보드 더보기"
             onClick={toggleProjectDropdownMenu}
           />
-          <ProjectDropdownMenu isOpen={isOpenProjectDropdownMenu} />
+          <ProjectDropdownMenu
+            isOpen={isOpenProjectDropdownMenu}
+            projectId={project.projectId}
+          />
         </MeatBalls>
       </ProjectBoardHeader>
       <ProjectBoardDescription>{project.description}</ProjectBoardDescription>

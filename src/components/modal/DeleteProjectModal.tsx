@@ -1,3 +1,7 @@
+import React, { useState } from 'react';
+
+import useProject from '@hooks/useProject';
+import { requiredJwtTokeninstance } from '@libs/axios/axios';
 import styled from 'styled-components';
 
 const ModalHeader = styled.article`
@@ -115,8 +119,21 @@ const Cancel = styled.button`
   line-height: 17px; /* 121.429% */
 `;
 
-const DeleteProjectModal = () => {
-  console.log('');
+interface DeleteProjectModalProps {
+  projectId: number;
+}
+
+const DeleteProjectModal = ({ projectId }: DeleteProjectModalProps) => {
+  const [retypeProjectTitle, setRetypeProjectTitle] = useState('');
+  const [project, deleteProjectMutation] = useProject(projectId);
+
+  const handleDeleteProject = async (e: React.MouseEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    if (retypeProjectTitle === project?.title) {
+      deleteProjectMutation.mutate(projectId);
+    }
+  };
+
   return (
     <>
       <ModalHeader>
@@ -131,17 +148,32 @@ const DeleteProjectModal = () => {
       <Form>
         <InputContainer>
           <p>프로젝트 명</p>
-          <input type="text" placeholder="프로젝트 1" />
+          <input
+            type="text"
+            value={project?.title}
+            placeholder="프로젝트 1"
+            readOnly
+            disabled
+          />
         </InputContainer>
 
         <InputContainer>
           <p>프로젝트 재입력</p>
-          <input type="text" placeholder="프로젝트 명을 그대로 입력해주세요." />
+          <input
+            type="text"
+            value={retypeProjectTitle}
+            onChange={(e) => setRetypeProjectTitle(e.target.value)}
+            placeholder="프로젝트 명을 그대로 입력해주세요."
+          />
         </InputContainer>
 
         <ButtonList>
           <Cancel>취소</Cancel>
-          <Submit type="submit" value="삭제하기" />
+          <Submit
+            type="submit"
+            value="삭제하기"
+            onClick={handleDeleteProject}
+          />
         </ButtonList>
       </Form>
     </>

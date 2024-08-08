@@ -45,7 +45,15 @@ const ProjectDropdownMenuList = styled.ul`
   }
 `;
 
-const ProjectDropdownMenu = ({ isOpen }: { isOpen: boolean }) => {
+interface ProjectDropdownMenuPRops {
+  isOpen: boolean;
+  projectId: number;
+}
+
+const ProjectDropdownMenu = ({
+  isOpen,
+  projectId,
+}: ProjectDropdownMenuPRops) => {
   const [openModal] = useModal();
 
   return (
@@ -53,7 +61,7 @@ const ProjectDropdownMenu = ({ isOpen }: { isOpen: boolean }) => {
       <ProjectDropdownMenuList>
         <li
           onClick={() => {
-            openModal(DeleteProjectModal);
+            openModal(() => DeleteProjectModal({ projectId }));
           }}
         >
           <img src={trashcan} alt="프로젝트 삭제" />
