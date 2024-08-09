@@ -27,8 +27,8 @@ interface CreateProjectParams {
   title: string;
   subTitle: string;
   description: string;
-  startDate: Date | null;
-  endDate: Date | null;
+  startDate?: Date;
+  endDate?: Date;
 }
 
 interface useProjectListResponse {

@@ -87,14 +87,19 @@ const CalendarDateItem = styled.li<{
 
 interface CalendarDropdownProps {
   isOpen: boolean;
-  setDate: React.Dispatch<React.SetStateAction<Date | null>>;
+  selectedDate?: Date;
+  setDate: React.Dispatch<React.SetStateAction<Date | undefined>>;
 }
 
 const DAY_LIST = ['일', '월', '화', '수', '목', '금', '토'];
 
-const CalendarDropdown = ({ isOpen, setDate }: CalendarDropdownProps) => {
+const CalendarDropdown = ({
+  isOpen,
+  selectedDate,
+  setDate,
+}: CalendarDropdownProps) => {
   const { currentDate, monthlyCalendar, moveMonth, setCalendarDate } =
-    useCalendar();
+    useCalendar(selectedDate);
 
   return (
     <CalendarDropdownWrapper $isopen={isOpen}>

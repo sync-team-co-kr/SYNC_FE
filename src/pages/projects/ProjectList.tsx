@@ -47,7 +47,6 @@ const ProjectList = () => {
 
   useEffect(() => {
     getProjectList().then((data) => {
-      console.log('getProjectList : ', data);
       if (data) setProjectList(data);
     });
   }, []);

@@ -23,9 +23,27 @@ export interface IProject {
   memberIds: number[];
 }
 
-type useProjectType = (
-  projectId: number,
-) => [IProject | undefined, UseMutationResult<number, Error, number, unknown>];
+interface editProjectParams {
+  title: string;
+  subTitle: string;
+  description: string;
+  startDate?: Date;
+  endDate?: Date;
+}
+
+interface useProjectResponse {
+  project: IProject | undefined;
+  isLoading: boolean;
+  editProjectMutation: UseMutationResult<
+    void,
+    Error,
+    editProjectParams,
+    unknown
+  >;
+  deleteProjectMutation: UseMutationResult<number, Error, void, unknown>;
+}
+
+type useProjectType = (projectId: number) => useProjectResponse;
 
 const useProject: useProjectType = (projectId) => {
   const queryClient = useQueryClient();
@@ -38,12 +56,29 @@ const useProject: useProjectType = (projectId) => {
     return getProjectResponse.data.value[0] || undefined;
   };
 
-  const { data: project } = useQuery<IProject>({
+  const { data: project, isLoading } = useQuery<IProject>({
     queryKey: ['project', projectId],
     queryFn: getProject,
   });
 
-  const deleteProject = async (projectId: number) => {
+  const editProject = async (newProject: editProjectParams) => {
+    try {
+      await requiredJwtTokeninstance.put('/user/api/project', {
+        projectId,
+        ...newProject,
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const editProjectMutation = useMutation({
+    mutationFn: editProject,
+    onSuccess: () =>
+      queryClient.invalidateQueries({ queryKey: ['project', projectId] }),
+  });
+
+  const deleteProject = async () => {
     await requiredJwtTokeninstance.delete('/user/api/project', {
       data: {
         projectId,
@@ -54,12 +89,11 @@ const useProject: useProjectType = (projectId) => {
 
   const deleteProjectMutation = useMutation({
     mutationFn: deleteProject,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['project', projectId] });
-    },
+    onSuccess: () =>
+      queryClient.invalidateQueries({ queryKey: ['project', projectId] }),
   });
 
-  return [project, deleteProjectMutation];
+  return { project, isLoading, editProjectMutation, deleteProjectMutation };
 };
 
 export default useProject;

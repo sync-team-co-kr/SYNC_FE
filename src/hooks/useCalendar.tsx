@@ -16,12 +16,17 @@ interface useCalendarReturnType {
   setCalendarDate: (date: number) => void;
 }
 
-type useCalendarType = () => useCalendarReturnType;
+type useCalendarType = (selectedDate?: Date) => useCalendarReturnType;
 
-const useCalendar: useCalendarType = () => {
-  const [currentDate, setCurrentDate] = useState(new Date());
+const useCalendar: useCalendarType = (selectedDate) => {
+  const [currentDate, setCurrentDate] = useState<Date>(new Date());
   const [monthlyCalendar, setMonthlyCalendar] = useState<CalendarDate[] | null>(
     null,
+  );
+
+  useEffect(
+    () => selectedDate && setCurrentDate(new Date(selectedDate)),
+    [selectedDate],
   );
 
   const createMonthCalendar = () => {

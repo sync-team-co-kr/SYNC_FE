@@ -169,8 +169,8 @@ function CreateProjectModal({ closeModal }: { closeModal?: setIsModalOpen }) {
   const [title, setTitle] = useState('');
   const [subTitle, setSubTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [startDate, setStartDate] = useState<Date | null>(null);
-  const [endDate, setEndDate] = useState<Date | null>(null);
+  const [startDate, setStartDate] = useState<Date>();
+  const [endDate, setEndDate] = useState<Date>();
   const [isOpenCalendarDropdown, toggleCalendarDropdown, calendarDropdownRef] =
     useDropdown();
   const [

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 
 import useProject from '@hooks/useProject';
-import { requiredJwtTokeninstance } from '@libs/axios/axios';
 import styled from 'styled-components';
 
 const ModalHeader = styled.article`
@@ -125,12 +124,12 @@ interface DeleteProjectModalProps {
 
 const DeleteProjectModal = ({ projectId }: DeleteProjectModalProps) => {
   const [retypeProjectTitle, setRetypeProjectTitle] = useState('');
-  const [project, deleteProjectMutation] = useProject(projectId);
+  const { project, deleteProjectMutation } = useProject(projectId);
 
   const handleDeleteProject = async (e: React.MouseEvent<HTMLInputElement>) => {
     e.preventDefault();
     if (retypeProjectTitle === project?.title) {
-      deleteProjectMutation.mutate(projectId);
+      deleteProjectMutation.mutate();
     }
   };
 

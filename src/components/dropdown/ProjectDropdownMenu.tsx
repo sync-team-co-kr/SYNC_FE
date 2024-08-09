@@ -1,7 +1,7 @@
 import settings from '@assets/Settings.svg';
 import trashcan from '@assets/trashcan.svg';
 import withdraw from '@assets/withdraw.svg';
-import { DeleteProjectModal } from '@components/modal';
+import { DeleteProjectModal, ModifyProjectModal } from '@components/modal';
 import useModal from '@hooks/useModal';
 import styled from 'styled-components';
 
@@ -67,7 +67,11 @@ const ProjectDropdownMenu = ({
           <img src={trashcan} alt="프로젝트 삭제" />
           <span>프로젝트 삭제</span>
         </li>
-        <li>
+        <li
+          onClick={() => {
+            openModal(() => ModifyProjectModal({ projectId }));
+          }}
+        >
           <img src={settings} alt="프로젝트 설정" />
           <span>프로젝트 설정</span>
         </li>
