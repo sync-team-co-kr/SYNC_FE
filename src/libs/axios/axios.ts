@@ -23,20 +23,21 @@ requiredJwtTokeninstance.interceptors.response.use(
     const originalRequest = axiosError.config;
 
     if (
-      isAxiosError<{ code: string }>(axiosError) &&
+      isAxiosError<{ message: string }>(axiosError) &&
       axiosError.response &&
       originalRequest
     ) {
       const { data } = axiosError.response;
-      if (data.code === 'U003') {
+      console.log(data.message.split(' ').slice(0, 2).join(' '));
+      if (data.message === 'JWT expired') {
         try {
           await axios.get(`${config.backendUrl}/api/user/auth`, {
             withCredentials: true,
           });
           return axios(originalRequest);
         } catch (error) {
-          if (isAxiosError<{ code: string }>(error) && error.response) {
-            if (data.code === 'U003') {
+          if (isAxiosError<{ message: string }>(error) && error.response) {
+            if (data.message === 'JWT expired') {
               window.alert('토큰 유효기간 만료. 로그인 창으로 돌아갑니다.');
               window.location.href = '/login';
             }
