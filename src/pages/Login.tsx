@@ -149,7 +149,7 @@ export default function Login() {
     const { userId, password } = loginForm;
     let loginErrorMessage = { ...DEFAULT_ERROR_MESSAGE };
 
-    if (userId.length <= 7 || userId.length >= 17)
+    if (userId.length <= 7 || userId.length >= 18)
       loginErrorMessage = {
         ...loginErrorMessage,
         userId: '아이디는 8자 이상 ~ 16자 이하의 길이를 입력해야 합니다.',
@@ -169,6 +169,7 @@ export default function Login() {
       Object.entries(DEFAULT_ERROR_MESSAGE).toString() !==
       Object.entries(loginErrorMessage).toString()
     ) {
+      console.log(loginErrorMessage);
       setErrorMessage({ ...loginErrorMessage });
       return false;
     }
