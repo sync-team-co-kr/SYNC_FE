@@ -163,9 +163,11 @@ export default function SignUp() {
   const handleSignUp = async (e: React.MouseEvent<HTMLInputElement>) => {
     e.preventDefault();
     const isValidatePass = validateSignUpForm();
+
     if (!isValidatePass) return false;
 
     const signupResponse = await signupAPI({ ...signupForm });
+    console.log(signupResponse);
     if (signupResponse.result === 'OK') {
       window.alert('회원가입이 완료되었습니다.');
       navigate('/login');
