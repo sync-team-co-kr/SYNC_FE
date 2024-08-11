@@ -8,6 +8,7 @@ const getProjectList = async () => {
     AxiosRes<Project[]>,
     any
   > = await requiredJwtTokeninstance.get('/api/user/project/get');
+
   return response.data.value;
 };
 

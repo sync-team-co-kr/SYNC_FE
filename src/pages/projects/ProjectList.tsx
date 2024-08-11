@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
-
+// import { useState } from 'react';
 import { ProjectListItem } from '@components/project';
-import { Project } from '@customTypes/project';
-import { getProjectList } from '@services/project';
+// import { Project } from '@customTypes/project';
+// import { getProjectList } from '@services/project';
+import { useGetProjectList } from '@services/project/GetProjectList.hooks';
 import {
   ProjectListFrame,
   ProjectListHeader,
@@ -43,13 +43,9 @@ const ProjectListHeaderFrame = styled.div`
 `;
 
 const ProjectList = () => {
-  const [projectList, setProjectList] = useState<Project[] | null>(null);
-
-  useEffect(() => {
-    getProjectList().then((data) => {
-      if (data) setProjectList(data);
-    });
-  }, []);
+  // const [projectList, setProjectList] = useState<Project[] | null>(null);
+  
+  const { projectListData } = useGetProjectList() ?? {};
 
   return (
     <>
@@ -74,7 +70,7 @@ const ProjectList = () => {
           <EtcHeader />
         </ProjectListHeaderFrame>
         <main>
-          {projectList?.map((project) => (
+          {projectListData?.map((project) => (
             <ProjectListItem key={project.projectId} project={project} />
           ))}
         </main>
