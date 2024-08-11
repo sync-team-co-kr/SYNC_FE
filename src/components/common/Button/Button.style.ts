@@ -1,29 +1,7 @@
-import { ReactComponent as Add } from '@assets/add.svg';
 import styled from 'styled-components';
 import { vars } from 'token';
 
-/**
- * Button component
- * @param size - 사이즈를 나타냅니다. 'small' | 'medium'  기본은 'medium' 입니다.
- * @param variant - style을 나타냅니다.
- * @param hasIcon - icon 존재 여부를 나타냅니다.
- * @param isDisabled - 버튼 비활성화 여부를 나타냅니다.
- * @param iconPosition - icon 위치를 나타냅니다. 'left' | 'right' 기본은 'left' 입니다.
- * @param onClick - 클릭 이벤트를 나타냅니다.
- * @param text - 버튼 텍스트를 나타냅니다.
- */
-
-interface ButtonProps {
-  size: 'small' | 'medium';
-  variant: 'outline' | 'fill' | 'fillGray' | 'text';
-  hasIcon: boolean;
-  isDisabled: boolean;
-  iconPosition: 'left' | 'right';
-  onClick: () => void;
-  text: string;
-}
-
-const CommonButton = styled.button<{
+export const CommonButton = styled.button<{
   size: 'small' | 'medium';
   variant: 'outline' | 'fill' | 'fillGray' | 'text';
 }>`
@@ -125,28 +103,3 @@ const CommonButton = styled.button<{
     cursor: not-allowed;
   }
 `;
-
-export const Button = ({
-  size = 'medium',
-  variant,
-  hasIcon = true,
-  isDisabled = false,
-  iconPosition = 'left',
-  onClick,
-  text,
-}: ButtonProps) => (
-  <CommonButton
-    size={size}
-    variant={variant}
-    disabled={isDisabled}
-    onClick={onClick}
-  >
-    {hasIcon && iconPosition === 'left' && (
-      <Add fill="current" color="current" />
-    )}
-    {text}
-    {hasIcon && iconPosition === 'right' && (
-      <Add fill="current" color="current" />
-    )}
-  </CommonButton>
-);
