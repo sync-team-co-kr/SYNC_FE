@@ -16,7 +16,6 @@ const HeaderWrap = styled.header`
   position: fixed;
   left: 240px;
   top: 0;
-  z-index: 50;
 `;
 
 const Navigation = styled.nav`
