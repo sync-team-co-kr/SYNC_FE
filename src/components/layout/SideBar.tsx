@@ -1,136 +1,114 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
+
+import { ReactComponent as CalendarIcon } from '@assets/sideBar/calender-icon.svg';
+import { ReactComponent as HomeIcon } from '@assets/sideBar/home-icon.svg';
+import { ReactComponent as Logo } from '@assets/sideBar/logo.svg';
+import { ReactComponent as PlusIcon } from '@assets/sideBar/plus-icon.svg';
+import { ReactComponent as ProjectIcon } from '@assets/sideBar/project-icon.svg';
 import styled from 'styled-components';
+import { vars } from 'token';
 
 const SideBarWrap = styled.aside`
   display: flex;
-  width: 242px;
+  width: 80px;
   height: 100vh;
-  border-right: 2px solid black;
+  border-right: 1px solid ${vars.sementic.color.black10};
   flex-direction: column;
   align-items: flex-start;
   flex-shrink: 0;
   position: fixed;
 `;
 
-const TitleWrap = styled.div`
+const LogoWrapper = styled.div`
   display: flex;
-  height: 68px;
   padding: 8px;
-  border-bottom: 2px solid black;
-  font-size: 20px;
-  font-weight: 800;
+  width: 100%;
+  height: 60px;
   justify-content: center;
   align-items: center;
-  gap: 8px;
-  flex-shrink: 0;
-  align-self: stretch;
-`;
-
-const Title = styled.h1`
-  display: flex;
-  height: 68px;
-  font-size: 20px;
-  font-weight: 800;
-  justify-content: center;
-  align-items: center;
-  gap: 8px;
   flex-shrink: 0;
   align-self: stretch;
 `;
 
 const SideBarCombine = styled.ul`
   display: flex;
-  width: 242px;
-  padding: 32px 16px;
+  width: 100%;
   flex-direction: column;
-  align-items: flex-start;
   gap: 32px;
-  flex-shrink: 0;
 `;
 
 const SideBarItemWrap = styled.div`
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 4px;
-  align-self: stretch;
-`;
-
-const SideBarItemHeader = styled.li`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 4px;
-  align-self: stretch;
-  span {
-    color: var(--main-black, #000);
-    font-family: Pretendard;
-    font-size: 12px;
-    font-style: normal;
-    font-weight: 800;
-    line-height: normal;
-  }
-`;
-
-const SideBarItem = styled.li`
-  display: flex;
-  padding: 12px 16px;
-  border: 1px solid black;
+  padding: 12px;
+  justify-content: center;
   align-items: center;
-  gap: 8px;
-  align-self: stretch;
-  span {
-    color: var(--main-black, #000);
-    font-family: Pretendard;
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 800;
-    line-height: normal;
-  }
 `;
 
 export default function SideBar() {
+  const location = useLocation();
+  console.log(location.pathname);
+  // location 이 활성화 됨에 따라 색상 변경
+
   return (
     <SideBarWrap>
-      <TitleWrap>
+      {/* Logo */}
+      <LogoWrapper>
         <Link to="/">
-          <Title>LOGO</Title>
+          <Logo />
         </Link>
-      </TitleWrap>
+      </LogoWrapper>
+      {/* SideBarMenus */}
       <SideBarCombine>
         <SideBarItemWrap>
-          <SideBarItemHeader>
-            <span>-</span>
-          </SideBarItemHeader>
-          <SideBarItem>
-            <span>홈</span>
-          </SideBarItem>
-        </SideBarItemWrap>
-
-        <SideBarItemWrap>
-          <Link to='/projects/board'>
-          <SideBarItemHeader>
-            <span>프로젝트</span>
-          </SideBarItemHeader>
+          <Link to="/add">
+            <PlusIcon
+              fill="transparent"
+              stroke={
+                location.pathname === '/add'
+                  ? vars.sementic.color.primaryOrange
+                  : vars.sementic.color.black20
+              }
+            />
           </Link>
         </SideBarItemWrap>
 
         <SideBarItemWrap>
-          <SideBarItemHeader>
-            <span>캘린더</span>
-          </SideBarItemHeader>
+          <Link to="/home">
+            <HomeIcon
+              fill="transparent"
+              stroke={
+                location.pathname === '/home'
+                  ? vars.sementic.color.primaryOrange
+                  : vars.sementic.color.black20
+              }
+            />
+          </Link>
         </SideBarItemWrap>
 
         <SideBarItemWrap>
-          <SideBarItemHeader>
-            <span>한 눈에 보기</span>
-          </SideBarItemHeader>
-          <SideBarItem>
-            <span>업무 리스트</span>
-          </SideBarItem>
-          <SideBarItem>
-            <span>공유된 업무</span>
-          </SideBarItem>
+          <Link to="/projects/board">
+            <ProjectIcon
+              fill="transparent"
+              stroke={
+                location.pathname.includes('/projects')
+                  ? vars.sementic.color.primaryOrange
+                  : vars.sementic.color.black20
+              }
+            />
+          </Link>
+        </SideBarItemWrap>
+
+        <SideBarItemWrap>
+          <Link to="/calendar">
+            <CalendarIcon
+              fill="transparent"
+              stroke={
+                location.pathname === '/calendar'
+                  ? vars.sementic.color.primaryOrange
+                  : vars.sementic.color.black20
+              }
+            />
+          </Link>
         </SideBarItemWrap>
       </SideBarCombine>
     </SideBarWrap>
