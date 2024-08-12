@@ -5,6 +5,8 @@ import { ReactComponent as HomeIcon } from '@assets/sideBar/home-icon.svg';
 import { ReactComponent as Logo } from '@assets/sideBar/logo.svg';
 import { ReactComponent as PlusIcon } from '@assets/sideBar/plus-icon.svg';
 import { ReactComponent as ProjectIcon } from '@assets/sideBar/project-icon.svg';
+import CreateProjectModal from '@components/modal/CreateProjectModal';
+import { useModal } from '@hooks';
 import styled from 'styled-components';
 import { vars } from 'token';
 
@@ -55,7 +57,9 @@ const SideBarItemWrap = styled.div`
 
 export default function SideBar() {
   const location = useLocation();
-  console.log(location.pathname);
+
+  const [openModal] = useModal();
+
   // location 이 활성화 됨에 따라 색상 변경
 
   return (
@@ -68,17 +72,12 @@ export default function SideBar() {
       </LogoWrapper>
       {/* SideBarMenus */}
       <SideBarCombine>
-        <SideBarItemWrap>
-          <Link to="/add">
-            <PlusIcon
-              fill="transparent"
-              stroke={
-                location.pathname === '/add'
-                  ? vars.sementic.color.primaryOrange
-                  : vars.sementic.color.black20
-              }
-            />
-          </Link>
+        <SideBarItemWrap
+          onClick={() => {
+            openModal(CreateProjectModal);
+          }}
+        >
+          <PlusIcon fill="transparent" stroke={vars.sementic.color.black20} />
         </SideBarItemWrap>
 
         <SideBarItemWrap>
