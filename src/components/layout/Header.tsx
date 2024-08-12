@@ -1,6 +1,6 @@
 import more from '@assets/More.svg';
-import settings from '@assets/Settings.svg';
-import alrams from '@assets/bell-02.svg';
+import { ReactComponent as Bell } from '@assets/header/bell-icon.svg';
+import { ReactComponent as Setting } from '@assets/header/setting-icon.svg';
 import profileDefault from '@assets/man-438081_960_720.svg';
 import search from '@assets/search.svg';
 import { ConfigDropDown, MenuDropDown } from '@components/dropdown';
@@ -13,7 +13,7 @@ const HeaderWrap = styled.header`
   width: calc(100% - 80px);
   height: 68px;
   padding: 12px 34px;
-  border-bottom: ${vars.sementic.color.black10};
+  border-bottom: 1px solid ${vars.sementic.color.black10};
   position: fixed;
   right: 0;
   top: 0;
@@ -52,6 +52,22 @@ const SearchBar = styled.input`
     font-style: normal;
     font-weight: 400;
     line-height: normal;
+  }
+`;
+
+const IconContainer = styled.div`
+  padding: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+
+  svg {
+    &:hover {
+      transition: all 0.3s;
+      cursor: pointer;
+      stroke: ${vars.sementic.color.primaryOrange};
+    }
   }
 `;
 
@@ -145,9 +161,13 @@ export default function Header() {
           </SearchContainer>
           <ToolContainer>
             <AlarmAndSetting>
-              <img src={alrams} alt="알림" />
+              <IconContainer>
+                <Bell stroke={vars.sementic.color.black20} />
+              </IconContainer>
               <Config ref={configDropdownRef}>
-                <img src={settings} alt="설정" onClick={toggleConfigDropdown} />
+                <IconContainer onClick={toggleConfigDropdown}>
+                  <Setting stroke={vars.sementic.color.black20} />
+                </IconContainer>
                 <ConfigDropDown isOpen={isOpenConfigDropdown} />
               </Config>
             </AlarmAndSetting>

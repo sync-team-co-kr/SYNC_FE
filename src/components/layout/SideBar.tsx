@@ -42,6 +42,14 @@ const SideBarItemWrap = styled.div`
   padding: 12px;
   justify-content: center;
   align-items: center;
+
+  svg {
+    &:hover {
+      transition: all 0.3s;
+      cursor: pointer;
+      stroke: ${vars.sementic.color.primaryOrange};
+    }
+  }
 `;
 
 export default function SideBar() {
