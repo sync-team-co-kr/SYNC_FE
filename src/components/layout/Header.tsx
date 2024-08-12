@@ -7,14 +7,15 @@ import { ConfigDropDown, MenuDropDown } from '@components/dropdown';
 import useDropdown from '@hooks/useDropdown';
 import { useLoggedInUserStore } from '@libs/store';
 import styled from 'styled-components';
+import { vars } from 'token';
 
 const HeaderWrap = styled.header`
-  width: calc(100% - 242px);
+  width: calc(100% - 80px);
   height: 68px;
   padding: 12px 34px;
-  border-bottom: 2px solid black;
+  border-bottom: ${vars.sementic.color.black10};
   position: fixed;
-  left: 240px;
+  right: 0;
   top: 0;
 `;
 
