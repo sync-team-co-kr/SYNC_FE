@@ -17,6 +17,7 @@ const SideBarWrap = styled.aside`
   align-items: flex-start;
   flex-shrink: 0;
   position: fixed;
+  background: ${vars.sementic.color.white};
 `;
 
 const LogoWrapper = styled.div`

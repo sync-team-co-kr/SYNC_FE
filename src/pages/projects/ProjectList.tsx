@@ -10,6 +10,8 @@ import {
 } from '@styles/project';
 import styled from 'styled-components';
 
+import { EmptyList } from './EmptyList';
+
 const TitleHeader = styled(ProjectListHeader)`
   width: 300px;
   align-self: stretch;
@@ -44,8 +46,12 @@ const ProjectListHeaderFrame = styled.div`
 
 const ProjectList = () => {
   // const [projectList, setProjectList] = useState<Project[] | null>(null);
-  
+
   const { projectListData } = useGetProjectList() ?? {};
+
+  if (!projectListData) {
+    return <EmptyList />;
+  }
 
   return (
     <>

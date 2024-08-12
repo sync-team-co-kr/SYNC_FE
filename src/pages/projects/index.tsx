@@ -19,6 +19,11 @@ const TabMenuItem = styled.li<{ $iscurrenttabmenu: boolean }>`
   color: ${(props) => (props.$iscurrenttabmenu ? '#202020' : '#8f8f8f')};
 `;
 
+const Container = styled.div`
+  width: 100%;
+  height: 100%;
+`;
+
 export interface IProject {
   projectId: number;
   title: string;
@@ -39,7 +44,7 @@ const Project = () => {
   };
 
   return (
-    <section>
+    <Container>
       <TabMenu>
         <TabMenuItem
           onClick={() => handleClickTabMenu('board')}
@@ -55,7 +60,7 @@ const Project = () => {
         </TabMenuItem>
       </TabMenu>
       <Outlet />
-    </section>
+    </Container>
   );
 };
 

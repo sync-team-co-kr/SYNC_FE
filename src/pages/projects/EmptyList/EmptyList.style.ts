@@ -9,8 +9,7 @@ export const EmptyListContainer = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  gap: 24px;
 `;
 
-export const Empty = styled.div`
 
-`;
