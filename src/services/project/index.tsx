@@ -1,3 +1,3 @@
-import getProjectList from './getProjectList';
+import getProjectList from './apis';
 
 export { getProjectList };

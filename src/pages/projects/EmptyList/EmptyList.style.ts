@@ -9,7 +9,23 @@ export const EmptyListContainer = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  gap: 24px;
 `;
 
+export const EmptyListImageContainer = styled.div`
+  max-width: 400px;
+  width: 100%;
 
+  img {
+    width: 100%;
+    height: auto;
+  }
+`;
+
+export const TypographyContainer = styled.div`
+  margin-bottom: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+`;

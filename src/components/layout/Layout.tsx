@@ -14,9 +14,8 @@ const Main = styled.main`
   height: 100vh;
   display: flex;
   flex-direction: column;
-  // pading = header 68 + padding 12px / sidebar 80px + padding 40px
   background-color: ${vars.sementic.color.primaryLightOrange};
-  padding: 80px 0 0 120px;
+  padding: 68px 0 0 80px;
   box-sizing: border-box;
 `;
 

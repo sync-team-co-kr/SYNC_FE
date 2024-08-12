@@ -3,7 +3,11 @@ import { Project } from '@customTypes/project';
 import { requiredJwtTokeninstance } from '@libs/axios/axios';
 import { AxiosResponse } from 'axios';
 
-const getProjectList = async () => {
+/**
+ * 프로젝트 리스트를 가져오는 API
+ */
+
+export const getProjectList = async () => {
   const response: AxiosResponse<
     AxiosRes<Project[]>,
     any

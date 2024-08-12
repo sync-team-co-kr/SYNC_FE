@@ -2,7 +2,7 @@
 import { ProjectListItem } from '@components/project';
 // import { Project } from '@customTypes/project';
 // import { getProjectList } from '@services/project';
-import { useGetProjectList } from '@services/project/GetProjectList.hooks';
+import { useGetProjectList } from '@services/project/Project.hooks';
 import {
   ProjectListFrame,
   ProjectListHeader,
