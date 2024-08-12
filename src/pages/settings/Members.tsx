@@ -1,6 +1,8 @@
 import fakeAvatar from '@assets/rectangle-50.png';
 import search from '@assets/search.svg';
+import RouteProjectDropdown from '@components/dropdown/RouteProjectDropdown';
 import { SettingsMemberItem } from '@components/settings';
+import useDropdown from '@hooks/useDropdown';
 import styled from 'styled-components';
 
 const Header = styled.article`
@@ -32,24 +34,24 @@ const Content = styled.section`
   gap: 45px;
 `;
 
-const SelectProjects = styled.ul`
-  width: 280px;
-  padding: 8px;
-  border: 1px solid var(--input-stroke, #d2dbe2);
-  border-radius: 4px;
+const ProjectListDropdown = styled.div`
+  width: 300px;
+  height: 48px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+`;
+
+const SelectedProject = styled.div`
+  padding: 8px 12px;
   display: flex;
   align-items: center;
-  gap: 10px;
-  span {
-    color: #a6b3be;
-    font-feature-settings:
-      'clig' off,
-      'liga' off;
-    font-family: Inter;
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: 12px;
+  gap: 12px;
+  position: relative;
+  img {
+    width: 32px;
+    height: 32px;
+    border-radius: 4px;
   }
 `;
 
@@ -266,7 +268,19 @@ const fakeMemberList = [
   },
 ];
 
-export default function MembersSettings() {
+const fakeProjectList = [
+  '프로젝트 1',
+  '프로젝트 2',
+  '프로젝트 3',
+  '프로젝트 4',
+];
+
+const MembersSettings = () => {
+  const [
+    isOpenProjectListDropdown,
+    toggleProjectListDropdown,
+    projectDropdownRef,
+  ] = useDropdown();
   return (
     <>
       <Header>
@@ -274,10 +288,16 @@ export default function MembersSettings() {
         <p>해당 프로젝트의 멤버를 확인 및 역할을 수정할 수 있습니다.</p>
       </Header>
       <Content>
-        <SelectProjects>
-          <img src={fakeAvatar} alt="프로젝트 이미지" />
-          <span>프로젝트 1</span>
-        </SelectProjects>
+        <ProjectListDropdown ref={projectDropdownRef}>
+          <SelectedProject onClick={toggleProjectListDropdown}>
+            <img src={fakeAvatar} alt="프로젝트 이미지" />
+            <span>프로젝트 1</span>
+          </SelectedProject>
+          <RouteProjectDropdown
+            isOpen={isOpenProjectListDropdown}
+            projectList={fakeProjectList}
+          />
+        </ProjectListDropdown>
 
         <InviteLinkContainer>
           <h5>초대링크</h5>
@@ -339,4 +359,6 @@ export default function MembersSettings() {
       </Content>
     </>
   );
-}
+};
+
+export default MembersSettings;
