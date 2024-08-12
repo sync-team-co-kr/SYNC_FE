@@ -1,8 +1,10 @@
 import fakeAvatar from '@assets/rectangle-50.png';
 import search from '@assets/search.svg';
 import RouteProjectDropdown from '@components/dropdown/RouteProjectDropdown';
+import InviteProjectMemberModal from '@components/modal/InviteProjectMemberModal';
 import { SettingsMemberItem } from '@components/settings';
 import useDropdown from '@hooks/useDropdown';
+import useModal from '@hooks/useModal';
 import styled from 'styled-components';
 
 const Header = styled.article`
@@ -276,6 +278,7 @@ const fakeProjectList = [
 ];
 
 const MembersSettings = () => {
+  const [openModal] = useModal();
   const [
     isOpenProjectListDropdown,
     toggleProjectListDropdown,
@@ -339,7 +342,11 @@ const MembersSettings = () => {
                 <input type="submit" hidden />
               </SearchForm>
 
-              <InviteEmailButton>초대하기</InviteEmailButton>
+              <InviteEmailButton
+                onClick={() => openModal(InviteProjectMemberModal)}
+              >
+                초대하기
+              </InviteEmailButton>
             </HeaderTail>
           </MembersHeader>
 
