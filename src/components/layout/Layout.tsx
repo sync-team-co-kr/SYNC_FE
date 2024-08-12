@@ -11,10 +11,10 @@ import SideBar from './SideBar';
 const Main = styled.main`
   width: 100%;
   height: 100vh;
-  padding-left: 272px;
-  padding-right: 30px;
-  padding-top: 98px;
-  padding-bottom: 30px;
+  display: flex;
+  flex-direction: column;
+  // pading = header 68 + padding 12px / sidebar 80px + padding 40px
+  padding: 80px 0 0 120px;
 `;
 
 export default function Layout() {
@@ -23,17 +23,16 @@ export default function Layout() {
   return (
     <>
       <Header />
-      <>
-        <SideBar />
-        <Main>
-          <Outlet />
-          {isModalOpen && ModalComponent && (
-            <ModalWrapper isOpen={isModalOpen}>
-              <ModalComponent />
-            </ModalWrapper>
-          )}
-        </Main>
-      </>
+
+      <SideBar />
+      <Main>
+        <Outlet />
+        {isModalOpen && ModalComponent && (
+          <ModalWrapper isOpen={isModalOpen}>
+            <ModalComponent />
+          </ModalWrapper>
+        )}
+      </Main>
     </>
   );
 }
