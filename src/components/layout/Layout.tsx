@@ -23,17 +23,16 @@ export default function Layout() {
   return (
     <>
       <Header />
-      <>
-        <SideBar />
-        <Main>
-          <Outlet />
-          {isModalOpen && ModalComponent && (
-            <ModalWrapper isOpen={isModalOpen}>
-              <ModalComponent />
-            </ModalWrapper>
-          )}
-        </Main>
-      </>
+
+      <SideBar />
+      <Main>
+        <Outlet />
+        {isModalOpen && ModalComponent && (
+          <ModalWrapper isOpen={isModalOpen}>
+            <ModalComponent />
+          </ModalWrapper>
+        )}
+      </Main>
     </>
   );
 }
