@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import useProject from '@hooks/useProject';
+import useProject from '@hooks/project/useProject';
 import styled from 'styled-components';
 
 const ModalHeader = styled.article`

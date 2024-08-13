@@ -32,7 +32,7 @@ interface CreateProjectParams {
 }
 
 interface useProjectListResponse {
-  projectList: IProject[] | undefined;
+  projectList?: IProject[];
   isLoading: boolean;
   createProjectMutation: UseMutationResult<
     CreateProjectParams,

@@ -2,7 +2,7 @@
 import { Button } from '@components/common/Button';
 import CreateProjectModal from '@components/modal/CreateProjectModal';
 import { useModal } from '@hooks';
-import useProjectList from '@hooks/useProjectList';
+import useProjectList from '@hooks/project/useProjectList';
 import styled from 'styled-components';
 
 import ProjectBoardItem from './ProjectBoardItem';

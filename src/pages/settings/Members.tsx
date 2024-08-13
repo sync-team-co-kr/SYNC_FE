@@ -5,11 +5,10 @@ import search from '@assets/search.svg';
 import RouteProjectDropdown from '@components/dropdown/RouteProjectDropdown';
 import InviteProjectMemberModal from '@components/modal/InviteProjectMemberModal';
 import { SettingsMemberItem } from '@components/settings';
+import useMemberList from '@hooks/member/useMemberList';
+import useProjectList from '@hooks/project/useProjectList';
 import useDropdown from '@hooks/useDropdown';
 import useModal from '@hooks/useModal';
-import useProjectList from '@hooks/useProjectList';
-import { requiredJwtTokeninstance } from '@libs/axios/axios';
-import { AxiosResponse } from 'axios';
 import styled from 'styled-components';
 
 const Header = styled.article`
@@ -275,12 +274,6 @@ const fakeMemberList = [
   },
 ];
 
-interface AxiosRes<ResponseType> {
-  message: string;
-  result: boolean;
-  value: ResponseType;
-}
-
 export interface IProject {
   projectId: number;
   title: string;
@@ -289,33 +282,6 @@ export interface IProject {
   startDate: Date;
   endDate: Date;
   memberIds: number[];
-}
-
-interface getProjectMembersResponse {
-  projectId: number;
-  userIds: number[];
-}
-
-interface getMemberRoleResponse {
-  userId: number;
-  projectId: number;
-  isManager: number;
-}
-
-interface IUser {
-  username: string;
-  nickname?: string;
-  position?: string;
-  isManager: number;
-}
-
-interface IMember extends IUser {
-  userId: number;
-  username: string;
-  nickname?: string;
-  position?: string;
-  isManager: number;
-  projectId: number;
 }
 
 const MembersSettings = () => {
@@ -330,64 +296,15 @@ const MembersSettings = () => {
   const [selectedProject, setSelectedProject] = useState<IProject | null>(
     projectList ? projectList[0] : null,
   );
-  const [members, setMembers] = useState<IMember[] | null>(null);
 
-  useEffect(() => {
-    const getProjectMembers = async () => {
-      if (projectList) {
-        try {
-          // 프로젝트에 속한 멤버의 아이디 불러오기
-          const project = selectedProject || projectList[0];
-          const response: AxiosResponse<AxiosRes<getProjectMembersResponse[]>> =
-            await requiredJwtTokeninstance.get(`/user/api/member/v2`, {
-              params: {
-                projectIds: [project.projectId].toString(),
-              },
-            });
+  useEffect(
+    () => projectList && setSelectedProject(projectList[0]),
+    [isLoading],
+  );
 
-          // 멤버의 권한 불러오기
-          const { userIds } = response.data.value[0];
-          const getMemberRoleRes: AxiosResponse<
-            AxiosRes<getMemberRoleResponse[]>
-          > = await requiredJwtTokeninstance.get('/user/api/member/v1', {
-            params: {
-              userIds: userIds.join(','),
-            },
-          });
+  const { memberList } = useMemberList(selectedProject);
 
-          // 멤버의 회원 정보 불러오기
-          const primaryKeyMemberList = getMemberRoleRes.data.value.filter(
-            (value) => {
-              const isEqualCurrentProject =
-                project.projectId === value.projectId ? 'yes' : 'no';
-              if (isEqualCurrentProject === 'yes') return true;
-              return false;
-            },
-          );
-          const getMembersData: IMember[] = await Promise.all(
-            primaryKeyMemberList.map(async (value) => {
-              const getMembersRes: AxiosResponse<AxiosRes<IUser[]>> =
-                await requiredJwtTokeninstance.get('/user/api/info/v2', {
-                  params: {
-                    userIds: value.userId.toString(),
-                  },
-                });
-
-              /* eslint-disable @typescript-eslint/no-unused-vars */
-              const { isManager, ...memberInfo } = getMembersRes.data.value[0];
-              return { ...value, ...memberInfo };
-            }),
-          );
-          setMembers(getMembersData);
-        } catch (error) {
-          console.log(error);
-        }
-      }
-    };
-    getProjectMembers();
-  }, [isLoading]);
-
-  console.log(members);
+  console.log(memberList);
 
   return (
     <>

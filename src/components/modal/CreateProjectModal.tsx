@@ -4,9 +4,9 @@ import CalendarIcon from '@assets/calendar.svg';
 import CancelButton from '@assets/cancel-x.svg';
 import ProjectProfile from '@assets/project-profile.png';
 import CalendarDropdown from '@components/dropdown/CalendarDropdown';
+import useProjectList from '@hooks/project/useProjectList';
 import useDropdown from '@hooks/useDropdown';
 import { setIsModalOpen } from '@hooks/useModal';
-import useProjectList from '@hooks/useProjectList';
 import { format } from 'date-fns';
 import styled from 'styled-components';
 
