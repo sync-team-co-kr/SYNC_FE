@@ -29,24 +29,29 @@ requiredJwtTokeninstance.interceptors.response.use(
     ) {
       const { data } = axiosError.response;
 
-      console.log(data.message.split(' ').slice(0, 2).join(' '));
-      if (data.message === 'JWT expired') {
-        try {
-          await axios.get(`${config.backendUrl}/api/user/auth`, {
-            withCredentials: true,
-          });
-          return axios(originalRequest);
-        } catch (error) {
-          if (isAxiosError<{ message: string }>(error) && error.response) {
-            if (data.message === 'JWT expired') {
-              window.alert('토큰 유효기간 만료. 로그인 창으로 돌아갑니다.');
-              window.location.href = '/login';
-            }
-          }
-          Promise.reject(error);
-        }
+      if (data.message.split(' ').slice(0, 2).join(' ') === 'JWT expired') {
+        window.alert('토큰 유효기간 만료. 로그인 창으로 돌아갑니다.');
+        window.location.href = '/login';
+        return Promise.reject(axiosError);
       }
     }
     return null;
   },
 );
+
+/*
+  try {
+  await axios.get(`${config.backendUrl}/user/api/info/v1`, {
+    withCredentials: true,
+  });
+  return axios(originalRequest);
+} catch (error) {
+  if (isAxiosError<{ message: string }>(error) && error.response) {
+    if (data.message === 'JWT expired') {
+      window.alert('토큰 유효기간 만료. 로그인 창으로 돌아갑니다.');
+      window.location.href = '/login';
+    }
+  }
+  Promise.reject(error);
+}
+*/

@@ -107,6 +107,5 @@ export const getLoggedUserAPI = async () => {
   const response = (await requiredJwtTokeninstance.get(
     `${config.backendUrl}/user/api/info/v1`,
   )) as AxiosResponse<AxiosRes2<GetUserInfoData>, any>;
-
   return { result: response.data.value, focus: '', errorMessage: '' };
 };
