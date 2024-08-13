@@ -4,6 +4,7 @@ import { Outlet } from 'react-router-dom';
 import { ModalWrapper } from '@components/common';
 import { modalStore } from '@libs/store';
 import styled from 'styled-components';
+import { vars } from 'token';
 
 import Header from './Header';
 import SideBar from './SideBar';
@@ -13,8 +14,9 @@ const Main = styled.main`
   height: 100vh;
   display: flex;
   flex-direction: column;
-  // pading = header 68 + padding 12px / sidebar 80px + padding 40px
-  padding: 80px 0 0 120px;
+  background-color: ${vars.sementic.color.primaryLightOrange};
+  padding: 68px 0 0 80px;
+  box-sizing: border-box;
 `;
 
 export default function Layout() {
