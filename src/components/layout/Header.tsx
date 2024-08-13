@@ -17,6 +17,7 @@ const HeaderWrap = styled.header`
   position: fixed;
   right: 0;
   top: 0;
+  background: ${vars.sementic.color.white};
 `;
 
 const Navigation = styled.nav`

@@ -2,13 +2,15 @@
 import { ProjectListItem } from '@components/project';
 // import { Project } from '@customTypes/project';
 // import { getProjectList } from '@services/project';
-import { useGetProjectList } from '@services/project/GetProjectList.hooks';
+import { useGetProjectList } from '@services/project/Project.hooks';
 import {
   ProjectListFrame,
   ProjectListHeader,
   ProjectListHeaderText,
 } from '@styles/project';
 import styled from 'styled-components';
+
+import { EmptyList } from './EmptyList';
 
 const TitleHeader = styled(ProjectListHeader)`
   width: 300px;
@@ -44,8 +46,12 @@ const ProjectListHeaderFrame = styled.div`
 
 const ProjectList = () => {
   // const [projectList, setProjectList] = useState<Project[] | null>(null);
-  
+
   const { projectListData } = useGetProjectList() ?? {};
+
+  if (!projectListData) {
+    return <EmptyList />;
+  }
 
   return (
     <>

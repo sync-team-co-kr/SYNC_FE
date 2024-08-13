@@ -155,6 +155,13 @@ const Submit = styled.div`
   }
 `;
 
+/** 추후 swagger에 정의된 타입으로 변경 */
+export interface ICreateProjectRequest {
+  title: string;
+  subTitle: string;
+  description: string;
+}
+
 export interface IProject {
   projectId: number;
   title: string;
@@ -166,9 +173,11 @@ export interface IProject {
 }
 
 function CreateProjectModal({ closeModal }: { closeModal?: setIsModalOpen }) {
-  const [title, setTitle] = useState('');
-  const [subTitle, setSubTitle] = useState('');
-  const [description, setDescription] = useState('');
+  const [newProject, setNewProject] = useState<ICreateProjectRequest>({
+    title: '',
+    subTitle: '',
+    description: '',
+  });
   const [startDate, setStartDate] = useState<Date>();
   const [endDate, setEndDate] = useState<Date>();
   const [isOpenCalendarDropdown, toggleCalendarDropdown, calendarDropdownRef] =
@@ -184,9 +193,7 @@ function CreateProjectModal({ closeModal }: { closeModal?: setIsModalOpen }) {
     e.preventDefault();
 
     createProjectMutation.mutate({
-      title,
-      subTitle,
-      description,
+      ...newProject,
       startDate,
       endDate,
     });
@@ -208,8 +215,10 @@ function CreateProjectModal({ closeModal }: { closeModal?: setIsModalOpen }) {
             <img src={ProjectProfile} alt="프로젝트 프로필" />
             <input
               type="text"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
+              value={newProject.title}
+              onChange={(e) =>
+                setNewProject({ ...newProject, title: e.target.value })
+              }
               placeholder="제목"
             />
           </InputWithCover>
@@ -219,8 +228,10 @@ function CreateProjectModal({ closeModal }: { closeModal?: setIsModalOpen }) {
           <label>부제목</label>
           <input
             type="text"
-            value={subTitle}
-            onChange={(e) => setSubTitle(e.target.value)}
+            value={newProject.subTitle}
+            onChange={(e) =>
+              setNewProject({ ...newProject, subTitle: e.target.value })
+            }
             placeholder="부제목"
           />
         </InputContainer>
@@ -229,8 +240,10 @@ function CreateProjectModal({ closeModal }: { closeModal?: setIsModalOpen }) {
           <label>프로젝트 설명</label>
           <input
             type="text"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
+            value={newProject.description}
+            onChange={(e) =>
+              setNewProject({ ...newProject, description: e.target.value })
+            }
             placeholder="프로젝트 설명"
           />
         </InputContainer>

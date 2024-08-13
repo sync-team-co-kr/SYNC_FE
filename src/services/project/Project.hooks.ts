@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 
-import getProjectList from './getProjectList';
+import { getProjectList } from './apis';
 
 // projectList hooks
 export const useGetProjectList = () => {
