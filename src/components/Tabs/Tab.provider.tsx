@@ -4,13 +4,18 @@ import { createContext, useContext } from 'react';
 import type { TabsProps } from './Tabs.types';
 
 const TabIndexContext = createContext<
-  | ({
-      setActiveIndex: Dispatch<SetStateAction<number>>;
-      activeIndex: number;
-      id: string;
-    } & TabsProps)
-  | undefined
->(undefined);
+  TabsProps & {
+    setActiveIndex: Dispatch<SetStateAction<number>>;
+    activeIndex: number;
+    id: string;
+  }
+>(
+  {} as TabsProps & {
+    setActiveIndex: Dispatch<SetStateAction<number>>;
+    activeIndex: number;
+    id: string;
+  },
+);
 
 export const TabProvider = ({
   children,

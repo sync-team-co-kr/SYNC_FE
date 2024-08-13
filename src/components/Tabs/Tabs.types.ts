@@ -20,11 +20,12 @@ type TabBaseProps = {
   disabled?: boolean;
 };
 
-export type TabsProps = TabBaseProps & PropsWithChildren;
+export type TabsProps = TabsBaseProps & PropsWithChildren;
+export type TabProps = TabBaseProps & PropsWithChildren;
 
 export type TabPanelsProps = PropsWithChildren;
 
 export type TabPanelProps = PropsWithChildren & {
-  _index?: number;
   render?: boolean;
+  _index?: number;
 };

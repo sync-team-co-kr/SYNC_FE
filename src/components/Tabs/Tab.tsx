@@ -4,10 +4,10 @@ import { useTabContext } from './Tab.provider';
 import { TabElement } from './Tabs.style';
 
 /* eslint no-underscore-dangle: 0 */
-import { TabsProps } from './Tabs.types';
+import { TabProps } from './Tabs.types';
 import { getTabArias } from './Tabs.utils';
 
-export const Tab = (props: TabsProps) => {
+export const Tab = (props: TabProps) => {
   const tabContext = useTabContext();
   const tabRef = useRef<HTMLDivElement>(null);
   const attributes = getTabArias({

@@ -31,8 +31,17 @@ export const TabElement = styled.div`
 export const TabListElement = styled.div`
   position: relative;
   display: inline-flex;
-  width: fit-content;
+  padding: 40px 12px 0 40px;
+
+  width: 100%;
+  border-bottom: 1px solid ${vars.sementic.color.black10};
   white-space: nowrap;
   gap: 12px;
   ${tabListStyle()};
+`;
+
+export const TabPanelElement = styled.div`
+  padding: 20px 40px;
+  width: 100%;
+  height: 100%;
 `;
