@@ -33,6 +33,7 @@ interface CreateProjectParams {
 
 interface useProjectListResponse {
   projectList: IProject[] | undefined;
+  isLoading: boolean;
   createProjectMutation: UseMutationResult<
     CreateProjectParams,
     Error,
@@ -65,7 +66,7 @@ const useProjectList: useProjectListType = () => {
     }
   };
 
-  const { data: projectList } = useQuery<IProject[]>({
+  const { data: projectList, isLoading } = useQuery<IProject[]>({
     queryKey: ['project'],
     queryFn: getAllProject,
   });
@@ -84,7 +85,7 @@ const useProjectList: useProjectListType = () => {
     },
   });
 
-  return { projectList, createProjectMutation };
+  return { projectList, isLoading, createProjectMutation };
 };
 
 export default useProjectList;

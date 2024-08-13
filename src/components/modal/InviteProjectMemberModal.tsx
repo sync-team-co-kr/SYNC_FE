@@ -77,6 +77,11 @@ const Submit = styled.div`
 
 const InviteProjectMemberModal = () => {
   const [invite, setInvite] = useState('');
+
+  const handleInviteProjectMember = () => {
+    console.log('hello');
+  };
+
   return (
     <>
       <ModalHeader>
@@ -112,7 +117,7 @@ const InviteProjectMemberModal = () => {
             hasIcon={false}
             isDisabled={false}
             iconPosition="left"
-            onClick={() => console.log('')}
+            onClick={handleInviteProjectMember}
             text="완료"
           />
         </Submit>

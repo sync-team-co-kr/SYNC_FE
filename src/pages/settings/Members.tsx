@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react';
+
 import fakeAvatar from '@assets/rectangle-50.png';
 import search from '@assets/search.svg';
 import RouteProjectDropdown from '@components/dropdown/RouteProjectDropdown';
@@ -5,6 +7,9 @@ import InviteProjectMemberModal from '@components/modal/InviteProjectMemberModal
 import { SettingsMemberItem } from '@components/settings';
 import useDropdown from '@hooks/useDropdown';
 import useModal from '@hooks/useModal';
+import useProjectList from '@hooks/useProjectList';
+import { requiredJwtTokeninstance } from '@libs/axios/axios';
+import { AxiosResponse } from 'axios';
 import styled from 'styled-components';
 
 const Header = styled.article`
@@ -270,12 +275,48 @@ const fakeMemberList = [
   },
 ];
 
-const fakeProjectList = [
-  '프로젝트 1',
-  '프로젝트 2',
-  '프로젝트 3',
-  '프로젝트 4',
-];
+interface AxiosRes<ResponseType> {
+  message: string;
+  result: boolean;
+  value: ResponseType;
+}
+
+export interface IProject {
+  projectId: number;
+  title: string;
+  subTitle: string;
+  description: string;
+  startDate: Date;
+  endDate: Date;
+  memberIds: number[];
+}
+
+interface getProjectMembersResponse {
+  projectId: number;
+  userIds: number[];
+}
+
+interface getMemberRoleResponse {
+  userId: number;
+  projectId: number;
+  isManager: number;
+}
+
+interface IUser {
+  username: string;
+  nickname?: string;
+  position?: string;
+  isManager: number;
+}
+
+interface IMember extends IUser {
+  userId: number;
+  username: string;
+  nickname?: string;
+  position?: string;
+  isManager: number;
+  projectId: number;
+}
 
 const MembersSettings = () => {
   const [openModal] = useModal();
@@ -284,6 +325,70 @@ const MembersSettings = () => {
     toggleProjectListDropdown,
     projectDropdownRef,
   ] = useDropdown();
+
+  const { projectList, isLoading } = useProjectList();
+  const [selectedProject, setSelectedProject] = useState<IProject | null>(
+    projectList ? projectList[0] : null,
+  );
+  const [members, setMembers] = useState<IMember[] | null>(null);
+
+  useEffect(() => {
+    const getProjectMembers = async () => {
+      if (projectList) {
+        try {
+          // 프로젝트에 속한 멤버의 아이디 불러오기
+          const project = selectedProject || projectList[0];
+          const response: AxiosResponse<AxiosRes<getProjectMembersResponse[]>> =
+            await requiredJwtTokeninstance.get(`/user/api/member/v2`, {
+              params: {
+                projectIds: [project.projectId].toString(),
+              },
+            });
+
+          // 멤버의 권한 불러오기
+          const { userIds } = response.data.value[0];
+          const getMemberRoleRes: AxiosResponse<
+            AxiosRes<getMemberRoleResponse[]>
+          > = await requiredJwtTokeninstance.get('/user/api/member/v1', {
+            params: {
+              userIds: userIds.join(','),
+            },
+          });
+
+          // 멤버의 회원 정보 불러오기
+          const primaryKeyMemberList = getMemberRoleRes.data.value.filter(
+            (value) => {
+              const isEqualCurrentProject =
+                project.projectId === value.projectId ? 'yes' : 'no';
+              if (isEqualCurrentProject === 'yes') return true;
+              return false;
+            },
+          );
+          const getMembersData: IMember[] = await Promise.all(
+            primaryKeyMemberList.map(async (value) => {
+              const getMembersRes: AxiosResponse<AxiosRes<IUser[]>> =
+                await requiredJwtTokeninstance.get('/user/api/info/v2', {
+                  params: {
+                    userIds: value.userId.toString(),
+                  },
+                });
+
+              /* eslint-disable @typescript-eslint/no-unused-vars */
+              const { isManager, ...memberInfo } = getMembersRes.data.value[0];
+              return { ...value, ...memberInfo };
+            }),
+          );
+          setMembers(getMembersData);
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    };
+    getProjectMembers();
+  }, [isLoading]);
+
+  console.log(members);
+
   return (
     <>
       <Header>
@@ -294,11 +399,13 @@ const MembersSettings = () => {
         <ProjectListDropdown ref={projectDropdownRef}>
           <SelectedProject onClick={toggleProjectListDropdown}>
             <img src={fakeAvatar} alt="프로젝트 이미지" />
-            <span>프로젝트 1</span>
+            <span>{selectedProject?.title}</span>
           </SelectedProject>
           <RouteProjectDropdown
             isOpen={isOpenProjectListDropdown}
-            projectList={fakeProjectList}
+            toggleModal={toggleProjectListDropdown}
+            projectList={projectList}
+            setSelectedProject={setSelectedProject}
           />
         </ProjectListDropdown>
 
@@ -317,6 +424,7 @@ const MembersSettings = () => {
             <input
               type="text"
               value="https://dashlite.net/demo1/user-profile-regular.html"
+              readOnly
             />
             <button>링크 복사</button>
           </InviteLinkForm>

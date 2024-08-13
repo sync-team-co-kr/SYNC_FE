@@ -1,3 +1,5 @@
+import React from 'react';
+
 import fakeAvatar from '@assets/rectangle-50.png';
 import { styled } from 'styled-components';
 
@@ -18,7 +20,7 @@ const Wrapper = styled.section<{ $isopen: boolean }>`
 const SProjectList = styled.ul`
   display: flex;
   flex-direction: column;
-  align-items: center;
+  justify-content: center;
   gap: 8px;
   align-self: stretch;
 `;
@@ -31,22 +33,44 @@ const SProjectItem = styled.li`
   gap: 6px;
 `;
 
+export interface IProject {
+  projectId: number;
+  title: string;
+  subTitle: string;
+  description: string;
+  startDate: Date;
+  endDate: Date;
+  memberIds: number[];
+}
+
 interface RouteProjectDropdownProps {
   isOpen: boolean;
-  projectList: string[];
+  toggleModal: () => void;
+  projectList?: IProject[];
+  setSelectedProject: React.Dispatch<React.SetStateAction<IProject | null>>;
 }
 
 const RouteProjectDropdown = ({
   isOpen,
+  toggleModal,
   projectList,
+  setSelectedProject,
 }: RouteProjectDropdownProps) => {
+  const handleClickProjectItem = (project: IProject) => {
+    setSelectedProject(project);
+    toggleModal();
+  };
+
   return (
     <Wrapper $isopen={isOpen}>
       <SProjectList>
-        {projectList.map((project) => (
-          <SProjectItem>
+        {projectList?.map((project) => (
+          <SProjectItem
+            key={project.projectId}
+            onClick={() => handleClickProjectItem(project)}
+          >
             <img src={fakeAvatar} alt="프로젝트 이미지" />
-            <span>{project}</span>
+            <span>{project.title}</span>
           </SProjectItem>
         ))}
       </SProjectList>
