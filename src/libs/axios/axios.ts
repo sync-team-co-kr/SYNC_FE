@@ -28,6 +28,7 @@ requiredJwtTokeninstance.interceptors.response.use(
       originalRequest
     ) {
       const { data } = axiosError.response;
+
       console.log(data.message.split(' ').slice(0, 2).join(' '));
       if (data.message === 'JWT expired') {
         try {
