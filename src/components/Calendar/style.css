@@ -25,3 +25,11 @@
 .fc-col-header-cell {
   padding: 12px 0 !important;
 }
+.fc .fc-button-group {
+  gap: 10px;
+}
+.fc .fc-button-primary {
+  background: #fff;
+  border: 1px solid #f4f4f4;
+  color: #636363;
+}
