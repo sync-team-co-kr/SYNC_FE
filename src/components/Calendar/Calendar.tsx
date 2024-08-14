@@ -5,18 +5,30 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 
 import { Common } from './Calendar.style';
 import { CalenderProps } from './Calendar.types';
-import { renderInitialView } from './Calendar.utils';
-import './style.css';
+import {
+  renderHeaderToolbar,
+  renderInitialView,
+  returnDayCellContent,
+  returnDayHeaderContent,
+} from './Calendar.utils';
 
 export const Calendar = ({ type }: CalenderProps) => {
   return (
     <Common>
       <input type="text" />
       <FullCalendar
+        allDayText="전체"
         locale="kr"
         plugins={[dayGridPlugin, timeGridPlugin]}
         initialView={renderInitialView(type)}
         customRenderingReplaces
+        weekNumberFormat={{ week: 'narrow' }}
+        dayHeaderContent={(cellInfo) => {
+          return returnDayHeaderContent(cellInfo, type);
+        }}
+        dayCellContent={(cellInfo) => {
+          return returnDayCellContent(cellInfo, type);
+        }}
         customButtons={{
           addProject: {
             text: '업무 추가',
@@ -30,12 +42,14 @@ export const Calendar = ({ type }: CalenderProps) => {
               alert('필터');
             },
           },
+          addSchedule: {
+            text: '일정 등록',
+            click: () => {
+              alert('일정 추가');
+            },
+          },
         }}
-        headerToolbar={{
-          start: '',
-          center: '',
-          right: 'prev,next addProject',
-        }}
+        headerToolbar={renderHeaderToolbar(type)}
       />
     </Common>
   );
