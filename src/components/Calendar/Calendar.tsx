@@ -1,31 +1,21 @@
 // import { Button } from '@components/common/Button';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import FullCalendar from '@fullcalendar/react';
+import timeGridPlugin from '@fullcalendar/timegrid';
 
+import { Common } from './Calendar.style';
 import { CalenderProps } from './Calendar.types';
+import { renderInitialView } from './Calendar.utils';
 import './style.css';
 
 export const Calendar = ({ type }: CalenderProps) => {
-  const renderInitialView = () => {
-    switch (type) {
-      case 'day':
-        return 'dayGridDay';
-      case 'week':
-        return 'dayGridWeek';
-      case 'month':
-        return 'dayGridMonth';
-      default:
-        return 'dayGridMonth';
-    }
-  };
-
   return (
-    <div>
+    <Common>
       <input type="text" />
       <FullCalendar
         locale="kr"
-        plugins={[dayGridPlugin]}
-        initialView={renderInitialView()}
+        plugins={[dayGridPlugin, timeGridPlugin]}
+        initialView={renderInitialView(type)}
         customRenderingReplaces
         customButtons={{
           addProject: {
@@ -43,9 +33,10 @@ export const Calendar = ({ type }: CalenderProps) => {
         }}
         headerToolbar={{
           start: '',
+          center: '',
           right: 'prev,next addProject',
         }}
       />
-    </div>
+    </Common>
   );
 };

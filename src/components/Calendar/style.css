@@ -1,5 +1,4 @@
 .fc-view-harness {
-  max-height: 739px;
   height: 100%;
   background: #fff;
 }
@@ -32,4 +31,7 @@
   background: #fff;
   border: 1px solid #f4f4f4;
   color: #636363;
+}
+.fc-daygrid-day-frame.fc-scrollgrid-sync-inner {
+  padding: 5px 14px;
 }

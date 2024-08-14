@@ -21,8 +21,12 @@ const GlobalStyle = createGlobalStyle`
   box-sizing: border-box;
   }
   body {
-    z-index: -1;
+    z-index: -1; 
   }
+  #root {
+    mi-height: 100vh;
+  }
+
   a{
     color: black;
     text-decoration: none;
