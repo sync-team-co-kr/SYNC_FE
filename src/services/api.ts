@@ -18,18 +18,10 @@ interface APIResponse<Result> {
   errorMessage?: string;
 }
 
-/*
 interface AxiosRes<ResponseType> {
   message: string;
   result: boolean;
   data: ResponseType;
-}
-*/
-
-interface AxiosRes2<ResponseType> {
-  message: string;
-  result: boolean;
-  value: ResponseType;
 }
 
 interface GetUserInfoData {
@@ -106,6 +98,6 @@ export const loginAPI = async ({
 export const getLoggedUserAPI = async () => {
   const response = (await requiredJwtTokeninstance.get(
     `${config.backendUrl}/user/api/info/v1`,
-  )) as AxiosResponse<AxiosRes2<GetUserInfoData>, any>;
-  return { result: response.data.value, focus: '', errorMessage: '' };
+  )) as AxiosResponse<AxiosRes<GetUserInfoData>, any>;
+  return { result: response.data.data, focus: '', errorMessage: '' };
 };

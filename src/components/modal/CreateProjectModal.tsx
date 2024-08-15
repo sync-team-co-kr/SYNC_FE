@@ -6,7 +6,7 @@ import ProjectProfile from '@assets/project-profile.png';
 import CalendarDropdown from '@components/dropdown/CalendarDropdown';
 import useDropdown from '@hooks/useDropdown';
 import { setIsModalOpen } from '@hooks/useModal';
-import useProjectList from '@hooks/useProjectList';
+import { useCreateProject } from '@services/project/Project.hooks';
 import { format } from 'date-fns';
 import styled from 'styled-components';
 
@@ -187,16 +187,16 @@ function CreateProjectModal({ closeModal }: { closeModal?: setIsModalOpen }) {
     toggleCalendarDropdown2,
     calendarDropdownRef2,
   ] = useDropdown();
-  const { createProjectMutation } = useProjectList();
+  const { createProjectMutate } = useCreateProject({
+    ...newProject,
+    startDate: startDate?.toISOString(),
+    endDate: endDate?.toISOString(),
+  });
 
   const handleCreateProject = async (e: React.MouseEvent<HTMLInputElement>) => {
     e.preventDefault();
 
-    createProjectMutation.mutate({
-      ...newProject,
-      startDate,
-      endDate,
-    });
+    createProjectMutate();
   };
 
   return (

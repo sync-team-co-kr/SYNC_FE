@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 
-import useProject from '@hooks/useProject';
+import {
+  useDeleteProject,
+  useGetProject,
+} from '@services/project/Project.hooks';
 import styled from 'styled-components';
 
 const ModalHeader = styled.article`
@@ -124,12 +127,13 @@ interface DeleteProjectModalProps {
 
 const DeleteProjectModal = ({ projectId }: DeleteProjectModalProps) => {
   const [retypeProjectTitle, setRetypeProjectTitle] = useState('');
-  const { project, deleteProjectMutation } = useProject(projectId);
+  const { projectData } = useGetProject(projectId);
+  const { deleteProjectMutate } = useDeleteProject(projectId);
 
   const handleDeleteProject = async (e: React.MouseEvent<HTMLInputElement>) => {
     e.preventDefault();
-    if (retypeProjectTitle === project?.title) {
-      deleteProjectMutation.mutate();
+    if (retypeProjectTitle === projectData?.title) {
+      deleteProjectMutate();
     }
   };
 
@@ -149,7 +153,7 @@ const DeleteProjectModal = ({ projectId }: DeleteProjectModalProps) => {
           <p>프로젝트 명</p>
           <input
             type="text"
-            value={project?.title}
+            value={projectData?.title}
             placeholder="프로젝트 1"
             readOnly
             disabled
