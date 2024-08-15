@@ -187,16 +187,16 @@ function CreateProjectModal({ closeModal }: { closeModal?: setIsModalOpen }) {
     toggleCalendarDropdown2,
     calendarDropdownRef2,
   ] = useDropdown();
-  const { createProjectMutate } = useCreateProject({
-    ...newProject,
-    startDate: startDate?.toISOString(),
-    endDate: endDate?.toISOString(),
-  });
+  const { createProjectMutate } = useCreateProject();
 
   const handleCreateProject = async (e: React.MouseEvent<HTMLInputElement>) => {
     e.preventDefault();
 
-    createProjectMutate();
+    createProjectMutate({
+      ...newProject,
+      startDate: startDate?.toISOString(),
+      endDate: endDate?.toISOString(),
+    });
   };
 
   return (

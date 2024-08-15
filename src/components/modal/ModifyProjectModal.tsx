@@ -184,19 +184,19 @@ function ModifyProjectModal({ projectId }: ModifyProjectModalProps) {
   ] = useDropdown();
   const [closeModal] = useModal();
 
-  const { editProjectMutate } = useEditProject({
-    projectId,
-    title,
-    subTitle,
-    description,
-    startDate: startDate?.toISOString(),
-    endDate: endDate?.toISOString(),
-  });
+  const { editProjectMutate } = useEditProject();
 
   const handleModifyProject = (e: React.MouseEvent<HTMLInputElement>) => {
     e.preventDefault();
 
-    editProjectMutate();
+    editProjectMutate({
+      projectId,
+      title,
+      subTitle,
+      description,
+      startDate: startDate?.toISOString(),
+      endDate: endDate?.toISOString(),
+    });
   };
 
   return (

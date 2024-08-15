@@ -31,11 +31,12 @@ export const useGetProject = (projectId: number) => {
 };
 
 // create project hooks
-export const useCreateProject = (newProject: CreateProjectRequestDto) => {
+export const useCreateProject = () => {
   const queryClient = useQueryClient();
 
   const createProjectMutation = useMutation({
-    mutationFn: () => createProject(newProject),
+    mutationFn: (newProject: CreateProjectRequestDto) =>
+      createProject(newProject),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['projects'] });
     },
@@ -44,11 +45,11 @@ export const useCreateProject = (newProject: CreateProjectRequestDto) => {
 };
 
 // edit project hooks
-export const useEditProject = (project: EditProjectParams) => {
+export const useEditProject = () => {
   const queryClient = useQueryClient();
 
   const editProjectMutation = useMutation({
-    mutationFn: () => editProject(project),
+    mutationFn: (project: EditProjectParams) => editProject(project),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['projects'] });
     },
@@ -58,11 +59,11 @@ export const useEditProject = (project: EditProjectParams) => {
 };
 
 // delete project hooks
-export const useDeleteProject = (projectId: number) => {
+export const useDeleteProject = () => {
   const queryClient = useQueryClient();
 
   const deleteProjectMutation = useMutation({
-    mutationFn: () => deleteProject(projectId),
+    mutationFn: (projectId: number) => deleteProject(projectId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['projects'] });
     },

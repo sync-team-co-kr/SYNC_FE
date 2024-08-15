@@ -128,12 +128,12 @@ interface DeleteProjectModalProps {
 const DeleteProjectModal = ({ projectId }: DeleteProjectModalProps) => {
   const [retypeProjectTitle, setRetypeProjectTitle] = useState('');
   const { projectData } = useGetProject(projectId);
-  const { deleteProjectMutate } = useDeleteProject(projectId);
+  const { deleteProjectMutate } = useDeleteProject();
 
   const handleDeleteProject = async (e: React.MouseEvent<HTMLInputElement>) => {
     e.preventDefault();
     if (retypeProjectTitle === projectData?.title) {
-      deleteProjectMutate();
+      deleteProjectMutate(projectId);
     }
   };
 
