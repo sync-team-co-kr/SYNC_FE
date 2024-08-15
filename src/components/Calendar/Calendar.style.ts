@@ -3,10 +3,11 @@ import { vars } from 'token';
 
 export const Common = styled.div`
   display: flex;
+  position: relative;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   width: 100%;
-  height: 100vh;
+  gap: 20px;
   flex-direction: column;
 
   .fc {
@@ -64,5 +65,10 @@ export const Common = styled.div`
   }
   .fc-daygrid-day-frame.fc-scrollgrid-sync-inner {
     padding: 5px 14px;
+  }
+  .fc-header-toolbar {
+    position: absolute;
+    right: 0;
+    top: 0;
   }
 `;

@@ -1,4 +1,6 @@
-// import { Button } from '@components/common/Button';
+import { useState } from 'react';
+
+import Textfield from '@components/common/Textfield';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import FullCalendar from '@fullcalendar/react';
 import timeGridPlugin from '@fullcalendar/timegrid';
@@ -13,9 +15,19 @@ import {
 } from './Calendar.utils';
 
 export const Calendar = ({ type }: CalenderProps) => {
+  const [valid] = useState(false);
+
   return (
     <Common>
-      <input type="text" />
+      <Textfield
+        isValid={valid}
+        label="검색"
+        variant="search"
+        helperText="검색어를 입력하세요"
+        placeholder="검색"
+        type="search"
+        width="198px"
+      />
       <FullCalendar
         allDayText="전체"
         locale="kr"
