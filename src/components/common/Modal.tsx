@@ -1,11 +1,14 @@
 import React from 'react';
+
 import styled from 'styled-components';
+
 import ModalPortal from './ModalPortal';
 
 const ModalWrapper = styled.div<{ $isActive: boolean }>`
   width: 100%;
   height: 100vh;
   background: rgba(0, 0, 0, 0.6);
+  z-index: 10;
   display: ${(props) => (props.$isActive ? 'flex' : 'none')};
   justify-content: center;
   align-items: center;

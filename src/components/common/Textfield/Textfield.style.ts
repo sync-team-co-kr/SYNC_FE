@@ -14,9 +14,13 @@ export const Element = styled.div<{ width: string }>`
 `;
 
 export const Label = styled.label`
+  gap: 5px;
   font-size: ${vars.sementic.typography['small-text-b'].fontSize};
   font-weight: ${vars.sementic.typography['small-text-b'].fontWeight};
   line-height: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   color: ${vars.sementic.color.black35};
 `;
 
@@ -87,7 +91,8 @@ const searchInputContainerStyle = css({
 
 export const TextfieldContainer = styled.div<{
   variant: Variant;
-  isValid: boolean;
+  isValid?: boolean;
+  disabled?: boolean;
 }>`
   ${(props) => {
     switch (props.variant) {
@@ -101,27 +106,48 @@ export const TextfieldContainer = styled.div<{
         return outlinedInputContainerStyle;
     }
   }}
-  padding: 8px 12px;
+  padding: 12px 8px;
   width: 100%;
   display: flex;
   align-items: center;
   border-radius: 4px;
   transition: all 0.3s ease-in;
 
+  ${(props) =>
+    props.isValid &&
+    `border-color: ${vars.sementic.color.negativeRed};
+    `}
+
   &:focus-within {
     border-color: ${vars.sementic.color.primaryOrange};
+    border-width: 2px;
   }
 
   &:focus {
     border-color: ${vars.sementic.color.primaryOrange};
+    border-width: 2px;
   }
 
   &:hover {
     color: ${vars.sementic.color.black};
   }
+
+  ${(props) =>
+    props.disabled &&
+    `background-color: ${vars.sementic.color.black10};
+    border-color: ${vars.sementic.color.black20};
+    color: ${vars.sementic.color.black20};
+    cursor: not-allowed;
+
+    &:hover {
+      background-color: ${vars.sementic.color.black10};
+      border-color: ${vars.sementic.color.black20};
+      color: ${vars.sementic.color.black20};
+    }
+    `}
 `;
 
-export const TextfieldInput = styled.input<{ isValid: boolean }>`
+export const TextfieldInput = styled.input<{ isValid?: boolean }>`
   width: 100%;
   padding: 0 12px;
 
@@ -138,6 +164,21 @@ export const TextfieldInput = styled.input<{ isValid: boolean }>`
 
   outline: none;
   box-sizing: border-box;
+
+  &:disabled {
+    color: ${vars.sementic.color.black20};
+  }
 `;
 
-export const ElementHelperText = styled.span``;
+export const ElementHelperText = styled.span<{ isValid: boolean }>`
+  color: ${vars.sementic.color.positiveBlue};
+
+  ${(props) =>
+    props.isValid
+      ? `color: ${vars.sementic.color.negativeRed};`
+      : `color: ${vars.sementic.color.black};`}
+
+  font-size: 12px;
+  font-weight: 400;
+  line-height: normal;
+`;

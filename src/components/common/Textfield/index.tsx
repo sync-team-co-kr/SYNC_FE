@@ -2,6 +2,7 @@ import { HTMLInputTypeAttribute, Ref, forwardRef } from 'react';
 
 import { ReactComponent as ProfileProject } from '@assets/Profile_Project.svg';
 import { ReactComponent as Search } from '@assets/searchSM.svg';
+import styled from 'styled-components';
 
 import {
   Element,
@@ -13,6 +14,13 @@ import {
 } from './Textfield.style';
 import { TextfieldProps } from './Textfield.types';
 
+const InitialIcon = styled.span`
+  color: #f24b4b;
+  font-size: 16px;
+  text-transform: uppercase;
+  font-family: Roboto;
+`;
+
 export const Textfield = (
   {
     placeholder,
@@ -23,6 +31,8 @@ export const Textfield = (
     helperText,
     variant = 'outlined',
     label,
+    hasIcon,
+    initialValue,
     width = '100%',
   }: TextfieldProps,
   ref: Ref<HTMLDivElement>,
@@ -32,10 +42,19 @@ export const Textfield = (
 
   return (
     <Element ref={ref} width={width}>
-      {!isSearch && <Label>{label}</Label>}
+      {label && (
+        <Label>
+          {initialValue && <InitialIcon>*</InitialIcon>}
+          {label}
+        </Label>
+      )}
       <Wrapper>
-        {!isSearch && <ProfileProject width={32} height={32} />}
-        <TextfieldContainer variant={variant} isValid={isValid}>
+        {hasIcon && <ProfileProject width={32} height={32} />}
+        <TextfieldContainer
+          disabled={disabled}
+          variant={variant}
+          isValid={isValid}
+        >
           <TextfieldInput
             isValid={isValid}
             placeholder={placeholder}
@@ -47,7 +66,9 @@ export const Textfield = (
           {isSearch && <Search width={18} height={18} />}
         </TextfieldContainer>
       </Wrapper>
-      {isValid && <ElementHelperText>{helperText}</ElementHelperText>}
+      {isValid && (
+        <ElementHelperText isValid={isValid}>{helperText}</ElementHelperText>
+      )}
     </Element>
   );
 };
