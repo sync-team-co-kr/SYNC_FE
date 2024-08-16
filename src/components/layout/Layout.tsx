@@ -11,7 +11,6 @@ import SideBar from './SideBar';
 
 const Main = styled.main`
   width: 100%;
-  height: 100vh;
   display: flex;
   flex-direction: column;
   background-color: ${vars.sementic.color.primaryLightOrange};
