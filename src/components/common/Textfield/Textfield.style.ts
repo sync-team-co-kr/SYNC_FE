@@ -37,6 +37,7 @@ const outlinedInputContainerStyle = css({
   boxSizing: 'border-box',
   width: '100%',
   display: 'flex',
+
   alignItems: 'center',
   backgroundColor: vars.sementic.color.white,
 
@@ -110,7 +111,7 @@ export const TextfieldContainer = styled.div<{
   width: 100%;
   display: flex;
   align-items: center;
-  border-radius: 4px;
+
   transition: all 0.3s ease-in;
 
   ${(props) =>
