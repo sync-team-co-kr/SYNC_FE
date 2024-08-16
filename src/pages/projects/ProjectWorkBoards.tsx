@@ -22,7 +22,6 @@ const ProjectBoardHeader = styled.section`
 const ProjectWorkList = styled.ul`
   display: flex;
   gap: 20px;
-  border: 1px solid green;
 `;
 
 // const ProjectAddButton = styled.button`

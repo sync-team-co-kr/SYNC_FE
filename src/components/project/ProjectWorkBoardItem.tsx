@@ -22,7 +22,6 @@ const ProjectWorkList = styled.ul`
   display: flex;
   gap: 20px;
   align-items: flex-start;
-  border: 1px solid red;
 `;
 
 // const ProjectAddButton = styled.button`

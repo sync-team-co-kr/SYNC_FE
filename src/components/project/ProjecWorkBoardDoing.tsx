@@ -1,9 +1,10 @@
 import styled from 'styled-components';
 import { Typography } from '@components/common/Typography';
-import workbox from '@assets/projects/workbox.svg'
+import {ReactComponent as WorkboxIcon} from '@assets/projects/workbox.svg'
 import create from '@assets/projects/create.svg'
 import { useState } from 'react';
 import { Button } from '@components/common/Button';
+import { vars } from 'token';
 import ProjectCreateWorkBoard from './ProjectCreateWorkBoard';
 
 
@@ -11,8 +12,9 @@ const ProjectWorkBoard = styled.li`
   width: 414px;
   min-height: 100px;
   border-radius: 12px;
-  border: 1px solid var(--Black-White-Black-10, #f4f4f4);
-  background: var(--Black-White-White, #E7F1FF);
+  border: 1px solid ${vars.sementic.color.black10}; 
+  background: ${vars.sementic.color.lightBlue};
+  display: flex;
   display: flex;
   flex-direction: column;
 `;
@@ -27,7 +29,7 @@ const ProjectWorkBoardHeader = styled.section`
 const ProjectWorkBoardTitle = styled.div`
   display: flex;
   align-items: center;
-  padding: 8px;
+  margin-left: 8px;
   gap: 8px;
 `;
 
@@ -35,7 +37,6 @@ const TitleDetail = styled.div`
   display: flex;
   justify-content: baseline;
   align-items: center;
-  flex-grow: 1;
   gap:4px;
 `;
 
@@ -58,7 +59,6 @@ const ProjectCreatWork = styled.button`
   border: none;
   margin: 0 8px 8px 8px;
   padding:0;
-
   cursor: pointer; 
 `;
 
@@ -82,7 +82,7 @@ const ProjectWorkBoardToDo = () => {
         <ProjectWorkBoardTitle>
           <Typography variant="heading-5" color="positiveBlue">하는 중</Typography>
           <TitleDetail>
-            <img src={workbox} alt="업무박스" />
+          <WorkboxIcon stroke={vars.sementic.color.positiveBlue}/>
             <Typography variant="heading-4" color="positiveBlue">0</Typography>
           </TitleDetail>
           </ProjectWorkBoardTitle>
