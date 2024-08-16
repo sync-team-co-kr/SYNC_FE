@@ -2,7 +2,7 @@
 import { Button } from '@components/common/Button';
 import CreateProjectModal from '@components/modal/CreateProjectModal';
 import { useModal } from '@hooks';
-import useProjectList from '@hooks/useProjectList';
+import { useGetProjectList } from '@services/project/Project.hooks';
 import styled from 'styled-components';
 
 import ProjectBoardItem from './ProjectBoardItem';
@@ -64,7 +64,7 @@ const ProjectBoards = () => {
   //   useModal();
 
   const [openModal] = useModal();
-  const { projectList } = useProjectList();
+  const { projectListData } = useGetProjectList();
 
   return (
     <Section>
@@ -88,7 +88,7 @@ const ProjectBoards = () => {
       </ProjectBoardHeader>
 
       <ProjectList>
-        {projectList?.map((project) => (
+        {projectListData?.map((project) => (
           <ProjectBoardItem key={project.projectId} project={project} />
         ))}
       </ProjectList>

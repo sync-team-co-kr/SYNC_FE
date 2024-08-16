@@ -1,3 +1,3 @@
-import AxiosRes from './AxiosRes';
+import { AxiosResByData, AxiosResByValue } from './AxiosRes';
 
-export type { AxiosRes };
+export type { AxiosResByValue, AxiosResByData };

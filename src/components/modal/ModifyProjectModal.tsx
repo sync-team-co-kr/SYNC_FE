@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import CalendarIcon from '@assets/calendar.svg';
 import CancelButton from '@assets/cancel-x.svg';
@@ -6,7 +6,7 @@ import ProjectProfile from '@assets/project-profile.png';
 import CalendarDropdown from '@components/dropdown/CalendarDropdown';
 import useDropdown from '@hooks/useDropdown';
 import useModal from '@hooks/useModal';
-import useProject from '@hooks/useProject';
+import { useEditProject } from '@services/project/Project.hooks';
 import { format } from 'date-fns';
 import styled from 'styled-components';
 
@@ -170,8 +170,6 @@ interface ModifyProjectModalProps {
 }
 
 function ModifyProjectModal({ projectId }: ModifyProjectModalProps) {
-  const { project, isLoading, editProjectMutation } = useProject(projectId);
-
   const [title, setTitle] = useState('');
   const [subTitle, setSubTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -184,25 +182,20 @@ function ModifyProjectModal({ projectId }: ModifyProjectModalProps) {
     toggleCalendarDropdown2,
     calendarDropdownRef2,
   ] = useDropdown();
-
   const [closeModal] = useModal();
 
-  useEffect(() => {
-    setTitle(project?.title || '');
-    setSubTitle(project?.subTitle || '');
-    setDescription(project?.description || '');
-    setStartDate(project?.startDate);
-    setEndDate(project?.endDate);
-  }, [isLoading]);
+  const { editProjectMutate } = useEditProject();
 
   const handleModifyProject = (e: React.MouseEvent<HTMLInputElement>) => {
     e.preventDefault();
-    editProjectMutation.mutate({
+
+    editProjectMutate({
+      projectId,
       title,
       subTitle,
       description,
-      startDate,
-      endDate,
+      startDate: startDate?.toISOString(),
+      endDate: endDate?.toISOString(),
     });
   };
 
