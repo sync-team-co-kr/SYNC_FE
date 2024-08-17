@@ -53,7 +53,6 @@ const useProject: useProjectType = (projectId) => {
       await requiredJwtTokeninstance.get(
         `http://129.213.161.199:31585/project/api/v1?projectIds=${projectId}`,
       );
-    console.log(getProjectResponse);
     return getProjectResponse.data.value[0] || undefined;
   };
 

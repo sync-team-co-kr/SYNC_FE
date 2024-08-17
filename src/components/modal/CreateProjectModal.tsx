@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 
 import CalendarIcon from '@assets/calendar.svg';
 import CancelButton from '@assets/cancel-x.svg';
-import ProjectProfile from '@assets/project-profile.png';
+// import ProjectProfile from '@assets/project-profile.png';
+import Textfield from '@components/common/Textfield';
 import CalendarDropdown from '@components/dropdown/CalendarDropdown';
 import useDropdown from '@hooks/useDropdown';
 import { setIsModalOpen } from '@hooks/useModal';
-import useProjectList from '@hooks/useProjectList';
+import { useCreateProject } from '@services/project/Project.hooks';
 import { format } from 'date-fns';
 import styled from 'styled-components';
 
@@ -68,15 +69,15 @@ const InputContainer = styled.div`
   }
 `;
 
-const InputWithCover = styled.div`
-  height: 44px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  input {
-    flex-grow: 1;
-  }
-`;
+// const InputWithCover = styled.div`
+//   height: 44px;
+//   display: flex;
+//   align-items: center;
+//   gap: 8px;
+//   input {
+//     flex-grow: 1;
+//   }
+// `;
 
 const LabelWithToggle = styled.div`
   display: flex;
@@ -187,15 +188,15 @@ function CreateProjectModal({ closeModal }: { closeModal?: setIsModalOpen }) {
     toggleCalendarDropdown2,
     calendarDropdownRef2,
   ] = useDropdown();
-  const { createProjectMutation } = useProjectList();
+  const { createProjectMutate } = useCreateProject();
 
   const handleCreateProject = async (e: React.MouseEvent<HTMLInputElement>) => {
     e.preventDefault();
 
-    createProjectMutation.mutate({
+    createProjectMutate({
       ...newProject,
-      startDate,
-      endDate,
+      startDate: startDate?.toISOString(),
+      endDate: endDate?.toISOString(),
     });
   };
 
@@ -209,7 +210,19 @@ function CreateProjectModal({ closeModal }: { closeModal?: setIsModalOpen }) {
       </CreateProjectModalHeader>
 
       <Form>
-        <InputContainer>
+        <Textfield
+          initialValue
+          label="커버 & 프로젝트 명"
+          placeholder="제목"
+          helperText="제목을 입력 해주세요"
+          hasIcon={true}
+          value={newProject.title}
+          onChange={(e) =>
+            setNewProject({ ...newProject, title: e.target.value })
+          }
+          variant="outlined"
+        />
+        {/* <InputContainer>
           <label>커버 & 프로젝트 명</label>
           <InputWithCover>
             <img src={ProjectProfile} alt="프로젝트 프로필" />
@@ -222,9 +235,19 @@ function CreateProjectModal({ closeModal }: { closeModal?: setIsModalOpen }) {
               placeholder="제목"
             />
           </InputWithCover>
-        </InputContainer>
+        </InputContainer> */}
 
-        <InputContainer>
+        <Textfield
+          label="부제목"
+          placeholder="부제목"
+          helperText="부제목을 입력 해주세요"
+          value={newProject.subTitle}
+          onChange={(e) =>
+            setNewProject({ ...newProject, subTitle: e.target.value })
+          }
+          variant="outlined"
+        />
+        {/* <InputContainer>
           <label>부제목</label>
           <input
             type="text"
@@ -234,19 +257,18 @@ function CreateProjectModal({ closeModal }: { closeModal?: setIsModalOpen }) {
             }
             placeholder="부제목"
           />
-        </InputContainer>
+        </InputContainer> */}
 
-        <InputContainer>
-          <label>프로젝트 설명</label>
-          <input
-            type="text"
-            value={newProject.description}
-            onChange={(e) =>
-              setNewProject({ ...newProject, description: e.target.value })
-            }
-            placeholder="프로젝트 설명"
-          />
-        </InputContainer>
+        <Textfield
+          label="설명"
+          placeholder="설명"
+          helperText="설명을 입력 해주세요"
+          value={newProject.description}
+          onChange={(e) =>
+            setNewProject({ ...newProject, description: e.target.value })
+          }
+          variant="outlined"
+        />
 
         <InputContainer>
           <LabelWithToggle>

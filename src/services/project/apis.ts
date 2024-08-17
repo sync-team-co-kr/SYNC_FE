@@ -1,6 +1,7 @@
-import { AxiosRes } from '@customTypes/common';
-import { Project } from '@customTypes/project';
+import { AxiosResByData } from '@customTypes/common';
+import { EditProjectParams, Project } from '@customTypes/project';
 import { requiredJwtTokeninstance } from '@libs/axios/axios';
+import { CreateProjectRequestDto } from '@services/swagger/output/data-contracts';
 import { AxiosResponse } from 'axios';
 
 /**
@@ -8,12 +9,119 @@ import { AxiosResponse } from 'axios';
  */
 
 export const getProjectList = async () => {
-  const response: AxiosResponse<
-    AxiosRes<Project[]>,
-    any
-  > = await requiredJwtTokeninstance.get('/api/user/project/get');
+  /**
+   *  /api/user/info/v1 반환값으로 userId가 추가될 때
+   * /project/api/v2 userId의 params 값으로 사용
+   *
+   *  const cookies = new Cookies(null, { path: '/' });
+   *  const loggedInUser = cookies.get('loggedInUser');
+   */
 
-  return response.data.value;
+  const getProjectIdsRes: AxiosResponse<
+    AxiosResByData<number[]>,
+    any
+  > = await requiredJwtTokeninstance.get(
+    '/project/api/v2?userId=abc123@gmail.com',
+  );
+
+  const joinedProjectIds = getProjectIdsRes.data.data.join(',');
+
+  const getProjectListResponse: AxiosResponse<AxiosResByData<Project[]>> =
+    await requiredJwtTokeninstance.get(
+      `http://129.213.161.199:31585/project/api/v1?projectIds=${joinedProjectIds}`,
+    );
+
+  return getProjectListResponse.data.data;
 };
 
-export default getProjectList;
+/**
+ * 프로젝트를 가져오는 API
+ * @param projectId: number
+ * @returns {
+ *  result: boolean;
+ *  message: string;
+ *  value: {
+ *  projectId: number;
+ *  title: string;
+ *  description: string;
+ *  startDate: Date;
+ *  endDate: Date;
+ *  progress: number;
+ *  }
+ * }
+ */
+
+export const getProject = async (projectId: number) => {
+  const getProjectResponse: AxiosResponse<AxiosResByData<Project[]>> =
+    await requiredJwtTokeninstance.get(
+      `http://129.213.161.199:31585/project/api/v1?projectIds=${projectId}`,
+    );
+
+  return getProjectResponse.data.data[0];
+};
+
+/**
+ * 프로젝트를 생성하는 API
+ * @param newProject: {
+ *  title: string;
+ *  subTitle?: stirng;
+ *  description?: string;
+ *  startDate?: string;
+ *  endDate?: string;
+ * }
+ * @returns {
+ *  result: boolean;
+ *  message: string;
+ * }
+ */
+
+export const createProject = async (newProject: CreateProjectRequestDto) => {
+  await requiredJwtTokeninstance.post('/user/api/project', {
+    ...newProject,
+  });
+
+  return newProject;
+};
+
+/**
+ * 프로젝트를 수정하는 API
+ * @param project: {
+ *  projectId: number;
+ *  title: string;
+ *  subTitle?: stirng;
+ *  description?: string;
+ *  startDate?: string;
+ *  endDate?: string;
+ * }
+ * @returns {
+ *  result: boolean;
+ *  message: string;
+ * }
+ */
+
+export const editProject = async (project: EditProjectParams) => {
+  await requiredJwtTokeninstance.put('/user/api/project', {
+    ...project,
+  });
+
+  return project;
+};
+
+/**
+ * 프로젝트를 삭제하는 API
+ * @param projectId: number;
+ * @returns {
+ *  result: boolean;
+ *  message: string;
+ * }
+ */
+
+export const deleteProject = async (projectId: number) => {
+  await requiredJwtTokeninstance.delete('/user/api/project', {
+    data: {
+      projectId,
+    },
+  });
+
+  return projectId;
+};

@@ -107,11 +107,11 @@ export default function SideBar() {
         </SideBarItemWrap>
 
         <SideBarItemWrap>
-          <Link to="/calendar">
+          <Link to="/calendars">
             <CalendarIcon
               fill="transparent"
               stroke={
-                location.pathname === '/calendar'
+                location.pathname === '/calendars'
                   ? vars.sementic.color.primaryOrange
                   : vars.sementic.color.black20
               }
