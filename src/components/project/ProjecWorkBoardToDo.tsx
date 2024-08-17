@@ -1,13 +1,12 @@
 import styled from 'styled-components';
 import { Typography } from '@components/common/Typography';
 import {ReactComponent as WorkboxIcon} from '@assets/projects/workbox.svg'
-import create from '@assets/projects/create.svg'
+import {ReactComponent as CreateIcon} from '@assets/projects/create.svg'
 import { useState } from 'react';
 import { Button } from '@components/common/Button';
 import { vars } from 'token';
 import ProjectCreateWorkBoard from './ProjectCreateWorkBoard';
-
-
+import WorkBoard from './WorkBoard';
 
 const ProjectWorkBoard = styled.li`
   width: 414px;
@@ -22,8 +21,8 @@ const ProjectWorkBoard = styled.li`
 const ProjectWorkBoardHeader = styled.section`
   display: flex;
   align-items: center;
-  flex: 1;
-  margin: 8px;
+  height: 50px;
+  padding: 8px;
 `;
 
 const ProjectWorkBoardTitle = styled.div`
@@ -52,19 +51,18 @@ const ProjectCreatWork = styled.button`
   display: flex;
   justify-content: baseline;
   align-items: center;
-  flex: 1;
+  height: 34px;
   color: var(--Black-White-Black-100, #202020);
   background-color: #ffffff;
   border-radius: 8px;
   border: none;
   margin: 0 8px 8px 8px;
   padding:0;
-
   cursor: pointer; 
 `;
 
-const CreateIcon = styled.img`
- margin: -3px 8px 0 8px;
+const Icon = styled.div`
+ margin: 0 8px 0 8px;
 `;
 
 
@@ -88,6 +86,7 @@ const ProjectWorkBoardToDo = () => {
           </TitleDetail>
           </ProjectWorkBoardTitle>
       </ProjectWorkBoardHeader>
+      <WorkBoard/>
       {isClicked ?
       <>
         <ProjectCreateWorkBoard/>
@@ -114,7 +113,9 @@ const ProjectWorkBoardToDo = () => {
       </>
       :
       <ProjectCreatWork onClick={()=>handleClick(true)}>
-        <CreateIcon src={create} alt="추가하기" />
+        <Icon>
+          <CreateIcon stroke={vars.sementic.color.black70}/>
+        </Icon>
         <Typography variant="heading-5" color="black70">업무 생성</Typography>
       </ProjectCreatWork>
       }

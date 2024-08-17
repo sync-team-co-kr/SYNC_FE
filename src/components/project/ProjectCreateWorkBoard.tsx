@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { Typography } from '@components/common/Typography';
+import { vars } from 'token';
 import React from 'react';
 import createworkBoardimg from '@assets/projects/createworkboard.png'
 
@@ -47,6 +48,7 @@ const Title= styled.div`
   align-items: center;
   width:100%;
   gap: 12px;
+  border-bottom: 1px solid var(--Black-White-Black-10, #f4f4f4);
   img {
     padding-left: 12px;
   }
@@ -54,7 +56,7 @@ const Title= styled.div`
 
 const InputTitle = styled.input`
   height: 40px;
-  width:100%;
+  width: 100%;
 //     /* Heading 5 */
   font-family: Pretendard;
   font-size: 14px;
@@ -62,6 +64,7 @@ const InputTitle = styled.input`
   font-weight: 700;
   line-height: 17px;
   border: none;
+  border-radius: 12px;
   border-bottom: 1px solid var(--Black-White-Black-10, #f4f4f4);
   gap: 8px;
   &:focus {
@@ -83,8 +86,9 @@ const Inputcontents = styled.input`
   font-weight: 500;
   line-height: 20px;
   text-indent: 12px;
+  border-radius: 12px;
   border: none;
-  border-bottom: 1px solid var(--Black-White-Black-10, #f4f4f4);
+  border-bottom: 1px solid ${vars.sementic.color.black10};
   gap: 8px;
     &:focus {
     outline: none; 

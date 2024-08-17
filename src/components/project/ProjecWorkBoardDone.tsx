@@ -21,8 +21,8 @@ const ProjectWorkBoard = styled.li`
 const ProjectWorkBoardHeader = styled.section`
   display: flex;
   align-items: center;
-  flex: 1;
-  margin: 8px;
+  height: 50px;
+  padding: 8px;
 `;
 
 const ProjectWorkBoardTitle = styled.div`
@@ -51,7 +51,7 @@ const ProjectCreatWork = styled.button`
   display: flex;
   justify-content: baseline;
   align-items: center;
-  flex: 1;
+  height: 34px;
   color: var(--Black-White-Black-100, #202020);
   background-color: #ffffff;
   border-radius: 8px;
