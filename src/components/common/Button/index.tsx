@@ -1,5 +1,3 @@
-import { ReactComponent as Add } from '@assets/add.svg';
-
 import { CommonButton } from './Button.style';
 import { ButtonProps } from './Button.types';
 
@@ -21,20 +19,18 @@ export const Button = ({
   isDisabled = false,
   iconPosition = 'left',
   onClick,
+  renderIcon,
   text,
 }: ButtonProps) => (
   <CommonButton
+    hasText={!!text}
     size={size}
     variant={variant}
     disabled={isDisabled}
     onClick={onClick}
   >
-    {hasIcon && iconPosition === 'left' && (
-      <Add fill="current" color="current" />
-    )}
+    {hasIcon && iconPosition === 'left' && renderIcon}
     {text}
-    {hasIcon && iconPosition === 'right' && (
-      <Add fill="current" color="current" />
-    )}
+    {hasIcon && iconPosition === 'right' && renderIcon}
   </CommonButton>
 );

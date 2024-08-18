@@ -4,6 +4,7 @@ import { vars } from 'token';
 export const CommonButton = styled.button<{
   size: 'small' | 'medium';
   variant: 'outline' | 'fill' | 'fillGray' | 'text';
+  hasText: boolean;
 }>`
   font-size: ${vars.sementic.typography['heading-5'].fontSize};
   font-weight: ${vars.sementic.typography['heading-5'].fontWeight};
@@ -12,7 +13,7 @@ export const CommonButton = styled.button<{
   justify-content: center;
   align-items: center;
   gap: 12px;
-  padding: 8px 24px;
+  padding: ${({ hasText }) => (hasText ? '12px 16px' : '12px')};
   height: ${({ size }) => (size === 'small' ? '36px' : '42px')};
 
   color: ${({ variant }) => {

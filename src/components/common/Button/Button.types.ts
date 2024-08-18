@@ -5,5 +5,6 @@ export interface ButtonProps {
   isDisabled?: boolean;
   iconPosition?: 'left' | 'right';
   onClick: () => void;
-  text: string;
+  text?: string;
+  renderIcon?: React.ReactNode;
 }
