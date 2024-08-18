@@ -1,6 +1,4 @@
-import { CalendarDay } from '@components/Calendar/Calendar.day';
-import { CalendarMonth } from '@components/Calendar/Calendar.month';
-import { CalendarWeek } from '@components/Calendar/Calendar.week';
+import { Calendar } from '@components/Calendar';
 import { Tab } from '@components/Tabs/Tab';
 import { TabList } from '@components/Tabs/Tab.list';
 import { TabPanel, TabPanels } from '@components/Tabs/Tab.panel';
@@ -26,13 +24,13 @@ export const Calendars = () => {
 
         <TabPanels>
           <TabPanel>
-            <CalendarDay />
+            <Calendar type="day" />
           </TabPanel>
           <TabPanel>
-            <CalendarWeek />
+            <Calendar type="week" />
           </TabPanel>
           <TabPanel>
-            <CalendarMonth />
+            <Calendar type="month" />
           </TabPanel>
         </TabPanels>
       </Tabs>

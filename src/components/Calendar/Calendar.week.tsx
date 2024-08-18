@@ -1,5 +1,3 @@
-import { Calendar } from './Calendar';
-
 export const CalendarWeek = () => {
-  return <Calendar type="week" />;
+  return <div>위크</div>;
 };

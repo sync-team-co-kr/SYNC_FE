@@ -5,7 +5,7 @@ import { Variant } from './Textfield.types';
 
 export const Element = styled.div<{ width: string }>`
   width: ${(props) => props.width};
-  height: fit-content;
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;

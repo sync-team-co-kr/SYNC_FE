@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { vars } from 'token';
 
-export const Common = styled.div`
+export const Container = styled.div`
   display: flex;
   position: relative;
   justify-content: center;

@@ -1,5 +1,3 @@
-import { Calendar } from './Calendar';
-
 export const CalendarMonth = () => {
-  return <Calendar type="month" />;
+  return <div>먼츠</div>;
 };
