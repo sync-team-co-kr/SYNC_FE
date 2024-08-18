@@ -29,10 +29,11 @@ const TimeTableLabel = styled.div`
 
 const GraphItemsContainer = styled.div`
   display: flex;
-  width: 100%;
   flex-direction: column;
+  width: 100%;
   height: 158px;
   padding: 9px;
+  gap: 8px;
   overflow-y: auto;
 `;
 
@@ -52,6 +53,14 @@ const TimeTableItem = styled.div`
   border-top: 1px solid ${vars.sementic.color.black10};
 `;
 
+const Test = styled.div`
+  padding: 4px;
+  background: ${vars.sementic.color.lightPurple};
+  width: 100%;
+  border-radius: 4px;
+  align-items: center;
+`;
+
 const generateTimeSlots = () => {
   // 09:00 ~ 22:00 까지 시간 단위로 배열 생성
   const timeSlots = Array.from({ length: 14 }, (_, i) => {
@@ -69,7 +78,11 @@ export const CalendarDay = () => {
         <Typography color="black35" variant="small-text">
           종일
         </Typography>
-        <GraphItemsContainer></GraphItemsContainer>
+        <GraphItemsContainer>
+          <Test>일정이 들어가욘</Test>
+          <Test>일정이 들어가욘</Test>
+          <Test>일정이 들어가욘</Test>
+        </GraphItemsContainer>
       </GraphContainer>
       <TimeContainer>
         {generateTimeSlots().map((time) => (
