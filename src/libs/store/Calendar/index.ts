@@ -38,6 +38,8 @@ const useCalendarStore = create<CalendarStore & CalendarActions>((set) => ({
 
 // 캘린더 상태와 액션
 export const useCalendarState = () =>
-  useCalendarStore((state) => state.currentDate);
+  useCalendarStore((state) => ({
+    currentDate: state.currentDate,
+  }));
 export const useCalendarActions = () =>
   useCalendarStore((state) => state.actions);

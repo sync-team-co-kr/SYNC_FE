@@ -1,17 +1,16 @@
-import { CalendarDay } from './Calendar.day';
+import { CalendarContent } from './Calendar.content';
 import { CalendarHeader } from './Calendar.header';
-import { CalendarMonth } from './Calendar.month';
+import { CalendarProvider } from './Calendar.provider';
 import { Container } from './Calendar.style';
 import { CalenderProps } from './Calendar.types';
-import { CalendarWeek } from './Calendar.week';
 
-export const Calendar = ({ type }: CalenderProps) => {
+export const Calendar = ({ type, value, setValue }: CalenderProps) => {
   return (
-    <Container>
-      <CalendarHeader />
-      {type === 'day' && <CalendarDay />}
-      {type === 'week' && <CalendarWeek />}
-      {type === 'month' && <CalendarMonth />}
-    </Container>
+    <CalendarProvider type={type} value={value} setValue={setValue}>
+      <Container>
+        <CalendarHeader />
+        <CalendarContent />
+      </Container>
+    </CalendarProvider>
   );
 };
