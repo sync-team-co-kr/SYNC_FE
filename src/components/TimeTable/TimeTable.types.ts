@@ -1,3 +1,5 @@
+import { CSSProperties } from 'styled-components';
+
 /**
  * @interface TimeTableProps
  * @param {string} title - 타이틀
@@ -18,6 +20,8 @@ export interface TimeTableProps {
   images: string;
   projectId: number;
   parentTaskId: number;
+  gridRowStart?: number;
+  rowSpan?: number;
   status: 'task' | 'sub' | 'quest';
   variant: 'graph' | 'timeTableMedium' | 'timeTableLarge';
 }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import type { CSSProperties } from 'react';
 
 import styled from 'styled-components';
@@ -12,6 +12,12 @@ const Flex = Object.assign(styled.div`
   flex-direction: row;
 `);
 
-export const Row = ({ children, ...props }: RowProps) => {
-  return <Flex {...props}>{children}</Flex>;
-};
+export const Row = forwardRef<HTMLDivElement, RowProps>(
+  ({ children, ...props }, ref) => {
+    return (
+      <Flex {...props} ref={ref}>
+        {children}
+      </Flex>
+    );
+  },
+);

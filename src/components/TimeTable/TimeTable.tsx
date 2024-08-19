@@ -14,6 +14,8 @@ const TimeTable = ({
   onClick,
   status,
   variant,
+  gridRowStart,
+  rowSpan,
 }: TimeTableProps) => {
   const returnPercentage = () => {
     const start = new Date(startTime).getHours();
@@ -32,7 +34,7 @@ const TimeTable = ({
       >
         <Marker statue={status} variant={variant} />
         <ImageWrapper>
-          <img src={images} alt="title" />
+          <img src={images} alt={title} />
         </ImageWrapper>
         <Typography variant="small-text-b" color="black">
           {title}
@@ -42,16 +44,28 @@ const TimeTable = ({
   }
 
   return (
-    <Container percentage={100} variant={variant} status={status}>
+    <Container
+      gridRowStart={gridRowStart}
+      rowSpan={rowSpan}
+      percentage={100}
+      variant={variant}
+      status={status}
+    >
       <Marker statue={status} variant={variant} />
       <Column gap={5}>
-        <Row gap={4}>
+        <Row gap={5}>
+          <ImageWrapper>
+            <img src={images} alt={title} />
+          </ImageWrapper>
           <Typography variant="small-text" color="black">
             {description}
           </Typography>
         </Row>
         <Typography variant="small-text-b" color="black">
           {title}
+        </Typography>
+        <Typography variant="small-text" color="black70">
+          {startTime} ~ {endTime}
         </Typography>
       </Column>
     </Container>

@@ -28,6 +28,8 @@ export const ImageWrapper = styled.div`
   width: 16px;
   height: 16px;
   display: flex;
+  border-radius: 2px;
+  overflow: hidden;
   justify-content: center;
   align-items: center;
 
@@ -76,10 +78,20 @@ export const Container = styled.div<{
   percentage: number;
   variant: TimeTableVariants;
   status: TimeTableStatus;
+  gridRowStart?: number;
+  rowSpan?: number;
 }>`
   display: flex;
   cursor: pointer;
+
   ${(props) => stateStyle[props.status]};
+  ${(props) =>
+    props.rowSpan &&
+    props.gridRowStart &&
+    `
+        grid-row-start: ${props.gridRowStart};
+        grid-row-end: ${props.rowSpan + props.gridRowStart};
+      `}
   padding: ${(props) => {
     switch (props.variant) {
       case 'graph':

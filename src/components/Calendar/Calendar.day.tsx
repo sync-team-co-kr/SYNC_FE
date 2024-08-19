@@ -1,5 +1,6 @@
 import { TimeTable } from '@components/TimeTable';
 import { Typography } from '@components/common/Typography';
+import { setHours } from 'date-fns';
 import styled from 'styled-components';
 import { vars } from 'token';
 
@@ -18,7 +19,7 @@ const Container = styled.div`
 const TimeContainer = styled.div`
   display: flex;
   height: 100%;
-  flex-direction: column;
+  flex-direction: row;
 `;
 
 const TimeTableLabel = styled.div`
@@ -46,25 +47,119 @@ const GraphContainer = styled.div`
 `;
 
 const TimeTableItem = styled.div`
-  display: flex;
   width: 100%;
+  display: grid;
+  grid-template-rows: repeat(78, 1fr);
   padding: 6px 2.5px;
-  height: 72px;
-  margin-top: 6px;
   border-top: 1px solid ${vars.sementic.color.black10};
+  gap: 12px;
+  & > div:nth-child(6n) {
+    border-top: 1px solid ${vars.sementic.color.black10};
+  }
 `;
 
+const TimeTableContainer = styled.div`
+  display: grid;
+  grid-template-rows: repeat(78, 1fr);
+`;
+
+const formatTimeIntl = (date: Date) => {
+  return new Intl.DateTimeFormat('ko-KR', {
+    hour: 'numeric',
+    minute: 'numeric',
+  }).format(date);
+};
+
 const generateTimeSlots = () => {
-  // 09:00 ~ 22:00 까지 시간 단위로 배열 생성
-  const timeSlots = Array.from({ length: 14 }, (_, i) => {
-    const hour = i + 9;
-    return `${hour}:00`;
-  });
+  const hours = Array.from({ length: 14 }, (_, i) => i + 9); // 9시부터 22시까지
+  const minutes = [0, 10, 20, 30, 40, 50]; // 10분 단위로 표시
+
+  const timeSlots = hours.flatMap((hour) =>
+    minutes.map(
+      (minute) =>
+        `${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`,
+    ),
+  );
 
   return timeSlots;
 };
 
+const sortSchedules = (schedules: any[]) => {
+  // 아직 어떻게 정렬할지 몰라서 any 처리
+  return schedules.sort((a, b) => {
+    // 업무 속성 높은 순
+    if (a.status !== b.status) return b.status - a.status;
+    // 마감일 빠른 순
+    if (a.endTime !== b.endTime) return a.endTime - b.endTime;
+    // 시작일 빠른 순
+    if (a.startTime !== b.startTime) return a.startTime - b.startTime;
+    return a.title.localCompare(b.title);
+  });
+};
+
+const getRowSpan = (startTime: Date, endTime: Date) => {
+  const totalMinutesInADay = 24 * 60; // 하루 1440분
+  // 15분 단위로 나누었을때 52줄이었으니 10분 단위로 나누면 78줄
+  const minutesPerRow = totalMinutesInADay / 78;
+
+  const startMinutes = startTime.getHours() * 60 + startTime.getMinutes(); // 시작 시간을 분으로 변환
+  const endMinutes = endTime.getHours() * 60 + endTime.getMinutes(); // 종료 시간을 분으로 변환
+  const totalMinutes = endMinutes - startMinutes;
+
+  return Math.ceil(totalMinutes / minutesPerRow);
+};
+
+const getGridRowStart = (startTime: Date) => {
+  const startHour = startTime.getHours();
+  const startMinute = startTime.getMinutes();
+
+  // 9시부터 시작하므로 9시 이전의 시간은 고려하지 않음
+  const adjustedHour = startHour - 9;
+
+  // 시간대를 10분 간격으로 나눔
+  const timeSlotIndex = adjustedHour * 4 + Math.floor(startMinute / 10);
+
+  return timeSlotIndex + 1; // 그리드 행 번호는 1부터 시작
+};
+
+const now = setHours(new Date(), 10);
+const dummySchedules = Array.from({ length: 10 }, (_, i) => ({
+  id: i,
+  title: `일정 ${i}`,
+  description: `설명 ${i}`,
+  status: i % 3,
+  startTime: new Date(now.getTime() + 1000 * 60 * 15 * i),
+  endTime: new Date(now.getTime() + 1000 * 60 * 15 * (i + 1)),
+}));
+
+const getSchedulesForTimeSlot = (schedules: any[], timeSlot: string) => {
+  const [hour, minute] = timeSlot.split(':').map(Number);
+  const time = new Date();
+  time.setHours(hour);
+  time.setMinutes(minute);
+
+  return schedules.filter(
+    (schedule) =>
+      schedule.startTime.getTime() <= time.getTime() &&
+      schedule.endTime.getTime() > time.getTime(),
+  );
+};
+
 export const CalendarDay = () => {
+  const sortedSchedules = sortSchedules(dummySchedules);
+  const returnStatus = (status: number) => {
+    switch (status) {
+      case 0:
+        return 'task';
+      case 1:
+        return 'sub';
+      case 2:
+        return 'quest';
+      default:
+        return 'task';
+    }
+  };
+
   return (
     <Container>
       <GraphContainer>
@@ -72,15 +167,13 @@ export const CalendarDay = () => {
           종일
         </Typography>
         <GraphItemsContainer>
-          {Array.from({ length: 10 }, (_, i) => (
+          {sortedSchedules.slice(0, 5).map((schedule, i) => (
             <TimeTable
               key={i}
               variant="graph"
               status="task"
-              startTime={new Date().toDateString()}
-              endTime={new Date()
-                .setHours(new Date().getHours() + 1)
-                .toString()}
+              startTime={formatTimeIntl(schedule.startTime)}
+              endTime={formatTimeIntl(schedule.endTime)}
               description="일정이 들어가욘"
               projectId={i}
               parentTaskId={i + 1}
@@ -91,14 +184,45 @@ export const CalendarDay = () => {
         </GraphItemsContainer>
       </GraphContainer>
       <TimeContainer>
-        {generateTimeSlots().map((time) => (
-          <TimeTableLabel key={time}>
-            <Typography key={time} color="black35" variant="small-text">
-              {time}
-            </Typography>
-            <TimeTableItem>일정이 들어가욘</TimeTableItem>
-          </TimeTableLabel>
-        ))}
+        <TimeTableContainer>
+          {generateTimeSlots().map((timeSlot) => (
+            <TimeTableLabel key={timeSlot}>
+              {/* 1시간 단위로 라벨을 09:00 형식으로 표시 */}
+              {
+                <Typography color="black35" variant="small-text">
+                  {timeSlot.split(':')[1] === '00'
+                    ? `${timeSlot.split(':')[0]}:00`
+                    : ''}
+                </Typography>
+              }
+            </TimeTableLabel>
+          ))}
+        </TimeTableContainer>
+
+        <TimeTableItem>
+          {generateTimeSlots().map((timeSlot) => {
+            const schedulesForTimeSlot = getSchedulesForTimeSlot(
+              sortedSchedules,
+              timeSlot,
+            );
+            return schedulesForTimeSlot.map((schedule, i) => (
+              <TimeTable
+                key={i}
+                variant="timeTableMedium"
+                status={returnStatus(schedule.status)}
+                startTime={formatTimeIntl(schedule.startTime)}
+                endTime={formatTimeIntl(schedule.endTime)}
+                description={schedule.description}
+                rowSpan={getRowSpan(schedule.startTime, schedule.endTime)}
+                gridRowStart={getGridRowStart(schedule.startTime)}
+                projectId={schedule.id}
+                parentTaskId={schedule.id}
+                images={'https://picsum.photos/200/300'}
+                title={schedule.title}
+              />
+            ));
+          })}
+        </TimeTableItem>
       </TimeContainer>
     </Container>
   );
