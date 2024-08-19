@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { Typography } from '@components/common/Typography';
 import {ReactComponent as WorkboxIcon} from '@assets/projects/workbox.svg'
-import create from '@assets/projects/create.svg'
+import {ReactComponent as CreateIcon} from '@assets/projects/create.svg'
 import { useState } from 'react';
 import { Button } from '@components/common/Button';
 import { vars } from 'token';
@@ -62,9 +62,10 @@ const ProjectCreatWork = styled.button`
   cursor: pointer; 
 `;
 
-const CreateIcon = styled.img`
- margin: -3px 8px 0 8px;
+const Icon = styled.div`
+ margin: 0 8px 0 8px;
 `;
+
 
 
 
@@ -113,7 +114,9 @@ const ProjectWorkBoardToDo = () => {
       </>
       :
       <ProjectCreatWork onClick={()=>handleClick(true)}>
-        <CreateIcon src={create} alt="추가하기" />
+        <Icon>
+          <CreateIcon stroke={vars.sementic.color.black70}/>
+        </Icon>
         <Typography variant="heading-5" color="black70">업무 생성</Typography>
       </ProjectCreatWork>
       }
