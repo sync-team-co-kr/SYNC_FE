@@ -1,3 +1,4 @@
+import { TimeTable } from '@components/TimeTable';
 import { Typography } from '@components/common/Typography';
 import styled from 'styled-components';
 import { vars } from 'token';
@@ -53,14 +54,6 @@ const TimeTableItem = styled.div`
   border-top: 1px solid ${vars.sementic.color.black10};
 `;
 
-const Test = styled.div`
-  padding: 4px;
-  background: ${vars.sementic.color.lightPurple};
-  width: 100%;
-  border-radius: 4px;
-  align-items: center;
-`;
-
 const generateTimeSlots = () => {
   // 09:00 ~ 22:00 까지 시간 단위로 배열 생성
   const timeSlots = Array.from({ length: 14 }, (_, i) => {
@@ -80,7 +73,20 @@ export const CalendarDay = () => {
         </Typography>
         <GraphItemsContainer>
           {Array.from({ length: 10 }, (_, i) => (
-            <Test key={i}>일정이 들어가욘</Test>
+            <TimeTable
+              key={i}
+              variant="graph"
+              status="task"
+              startTime={new Date().toDateString()}
+              endTime={new Date()
+                .setHours(new Date().getHours() + 1)
+                .toString()}
+              description="일정이 들어가욘"
+              projectId={i}
+              parentTaskId={i + 1}
+              images={'https://picsum.photos/200/300'}
+              title="일정이 들어가욘"
+            ></TimeTable>
           ))}
         </GraphItemsContainer>
       </GraphContainer>

@@ -12,10 +12,12 @@
 export interface TimeTableProps {
   title: string;
   description: string;
-  startTime: Date;
-  endTime: Date;
+  onClick?: () => void;
+  startTime: string;
+  endTime: string;
   images: string;
   projectId: number;
   parentTaskId: number;
-  status: number;
+  status: 'task' | 'sub' | 'quest';
+  variant: 'graph' | 'timeTableMedium' | 'timeTableLarge';
 }
