@@ -79,9 +79,9 @@ export const CalendarDay = () => {
           종일
         </Typography>
         <GraphItemsContainer>
-          <Test>일정이 들어가욘</Test>
-          <Test>일정이 들어가욘</Test>
-          <Test>일정이 들어가욘</Test>
+          {Array.from({ length: 10 }, (_, i) => (
+            <Test key={i}>일정이 들어가욘</Test>
+          ))}
         </GraphItemsContainer>
       </GraphContainer>
       <TimeContainer>
