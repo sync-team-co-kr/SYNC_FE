@@ -66,11 +66,20 @@ const TimeTableContainer = styled.div`
   display: grid;
   grid-template-rows: repeat(78, 1fr);
 `;
+type DummySchedule = {
+  id: number;
+  title: string;
+  description: string;
+  status: number;
+  startTime: Date;
+  endTime: Date;
+};
 
 const formatTimeIntl = (date: Date) => {
   return new Intl.DateTimeFormat('ko-KR', {
-    hour: 'numeric',
-    minute: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false,
   }).format(date);
 };
 
@@ -98,7 +107,7 @@ const generateTimeSlots = (): string[] => {
   return slots;
 };
 
-const sortSchedules = (schedules: any[]) => {
+const sortSchedules = (schedules: DummySchedule[]) => {
   // 아직 어떻게 정렬할지 몰라서 any 처리
   return schedules.sort((a, b) => {
     if (a.status !== b.status) return b.status - a.status;
@@ -106,7 +115,7 @@ const sortSchedules = (schedules: any[]) => {
       return a.endTime.getTime() - b.endTime.getTime();
     if (a.startTime !== b.startTime)
       return a.startTime.getTime() - b.startTime.getTime();
-    return a.title.localCompare(b.title);
+    return a.title.localeCompare(b.title);
   });
 };
 
@@ -125,7 +134,8 @@ const getGridRowStart = (startTime: Date) => {
 };
 
 const now = setHours(new Date(), 10);
-const dummySchedules = Array.from({ length: 10 }, (_, i) => ({
+
+const dummySchedules: DummySchedule[] = Array.from({ length: 10 }, (_, i) => ({
   id: i,
   title: `일정 ${i}`,
   description: `설명 ${i}`,
@@ -134,19 +144,36 @@ const dummySchedules = Array.from({ length: 10 }, (_, i) => ({
   endTime: new Date(now.getTime() + 1000 * 60 * 15 * (i + 1)),
 }));
 
-const getSchedulesForTimeSlot = (schedules: any[], timeSlot: string) => {
-  const time = parse(timeSlot, 'HH:mm', new Date());
+const getSchedulesForTimeSlot = (
+  schedules: DummySchedule[],
+  timeSlots: string[],
+) => {
+  const timeSlotSchedules: Record<string, any> = {};
 
-  return schedules.filter((schedule) =>
-    isWithinInterval(time, {
-      start: schedule.startTime,
-      end: schedule.endTime,
-    }),
-  );
+  timeSlots.forEach((timeSlot) => {
+    const time = parse(timeSlot, 'HH:mm', new Date());
+
+    const scheduleForTimeSlot = schedules.filter((schedule) =>
+      isWithinInterval(time, {
+        start: schedule.startTime,
+        end: schedule.endTime,
+      }),
+    );
+
+    if (scheduleForTimeSlot.length > 0) {
+      timeSlotSchedules[timeSlot] = scheduleForTimeSlot;
+    }
+  });
+  return timeSlotSchedules;
 };
 
 export const CalendarDay = () => {
-  const sortedSchedules = sortSchedules(dummySchedules);
+  const timeSlots = generateTimeSlots();
+  const groupedSchedules = getSchedulesForTimeSlot(
+    sortSchedules(dummySchedules),
+    timeSlots,
+  ); // 시간 슬롯별로 일정을 그룹화
+
   const returnStatus = (status: number) => {
     switch (status) {
       case 0:
@@ -167,20 +194,24 @@ export const CalendarDay = () => {
           종일
         </Typography>
         <GraphItemsContainer>
-          {sortedSchedules.slice(0, 5).map((schedule, i) => (
-            <TimeTable
-              key={i}
-              variant="graph"
-              status="task"
-              startTime={formatTimeIntl(schedule.startTime)}
-              endTime={formatTimeIntl(schedule.endTime)}
-              description="일정이 들어가욘"
-              projectId={i}
-              parentTaskId={i + 1}
-              images={'https://picsum.photos/200/300'}
-              title="일정이 들어가욘"
-            ></TimeTable>
-          ))}
+          {Object.entries(groupedSchedules).map(([timeSlot, schedules]) => {
+            return schedules.map((schedule: any, i: number) => (
+              <TimeTable
+                key={`${timeSlot}-${i}`}
+                variant="graph"
+                status={returnStatus(schedule.status)}
+                startTime={formatTimeIntl(schedule.startTime)}
+                endTime={formatTimeIntl(schedule.endTime)}
+                description={schedule.description}
+                rowSpan={getRowSpan(schedule.startTime, schedule.endTime)}
+                gridRowStart={getGridRowStart(schedule.startTime)}
+                projectId={schedule.id}
+                parentTaskId={schedule.id}
+                images={'https://picsum.photos/200/300'}
+                title={schedule.title}
+              />
+            ));
+          })}
         </GraphItemsContainer>
       </GraphContainer>
       <TimeContainer>
@@ -198,14 +229,10 @@ export const CalendarDay = () => {
         </TimeTableContainer>
 
         <TimeTableItem>
-          {generateTimeSlots().map((timeSlot) => {
-            const schedulesForTimeSlot = getSchedulesForTimeSlot(
-              sortedSchedules,
-              timeSlot,
-            );
-            return schedulesForTimeSlot.map((schedule, i) => (
+          {Object.entries(groupedSchedules).map(([timeSlot, schedules]) => {
+            return schedules.map((schedule: any, i: number) => (
               <TimeTable
-                key={i}
+                key={`${timeSlot}-${i}`}
                 variant="timeTableMedium"
                 status={returnStatus(schedule.status)}
                 startTime={formatTimeIntl(schedule.startTime)}
