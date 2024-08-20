@@ -6,9 +6,11 @@ import { BrowserRouter } from 'react-router-dom';
 import { MainRoutes } from '@routes';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import 'pretendard/dist/web/variable/pretendardvariable.css';
 import { createGlobalStyle } from 'styled-components';
 import reset from 'styled-reset';
 
+import './index.css';
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(
@@ -19,10 +21,18 @@ const GlobalStyle = createGlobalStyle`
   ${reset}
   * {
   box-sizing: border-box;
+  font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif !important;
+}
+
+body {
+}
+  
+#root {
+    min-height: 100vh;
+    overflow-y: auto;
+
   }
-  body {
-    z-index: -1;
-  }
+
   a{
     color: black;
     text-decoration: none;
