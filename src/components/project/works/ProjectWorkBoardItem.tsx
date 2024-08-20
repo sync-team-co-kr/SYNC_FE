@@ -1,8 +1,8 @@
 // import Add from '@assets/add.svg';
 import styled from 'styled-components';
-import ProjectWorkBoardToDo from '@components/project/ProjecWorkBoardToDo';
-import ProjectWorkBoardDoing from './ProjecWorkBoardDoing';
-import ProjectWorkBoardDone from './ProjecWorkBoardDone';
+import ProjectWorkBoardToDo from '@components/project/works/ProjecWorkBoardToDo';
+import { vars } from 'token';
+
 
 const Section = styled.section`
   display: flex;
@@ -75,9 +75,27 @@ const ProjectWorkBoardItem = () => {
         </ProjectAddButton> */}
       </ProjectBoardHeader>
       <ProjectWorkList>
-        <ProjectWorkBoardToDo/>
-        <ProjectWorkBoardDoing/>
-        <ProjectWorkBoardDone/>
+      <ProjectWorkBoardToDo
+      title="해야할 일" 
+      count={0} 
+      titleColor="negativeRed" 
+      borderColor={vars.sementic.color.black10} 
+      backgroundColor={vars.sementic.color.lightRed} 
+      />
+       <ProjectWorkBoardToDo 
+      title="하는 중" 
+      count={0} 
+      titleColor="positiveBlue" 
+      borderColor={vars.sementic.color.black10} 
+      backgroundColor={vars.sementic.color.lightBlue} 
+      />
+      <ProjectWorkBoardToDo 
+      title="완료" 
+      count={0} 
+      titleColor="black35" 
+      borderColor={vars.sementic.color.black10} 
+      backgroundColor={vars.sementic.color.black10} 
+      />
       </ProjectWorkList>
     </Section>
   );

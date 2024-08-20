@@ -3,7 +3,7 @@ import { Button } from '@components/common/Button';
 import CreateProjectModal from '@components/modal/CreateProjectModal';
 import { useModal } from '@hooks';
 import styled from 'styled-components';
-import ProjectWorkBoardItem from '@components/project/ProjectWorkBoardItem';
+import ProjectWorkBoardItem from '@components/project/works/ProjectWorkBoardItem';
 
 const Section = styled.section`
   display: flex;
