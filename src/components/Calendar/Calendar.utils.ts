@@ -8,8 +8,23 @@ import {
 
 import { TaskData } from './Calendar.types';
 
-export const returnDate = (date: Date): string => {
+export const returnDate = (
+  date: Date,
+  type: 'day' | 'week' | 'month',
+): string => {
   // YYYY년 MM월 형식으로 반환
+  // day 타입일 경우: YYYY년 MM월 DD일 ㅇㅇ요일
+  // date-fns의 format 함수를 사용하여 날짜를 포맷팅
+  if (type === 'day') {
+    return new Intl.DateTimeFormat('ko-KR', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      weekday: 'long',
+    }).format(date);
+  }
+
+  // 그 외에는 YYYY년 MM월
   return `${date.getFullYear()}년 ${date.getMonth() + 1}월`;
 };
 
@@ -58,8 +73,7 @@ export const sortSchedules = (schedules: TaskData[]) => {
 };
 
 export const getRowSpan = (startTime: Date, endTime: Date) => {
-  const totalMinutesInADay = 13 * 60; // 9시 ~ 22시까지 13시간
-  const minutesPerRow = totalMinutesInADay / 78; // 78행으로 나눔
+  const minutesPerRow = 10; // 10분 간격
 
   const totalMinutes = differenceInMinutes(endTime, startTime);
 
@@ -68,8 +82,8 @@ export const getRowSpan = (startTime: Date, endTime: Date) => {
 
 export const getGridRowStart = (startTime: Date) => {
   const startMinutes = differenceInMinutes(startTime, setHours(startTime, 9));
-  const minutesPerRow = (13 * 60) / 78; // 총 분을 78행으로 나눔
-  return Math.ceil(startMinutes / minutesPerRow); // 그리드 행은 1부터 시작
+  const minutesPerRow = 10;
+  return Math.ceil(startMinutes / minutesPerRow + 1); // 그리드 행은 1부터 시작
 };
 
 export const getSchedulesForTimeSlot = (
@@ -80,17 +94,17 @@ export const getSchedulesForTimeSlot = (
 
   timeSlots.forEach((timeSlot) => {
     const time = parse(timeSlot, 'HH:mm', new Date());
+    const nextTime = addMinutes(time, 10);
 
-    const scheduleForTimeSlot = schedules.filter((schedule) =>
-      isWithinInterval(time, {
-        start: schedule.startDate,
-        end: schedule.endDate,
+    const schedulesForTimeSlot = schedules.filter((schedule) =>
+      isWithinInterval(schedule.startDate, {
+        start: time,
+        end: nextTime,
       }),
     );
 
-    if (scheduleForTimeSlot.length > 0) {
-      timeSlotSchedules[timeSlot] = scheduleForTimeSlot;
-    }
+    timeSlotSchedules[timeSlot] = schedulesForTimeSlot;
   });
+
   return timeSlotSchedules;
 };

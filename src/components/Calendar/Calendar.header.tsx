@@ -26,9 +26,9 @@ const Section = styled.div`
 `;
 
 export const CalendarHeader = () => {
-  const { value, setValue } = useContext(CalendarContext);
+  const { value, setValue, type } = useContext(CalendarContext);
 
-  const date = returnDate(value);
+  const date = returnDate(value, type);
   const handlePrevClick = () => {
     setValue('prev');
   };

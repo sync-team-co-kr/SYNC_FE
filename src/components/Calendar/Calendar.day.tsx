@@ -108,24 +108,22 @@ export const CalendarDay = () => {
           종일
         </Typography>
         <GraphItemsContainer>
-          {Object.entries(groupedSchedules).map(([timeSlot, schedules]) => {
-            return schedules.map((schedule: any, i: number) => (
-              <TimeTable
-                key={`${timeSlot}-${i}`}
-                variant="graph"
-                status={returnStatus(schedule.status)}
-                startTime={formatTimeIntl(schedule.startDate)}
-                endTime={formatTimeIntl(schedule.endDate)}
-                description={schedule.description}
-                rowSpan={getRowSpan(schedule.startDate, schedule.endDate)}
-                gridRowStart={getGridRowStart(schedule.startDate)}
-                projectId={schedule.id}
-                parentTaskId={schedule.id}
-                images={'https://picsum.photos/200/300'}
-                title={schedule.title}
-              />
-            ));
-          })}
+          {dummySchedules.map((schedule) => (
+            <TimeTable
+              key={schedule.id}
+              variant="graph"
+              status={returnStatus(schedule.status)}
+              startTime={formatTimeIntl(schedule.startDate)}
+              endTime={formatTimeIntl(schedule.endDate)}
+              description={schedule.description}
+              rowSpan={getRowSpan(schedule.startDate, schedule.endDate)}
+              gridRowStart={getGridRowStart(schedule.startDate)}
+              projectId={schedule.id}
+              parentTaskId={schedule.id}
+              images={'https://picsum.photos/200/300'}
+              title={schedule.title}
+            />
+          ))}
         </GraphItemsContainer>
       </GraphContainer>
       <TimeContainer>

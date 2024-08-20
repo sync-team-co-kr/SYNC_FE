@@ -48,7 +48,6 @@ const GridItemHeader = styled.div`
   padding: 6px 14px;
   display: flex;
   width: 100%;
-  height: 100%;
   justify-content: space-between;
 `;
 
@@ -65,6 +64,8 @@ const GridContent = styled.div`
 const GridItem = styled.div`
   width: 100%;
   height: 100%;
+  display: flex;
+  flex-direction: column;
 `;
 
 const getCalendarDays = (date: Date) => {
