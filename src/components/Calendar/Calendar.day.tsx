@@ -1,6 +1,12 @@
 import { TimeTable } from '@components/TimeTable';
 import { Typography } from '@components/common/Typography';
-import { setHours } from 'date-fns';
+import {
+  addMinutes,
+  differenceInMinutes,
+  isWithinInterval,
+  parse,
+  setHours,
+} from 'date-fns';
 import styled from 'styled-components';
 import { vars } from 'token';
 
@@ -53,9 +59,7 @@ const TimeTableItem = styled.div`
   padding: 6px 2.5px;
   border-top: 1px solid ${vars.sementic.color.black10};
   gap: 12px;
-  & > div:nth-child(6n) {
-    border-top: 1px solid ${vars.sementic.color.black10};
-  }
+  grid-auto-flow: row;
 `;
 
 const TimeTableContainer = styled.div`
@@ -70,56 +74,54 @@ const formatTimeIntl = (date: Date) => {
   }).format(date);
 };
 
-const generateTimeSlots = () => {
-  const hours = Array.from({ length: 14 }, (_, i) => i + 9); // 9시부터 22시까지
-  const minutes = [0, 10, 20, 30, 40, 50]; // 10분 단위로 표시
+const generateTimeSlots = (): string[] => {
+  const startHour = 9; // 시작 시간
+  const endHour = 22; // 종료 시간
 
-  const timeSlots = hours.flatMap((hour) =>
-    minutes.map(
-      (minute) =>
-        `${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`,
-    ),
-  );
+  const intervalMinutes = 10; // 10분 간격
 
-  return timeSlots;
+  const slots: string[] = [];
+  let currentTime = setHours(new Date(), startHour);
+  currentTime.setMinutes(0);
+
+  while (currentTime.getHours() < endHour) {
+    const formattedTime = new Intl.DateTimeFormat('ko-KR', {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+    }).format(currentTime);
+
+    slots.push(formattedTime);
+    currentTime = addMinutes(currentTime, intervalMinutes);
+  }
+
+  return slots;
 };
 
 const sortSchedules = (schedules: any[]) => {
   // 아직 어떻게 정렬할지 몰라서 any 처리
   return schedules.sort((a, b) => {
-    // 업무 속성 높은 순
     if (a.status !== b.status) return b.status - a.status;
-    // 마감일 빠른 순
-    if (a.endTime !== b.endTime) return a.endTime - b.endTime;
-    // 시작일 빠른 순
-    if (a.startTime !== b.startTime) return a.startTime - b.startTime;
+    if (a.endTime !== b.endTime)
+      return a.endTime.getTime() - b.endTime.getTime();
+    if (a.startTime !== b.startTime)
+      return a.startTime.getTime() - b.startTime.getTime();
     return a.title.localCompare(b.title);
   });
 };
 
 const getRowSpan = (startTime: Date, endTime: Date) => {
-  const totalMinutesInADay = 24 * 60; // 하루 1440분
-  // 15분 단위로 나누었을때 52줄이었으니 10분 단위로 나누면 78줄
-  const minutesPerRow = totalMinutesInADay / 78;
+  const totalMinutesInADay = 13 * 60; // 9시 ~ 22시까지 13시간
+  const minutesPerRow = totalMinutesInADay / 78; // 78행으로 나눔
 
-  const startMinutes = startTime.getHours() * 60 + startTime.getMinutes(); // 시작 시간을 분으로 변환
-  const endMinutes = endTime.getHours() * 60 + endTime.getMinutes(); // 종료 시간을 분으로 변환
-  const totalMinutes = endMinutes - startMinutes;
-
+  const totalMinutes = differenceInMinutes(endTime, startTime);
   return Math.ceil(totalMinutes / minutesPerRow);
 };
 
 const getGridRowStart = (startTime: Date) => {
-  const startHour = startTime.getHours();
-  const startMinute = startTime.getMinutes();
-
-  // 9시부터 시작하므로 9시 이전의 시간은 고려하지 않음
-  const adjustedHour = startHour - 9;
-
-  // 시간대를 10분 간격으로 나눔
-  const timeSlotIndex = adjustedHour * 4 + Math.floor(startMinute / 10);
-
-  return timeSlotIndex + 1; // 그리드 행 번호는 1부터 시작
+  const startMinutes = differenceInMinutes(startTime, setHours(startTime, 9));
+  const minutesPerRow = (13 * 60) / 78; // 총 분을 78행으로 나눔
+  return Math.ceil(startMinutes / minutesPerRow) + 1; // 그리드 행은 1부터 시작
 };
 
 const now = setHours(new Date(), 10);
@@ -133,15 +135,13 @@ const dummySchedules = Array.from({ length: 10 }, (_, i) => ({
 }));
 
 const getSchedulesForTimeSlot = (schedules: any[], timeSlot: string) => {
-  const [hour, minute] = timeSlot.split(':').map(Number);
-  const time = new Date();
-  time.setHours(hour);
-  time.setMinutes(minute);
+  const time = parse(timeSlot, 'HH:mm', new Date());
 
-  return schedules.filter(
-    (schedule) =>
-      schedule.startTime.getTime() <= time.getTime() &&
-      schedule.endTime.getTime() > time.getTime(),
+  return schedules.filter((schedule) =>
+    isWithinInterval(time, {
+      start: schedule.startTime,
+      end: schedule.endTime,
+    }),
   );
 };
 
@@ -190,9 +190,7 @@ export const CalendarDay = () => {
               {/* 1시간 단위로 라벨을 09:00 형식으로 표시 */}
               {
                 <Typography color="black35" variant="small-text">
-                  {timeSlot.split(':')[1] === '00'
-                    ? `${timeSlot.split(':')[0]}:00`
-                    : ''}
+                  {timeSlot.endsWith('00') ? timeSlot : ''}
                 </Typography>
               }
             </TimeTableLabel>
