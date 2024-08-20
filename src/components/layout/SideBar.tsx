@@ -5,8 +5,8 @@ import { ReactComponent as HomeIcon } from '@assets/sideBar/home-icon.svg';
 import { ReactComponent as Logo } from '@assets/sideBar/logo.svg';
 import { ReactComponent as PlusIcon } from '@assets/sideBar/plus-icon.svg';
 import { ReactComponent as ProjectIcon } from '@assets/sideBar/project-icon.svg';
-import CreateProjectModal from '@components/modal/CreateProjectModal';
 import { useModal } from '@hooks';
+import CreateProjectModal from '@pages/projects/ProjectBoards/CreateProjectModal/CreateProjectModal';
 import styled from 'styled-components';
 import { vars } from 'token';
 

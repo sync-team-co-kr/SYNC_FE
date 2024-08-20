@@ -1,7 +1,7 @@
 import { Route, Routes } from 'react-router-dom';
 
 import Project from '@pages/projects';
-import ProjectBoards from '@pages/projects/ProjectBoards';
+import ProjectBoards from '@pages/projects/ProjectBoards/ProjectBoards';
 import ProjectList from '@pages/projects/ProjectList';
 
 const ProjectRoute = () => (

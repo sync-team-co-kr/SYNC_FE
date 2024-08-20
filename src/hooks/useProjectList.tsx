@@ -10,7 +10,7 @@ import { AxiosResponse } from 'axios';
 interface AxiosRes2<ResponseType> {
   message: string;
   result: boolean;
-  value: ResponseType;
+  data: ResponseType;
 }
 
 export interface IProject {
@@ -54,11 +54,15 @@ const useProjectList: useProjectListType = () => {
       > = await requiredJwtTokeninstance.get(
         `/project/api/v2?userId=abc123@gmail.com`,
       );
+
+      console.log(getProjectIdsResponse);
+
       const getProjectListResponse: AxiosResponse<AxiosRes2<IProject[]>> =
         await requiredJwtTokeninstance.get(
-          `http://129.213.161.199:31585/project/api/v1?projectIds=${getProjectIdsResponse.data.value.join(',')}`,
+          `http://150.136.153.235:31585/project/api/v1?projectIds=${getProjectIdsResponse.data.data.join(',')}`,
         );
-      return getProjectListResponse.data.value || [];
+
+      return getProjectListResponse.data.data || [];
     } catch (error) {
       console.error(error);
       return [];
