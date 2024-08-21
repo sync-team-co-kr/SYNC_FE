@@ -1,9 +1,9 @@
 import EmptyImage from '@assets/projects/empty-image.png';
 import { Button } from '@components/common/Button';
 import { Typography } from '@components/common/Typography';
-import CreateProjectModal from '@components/modal/CreateProjectModal';
 import { useModal } from '@hooks';
 
+import CreateProjectModal from '../ProjectBoards/CreateProjectModal/CreateProjectModal';
 import {
   EmptyListContainer,
   EmptyListImageContainer,
