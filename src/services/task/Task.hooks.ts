@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { getTask } from '.';
+import { getTask } from './apis';
 
 export const useGetTask = () => {
   const { data: taskList } = useQuery({

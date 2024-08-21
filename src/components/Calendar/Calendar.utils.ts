@@ -1,7 +1,9 @@
 import {
   addMinutes,
   differenceInMinutes,
-  isWithinInterval,
+  isAfter,
+  isBefore,
+  isSameDay, // isWithinInterval,
   parse,
   setHours,
 } from 'date-fns';
@@ -77,31 +79,40 @@ export const getRowSpan = (startTime: Date, endTime: Date) => {
 
   const totalMinutes = differenceInMinutes(endTime, startTime);
 
-  return Math.ceil(totalMinutes / minutesPerRow);
+  return Math.ceil(totalMinutes / minutesPerRow + 1);
 };
 
 export const getGridRowStart = (startTime: Date) => {
   const startMinutes = differenceInMinutes(startTime, setHours(startTime, 9));
   const minutesPerRow = 10;
-  return Math.ceil(startMinutes / minutesPerRow + 1); // 그리드 행은 1부터 시작
+  return Math.floor(startMinutes / minutesPerRow) + 2;
 };
 
 export const getSchedulesForTimeSlot = (
   schedules: TaskData[],
   timeSlots: string[],
+  currentDay: Date,
 ) => {
   const timeSlotSchedules: Record<string, any> = {};
 
   timeSlots.forEach((timeSlot) => {
-    const time = parse(timeSlot, 'HH:mm', new Date());
-    const nextTime = addMinutes(time, 10);
+    const baseTime = parse(timeSlot, 'HH:mm', currentDay);
+    const nextTime = addMinutes(baseTime, 10);
 
-    const schedulesForTimeSlot = schedules.filter((schedule) =>
-      isWithinInterval(schedule.startDate, {
-        start: time,
-        end: nextTime,
-      }),
-    );
+    const schedulesForTimeSlot = schedules.filter((schedule) => {
+      const startDateMatches =
+        isSameDay(schedule.startDate, currentDay) &&
+        isAfter(schedule.startDate, baseTime) &&
+        isBefore(schedule.startDate, nextTime);
+
+      const endDateMatches =
+        isSameDay(schedule.endDate, currentDay) &&
+        isAfter(schedule.endDate, baseTime) &&
+        isBefore(schedule.endDate, nextTime);
+
+      console.log(startDateMatches, endDateMatches);
+      return startDateMatches || endDateMatches;
+    });
 
     timeSlotSchedules[timeSlot] = schedulesForTimeSlot;
   });

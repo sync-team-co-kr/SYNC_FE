@@ -3,7 +3,7 @@ import { Tab } from '@components/Tabs/Tab';
 import { TabList } from '@components/Tabs/Tab.list';
 import { TabPanel, TabPanels } from '@components/Tabs/Tab.panel';
 import { Tabs } from '@components/Tabs/Tabs';
-import { useCalendarActions, useCalendarState } from '@libs/store/Calendar';
+import { useCalendarActions, useCalendarState } from '@libs/store/task';
 import styled from 'styled-components';
 
 const CalenderContainer = styled.div`
@@ -16,8 +16,6 @@ const CalenderContainer = styled.div`
 export const Calendars = () => {
   const { currentDate } = useCalendarState();
   const { setCurrentDate } = useCalendarActions();
-
-  // const { taskList } = useGetTask();
 
   return (
     <CalenderContainer>

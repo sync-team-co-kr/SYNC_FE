@@ -76,7 +76,7 @@ const getCalendarDays = (date: Date) => {
 
   const calendarDays = days.map((day) => ({
     date: day,
-    formatDay: format(day, 'dd E', { locale: ko }),
+    formatDay: format(day, 'd E', { locale: ko }),
   }));
 
   return calendarDays;

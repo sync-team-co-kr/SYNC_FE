@@ -10,8 +10,6 @@ import {
   generateTimeSlots,
   getGridRowStart,
   getRowSpan,
-  getSchedulesForTimeSlot,
-  sortSchedules,
 } from './Calendar.utils';
 
 /**
@@ -76,18 +74,12 @@ const dummySchedules: TaskData[] = Array.from({ length: 10 }, (_, i) => ({
   title: `일정 ${i}`,
   description: '일정 설명',
   // startDate, endDate 모두 다르게 설정
-  startDate: setHours(new Date(), 9 + i),
-  endDate: setHours(new Date(), 9 + i + 1),
+  startDate: setHours(new Date(), i),
+  endDate: setHours(new Date(), i + 1),
   status: i % 3,
 }));
 
 export const CalendarDay = () => {
-  const timeSlots = generateTimeSlots();
-  const groupedSchedules = getSchedulesForTimeSlot(
-    sortSchedules(dummySchedules),
-    timeSlots,
-  ); // 시간 슬롯별로 일정을 그룹화
-
   const returnStatus = (status: number) => {
     switch (status) {
       case 0:
@@ -141,10 +133,12 @@ export const CalendarDay = () => {
         </TimeTableContainer>
 
         <TimeTableItem>
-          {Object.entries(groupedSchedules).map(([timeSlot, schedules]) => {
-            return schedules.map((schedule: any, i: number) => (
+          {dummySchedules.map((schedule, i: number) => {
+            const rowStart = getGridRowStart(schedule.startDate);
+            if (rowStart > 78 || rowStart < 0) return null;
+            return (
               <TimeTable
-                key={`${timeSlot}-${i}`}
+                key={`${schedule.id}-${i}`}
                 variant="timeTableMedium"
                 status={returnStatus(schedule.status)}
                 startTime={formatTimeIntl(schedule.startDate)}
@@ -157,7 +151,7 @@ export const CalendarDay = () => {
                 images={'https://picsum.photos/200/300'}
                 title={schedule.title}
               />
-            ));
+            );
           })}
         </TimeTableItem>
       </TimeContainer>

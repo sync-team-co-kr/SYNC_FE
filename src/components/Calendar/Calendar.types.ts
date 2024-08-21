@@ -1,7 +1,9 @@
+export type TaskCalendar = 'month' | 'week' | 'day';
+export type TaskCalendarButton = 'prev' | 'next';
 export interface CalenderProps {
-  type: 'day' | 'week' | 'month';
+  type: TaskCalendar;
   value: Date;
-  setValue: (button: 'prev' | 'next') => void;
+  setValue: (button: TaskCalendarButton, type: TaskCalendar) => void;
 }
 
 export interface TaskData {

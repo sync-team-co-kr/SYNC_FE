@@ -30,10 +30,10 @@ export const CalendarHeader = () => {
 
   const date = returnDate(value, type);
   const handlePrevClick = () => {
-    setValue('prev');
+    setValue('prev', type);
   };
   const handleNextClick = () => {
-    setValue('next');
+    setValue('next', type);
   };
 
   return (
