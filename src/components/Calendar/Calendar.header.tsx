@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useRef } from 'react';
 
 import { ReactComponent as ArrowLeft } from '@assets/arrow-left.svg';
 import { ReactComponent as ArrowRight } from '@assets/arrow-right.svg';
@@ -7,6 +7,8 @@ import { ReactComponent as ProjectIcon } from '@assets/sideBar/project-icon.svg'
 import { Button } from '@components/common/Button';
 import Textfield from '@components/common/Textfield';
 import { Typography } from '@components/common/Typography';
+import CalendarFilterDropdown from '@components/dropdown/CalendarFilterDropdown';
+import { useModalState } from '@hooks/useModalState';
 import styled from 'styled-components';
 import { vars } from 'token';
 
@@ -17,6 +19,7 @@ const Container = styled.div`
   display: flex;
   width: 100%;
   justify-content: space-between;
+  position: relative;
 `;
 
 const Section = styled.div`
@@ -27,6 +30,9 @@ const Section = styled.div`
 
 export const CalendarHeader = () => {
   const { value, setValue, type } = useContext(CalendarContext);
+  const filterDropdownRef = useRef(null);
+
+  const [isOpenFilter, openFilter, closeFilter] = useModalState();
 
   const date = returnDate(value, type);
   const handlePrevClick = () => {
@@ -64,9 +70,7 @@ export const CalendarHeader = () => {
           onClick={handleNextClick}
         />
         <Button
-          onClick={() => {
-            console.log('필터 버튼 클릭');
-          }}
+          onClick={openFilter}
           variant="outline"
           size="medium"
           text="필터"
@@ -86,11 +90,15 @@ export const CalendarHeader = () => {
           variant="outline"
           size="medium"
           text="일정 등록"
-          onClick={() => {
-            console.log('일정 등록');
-          }}
+          onClick={openFilter}
         />
       </Section>
+
+      <CalendarFilterDropdown
+        ref={filterDropdownRef}
+        isOpen={isOpenFilter}
+        setClose={closeFilter}
+      />
     </Container>
   );
 };

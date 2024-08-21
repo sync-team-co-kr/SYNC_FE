@@ -8,25 +8,21 @@ import {
 } from 'date-fns';
 import { create } from 'zustand';
 
-type TaskCalendar = 'month' | 'week' | 'day';
+import type {
+  CalendarActions,
+  CalendarStore,
+  TaskFilterActions,
+  TaskFilterStore,
+  TaskState,
+  TaskStatus,
+} from './types';
 
-type TaskCalendarButton = 'prev' | 'next';
-
-// calendar store
-type CalendarStore = {
-  currentDate: Date;
-};
-
-type CalendarActions = {
-  actions: {
-    setCurrentDate: (button: TaskCalendarButton, type: TaskCalendar) => void;
-  };
-};
-
+// 캘린더 상태 초기값
 const initialState = {
   currentDate: new Date(),
 };
 
+// 캘린더 관련 store 생성
 const useCalendarStore = create<CalendarStore & CalendarActions>((set) => ({
   ...initialState,
   actions: {
@@ -62,10 +58,44 @@ const useCalendarStore = create<CalendarStore & CalendarActions>((set) => ({
   },
 }));
 
-// 캘린더 상태와 액션
+// task 필터 상태 초기값
+const filterInitialState = {
+  filterStatus: [],
+  filterState: [],
+};
+
+// task 필터 store 생성
+const useTaskFilterStore = create<TaskFilterStore & TaskFilterActions>(
+  (set) => ({
+    ...filterInitialState,
+    actions: {
+      setTaskFilter: (filterStatus: TaskStatus, filterState: TaskState) => {
+        set((state) => {
+          return {
+            ...state,
+            status: Array.from(new Set([...state.filterStatus, filterStatus])),
+            state: Array.from(new Set([...state.filterState, filterState])),
+          };
+        });
+      },
+    },
+  }),
+);
+
+// 캘린더 상태와 액션 반환
 export const useCalendarState = () =>
   useCalendarStore((state) => ({
     currentDate: state.currentDate,
   }));
 export const useCalendarActions = () =>
   useCalendarStore((state) => state.actions);
+
+// task 필터 상태와 액션 반환
+export const useTaskFilterState = () =>
+  useTaskFilterStore((state) => ({
+    filterStatus: state.filterStatus,
+    filterState: state.filterState,
+  }));
+
+export const useTaskFilterActions = () =>
+  useTaskFilterStore((state) => state.actions);
