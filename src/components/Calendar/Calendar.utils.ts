@@ -1,12 +1,4 @@
-import {
-  addMinutes,
-  differenceInMinutes,
-  isAfter,
-  isBefore,
-  isSameDay, // isWithinInterval,
-  parse,
-  setHours,
-} from 'date-fns';
+import { addMinutes, differenceInMinutes, isSameDay, setHours } from 'date-fns';
 
 import { TaskData } from './Calendar.types';
 
@@ -65,7 +57,7 @@ export const generateTimeSlots = (): string[] => {
 export const sortSchedules = (schedules: TaskData[]) => {
   // 아직 어떻게 정렬할지 몰라서 any 처리
   return schedules.sort((a, b) => {
-    if (a.status !== b.status) return b.status - a.status;
+    if (a.status !== b.status) return a.status - b.status;
     if (a.endDate !== b.endDate)
       return a.endDate.getTime() - b.endDate.getTime();
     if (a.startDate !== b.startDate)
@@ -91,32 +83,11 @@ export const getGridRowStart = (startTime: Date) => {
 
 export const getSchedulesForTimeSlot = (
   schedules: TaskData[],
-  timeSlots: string[],
   currentDay: Date,
 ) => {
-  const timeSlotSchedules: Record<string, any> = {};
+  const isSameDaySchedule = schedules.filter((schedule) =>
+    isSameDay(schedule.startDate, currentDay),
+  );
 
-  timeSlots.forEach((timeSlot) => {
-    const baseTime = parse(timeSlot, 'HH:mm', currentDay);
-    const nextTime = addMinutes(baseTime, 10);
-
-    const schedulesForTimeSlot = schedules.filter((schedule) => {
-      const startDateMatches =
-        isSameDay(schedule.startDate, currentDay) &&
-        isAfter(schedule.startDate, baseTime) &&
-        isBefore(schedule.startDate, nextTime);
-
-      const endDateMatches =
-        isSameDay(schedule.endDate, currentDay) &&
-        isAfter(schedule.endDate, baseTime) &&
-        isBefore(schedule.endDate, nextTime);
-
-      console.log(startDateMatches, endDateMatches);
-      return startDateMatches || endDateMatches;
-    });
-
-    timeSlotSchedules[timeSlot] = schedulesForTimeSlot;
-  });
-
-  return timeSlotSchedules;
+  return sortSchedules(isSameDaySchedule);
 };

@@ -1,15 +1,19 @@
+import { useContext } from 'react';
+
 import { TimeTable } from '@components/TimeTable';
 import { Typography } from '@components/common/Typography';
 import { setHours } from 'date-fns';
 import styled from 'styled-components';
 import { vars } from 'token';
 
+import { CalendarContext } from './Calendar.provider';
 import { TaskData } from './Calendar.types';
 import {
   formatTimeIntl,
   generateTimeSlots,
   getGridRowStart,
   getRowSpan,
+  getSchedulesForTimeSlot,
 } from './Calendar.utils';
 
 /**
@@ -80,6 +84,7 @@ const dummySchedules: TaskData[] = Array.from({ length: 10 }, (_, i) => ({
 }));
 
 export const CalendarDay = () => {
+  const { value } = useContext(CalendarContext);
   const returnStatus = (status: number) => {
     switch (status) {
       case 0:
@@ -93,6 +98,8 @@ export const CalendarDay = () => {
     }
   };
 
+  const schedulesTimeLine = getSchedulesForTimeSlot(dummySchedules, value);
+
   return (
     <Container>
       <GraphContainer>
@@ -100,7 +107,7 @@ export const CalendarDay = () => {
           종일
         </Typography>
         <GraphItemsContainer>
-          {dummySchedules.map((schedule) => (
+          {schedulesTimeLine.map((schedule) => (
             <TimeTable
               key={schedule.id}
               variant="graph"
@@ -133,7 +140,7 @@ export const CalendarDay = () => {
         </TimeTableContainer>
 
         <TimeTableItem>
-          {dummySchedules.map((schedule, i: number) => {
+          {schedulesTimeLine.map((schedule, i: number) => {
             const rowStart = getGridRowStart(schedule.startDate);
 
             if (rowStart > 78 || rowStart < 0) return null;
