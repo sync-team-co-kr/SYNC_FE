@@ -74,8 +74,8 @@ const dummySchedules: TaskData[] = Array.from({ length: 10 }, (_, i) => ({
   title: `일정 ${i}`,
   description: '일정 설명',
   // startDate, endDate 모두 다르게 설정
-  startDate: setHours(new Date(), i),
-  endDate: setHours(new Date(), i + 1),
+  startDate: setHours(new Date(), i + 1),
+  endDate: setHours(new Date(), i + 2),
   status: i % 3,
 }));
 
@@ -135,6 +135,7 @@ export const CalendarDay = () => {
         <TimeTableItem>
           {dummySchedules.map((schedule, i: number) => {
             const rowStart = getGridRowStart(schedule.startDate);
+
             if (rowStart > 78 || rowStart < 0) return null;
             return (
               <TimeTable

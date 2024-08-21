@@ -85,6 +85,7 @@ export const getRowSpan = (startTime: Date, endTime: Date) => {
 export const getGridRowStart = (startTime: Date) => {
   const startMinutes = differenceInMinutes(startTime, setHours(startTime, 9));
   const minutesPerRow = 10;
+
   return Math.floor(startMinutes / minutesPerRow) + 2;
 };
 
