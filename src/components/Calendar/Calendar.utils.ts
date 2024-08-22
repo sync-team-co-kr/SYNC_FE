@@ -75,10 +75,6 @@ export const getRowSpan = (startTime: Date, endTime: Date) => {
 };
 
 export const getGridRowStart = (startTime: Date) => {
-  // 09:00부터 시작해서 10분 단위로 row가 증가
-  // startMinutes는 09:00부터 startTime까지의 분 차이
-  // 결과값은 9:00 이 row1 이라고 가정한다면, startTime 이 9:10 이면 row2
-  // 9:20 이면 row3 이런식으로 증가
   const startMinutes = differenceInMinutes(startTime, setHours(startTime, 9));
   const minutesPerRow = 10;
 
