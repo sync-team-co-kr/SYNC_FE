@@ -2,7 +2,6 @@ import more from '@assets/More.svg';
 import { ReactComponent as Bell } from '@assets/header/bell-icon.svg';
 import { ReactComponent as Setting } from '@assets/header/setting-icon.svg';
 import profileDefault from '@assets/man-438081_960_720.svg';
-import search from '@assets/search.svg';
 import { ConfigDropDown, MenuDropDown } from '@components/dropdown';
 import useDropdown from '@hooks/useDropdown';
 import { useLoggedInUserStore } from '@libs/store';
@@ -32,31 +31,6 @@ const HeaderList = styled.ul`
   align-items: center;
 `;
 
-const SearchContainer = styled.li`
-  width: 388px;
-  height: 38px;
-  flex-shrink: 0;
-  position: relative;
-`;
-
-const SearchBar = styled.input`
-  width: 388px;
-  height: 38px;
-  padding-left: 45px;
-  flex-shrink: 0;
-  border-radius: 19px;
-  border: 1px solid var(--main-black, #000);
-  background: #f5f6fa;
-  &::placeholder {
-    color: #202224;
-    font-family: 'Nunito Sans';
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
-  }
-`;
-
 const IconContainer = styled.div`
   padding: 4px;
   display: flex;
@@ -71,12 +45,6 @@ const IconContainer = styled.div`
       stroke: ${vars.sementic.color.primaryOrange};
     }
   }
-`;
-
-const SearchSvg = styled.img`
-  position: absolute;
-  left: 16px;
-  top: 10px;
 `;
 
 const ToolContainer = styled.li`
@@ -157,10 +125,7 @@ export default function Header() {
     <HeaderWrap>
       <Navigation>
         <HeaderList>
-          <SearchContainer>
-            <SearchBar type="text" placeholder="Search" />
-            <SearchSvg src={search} />
-          </SearchContainer>
+          <div></div>
           <ToolContainer>
             <AlarmAndSetting>
               <IconContainer>
