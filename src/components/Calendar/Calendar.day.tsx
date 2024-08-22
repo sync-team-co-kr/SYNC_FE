@@ -71,6 +71,7 @@ const TimeTableItem = styled.div`
 const TimeTableContainer = styled.div`
   display: grid;
   grid-template-rows: repeat(78, 1fr);
+  gap: 12px;
 `;
 
 const dummySchedules: TaskData[] = Array.from({ length: 10 }, (_, i) => ({
@@ -142,6 +143,7 @@ export const CalendarDay = () => {
         <TimeTableItem>
           {schedulesTimeLine.map((schedule, i: number) => {
             const rowStart = getGridRowStart(schedule.startDate);
+            console.log(schedule.startDate, rowStart);
 
             if (rowStart > 78 || rowStart < 0) return null;
             return (
