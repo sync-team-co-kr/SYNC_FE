@@ -61,17 +61,16 @@ const GraphContainer = styled.div`
 const TimeTableItem = styled.div`
   width: 100%;
   display: grid;
-  grid-template-rows: repeat(78, 1fr);
+  grid-template-rows: repeat(78, 12px);
   padding: 6px 2.5px;
   border-top: 1px solid ${vars.sementic.color.black10};
-  gap: 12px;
+  column-gap: 12px;
   grid-auto-flow: row;
 `;
 
 const TimeTableContainer = styled.div`
   display: grid;
-  grid-template-rows: repeat(78, 1fr);
-  gap: 12px;
+  grid-template-rows: repeat(78, 12px);
 `;
 
 const dummySchedules: TaskData[] = Array.from({ length: 10 }, (_, i) => ({
@@ -143,7 +142,6 @@ export const CalendarDay = () => {
         <TimeTableItem>
           {schedulesTimeLine.map((schedule, i: number) => {
             const rowStart = getGridRowStart(schedule.startDate);
-            console.log(schedule.startDate, rowStart);
 
             if (rowStart > 78 || rowStart < 0) return null;
             return (

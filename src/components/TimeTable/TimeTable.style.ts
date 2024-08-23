@@ -83,7 +83,7 @@ export const Container = styled.div<{
 }>`
   display: flex;
   cursor: pointer;
-
+  margin-top: 12px;
   ${(props) => stateStyle[props.status]};
   ${(props) =>
     props.rowSpan &&
