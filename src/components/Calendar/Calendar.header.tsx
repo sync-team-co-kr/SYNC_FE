@@ -75,6 +75,7 @@ export const CalendarHeader = () => {
           size="medium"
           text="필터"
           hasIcon
+          isSelect={isOpenFilter}
           renderIcon={<Search />}
         />
         <Button

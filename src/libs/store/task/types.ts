@@ -24,6 +24,7 @@ export type TaskFilterStore = {
 
 export type TaskFilterActions = {
   actions: {
-    setTaskFilter: (filterStatus: TaskStatus, filterState: TaskState) => void;
+    setTaskFilterStatus: (filterStatus: TaskStatus) => void;
+    setTaskFilterState: (filterState: TaskState) => void;
   };
 };

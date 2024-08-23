@@ -10,6 +10,7 @@ import { ButtonProps } from './Button.types';
  * @param iconPosition - icon 위치를 나타냅니다. 'left' | 'right' 기본은 'left' 입니다.
  * @param onClick - 클릭 이벤트를 나타냅니다.
  * @param text - 버튼 텍스트를 나타냅니다.
+ * @param isSelect - 선택 여부를 나타냅니다.
  */
 
 export const Button = ({
@@ -21,6 +22,7 @@ export const Button = ({
   onClick,
   renderIcon,
   text,
+  isSelect,
 }: ButtonProps) => (
   <CommonButton
     hasText={!!text}
@@ -28,6 +30,7 @@ export const Button = ({
     variant={variant}
     disabled={isDisabled}
     onClick={onClick}
+    isSelect={isSelect}
   >
     {hasIcon && iconPosition === 'left' && renderIcon}
     {text}

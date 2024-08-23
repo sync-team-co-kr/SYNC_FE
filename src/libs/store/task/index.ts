@@ -13,8 +13,6 @@ import type {
   CalendarStore,
   TaskFilterActions,
   TaskFilterStore,
-  TaskState,
-  TaskStatus,
 } from './types';
 
 // 캘린더 상태 초기값
@@ -69,12 +67,30 @@ const useTaskFilterStore = create<TaskFilterStore & TaskFilterActions>(
   (set) => ({
     ...filterInitialState,
     actions: {
-      setTaskFilter: (filterStatus: TaskStatus, filterState: TaskState) => {
+      setTaskFilterStatus: (filterStatus) => {
         set((state) => {
+          if (state.filterStatus.includes(filterStatus)) {
+            return {
+              filterStatus: state.filterStatus.filter(
+                (s) => s !== filterStatus,
+              ),
+            };
+          }
           return {
-            ...state,
-            status: Array.from(new Set([...state.filterStatus, filterStatus])),
-            state: Array.from(new Set([...state.filterState, filterState])),
+            filterStatus: [...state.filterStatus, filterStatus],
+          };
+        });
+      },
+
+      setTaskFilterState: (filterState) => {
+        set((state) => {
+          if (state.filterState.includes(filterState)) {
+            return {
+              filterState: state.filterState.filter((s) => s !== filterState),
+            };
+          }
+          return {
+            filterState: [...state.filterState, filterState],
           };
         });
       },
