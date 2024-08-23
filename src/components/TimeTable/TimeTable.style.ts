@@ -81,6 +81,7 @@ export const Container = styled.div<{
   gridRowStart?: number;
   rowSpan?: number;
 }>`
+  z-index: 1;
   display: flex;
   cursor: pointer;
   margin-top: 12px;

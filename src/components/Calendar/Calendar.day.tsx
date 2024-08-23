@@ -66,10 +66,31 @@ const TimeTableItem = styled.div`
   border-top: 1px solid ${vars.sementic.color.black10};
   column-gap: 12px;
   grid-auto-flow: row;
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    background: linear-gradient(
+      to bottom,
+      transparent 0%,
+      transparent calc(12px * 6 - 1px),
+      ${vars.sementic.color.black10} calc(12px * 6),
+      transparent calc(12px * 6 + 1px),
+      transparent 100%
+    );
+    background-size: 100% calc(12px * 6 + 1px);
+  }
 `;
 
 const TimeTableContainer = styled.div`
   display: grid;
+
   grid-template-rows: repeat(78, 12px);
 `;
 
