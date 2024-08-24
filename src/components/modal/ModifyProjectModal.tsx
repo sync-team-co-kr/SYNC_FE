@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
 
-import CalendarIcon from '@assets/calendar.svg';
 import CancelButton from '@assets/cancel-x.svg';
-import ProjectProfile from '@assets/project-profile.png';
-import CalendarDropdown from '@components/dropdown/CalendarDropdown';
-import useDropdown from '@hooks/useDropdown';
+import InputArea from '@components/common/InputArea';
+import InputWithCalendarArea from '@components/common/InputArea/InputWithCalendar';
+import InputWithIconArea from '@components/common/InputArea/InputWithIconArea';
 import useModal from '@hooks/useModal';
 import { useEditProject } from '@services/project/Project.hooks';
-import { format } from 'date-fns';
 import styled from 'styled-components';
 
 const ModifyProjectModalHeader = styled.section`
@@ -68,16 +66,6 @@ const InputContainer = styled.div`
   }
 `;
 
-const InputWithCover = styled.div`
-  height: 44px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  input {
-    flex-grow: 1;
-  }
-`;
-
 const LabelWithToggle = styled.div`
   display: flex;
   justify-content: space-between;
@@ -90,37 +78,12 @@ const LabelWithToggle = styled.div`
 
 const InputWithProjectPeriod = styled.div`
   display: flex;
+  justify-content: space-between;
   align-items: center;
   gap: 15px;
   align-self: stretch;
   label {
     flex-grow: 1;
-  }
-`;
-
-const InputCalendar = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: relative;
-  input {
-    width: 100%;
-    padding-right: 42px;
-  }
-`;
-
-const CalendarImgDiv = styled.div`
-  position: absolute;
-  right: 21px;
-`;
-
-const CalendarDropdownActiveButton = styled.div`
-  width: 18px;
-  height: 18px;
-  position: relative;
-  img {
-    width: 18px;
-    height: 18px;
   }
 `;
 
@@ -175,13 +138,6 @@ function ModifyProjectModal({ projectId }: ModifyProjectModalProps) {
   const [description, setDescription] = useState('');
   const [startDate, setStartDate] = useState<Date>();
   const [endDate, setEndDate] = useState<Date>();
-  const [isOpenCalendarDropdown, toggleCalendarDropdown, calendarDropdownRef] =
-    useDropdown();
-  const [
-    isOpenCalendarDropdown2,
-    toggleCalendarDropdown2,
-    calendarDropdownRef2,
-  ] = useDropdown();
   const [closeModal] = useModal();
 
   const { editProjectMutate } = useEditProject();
@@ -209,38 +165,26 @@ function ModifyProjectModal({ projectId }: ModifyProjectModalProps) {
       </ModifyProjectModalHeader>
 
       <Form>
-        <InputContainer>
-          <label>커버 & 프로젝트 명</label>
-          <InputWithCover>
-            <img src={ProjectProfile} alt="프로젝트 프로필" />
-            <input
-              type="text"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              placeholder="제목"
-            />
-          </InputWithCover>
-        </InputContainer>
+        <InputWithIconArea
+          value={title}
+          setValue={setTitle}
+          labelText="커버 & 프로젝트 명"
+          placeholderText="제목"
+        />
 
-        <InputContainer>
-          <label>부제목</label>
-          <input
-            type="text"
-            value={subTitle}
-            onChange={(e) => setSubTitle(e.target.value)}
-            placeholder="부제목"
-          />
-        </InputContainer>
+        <InputArea
+          value={subTitle}
+          setValue={setSubTitle}
+          labelText="부제목"
+          placeholderText="부제목"
+        />
 
-        <InputContainer>
-          <label>프로젝트 설명</label>
-          <input
-            type="text"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            placeholder="프로젝트 설명"
-          />
-        </InputContainer>
+        <InputArea
+          value={description}
+          setValue={setDescription}
+          labelText="프로젝트 설명"
+          placeholderText="프로젝트 설명"
+        />
 
         <InputContainer>
           <LabelWithToggle>
@@ -252,52 +196,24 @@ function ModifyProjectModal({ projectId }: ModifyProjectModalProps) {
           </LabelWithToggle>
 
           <InputWithProjectPeriod>
-            <InputCalendar>
-              <input
-                type="text"
-                value={startDate ? format(startDate, 'yyyy-MM-dd') : ''}
-                placeholder="프로젝트 시작일"
-                readOnly
-              ></input>
-              <CalendarImgDiv>
-                <CalendarDropdownActiveButton ref={calendarDropdownRef}>
-                  <img
-                    src={CalendarIcon}
-                    alt="달력 아이콘"
-                    onClick={toggleCalendarDropdown}
-                  />
-                  <CalendarDropdown
-                    isOpen={isOpenCalendarDropdown}
-                    selectedDate={startDate}
-                    setDate={setStartDate}
-                  />
-                </CalendarDropdownActiveButton>
-              </CalendarImgDiv>
-            </InputCalendar>
+            <InputWithCalendarArea
+              value={startDate}
+              setValue={setStartDate}
+              placeholderText="프로젝트 시작 날짜"
+            />
 
-            <div></div>
-            <InputCalendar>
-              <input
-                type="text"
-                value={endDate ? format(endDate, 'yyyy-MM-dd') : ''}
-                placeholder="프로젝트 종료일"
-                readOnly
-              ></input>
-              <CalendarImgDiv>
-                <CalendarDropdownActiveButton ref={calendarDropdownRef2}>
-                  <img
-                    src={CalendarIcon}
-                    alt="달력 아이콘"
-                    onClick={toggleCalendarDropdown2}
-                  />
-                  <CalendarDropdown
-                    isOpen={isOpenCalendarDropdown2}
-                    selectedDate={endDate}
-                    setDate={setEndDate}
-                  />
-                </CalendarDropdownActiveButton>
-              </CalendarImgDiv>
-            </InputCalendar>
+            <div
+              style={{
+                width: '10px',
+                height: '1px',
+                backgroundColor: '#bfbfbf',
+              }}
+            ></div>
+            <InputWithCalendarArea
+              value={endDate}
+              setValue={setEndDate}
+              placeholderText="프로젝트 종료 날짜"
+            />
           </InputWithProjectPeriod>
         </InputContainer>
 

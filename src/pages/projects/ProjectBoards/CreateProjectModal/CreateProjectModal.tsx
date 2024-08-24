@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 
 import CancelButton from '@assets/cancel-x.svg';
-import ProjectProfile from '@assets/project-profile.png';
+import InputArea from '@components/common/InputArea';
+import InputWithCalendarArea from '@components/common/InputArea/InputWithCalendar';
+import InputWithIconArea from '@components/common/InputArea/InputWithIconArea';
 import { setIsModalOpen } from '@hooks/useModal';
 import { useCreateProject } from '@services/project/Project.hooks';
 
 import StyleCreateProjectModal from './CreateProjectModal.style';
-import InputWithCalendar from './InputWithCaelndar';
 
 /** 추후 swagger에 정의된 타입으로 변경 */
 export interface ICreateProjectRequest {
@@ -16,11 +17,16 @@ export interface ICreateProjectRequest {
 }
 
 function CreateProjectModal({ closeModal }: { closeModal?: setIsModalOpen }) {
-  const [newProject, setNewProject] = useState<ICreateProjectRequest>({
+  /*
+    const [newProject, setNewProject] = useState<ICreateProjectRequest>({
     title: '',
     subTitle: '',
     description: '',
   });
+  */
+  const [title, setTitle] = useState('');
+  const [subTitle, setSubTitle] = useState('');
+  const [description, setDescription] = useState('');
   const [startDate, setStartDate] = useState<Date>();
   const [endDate, setEndDate] = useState<Date>();
   const { createProjectMutate } = useCreateProject();
@@ -29,7 +35,9 @@ function CreateProjectModal({ closeModal }: { closeModal?: setIsModalOpen }) {
     e.preventDefault();
 
     createProjectMutate({
-      ...newProject,
+      title,
+      subTitle,
+      description,
       startDate: startDate?.toISOString(),
       endDate: endDate?.toISOString(),
     });
@@ -45,45 +53,26 @@ function CreateProjectModal({ closeModal }: { closeModal?: setIsModalOpen }) {
       </StyleCreateProjectModal.Header>
 
       <StyleCreateProjectModal.Form>
-        {/* InputArea 공통 컴포넌트로 분리 */}
-        <StyleCreateProjectModal.InputArea>
-          <label>커버 & 프로젝트 명</label>
-          <StyleCreateProjectModal.InputWithCover>
-            <img src={ProjectProfile} alt="프로젝트 프로필" />
-            <input
-              type="text"
-              value={newProject.title}
-              onChange={(e) =>
-                setNewProject({ ...newProject, title: e.target.value })
-              }
-              placeholder="제목"
-            />
-          </StyleCreateProjectModal.InputWithCover>
-        </StyleCreateProjectModal.InputArea>
+        <InputWithIconArea
+          value={title}
+          setValue={setTitle}
+          labelText="커버 & 프로젝트 명"
+          placeholderText="제목"
+        />
 
-        <StyleCreateProjectModal.InputArea>
-          <label>부제목</label>
-          <input
-            type="text"
-            value={newProject.subTitle}
-            onChange={(e) =>
-              setNewProject({ ...newProject, subTitle: e.target.value })
-            }
-            placeholder="부제목"
-          />
-        </StyleCreateProjectModal.InputArea>
+        <InputArea
+          value={subTitle}
+          setValue={setSubTitle}
+          labelText="부제목"
+          placeholderText="부제목"
+        />
 
-        <StyleCreateProjectModal.InputArea>
-          <label>프로젝트 설명</label>
-          <input
-            type="text"
-            value={newProject.description}
-            onChange={(e) =>
-              setNewProject({ ...newProject, description: e.target.value })
-            }
-            placeholder="프로젝트 설명"
-          />
-        </StyleCreateProjectModal.InputArea>
+        <InputArea
+          value={description}
+          setValue={setDescription}
+          labelText="프로젝트 설명"
+          placeholderText="프로젝트 설명"
+        />
 
         <StyleCreateProjectModal.InputArea>
           <StyleCreateProjectModal.ToggleArea>
@@ -95,10 +84,24 @@ function CreateProjectModal({ closeModal }: { closeModal?: setIsModalOpen }) {
           </StyleCreateProjectModal.ToggleArea>
 
           <StyleCreateProjectModal.InputWithCalendarArea>
-            <InputWithCalendar date={startDate} setDate={setStartDate} />
+            <InputWithCalendarArea
+              value={startDate}
+              setValue={setStartDate}
+              placeholderText="프로젝트 시작 날짜"
+            />
 
-            <div></div>
-            <InputWithCalendar date={endDate} setDate={setEndDate} />
+            <div
+              style={{
+                width: '10px',
+                height: '1px',
+                backgroundColor: '#bfbfbf',
+              }}
+            ></div>
+            <InputWithCalendarArea
+              value={endDate}
+              setValue={setEndDate}
+              placeholderText="프로젝트 종료 날짜"
+            />
           </StyleCreateProjectModal.InputWithCalendarArea>
         </StyleCreateProjectModal.InputArea>
 
