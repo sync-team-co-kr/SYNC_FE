@@ -5,6 +5,7 @@ import { ReactComponent as ArrowRight } from '@assets/arrow-right.svg';
 import { ReactComponent as Search } from '@assets/searchSM.svg';
 import { ReactComponent as ProjectIcon } from '@assets/sideBar/project-icon.svg';
 import { Button } from '@components/common/Button';
+import { Portal } from '@components/common/Portal';
 import Textfield from '@components/common/Textfield';
 import { Typography } from '@components/common/Typography';
 import CalendarFilterDropdown from '@components/dropdown/CalendarFilterDropdown';
@@ -31,6 +32,7 @@ const Section = styled.div`
 export const CalendarHeader = () => {
   const { value, setValue, type } = useContext(CalendarContext);
   const filterDropdownRef = useRef(null);
+  const calendarHeaderRef = useRef(null);
 
   const [isOpenFilter, openFilter, closeFilter] = useModalState();
 
@@ -43,7 +45,7 @@ export const CalendarHeader = () => {
   };
 
   return (
-    <Container>
+    <Container ref={calendarHeaderRef}>
       <Textfield
         variant="search"
         helperText="검색어를 입력하세요"
@@ -94,12 +96,13 @@ export const CalendarHeader = () => {
           onClick={openFilter}
         />
       </Section>
-
-      <CalendarFilterDropdown
-        ref={filterDropdownRef}
-        isOpen={isOpenFilter}
-        setClose={closeFilter}
-      />
+      <Portal container={calendarHeaderRef?.current}>
+        <CalendarFilterDropdown
+          ref={filterDropdownRef}
+          isOpen={isOpenFilter}
+          setClose={closeFilter}
+        />
+      </Portal>
     </Container>
   );
 };

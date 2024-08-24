@@ -10,8 +10,8 @@ export const CalendarFilterDropdownContainer = styled.div`
   border-radius: 12px;
   box-shadow: 0px 0px 25px 0px rgba(0, 0, 0, 0.05);
   position: absolute;
-  right: 55px;
-  top: 210px;
+  right: 0;
+  top: 50px;
 `;
 
 export const CalendarFilterDropdownHeader = styled.div`

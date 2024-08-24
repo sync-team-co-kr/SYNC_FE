@@ -1,5 +1,4 @@
-import { ForwardedRef, forwardRef, useEffect } from 'react';
-import { createPortal } from 'react-dom';
+import { ForwardedRef, forwardRef, useEffect, useState } from 'react';
 
 import { Button } from '@components/common/Button';
 import Textfield from '@components/common/Textfield';
@@ -29,6 +28,7 @@ const CalendarFilterDropdown = (
   ref: ForwardedRef<HTMLDivElement>,
 ) => {
   const taskFilterState = useTaskFilterState();
+  const [search, setSearch] = useState<string>('');
   const { setTaskFilterState, setTaskFilterStatus } = useTaskFilterActions();
 
   useEffect(() => {
@@ -50,7 +50,7 @@ const CalendarFilterDropdown = (
   }, [ref]);
 
   if (isOpen) {
-    return createPortal(
+    return (
       <Component ref={ref}>
         <CalendarFilterDropdownHeader>
           <Typography color="black" variant="heading-5">
@@ -104,9 +104,9 @@ const CalendarFilterDropdown = (
             <SelectFilterOwnerItemList></SelectFilterOwnerItemList>
             <Textfield
               variant="search"
-              value={''}
-              onChange={() => {
-                console.log('검색어 입력');
+              value={search}
+              onChange={(e) => {
+                setSearch(e.target.value);
               }}
               placeholder="검색"
             />
@@ -115,8 +115,7 @@ const CalendarFilterDropdown = (
             </FilterOwnerItemList>
           </FilterOwnerList>
         </FilterDetailContainer>
-      </Component>,
-      document.body,
+      </Component>
     );
   }
   return null;
