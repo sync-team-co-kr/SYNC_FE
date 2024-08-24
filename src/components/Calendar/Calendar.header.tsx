@@ -9,6 +9,7 @@ import { Portal } from '@components/common/Portal';
 import Textfield from '@components/common/Textfield';
 import { Typography } from '@components/common/Typography';
 import CalendarFilterDropdown from '@components/dropdown/CalendarFilterDropdown';
+import CalendarTaskDropdown from '@components/dropdown/CalendarTaskDropdown';
 import { useModalState } from '@hooks/useModalState';
 import styled from 'styled-components';
 import { vars } from 'token';
@@ -31,10 +32,16 @@ const Section = styled.div`
 
 export const CalendarHeader = () => {
   const { value, setValue, type } = useContext(CalendarContext);
+  // filter dropdown
   const filterDropdownRef = useRef(null);
+  // calendar header
   const calendarHeaderRef = useRef(null);
 
+  // task dropdown
+  const taskDropdownRef = useRef(null);
+
   const [isOpenFilter, openFilter, closeFilter] = useModalState();
+  const [isOpenTask, openTask, closeTask] = useModalState();
 
   const date = returnDate(value, type);
   const handlePrevClick = () => {
@@ -93,7 +100,7 @@ export const CalendarHeader = () => {
           variant="outline"
           size="medium"
           text="일정 등록"
-          onClick={openFilter}
+          onClick={openTask}
         />
       </Section>
       <Portal container={calendarHeaderRef?.current}>
@@ -101,6 +108,14 @@ export const CalendarHeader = () => {
           ref={filterDropdownRef}
           isOpen={isOpenFilter}
           setClose={closeFilter}
+        />
+      </Portal>
+
+      <Portal container={calendarHeaderRef?.current}>
+        <CalendarTaskDropdown
+          isOpen={isOpenTask}
+          setClose={closeTask}
+          ref={taskDropdownRef}
         />
       </Portal>
     </Container>
