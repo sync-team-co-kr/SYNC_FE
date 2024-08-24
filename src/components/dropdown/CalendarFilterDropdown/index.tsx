@@ -2,6 +2,7 @@ import { ForwardedRef, forwardRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 
 import { Button } from '@components/common/Button';
+import Textfield from '@components/common/Textfield';
 import { Typography } from '@components/common/Typography';
 import { useTaskFilterActions, useTaskFilterState } from '@libs/store/task';
 import { TaskState, TaskStatus } from '@libs/store/task/types';
@@ -12,6 +13,10 @@ import {
   CalendarFilterDropdownHeader,
   FilterDetailButtonGroup,
   FilterDetailContainer,
+  FilterOwnerItem,
+  FilterOwnerItemList,
+  FilterOwnerList,
+  SelectFilterOwnerItemList,
 } from './style';
 import type { CalendarFilterDropdownProps } from './types';
 
@@ -91,6 +96,24 @@ const CalendarFilterDropdown = (
               />
             ))}
           </FilterDetailButtonGroup>
+
+          <FilterOwnerList>
+            <Typography color="black35" variant="small-text-b">
+              담당자
+            </Typography>
+            <SelectFilterOwnerItemList></SelectFilterOwnerItemList>
+            <Textfield
+              variant="search"
+              value={''}
+              onChange={() => {
+                console.log('검색어 입력');
+              }}
+              placeholder="검색"
+            />
+            <FilterOwnerItemList>
+              <FilterOwnerItem isSelected={false}></FilterOwnerItem>
+            </FilterOwnerItemList>
+          </FilterOwnerList>
         </FilterDetailContainer>
       </Component>,
       document.body,

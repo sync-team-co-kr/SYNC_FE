@@ -32,3 +32,30 @@ export const FilterDetailButtonGroup = styled.div`
   display: flex;
   gap: 8px;
 `;
+
+export const FilterOwnerList = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+`;
+
+export const FilterOwnerItemList = styled.div`
+  display: flex;
+  gap: 8px;
+  flex-direction: column;
+  max-height: 245px;
+  overflow-y: auto;
+`;
+
+export const FilterOwnerItem = styled.div<{ isSelected: boolean }>`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+`;
+
+export const SelectFilterOwnerItemList = styled.div`
+  display: flex;
+  gap: 8px;
+  max-width: 100%;
+  height: 36px;
+`;
