@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 
+import InputArea from '@components/common/InputArea';
 import {
   useDeleteProject,
   useGetProject,
@@ -36,42 +37,6 @@ const Form = styled.form`
   justify-content: center;
   align-self: stretch;
   gap: 32px;
-`;
-
-const InputContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 8px;
-  p {
-    color: #a6b3be;
-    font-feature-settings:
-      'clig' off,
-      'liga' off;
-    font-family: Inter;
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 12px; /* 85.714% */
-  }
-  input[type='text'] {
-    padding: 16px;
-    border: 1px solid var(--input-stroke, #d2dbe2);
-    border-radius: 4px;
-    display: flex;
-    align-items: center;
-    &::placeholder {
-      color: #a6b3be;
-      font-feature-settings:
-        'clig' off,
-        'liga' off;
-      font-family: Inter;
-      font-size: 14px;
-      font-style: normal;
-      font-weight: 400;
-      line-height: 12px; /* 85.714% */
-    }
-  }
 `;
 
 const ButtonList = styled.div`
@@ -149,26 +114,19 @@ const DeleteProjectModal = ({ projectId }: DeleteProjectModalProps) => {
       </ModalHeader>
 
       <Form>
-        <InputContainer>
-          <p>프로젝트 명</p>
-          <input
-            type="text"
-            value={projectData?.title}
-            placeholder="프로젝트 1"
-            readOnly
-            disabled
-          />
-        </InputContainer>
+        <InputArea
+          value={projectData?.title || ''}
+          isDisabled={true}
+          labelText="프로젝트 명"
+          placeholderText="프로젝트 명"
+        />
 
-        <InputContainer>
-          <p>프로젝트 재입력</p>
-          <input
-            type="text"
-            value={retypeProjectTitle}
-            onChange={(e) => setRetypeProjectTitle(e.target.value)}
-            placeholder="프로젝트 명을 그대로 입력해주세요."
-          />
-        </InputContainer>
+        <InputArea
+          value={retypeProjectTitle}
+          setValue={setRetypeProjectTitle}
+          labelText="프로젝트 재입력"
+          placeholderText="프로젝트 명을 그대로 입력해 주세요."
+        />
 
         <ButtonList>
           <Cancel>취소</Cancel>
