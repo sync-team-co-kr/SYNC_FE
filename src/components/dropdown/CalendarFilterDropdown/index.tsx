@@ -4,9 +4,9 @@ import { Button } from '@components/common/Button';
 import Textfield from '@components/common/Textfield';
 import { Typography } from '@components/common/Typography';
 import { useTaskFilterActions, useTaskFilterState } from '@libs/store/task';
-import { TaskState, TaskStatus } from '@libs/store/task/types';
+import { Situation, WorkTags } from '@libs/store/task/types';
 
-import { FILTER_STATE, FILTER_STATUS } from './constants';
+import { SITUATION_TAGS, WORK_TAGS } from './constants';
 import {
   CalendarFilterDropdownContainer,
   CalendarFilterDropdownHeader,
@@ -29,7 +29,7 @@ const CalendarFilterDropdown = (
 ) => {
   const taskFilterState = useTaskFilterState();
   const [search, setSearch] = useState<string>('');
-  const { setTaskFilterState, setTaskFilterStatus } = useTaskFilterActions();
+  const { setWorkState, setSituationState } = useTaskFilterActions();
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -62,16 +62,14 @@ const CalendarFilterDropdown = (
             속성
           </Typography>
           <FilterDetailButtonGroup>
-            {Object.keys(FILTER_STATUS).map((status) => (
+            {Object.keys(WORK_TAGS).map((work) => (
               <Button
-                isSelect={taskFilterState.filterStatus.includes(
-                  status as TaskStatus,
-                )}
+                isSelect={taskFilterState.workState.includes(work as WorkTags)}
                 variant="outline"
-                text={FILTER_STATUS[status as TaskStatus]}
-                onClick={() => setTaskFilterStatus(status as TaskStatus)}
+                text={WORK_TAGS[work as WorkTags]}
+                onClick={() => setWorkState(work as WorkTags)}
                 size="small"
-                key={status}
+                key={work}
                 hasIcon={false}
               />
             ))}
@@ -82,16 +80,16 @@ const CalendarFilterDropdown = (
             상태
           </Typography>
           <FilterDetailButtonGroup>
-            {Object.keys(FILTER_STATE).map((state) => (
+            {Object.keys(SITUATION_TAGS).map((situation) => (
               <Button
-                isSelect={taskFilterState.filterState.includes(
-                  state as TaskState,
+                isSelect={taskFilterState.situationState.includes(
+                  situation as Situation,
                 )}
                 variant="outline"
-                text={FILTER_STATE[state as TaskState]}
-                onClick={() => setTaskFilterState(state as TaskState)}
+                text={SITUATION_TAGS[situation as Situation]}
+                onClick={() => setSituationState(situation as Situation)}
                 size="small"
-                key={state}
+                key={situation}
                 hasIcon={false}
               />
             ))}

@@ -14,17 +14,17 @@ export type CalendarActions = {
 // task filter store
 
 // 테스크, 서브테스크, 퀘스트
-export type TaskStatus = 'task' | 'subTask' | 'quest';
+export type WorkTags = 'task' | 'subTask' | 'quest';
 // 내 업무, 해야할 일, 진행중, 완료
-export type TaskState = 'main' | 'todo' | 'doing' | 'done';
+export type Situation = 'todo' | 'doing' | 'done';
 export type TaskFilterStore = {
-  filterStatus: TaskStatus[];
-  filterState: TaskState[];
+  workState: WorkTags[];
+  situationState: Situation[];
 };
 
 export type TaskFilterActions = {
   actions: {
-    setTaskFilterStatus: (filterStatus: TaskStatus) => void;
-    setTaskFilterState: (filterState: TaskState) => void;
+    setWorkState: (workState: WorkTags) => void;
+    setSituationState: (situationState: Situation) => void;
   };
 };

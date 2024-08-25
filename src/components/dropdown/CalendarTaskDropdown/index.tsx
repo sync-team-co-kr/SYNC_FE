@@ -1,6 +1,7 @@
 import { ForwardedRef, forwardRef, useEffect } from 'react';
 
 import { ReactComponent as Close } from '@assets/cancel-x.svg';
+import { TaskItem } from '@components/TaskItem';
 import { Button } from '@components/common/Button';
 import { Typography } from '@components/common/Typography';
 
@@ -56,7 +57,20 @@ const CalendarTaskDropdown = (
 
         <CalendarTaskDropdownContent>
           <TaskSelectItemList>
-            
+            <TaskItem
+              title="테스트"
+              description="테스트"
+              date={{
+                start: new Date(),
+                end: new Date(new Date().setHours(new Date().getHours() + 1)),
+              }}
+              works={['task']}
+              situations={['doing']}
+              thumbnail="https://via.placeholder.com/150"
+              onClick={() => {
+                console.log('click');
+              }}
+            />
           </TaskSelectItemList>
         </CalendarTaskDropdownContent>
       </Component>

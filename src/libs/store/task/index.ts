@@ -58,8 +58,8 @@ const useCalendarStore = create<CalendarStore & CalendarActions>((set) => ({
 
 // task 필터 상태 초기값
 const filterInitialState = {
-  filterStatus: [],
-  filterState: [],
+  workState: [],
+  situationState: [],
 };
 
 // task 필터 store 생성
@@ -67,30 +67,29 @@ const useTaskFilterStore = create<TaskFilterStore & TaskFilterActions>(
   (set) => ({
     ...filterInitialState,
     actions: {
-      setTaskFilterStatus: (filterStatus) => {
+      setWorkState: (workState) => {
         set((state) => {
-          if (state.filterStatus.includes(filterStatus)) {
+          if (state.workState.includes(workState)) {
             return {
-              filterStatus: state.filterStatus.filter(
-                (s) => s !== filterStatus,
+              workState: state.workState.filter((s) => s !== workState),
+            };
+          }
+          return {
+            workState: [...state.workState, workState],
+          };
+        });
+      },
+      setSituationState: (situationState) => {
+        set((state) => {
+          if (state.situationState.includes(situationState)) {
+            return {
+              situationState: state.situationState.filter(
+                (s) => s !== situationState,
               ),
             };
           }
           return {
-            filterStatus: [...state.filterStatus, filterStatus],
-          };
-        });
-      },
-
-      setTaskFilterState: (filterState) => {
-        set((state) => {
-          if (state.filterState.includes(filterState)) {
-            return {
-              filterState: state.filterState.filter((s) => s !== filterState),
-            };
-          }
-          return {
-            filterState: [...state.filterState, filterState],
+            situationState: [...state.situationState, situationState],
           };
         });
       },
@@ -109,8 +108,8 @@ export const useCalendarActions = () =>
 // task 필터 상태와 액션 반환
 export const useTaskFilterState = () =>
   useTaskFilterStore((state) => ({
-    filterStatus: state.filterStatus,
-    filterState: state.filterState,
+    workState: state.workState,
+    situationState: state.situationState,
   }));
 
 export const useTaskFilterActions = () =>

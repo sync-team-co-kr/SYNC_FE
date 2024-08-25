@@ -47,7 +47,6 @@ const GraphItemsContainer = styled.div`
   width: 100%;
   height: 158px;
   padding: 9px;
-  gap: 8px;
   overflow-y: auto;
 `;
 

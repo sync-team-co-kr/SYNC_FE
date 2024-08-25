@@ -1,4 +1,4 @@
-import { TaskState, TaskStatus } from '@libs/store/task/types';
+import { Situation, WorkTags } from '@libs/store/task/types';
 
 export interface TaskItemProps {
   title: string;
@@ -7,7 +7,8 @@ export interface TaskItemProps {
     start: Date;
     end: Date;
   };
-  state: TaskState[];
-  status: TaskStatus[];
+  works: WorkTags[];
+  situations: Situation[];
+  thumbnail?: string;
   onClick: () => void;
 }

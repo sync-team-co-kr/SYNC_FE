@@ -101,6 +101,7 @@ export const CalendarHeader = () => {
           size="medium"
           text="일정 등록"
           onClick={openTask}
+          isSelect={isOpenTask}
         />
       </Section>
       <Portal container={calendarHeaderRef?.current}>

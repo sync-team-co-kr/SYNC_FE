@@ -5,11 +5,13 @@ import { SITUATION_TAGS_STYLE, WORK_TAGS_STYLE } from './constants';
 import { SituationProperty, WorkProperty } from './types';
 
 const TagBase = styled.div`
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   padding: 4px 8px;
   border-radius: 4px;
-  font-size: ${vars.sementic.typography['small-text-b'].fontSize}
-  font-weight: ${vars.sementic.typography['small-text-b'].fontWeight}
+  font-size: ${vars.sementic.typography['small-text-b'].fontSize};
+  font-weight: ${vars.sementic.typography['small-text-b'].fontWeight};
   line-height: 14px;
 `;
 
