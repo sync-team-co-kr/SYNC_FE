@@ -3,7 +3,7 @@ import { vars } from 'token';
 
 export const CommonButton = styled.button<{
   size: 'small' | 'medium';
-  variant: 'outline' | 'fill' | 'fillGray' | 'text';
+  variant: 'outline' | 'fill' | 'fillGray' | 'text' | 'fillRed';
 }>`
   font-size: ${vars.sementic.typography['heading-5'].fontSize};
   font-weight: ${vars.sementic.typography['heading-5'].fontWeight};
@@ -23,6 +23,8 @@ export const CommonButton = styled.button<{
         return vars.sementic.color.black70;
       case 'fill':
         return vars.sementic.color.black;
+      case 'fillRed':
+        return vars.sementic.color.white;
       default:
         return vars.sementic.color.black;
     }
@@ -36,6 +38,8 @@ export const CommonButton = styled.button<{
         return vars.sementic.color.primaryOrange;
       case 'fillGray':
         return vars.sementic.color.black10;
+      case 'fillRed':
+        return vars.sementic.color.lightRed;
       case 'text':
         return 'transparent';
       default:
@@ -63,6 +67,8 @@ export const CommonButton = styled.button<{
           return 'linear-gradient(0deg, rgba(0, 0, 0, 0.05) 0%, rgba(0, 0, 0, 0.05) 100%), #FFD880';
         case 'fillGray':
           return 'linear-gradient(0deg, rgba(0, 0, 0, 0.05) 0%, rgba(0, 0, 0, 0.05) 100%), #F4F4F4;';
+        case 'fillRed':
+          return 'linear-gradient(0deg, rgba(0, 0, 0, 0.05) 0%, rgba(0, 0, 0, 0.05) 100%), #ED6863;';
         case 'text':
           return 'transparent';
         default:
@@ -75,6 +81,8 @@ export const CommonButton = styled.button<{
         case 'outline':
         case 'fillGray':
           return vars.sementic.color.black70;
+        case 'fillRed':
+          return vars.sementic.color.white;
         case 'fill':
         case 'text':
           return vars.sementic.color.black;
