@@ -1,5 +1,6 @@
-import { DeleteProjectModal, WithdrawProjectModal } from '@components/modal';
+import { WithdrawProjectModal } from '@components/modal';
 import useModal from '@hooks/useModal';
+import DeleteProjectModal from '@pages/projects/ProjectBoards/DeleteProjectModal/DeleteProjectModal';
 import ModifyProjectModal from '@pages/projects/ProjectBoards/ModifyProjectModal/ModifyProjectModal';
 import styled from 'styled-components';
 

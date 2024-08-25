@@ -7,7 +7,7 @@ export const CommonButton = styled.button<{
     | 'outline'
     | 'fill'
     | 'fillGray'
-    | 'text'
+    | 'text' | 'fillRed'
     | 'task'
     | 'subTask'
     | 'quest';
@@ -33,6 +33,8 @@ export const CommonButton = styled.button<{
         return vars.sementic.color.black70;
       case 'fill':
         return vars.sementic.color.black;
+      case 'fillRed':
+        return vars.sementic.color.white;
       case 'task':
         return vars.sementic.color.purple;
       case 'subTask':
@@ -55,6 +57,8 @@ export const CommonButton = styled.button<{
         return vars.sementic.color.primaryOrange;
       case 'fillGray':
         return vars.sementic.color.black10;
+      case 'fillRed':
+        return vars.sementic.color.lightRed;
       case 'text':
         return 'transparent';
       default:
@@ -125,6 +129,8 @@ export const CommonButton = styled.button<{
           return 'linear-gradient(0deg, rgba(0, 0, 0, 0.05) 0%, rgba(0, 0, 0, 0.05) 100%), #FFD880';
         case 'fillGray':
           return 'linear-gradient(0deg, rgba(0, 0, 0, 0.05) 0%, rgba(0, 0, 0, 0.05) 100%), #F4F4F4;';
+        case 'fillRed':
+          return 'linear-gradient(0deg, rgba(0, 0, 0, 0.05) 0%, rgba(0, 0, 0, 0.05) 100%), #ED6863;';
         case 'text':
           return 'transparent';
         case 'task':
@@ -143,6 +149,8 @@ export const CommonButton = styled.button<{
         case 'outline':
         case 'fillGray':
           return vars.sementic.color.black70;
+        case 'fillRed':
+          return vars.sementic.color.white;
         case 'fill':
         case 'text':
           return vars.sementic.color.black;

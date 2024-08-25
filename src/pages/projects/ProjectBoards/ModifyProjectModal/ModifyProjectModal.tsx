@@ -112,7 +112,6 @@ function ModifyProjectModal({ projectId }: ModifyProjectModalProps) {
             onClick={handleModifyProject}
             text="완료"
           />
-          <input type="submit" value="완료" onClick={handleModifyProject} />
         </StyleModifyProjectModal.Submit>
       </StyleModifyProjectModal.Form>
     </>
