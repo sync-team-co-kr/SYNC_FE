@@ -5,5 +5,5 @@ export default interface Project {
   description: string;
   startDate: Date;
   endDate: Date;
-  // memberIds: number[]; // 실제 response에는 없는 필드
+  memberIds: number[]; // 실제 response에는 없는 필드
 }
