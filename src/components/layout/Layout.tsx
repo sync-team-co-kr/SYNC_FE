@@ -15,6 +15,7 @@ const Main = styled.main`
   flex-direction: column;
   background-color: ${vars.sementic.color.primaryLightOrange};
   padding: 68px 0 0 80px;
+  height: 100vh;
   box-sizing: border-box;
 `;
 
