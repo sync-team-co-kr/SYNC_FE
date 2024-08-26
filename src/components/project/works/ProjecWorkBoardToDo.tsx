@@ -3,7 +3,6 @@ import { Typography } from '@components/common/Typography';
 import { ReactComponent as WorkboxIcon } from '@assets/projects/workbox.svg';
 import { ReactComponent as CreateIcon } from '@assets/projects/create.svg';
 import { useState } from 'react';
-import { Button } from '@components/common/Button';
 import { vars } from 'token';
 import ProjectCreateWorkBoard from './ProjectCreateWorkBoard';
 import WorkBoard from './WorkBoard';
@@ -50,14 +49,6 @@ const TitleDetail = styled.div`
   gap: 4px;
 `;
 
-const ProjectFooter = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 8px;
-  padding: 8px;
-`;
-
 const ProjectCreatWork = styled.button`
   display: flex;
   justify-content: baseline;
@@ -94,9 +85,15 @@ const ProjectWorkBoardToDo = ({
   workBoardVisible = true,
 }: ProjectWorkBoardToDoProps) => {
   const [isClicked, setIsClick] = useState(false);
+  const [workBoards, setWorkBoards] = useState<any[]>([]); // 워크보드 상태
 
   const handleClick = (value: boolean | ((prevState: boolean) => boolean)) => {
     setIsClick(value);
+  };
+
+  const handleTaskCreated = (newTask: any) => {
+    setWorkBoards([...workBoards, newTask]);
+    setIsClick(false); // 작업 생성 후 창 닫기
   };
 
   return (
@@ -106,33 +103,15 @@ const ProjectWorkBoardToDo = ({
           <Typography variant="heading-5" color={titleColor}>{title}</Typography>
           <TitleDetail>
             <WorkboxIcon stroke={vars.sementic.color[titleColor]} />
-            <Typography variant="heading-4" color={titleColor}>{count}</Typography>
+            <Typography variant="heading-4" color={titleColor}>{count + workBoards.length}</Typography>
           </TitleDetail>
         </ProjectWorkBoardTitle>
       </ProjectWorkBoardHeader>
-      {workBoardVisible && <WorkBoard />}
+      {workBoardVisible && workBoards.map((board, index) => (
+        <WorkBoard key={index} {...board} />
+      ))}
       {isClicked ? (
-        <>
-          <ProjectCreateWorkBoard />
-          <ProjectFooter>
-            <Button
-              size="small"
-              variant="text"
-              hasIcon={false}
-              isDisabled={false}
-              onClick={() => handleClick(false)}
-              text="취소"
-            />
-            <Button
-              size="small"
-              variant="fill"
-              hasIcon={false}
-              isDisabled={false}
-              onClick={() => handleClick(false)}
-              text="확인"
-            />
-          </ProjectFooter>
-        </>
+        <ProjectCreateWorkBoard onClose={() => handleClick(false)} onTaskCreated={handleTaskCreated} />
       ) : (
         <ProjectCreatWork onClick={() => handleClick(true)}>
           <Icon>
@@ -146,43 +125,3 @@ const ProjectWorkBoardToDo = ({
 };
 
 export default ProjectWorkBoardToDo;
-
-
-
-
-/*
-  
-  interface Member {
-    profileImg: string;
-    userId: string;
-    username: string;
-  }
-
-  interface APIResponse {
-    value: Member;
-  }
-
-  const MemberProfile = ({ memberId }: { memberId: number }) => {
-  const [member, setMember] = useState<Member | null>(null);
-  const fetchMemberDetail = async (userId: number) => {
-    const response: AxiosResponse<APIResponse, any> =
-      await requiredJwtTokeninstance.get(`/api/user/info`, {
-        params: {
-          userId,
-        },
-      });
-    return response;
-  };
-
-  useEffect(() => {
-    fetchMemberDetail(memberId).then((res) => setMember(res.data.value));
-  }, []);
-
-  return <li>{member?.username.slice(-2)}</li>;
-};
-
-
-  project.memberIds.map((memberId) => (
-    <MemberProfile key={project.projectId} memberId={memberId} />
-  ))
-*/

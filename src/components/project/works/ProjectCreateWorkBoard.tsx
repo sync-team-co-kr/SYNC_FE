@@ -1,9 +1,10 @@
+import React, { useState } from 'react';
 import styled from 'styled-components';
+import { Button } from '@components/common/Button';
 import { Typography } from '@components/common/Typography';
-import { vars } from 'token';
-import React from 'react';
-import createworkBoardimg from '@assets/projects/createworkboard.png'
-
+import createworkBoardimg from '@assets/projects/createworkboard.png';
+import { createTask } from '@services/works/api'; 
+import { AxiosResByData } from '@customTypes/common'; // 실제 데이터 타입
 
 const ProjectWorkBoard = styled.li`
   background: none;
@@ -30,7 +31,7 @@ const TitleDetail = styled.div`
   justify-content: end;
   align-items: center;
   flex-grow: 1;
-  gap:4px;
+  gap: 4px;
 `;
 
 const ProjectInput = styled.div`
@@ -43,10 +44,10 @@ const ProjectInput = styled.div`
   background: #ffffff;
 `;
 
-const Title= styled.div`
+const Title = styled.div`
   display: flex;
   align-items: center;
-  width:100%;
+  width: 100%;
   gap: 12px;
   border-bottom: 1px solid var(--Black-White-Black-10, #f4f4f4);
   img {
@@ -57,7 +58,6 @@ const Title= styled.div`
 const InputTitle = styled.input`
   height: 40px;
   width: 100%;
-//     /* Heading 5 */
   font-family: Pretendard;
   font-size: 14px;
   font-style: normal;
@@ -68,14 +68,13 @@ const InputTitle = styled.input`
   border-bottom: 1px solid var(--Black-White-Black-10, #f4f4f4);
   gap: 8px;
   &:focus {
-    outline: none; 
+    outline: none;
     border-bottom: none;
   }
   &::placeholder {
     color: var(--Black-White-Black-35, #b3b3b3);
   }
 `;
-
 
 const Inputcontents = styled.input`
   height: 64px;
@@ -88,78 +87,124 @@ const Inputcontents = styled.input`
   text-indent: 12px;
   border-radius: 12px;
   border: none;
-  border-bottom: 1px solid ${vars.sementic.color.black10};
+  border-bottom: 1px solid var(--Black-White-Black-10, #f4f4f4);
   gap: 8px;
-    &:focus {
-    outline: none; 
+  &:focus {
+    outline: none;
     border-bottom: none;
   }
-    &::placeholder {
-      color: var(--Black-White-Black-35, #b3b3b3);
+  &::placeholder {
+    color: var(--Black-White-Black-35, #b3b3b3);
   }
 `;
 
+const ProjectFooter = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 8px;
+`;
 
+interface ProjectCreateWorkBoardProps {
+  onClose: () => void;
+  onTaskCreated: (newTask: AxiosResByData<any>) => void; // 타입을 맞춤
+}
 
-const ProjectCreateWorkBoard=() => {
-  return(
+const ProjectCreateWorkBoard = ({ onClose, onTaskCreated }: ProjectCreateWorkBoardProps) => {
+  const [workBoard, setWorkBoard] = useState({
+    description: '',
+    endDate: new Date().toISOString(),
+    startDate: new Date().toISOString(),
+    status: 2,
+    title: '',
+  });
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setWorkBoard((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleCreateTask = async () => {
+    try {
+      const response: AxiosResByData<any> = await createTask({
+        ...workBoard,
+        projectId: 1, // 실제 프로젝트 ID를 여기에 입력해야 합니다.
+      });
+
+      console.log('업무가 성공적으로 생성되었습니다:', response);
+
+      if (response && response.result) {
+        console.log('업무가 성공적으로 생성되었습니다.');
+        onTaskCreated(response); // 부모 컴포넌트에 새로운 워크보드 전달
+        onClose(); // 성공적으로 생성되면 창 닫기
+      } else {
+        console.error('업무 생성 실패:', response.message);
+      }
+    } catch (error) {
+      console.error('업무 생성 중 오류 발생:', error);
+    }
+  };
+
+  return (
     <ProjectWorkBoard>
       <ProjectWorkBoardHeader>
         <ProjectWorkBoardTitle>
-          <Typography variant="small-text-b" color="black35">업무 생성</Typography>
+          <Typography variant="small-text-b" color="black35">
+            업무 생성
+          </Typography>
           <TitleDetail>
-            <Typography variant="small-text" color="black35">텍스트 자동 요약</Typography>
-            <Typography variant="small-text" color="black35">토글</Typography>
+            <Typography variant="small-text" color="black35">
+              텍스트 자동 요약
+            </Typography>
+            <Typography variant="small-text" color="black35">
+              토글
+            </Typography>
           </TitleDetail>
         </ProjectWorkBoardTitle>
       </ProjectWorkBoardHeader>
       <ProjectInput>
         <Title>
-          <img src={createworkBoardimg}/>
-          <InputTitle type='text' placeholder='제목을 입력해주세요.'/>
+          <img src={createworkBoardimg} />
+          <InputTitle
+            type="text"
+            placeholder="제목을 입력해주세요."
+            name="title"
+            value={workBoard.title}
+            onChange={handleInputChange}
+          />
         </Title>
-        <Inputcontents type='text' placeholder='내용을 입력해주세요.'/>
+        <Inputcontents
+          type="text"
+          placeholder="내용을 입력해주세요."
+          name="description"
+          value={workBoard.description}
+          onChange={handleInputChange}
+        />
       </ProjectInput>
+      <ProjectFooter>
+        <Button
+          size="small"
+          variant="text"
+          hasIcon={false}
+          isDisabled={false}
+          onClick={onClose}
+          text="취소"
+        />
+        <Button
+          size="small"
+          variant="fill"
+          hasIcon={false}
+          isDisabled={false}
+          onClick={handleCreateTask}
+          text="확인"
+        />
+      </ProjectFooter>
     </ProjectWorkBoard>
-  )
+  );
 };
-
 
 export default ProjectCreateWorkBoard;
-
-/*
-  
-  interface Member {
-    profileImg: string;
-    userId: string;
-    username: string;
-  }
-
-  interface APIResponse {
-    value: Member;
-  }
-
-  const MemberProfile = ({ memberId }: { memberId: number }) => {
-  const [member, setMember] = useState<Member | null>(null);
-  const fetchMemberDetail = async (userId: number) => {
-    const response: AxiosResponse<APIResponse, any> =
-      await requiredJwtTokeninstance.get(`/api/user/info`, {
-        params: {
-          userId,
-        },
-      });
-    return response;
-  };
-
-  useEffect(() => {
-    fetchMemberDetail(memberId).then((res) => setMember(res.data.value));
-  }, []);
-
-  return <li>{member?.username.slice(-2)}</li>;
-};
-
-
-  project.memberIds.map((memberId) => (
-    <MemberProfile key={project.projectId} memberId={memberId} />
-  ))
-*/
