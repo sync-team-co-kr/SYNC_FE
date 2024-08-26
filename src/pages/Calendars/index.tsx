@@ -1,10 +1,9 @@
-import { CalendarDay } from '@components/Calendar/Calendar.day';
-import { CalendarMonth } from '@components/Calendar/Calendar.month';
-import { CalendarWeek } from '@components/Calendar/Calendar.week';
+import { Calendar } from '@components/Calendar';
 import { Tab } from '@components/Tabs/Tab';
 import { TabList } from '@components/Tabs/Tab.list';
 import { TabPanel, TabPanels } from '@components/Tabs/Tab.panel';
 import { Tabs } from '@components/Tabs/Tabs';
+import { useCalendarActions, useCalendarState } from '@libs/store/task';
 import styled from 'styled-components';
 
 const CalenderContainer = styled.div`
@@ -15,6 +14,9 @@ const CalenderContainer = styled.div`
 `;
 
 export const Calendars = () => {
+  const { currentDate } = useCalendarState();
+  const { setCurrentDate } = useCalendarActions();
+
   return (
     <CalenderContainer>
       <Tabs>
@@ -26,13 +28,25 @@ export const Calendars = () => {
 
         <TabPanels>
           <TabPanel>
-            <CalendarDay />
+            <Calendar
+              type="day"
+              value={currentDate}
+              setValue={setCurrentDate}
+            />
           </TabPanel>
           <TabPanel>
-            <CalendarWeek />
+            <Calendar
+              type="week"
+              value={currentDate}
+              setValue={setCurrentDate}
+            />
           </TabPanel>
           <TabPanel>
-            <CalendarMonth />
+            <Calendar
+              value={currentDate}
+              setValue={setCurrentDate}
+              type="month"
+            />
           </TabPanel>
         </TabPanels>
       </Tabs>

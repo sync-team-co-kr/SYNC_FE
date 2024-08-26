@@ -4,6 +4,8 @@ import { vars } from 'token';
 export const CommonButton = styled.button<{
   size: 'small' | 'medium';
   variant: 'outline' | 'fill' | 'fillGray' | 'text' | 'fillRed';
+  hasText: boolean;
+  isSelect?: boolean;
 }>`
   font-size: ${vars.sementic.typography['heading-5'].fontSize};
   font-weight: ${vars.sementic.typography['heading-5'].fontWeight};
@@ -12,7 +14,7 @@ export const CommonButton = styled.button<{
   justify-content: center;
   align-items: center;
   gap: 12px;
-  padding: 8px 24px;
+  padding: ${({ hasText }) => (hasText ? '12px 16px' : '12px')};
   height: ${({ size }) => (size === 'small' ? '36px' : '42px')};
 
   color: ${({ variant }) => {
@@ -58,6 +60,24 @@ export const CommonButton = styled.button<{
     background 0.3s ease-in-out,
     color 0.3s ease-in-out;
 
+  ${({ isSelect, variant }) => {
+    switch (variant) {
+      case 'outline':
+        return isSelect ? `background: ${vars.sementic.color.black10};` : '';
+      case 'fill':
+        return isSelect
+          ? `background: ${vars.sementic.color.primaryOrange};`
+          : '';
+      case 'fillGray':
+        return isSelect ? `background: ${vars.sementic.color.black20};` : '';
+      case 'text':
+        return isSelect ? `background: ${vars.sementic.color.black10};` : '';
+      default:
+        return isSelect
+          ? `background: ${vars.sementic.color.primaryOrange};`
+          : '';
+    }
+  }};
   &:hover {
     background: ${({ variant }) => {
       switch (variant) {

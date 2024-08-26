@@ -8,5 +8,6 @@ export const TypographyComponent = styled.p<TypographyProps>`
   font-weight: ${({ variant }) => vars.sementic.typography[variant].fontWeight};
   color: ${({ color }) => vars.sementic.color[color]};
   line-height: 1.5;
+
   font-family: Pretendard;
 `;
