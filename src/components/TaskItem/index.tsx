@@ -57,7 +57,7 @@ export const TaskItem = ({
             {title}
           </Typography>
           <Typography variant="small-text-b" color="black35">
-            {description}
+            {subTitle}
           </Typography>
         </TaskItemContentText>
       </TaskItemContent>
