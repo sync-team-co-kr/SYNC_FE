@@ -4,9 +4,9 @@ import projectCalendar from '@assets/calendar.svg';
 import meatballs from '@assets/meatballs.svg';
 import projectIcon from '@assets/project-icon.png';
 import { Typography } from '@components/common';
-import ProjectDropdownMenu from '@components/dropdown/ProjectDropdownMenu';
 import { Project } from '@customTypes/project';
 import useDropdown from '@hooks/useDropdown';
+import ProjectSettingsDropdown from '@pages/projects/ProjectSettingsDropdown/ProjectSettingsDropdown';
 import generateNormalDate from '@utils/generateNormalDate';
 import styled from 'styled-components';
 
@@ -38,7 +38,7 @@ const ProjectBoardItem = ({ project }: { project: Project }) => {
             alt="보드 더보기"
             onClick={toggleProjectDropdownMenu}
           />
-          <ProjectDropdownMenu
+          <ProjectSettingsDropdown
             isOpen={isOpenProjectDropdownMenu}
             projectId={project.projectId}
           />
