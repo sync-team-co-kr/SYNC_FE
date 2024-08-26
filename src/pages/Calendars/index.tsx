@@ -39,14 +39,6 @@ export const Calendars = () => {
 
   const projectListDropdownRef = useRef(null);
 
-  const handleProjectListDropdown = () => {
-    if (isOpenProjectListDropdown) {
-      closeProjectListDropdown();
-    } else {
-      openProjectListDropdown();
-    }
-  };
-
   return (
     <CalenderContainer>
       <ProjectListDropdownContainer>
@@ -56,6 +48,7 @@ export const Calendars = () => {
           iconPosition="right"
           size="medium"
           text="전체보기"
+          onClick={openProjectListDropdown}
           renderIcon={
             !isOpenProjectListDropdown ? (
               <ArrowBottom />
@@ -67,7 +60,6 @@ export const Calendars = () => {
               />
             )
           }
-          onClick={handleProjectListDropdown}
         />
         <ProjectListDropdown
           isOpen={isOpenProjectListDropdown}
