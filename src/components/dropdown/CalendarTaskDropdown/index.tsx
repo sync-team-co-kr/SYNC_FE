@@ -59,7 +59,7 @@ const CalendarTaskDropdown = (
           <TaskSelectItemList>
             <TaskItem
               title="테스트"
-              description="테스트"
+              subTitle="테스트"
               date={{
                 start: new Date(),
                 end: new Date(new Date().setHours(new Date().getHours() + 1)),

@@ -28,7 +28,7 @@ import { TaskItemProps } from './types';
 
 export const TaskItem = ({
   title,
-  description,
+  subTitle,
   date,
   works,
   situations,

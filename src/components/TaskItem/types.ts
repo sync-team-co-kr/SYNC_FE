@@ -2,7 +2,7 @@ import { Situation, WorkTags } from '@libs/store/task/types';
 
 export interface TaskItemProps {
   title: string;
-  description: string;
+  subTitle: string;
   date: {
     start: Date;
     end: Date;
