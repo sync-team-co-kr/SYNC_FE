@@ -1,12 +1,12 @@
 import { RefObject, useEffect } from 'react';
 
-export function useHandleOutside(
+export function useHandleOutsideHooks(
   ref: RefObject<HTMLElement>,
   callback: () => void,
 ) {
   useEffect(() => {
-    const handleOutside = (event: MouseEvent) => {
-      if (ref.current && !ref.current.contains(event.target as Node)) {
+    const handleOutsideClick = (event: MouseEvent) => {
+      if (!!ref && ref.current && !ref.current.contains(event.target as Node)) {
         callback();
       }
     };
@@ -17,10 +17,10 @@ export function useHandleOutside(
       }
     };
 
-    document.addEventListener('mousedown', handleOutside);
+    document.addEventListener('mousedown', handleOutsideClick);
     document.addEventListener('keydown', handleEscape);
     return () => {
-      document.removeEventListener('mousedown', handleOutside);
+      document.removeEventListener('mousedown', handleOutsideClick);
       document.removeEventListener('keydown', handleEscape);
     };
   }, [ref, callback]);
