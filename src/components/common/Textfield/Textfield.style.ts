@@ -5,7 +5,7 @@ import { Variant } from './Textfield.types';
 
 export const Element = styled.div<{ width: string }>`
   width: ${(props) => props.width};
-  height: fit-content;
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -69,12 +69,13 @@ const underlinedInputContainerStyle = css({
 });
 
 const searchInputContainerStyle = css({
-  border: `1px solid ${vars.sementic.color.black20}`,
+  border: `1px solid ${vars.sementic.color.black10}`,
   borderRadius: '8px',
   boxSizing: 'border-box',
   width: '100%',
   display: 'flex',
   alignItems: 'center',
+  padding: '8px 12px',
   backgroundColor: vars.sementic.color.white,
 
   '&:hover': {
@@ -107,7 +108,7 @@ export const TextfieldContainer = styled.div<{
         return outlinedInputContainerStyle;
     }
   }}
-  padding: 12px 8px;
+  padding: ${(props) => props.variant !== 'search' && '12px 8px'};
   width: 100%;
   display: flex;
   align-items: center;

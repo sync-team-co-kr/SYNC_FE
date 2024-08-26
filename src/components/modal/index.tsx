@@ -1,4 +1,3 @@
-import CreateProjectModal from './CreateProjectModal';
 import DeleteAccountModal from './DeleteAccountModal';
 import DeleteProjectModal from './DeleteProjectModal';
 import EmailUpdateModal from './EmailUpdateModal';
@@ -8,7 +7,6 @@ import ProfileUpdateModel from './ProfileUpdateModal';
 import WithdrawProjectModal from './WithdrawProjectModal';
 
 export {
-  CreateProjectModal,
   DeleteAccountModal,
   DeleteProjectModal,
   EmailUpdateModal,

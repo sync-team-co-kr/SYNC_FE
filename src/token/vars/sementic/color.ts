@@ -22,8 +22,11 @@ export const color = {
   negativeRed: '#ED6863',
   alertLightOrange: '#FFF5E8',
   alertOrange: '#FF8A00',
+  strokeLightOrange: '#FFE4C0',
   lightGreen: '#F4FBD8',
-  green: '#9BC202',
+  strokeLightGreen: '#CBFFD3',
+  green: '#23B531',
   lightPurple: '#F1E4FF',
+  strokeLightPurple: '#E9D5FF',
   purple: '#9E48FF',
 } as const;
