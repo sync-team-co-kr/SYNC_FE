@@ -17,9 +17,15 @@ const CalenderContainer = styled.div`
   flex-direction: column;
   width: 100%;
   height: 100%;
-  align-items: flex-start;
 `;
 
+const ProjectListDropdownContainer = styled.div`
+  display: flex;
+  padding: 12px 40px 0 40px;
+  width: 100%;
+  align-items: flex-start;
+  position: relative;
+`;
 export const Calendars = () => {
   // project list dropdown
   const [
@@ -33,21 +39,42 @@ export const Calendars = () => {
 
   const projectListDropdownRef = useRef(null);
 
+  const handleProjectListDropdown = () => {
+    if (isOpenProjectListDropdown) {
+      closeProjectListDropdown();
+    } else {
+      openProjectListDropdown();
+    }
+  };
+
   return (
     <CalenderContainer>
-      <Button
-        variant="text"
-        hasIcon={true}
-        size="medium"
-        text="전체보기"
-        renderIcon={<ArrowBottom />}
-        onClick={openProjectListDropdown}
-      />
-      <ProjectListDropdown
-        isOpen={isOpenProjectListDropdown}
-        setClose={closeProjectListDropdown}
-        ref={projectListDropdownRef}
-      />
+      <ProjectListDropdownContainer>
+        <Button
+          variant="text"
+          hasIcon={true}
+          iconPosition="right"
+          size="medium"
+          text="전체보기"
+          renderIcon={
+            !isOpenProjectListDropdown ? (
+              <ArrowBottom />
+            ) : (
+              <ArrowBottom
+                style={{
+                  transform: 'rotate(180deg)',
+                }}
+              />
+            )
+          }
+          onClick={handleProjectListDropdown}
+        />
+        <ProjectListDropdown
+          isOpen={isOpenProjectListDropdown}
+          setClose={closeProjectListDropdown}
+          ref={projectListDropdownRef}
+        />
+      </ProjectListDropdownContainer>
       <Tabs>
         <TabList>
           <Tab>일</Tab>
