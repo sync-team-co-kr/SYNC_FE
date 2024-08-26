@@ -5,28 +5,24 @@ import { DropdownItem, DropdownItemText, ImageWrapper } from './style';
 
 interface ProjectDropdownItemProps {
   projectId: number;
-  title: string;
-  subTitle: string;
 }
 
 export const ProjectDropdownItem = ({
   projectId,
-  title,
-  subTitle,
 }: ProjectDropdownItemProps) => {
   const { projectData } = useGetProject(projectId);
 
-  console.log(projectData);
+  if (!projectData) return null;
 
   return (
     <DropdownItem>
       <ImageWrapper></ImageWrapper>
       <DropdownItemText>
         <Typography variant="heading-4" color="black">
-          {title}
+          {projectData.title}
         </Typography>
         <Typography variant="small-text-b" color="black35">
-          {subTitle}
+          {projectData.subTitle}
         </Typography>
       </DropdownItemText>
     </DropdownItem>

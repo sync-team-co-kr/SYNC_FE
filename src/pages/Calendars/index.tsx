@@ -9,7 +9,10 @@ import { Tabs } from '@components/Tabs/Tabs';
 import { Button } from '@components/common/Button';
 import { ProjectListDropdown } from '@components/dropdown/ProjectListDropdown';
 import { useModalState } from '@hooks/useModalState';
-import { useCalendarActions, useCalendarState } from '@libs/store/task';
+import {
+  useCalendarActions,
+  useCalendarState,
+} from '@libs/store/task/calendar';
 import styled from 'styled-components';
 
 const CalenderContainer = styled.div`

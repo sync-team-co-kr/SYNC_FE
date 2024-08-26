@@ -20,8 +20,6 @@ export const ProjectListDropdown = forwardRef<
           <ProjectDropdownItem
             key={project.projectId}
             projectId={project.projectId}
-            title={project.title}
-            subTitle={project.subTitle}
           />
         ))}
     </DropdownContainer>
