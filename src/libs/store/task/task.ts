@@ -1,9 +1,11 @@
+import { Project } from '@customTypes/project';
 import { CreateTaskRequestDto } from '@services/swagger/output/data-contracts';
 import { create } from 'zustand';
 
 // 업무 생성 State
 type TaskState = {
   payload: CreateTaskRequestDto;
+  project: Project;
 };
 type TaskActions = {
   actions: {
@@ -16,6 +18,12 @@ type TaskActions = {
     setProjectId: (projectId: number) => void;
     setStatus: (status: number) => void;
     setImages: (image: File) => void;
+
+    // reset
+    resetPayload: () => void;
+
+    // project
+    setProject: (project: Project) => void;
   };
 };
 
@@ -29,6 +37,15 @@ const initialState: TaskState = {
     projectId: 0,
     status: 0,
     images: [],
+  },
+  project: {
+    projectId: 0,
+    title: '',
+    subTitle: '',
+    description: '',
+    startDate: new Date(),
+    endDate: new Date(),
+    memberIds: [],
   },
 };
 
@@ -99,6 +116,18 @@ const useTaskStore = create<TaskState & TaskActions>((set) => ({
           ...state.payload,
           images: Array.from(new Set([...(state.payload.images || []), image])),
         },
+      }));
+    },
+    resetPayload: () => {
+      set(() => ({
+        ...initialState,
+      }));
+    },
+
+    // project
+    setProject: (project) => {
+      set(() => ({
+        project,
       }));
     },
   },
