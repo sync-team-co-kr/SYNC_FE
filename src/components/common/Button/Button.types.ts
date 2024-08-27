@@ -7,6 +7,7 @@ export interface ButtonProps {
   isDisabled?: boolean;
   iconPosition?: 'left' | 'right';
   onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
-  text: string;
-
+  text?: string;
+  renderIcon?: React.ReactNode;
+  isSelect?: boolean;
 }
