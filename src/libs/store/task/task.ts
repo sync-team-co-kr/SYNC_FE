@@ -2,7 +2,9 @@ import { CreateTaskRequestDto } from '@services/swagger/output/data-contracts';
 import { create } from 'zustand';
 
 // 업무 생성 State
-type TaskState = CreateTaskRequestDto;
+type TaskState = {
+  payload: CreateTaskRequestDto;
+};
 type TaskActions = {
   actions: {
     // 업무 state 변경
@@ -13,22 +15,21 @@ type TaskActions = {
     setParentTaskId: (parentTaskId: number) => void;
     setProjectId: (projectId: number) => void;
     setStatus: (status: number) => void;
-    setImages: (images: File[]) => void;
-
-    // 업무 초기화
-    resetTask: () => void;
+    setImages: (image: File) => void;
   };
 };
 
 const initialState: TaskState = {
-  title: '',
-  description: '',
-  startDate: '',
-  endDate: '',
-  parentTaskId: 0,
-  projectId: 0,
-  status: 0,
-  images: [],
+  payload: {
+    title: '',
+    description: '',
+    startDate: '',
+    endDate: '',
+    parentTaskId: 0,
+    projectId: 0,
+    status: 0,
+    images: [],
+  },
 };
 
 // 업무 생성 Store
@@ -37,31 +38,68 @@ const useTaskStore = create<TaskState & TaskActions>((set) => ({
   ...initialState,
   actions: {
     setTitle: (title) => {
-      set({ title });
+      set((state) => ({
+        payload: {
+          ...state.payload,
+          title,
+        },
+      }));
     },
     setDescription: (description) => {
-      set({ description });
+      set((state) => ({
+        payload: {
+          ...state.payload,
+          description,
+        },
+      }));
     },
     setStartDate: (startDate) => {
-      set({ startDate });
+      set((state) => ({
+        payload: {
+          ...state.payload,
+          startDate,
+        },
+      }));
     },
     setEndDate: (endDate) => {
-      set({ endDate });
+      set((state) => ({
+        payload: {
+          ...state.payload,
+          endDate,
+        },
+      }));
     },
     setParentTaskId: (parentTaskId) => {
-      set({ parentTaskId });
+      set((state) => ({
+        payload: {
+          ...state.payload,
+          parentTaskId,
+        },
+      }));
     },
     setProjectId: (projectId) => {
-      set({ projectId });
+      set((state) => ({
+        payload: {
+          ...state.payload,
+          projectId,
+        },
+      }));
     },
     setStatus: (status) => {
-      set({ status });
+      set((state) => ({
+        payload: {
+          ...state.payload,
+          status,
+        },
+      }));
     },
-    setImages: (images) => {
-      set({ images });
-    },
-    resetTask: () => {
-      set({ ...initialState });
+    setImages: (image) => {
+      set((state) => ({
+        payload: {
+          ...state.payload,
+          images: Array.from(new Set([...(state.payload.images || []), image])),
+        },
+      }));
     },
   },
 }));
