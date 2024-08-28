@@ -11,6 +11,7 @@ type SelectProps = {
   options: any[];
   type: 'checkbox' | 'select';
   hasSearch?: boolean;
+  label?: string;
 };
 
 export const Select = ({
@@ -19,6 +20,7 @@ export const Select = ({
   options,
   type,
   hasSearch,
+  label,
 }: SelectProps) => {
   const [isOpen, setToggleOpen] = useState(false);
 
@@ -30,6 +32,7 @@ export const Select = ({
       options={options}
       type={type}
       hasSearch={hasSearch}
+      label={label}
     >
       <SelectContainer>
         <SelectButton onClick={() => setToggleOpen(!isOpen)} />

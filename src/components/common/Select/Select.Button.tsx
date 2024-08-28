@@ -26,8 +26,6 @@ interface SelectButtonProps {
 export const SelectButton = ({ onClick }: SelectButtonProps) => {
   const selectContext = useSelectContext();
 
-  console.log('selectContext', selectContext);
-
   return (
     <SelectButtonContainer
       isOpen={selectContext.isOpen || false}

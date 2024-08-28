@@ -39,12 +39,14 @@ export const CreateTaskModal = () => {
       </ContainerHeader>
       <ContainerContent>
         <Select
+          label="프로젝트"
           value={
             project.title !== '' ? project.title : '프로젝트를 선택해 주세요'
           }
           setValue={setProject}
           options={projectListData ?? []}
           type="select"
+          hasSearch
         />
       </ContainerContent>
     </Container>
