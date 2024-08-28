@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import Textfield from '@components/common/Textfield';
 import { Typography } from '@components/common/Typography';
@@ -6,6 +6,7 @@ import { styled } from 'styled-components';
 import { vars } from 'token';
 
 import { useSelectContext } from './Select.provider';
+import { searchFilter } from './Select.utils';
 import { SelectListProps } from './types';
 
 const ListContainer = styled.div`
@@ -41,25 +42,18 @@ const ListItem = styled.div`
   transition: background 0.25s ease-in;
 `;
 
-const searchFilter = (search: string, options: any[] | undefined) => {
-  if (search.length === 0) {
-    return options;
-  }
-
-  return options?.filter((option) =>
-    option.title.toLowerCase().includes(search.toLowerCase()),
-  );
-};
-
 export const SelectList = ({ onSelect }: SelectListProps) => {
   const [search, setSearch] = useState('');
   const selectContext = useSelectContext();
+  const { isOpen } = selectContext;
 
   const [filteredOptions, setFilteredOptions] = useState<any[] | undefined>(
     selectContext.options,
   );
 
-  const { isOpen } = selectContext;
+  useEffect(() => {
+    setFilteredOptions(selectContext.options);
+  }, [selectContext.options]);
 
   const handleClick = (value: any) => {
     onSelect(value);
@@ -88,8 +82,8 @@ export const SelectList = ({ onSelect }: SelectListProps) => {
         />
       )}
       <ListItemContainer>
-        {filteredOptions?.map((option) => (
-          <ListItem key={option.value} onClick={() => handleClick(option)}>
+        {filteredOptions?.map((option, index) => (
+          <ListItem key={index} onClick={() => handleClick(option)}>
             <Typography variant="paragraph" color="black">
               {option.title}
             </Typography>

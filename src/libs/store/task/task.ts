@@ -6,6 +6,7 @@ import { create } from 'zustand';
 type TaskState = {
   payload: CreateTaskRequestDto;
   project: Project;
+  errorList: string[];
 };
 type TaskActions = {
   actions: {
@@ -24,6 +25,16 @@ type TaskActions = {
 
     // project
     setProject: (project: Project) => void;
+
+    // errorList
+    setErrorList: (errorList: string) => void;
+
+    // removeErrorList
+
+    removeErrorList: (errorList: string) => void;
+
+    // clearErrorList
+    clearErrorList: () => void;
   };
 };
 
@@ -47,6 +58,7 @@ const initialState: TaskState = {
     endDate: new Date(),
     memberIds: [],
   },
+  errorList: [],
 };
 
 // 업무 생성 Store
@@ -129,6 +141,36 @@ const useTaskStore = create<TaskState & TaskActions>((set) => ({
       set(() => ({
         project,
       }));
+    },
+
+    // errorList
+    setErrorList: (errorList) => {
+      set((state) => {
+        return {
+          ...state,
+          errorList: Array.from(new Set([...state.errorList, errorList])),
+        };
+      });
+    },
+
+    // errorList 삭제
+    removeErrorList: (errorList) => {
+      set((state) => {
+        return {
+          ...state,
+          errorList: state.errorList.filter((error) => error !== errorList),
+        };
+      });
+    },
+
+    // errorList 초기화
+    clearErrorList: () => {
+      set((state) => {
+        return {
+          ...state,
+          errorList: [],
+        };
+      });
     },
   },
 }));
