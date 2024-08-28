@@ -7,7 +7,11 @@ export const CommonButton = styled.button<{
     | 'outline'
     | 'fill'
     | 'fillGray'
-    | 'text' | 'fillRed'
+    | 'text'
+    | 'task'
+    | 'subTask'
+    | 'quest'
+    | 'fillRed'
     | 'task'
     | 'subTask'
     | 'quest';
@@ -33,6 +37,12 @@ export const CommonButton = styled.button<{
         return vars.sementic.color.black70;
       case 'fill':
         return vars.sementic.color.black;
+      case 'task':
+        return vars.sementic.color.purple;
+      case 'subTask':
+        return vars.sementic.color.alertOrange;
+      case 'quest':
+        return vars.sementic.color.green;
       case 'fillRed':
         return vars.sementic.color.white;
       case 'task':
