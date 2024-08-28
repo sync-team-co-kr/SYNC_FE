@@ -74,10 +74,26 @@ export const CreateTaskModal = () => {
           <ButtonGroup>
             <Button
               size="small"
-              variant="outline"
+              variant="task"
               text="테스크"
               onClick={() => {
                 console.log('task');
+              }}
+            />
+            <Button
+              size="small"
+              variant="subTask"
+              text="서브 테스크"
+              onClick={() => {
+                console.log('sub task');
+              }}
+            />
+            <Button
+              size="small"
+              variant="quest"
+              text="퀘스트"
+              onClick={() => {
+                console.log('퀘스트');
               }}
             />
           </ButtonGroup>

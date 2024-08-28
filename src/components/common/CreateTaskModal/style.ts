@@ -1,4 +1,6 @@
+import { Button } from '@components/common/Button';
 import styled from 'styled-components';
+import { vars } from 'token';
 
 export const Container = styled.div`
   width: 700px;
@@ -31,4 +33,34 @@ export const SectionContainer = styled.div`
 export const ButtonGroup = styled.div`
   display: flex;
   gap: 8px;
+`;
+
+export const TaskButton = styled(Button)<{ works: string }>`
+  ${({ works }) => {
+    switch (works) {
+      case 'task':
+        return `
+        border: 1px solid ${vars.sementic.color.purple};
+        color: ${vars.sementic.color.purple};
+      `;
+
+      case 'subTask':
+        return `
+        border: 1px solid ${vars.sementic.color.alertOrange};
+        color: ${vars.sementic.color.alertOrange};
+      `;
+
+      case 'quest':
+        return `
+        border: 1px solid ${vars.sementic.color.green};
+        color: ${vars.sementic.color.green};
+      `;
+
+      default:
+        return `
+        border: 1px solid ${vars.sementic.color.purple};
+        color: ${vars.sementic.color.purple};
+      `;
+    }
+  }}
 `;

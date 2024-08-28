@@ -1,6 +1,13 @@
 export interface ButtonProps {
   size: 'small' | 'medium';
-  variant: 'outline' | 'fill' | 'fillGray' | 'text';
+  variant:
+    | 'outline'
+    | 'fill'
+    | 'fillGray'
+    | 'text'
+    | 'task'
+    | 'subTask'
+    | 'quest';
   hasIcon?: boolean;
   isDisabled?: boolean;
   iconPosition?: 'left' | 'right';
