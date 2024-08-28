@@ -51,6 +51,7 @@ export const CommonButton = styled.button<{
         return vars.sementic.color.alertOrange;
       case 'quest':
         return vars.sementic.color.green;
+
       default:
         return vars.sementic.color.black;
     }
