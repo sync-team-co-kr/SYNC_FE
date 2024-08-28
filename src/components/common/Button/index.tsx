@@ -21,6 +21,7 @@ export const Button = ({
   iconPosition = 'left',
   onClick,
   renderIcon,
+
   text,
   isSelect,
 }: ButtonProps) => (

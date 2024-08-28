@@ -30,6 +30,7 @@ export const formatTimeIntl = (date: Date) => {
   }).format(date);
 };
 
+// 10분 간격으로 time slot을 생성하는 함수
 export const generateTimeSlots = (): string[] => {
   const startHour = 9; // 시작 시간
   const endHour = 22; // 종료 시간
@@ -54,8 +55,8 @@ export const generateTimeSlots = (): string[] => {
   return slots;
 };
 
+// 일정을 정렬하는 함수
 export const sortSchedules = (schedules: TaskData[]) => {
-  // 아직 어떻게 정렬할지 몰라서 any 처리
   return schedules.sort((a, b) => {
     if (a.status !== b.status) return a.status - b.status;
     if (a.endDate !== b.endDate)
@@ -66,6 +67,7 @@ export const sortSchedules = (schedules: TaskData[]) => {
   });
 };
 
+// 시작 시간과 종료 시간을 받아서 grid row span 값을 반환
 export const getRowSpan = (startTime: Date, endTime: Date) => {
   const minutesPerRow = 10; // 10분 간격
 
@@ -74,9 +76,9 @@ export const getRowSpan = (startTime: Date, endTime: Date) => {
   return Math.ceil(totalMinutes / minutesPerRow) + 1;
 };
 
+// 시작 시간을 받아서 grid row start 값을 반환
 export const getGridRowStart = (startTime: Date) => {
   const startMinutes = differenceInMinutes(startTime, setHours(startTime, 9));
-  console.log(startMinutes);
   const minutesPerRow = 10;
 
   return Math.ceil(startMinutes / minutesPerRow) + 1;

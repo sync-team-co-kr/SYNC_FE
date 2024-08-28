@@ -3,7 +3,10 @@ import { ForwardedRef, forwardRef, useEffect, useState } from 'react';
 import { Button } from '@components/common/Button';
 import Textfield from '@components/common/Textfield';
 import { Typography } from '@components/common/Typography';
-import { useTaskFilterActions, useTaskFilterState } from '@libs/store/task';
+import {
+  useTaskFilterActions,
+  useTaskFilterState,
+} from '@libs/store/task/calendar';
 import { Situation, WorkTags } from '@libs/store/task/types';
 
 import { SITUATION_TAGS, WORK_TAGS } from './constants';

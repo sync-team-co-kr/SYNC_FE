@@ -2,12 +2,10 @@ import { useContext } from 'react';
 
 import { TimeTable } from '@components/TimeTable';
 import { Typography } from '@components/common/Typography';
-import { setHours } from 'date-fns';
 import styled from 'styled-components';
 import { vars } from 'token';
 
 import { CalendarContext } from './Calendar.provider';
-import { TaskData } from './Calendar.types';
 import {
   formatTimeIntl,
   generateTimeSlots,
@@ -15,6 +13,7 @@ import {
   getRowSpan,
   getSchedulesForTimeSlot,
 } from './Calendar.utils';
+import { dummySchedules } from './constants';
 
 /**
  * 시간대별로 일정을 보여주는 컴포넌트
@@ -93,16 +92,6 @@ const TimeTableContainer = styled.div`
   grid-template-rows: repeat(78, 12px);
 `;
 
-const dummySchedules: TaskData[] = Array.from({ length: 10 }, (_, i) => ({
-  id: i,
-  title: `일정 ${i}`,
-  description: '일정 설명',
-  // startDate, endDate 모두 다르게 설정
-  startDate: setHours(new Date(), i + 1),
-  endDate: setHours(new Date(), i + 2),
-  status: i % 3,
-}));
-
 export const CalendarDay = () => {
   const { value } = useContext(CalendarContext);
   const returnStatus = (status: number) => {
@@ -117,6 +106,8 @@ export const CalendarDay = () => {
         return 'task';
     }
   };
+
+  // const projectTasks = useTaskWithProjectState();
 
   const schedulesTimeLine = getSchedulesForTimeSlot(dummySchedules, value);
 
