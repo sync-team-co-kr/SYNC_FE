@@ -17,7 +17,7 @@ type TypographyColor = "negativeRed" | "primaryLightOrange" | "primaryOrange" | 
   "black70" | "black35" | "black20" | "black10" | "white" | "lightBlue" | "positiveBlue" | 
   "lightRed" | "alertLightOrange" | "lightPurple" | "purple";
 
-// 스타일드 컴포넌트에 타입 적용
+
 const ProjectWorkBoardContainer = styled.li<ProjectWorkBoardContainerProps>`
   width: 414px;
   min-height: 100px;
@@ -82,7 +82,7 @@ const ProjectWorkBoardToDo = ({
   titleColor = 'negativeRed',
   borderColor,
   backgroundColor,
-  workBoardVisible = true,
+  // workBoardVisible = true,
 }: ProjectWorkBoardToDoProps) => {
   const [isClicked, setIsClick] = useState(false);
   const [workBoards, setWorkBoards] = useState<any[]>([]); // 워크보드 상태
@@ -107,9 +107,10 @@ const ProjectWorkBoardToDo = ({
           </TitleDetail>
         </ProjectWorkBoardTitle>
       </ProjectWorkBoardHeader>
-      {workBoardVisible && workBoards.map((board, index) => (
+      <WorkBoard/>
+      {/* {workBoardVisible && workBoards.map((board, index) => (
         <WorkBoard key={index} {...board} />
-      ))}
+      ))} */}
       {isClicked ? (
         <ProjectCreateWorkBoard onClose={() => handleClick(false)} onTaskCreated={handleTaskCreated} />
       ) : (

@@ -1,6 +1,6 @@
 // import Add from '@assets/add.svg';
 import styled from 'styled-components';
-import ProjectWorkBoardToDo from '@components/project/works/ProjecWorkBoardToDo';
+import ProjecWorkBoardItem from '@components/project/works/ProjecWorkBoardItem';
 import { vars } from 'token';
 
 
@@ -75,21 +75,21 @@ const ProjectWorkBoardItem = () => {
         </ProjectAddButton> */}
       </ProjectBoardHeader>
       <ProjectWorkList>
-      <ProjectWorkBoardToDo
+      <ProjecWorkBoardItem
       title="해야할 일" 
       count={0} 
       titleColor="negativeRed" 
       borderColor={vars.sementic.color.black10} 
       backgroundColor={vars.sementic.color.lightRed} 
       />
-       <ProjectWorkBoardToDo 
+       <ProjecWorkBoardItem 
       title="하는 중" 
       count={0} 
       titleColor="positiveBlue" 
       borderColor={vars.sementic.color.black10} 
       backgroundColor={vars.sementic.color.lightBlue} 
       />
-      <ProjectWorkBoardToDo 
+      <ProjecWorkBoardItem 
       title="완료" 
       count={0} 
       titleColor="black35" 

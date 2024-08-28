@@ -2,9 +2,22 @@ import styled from 'styled-components';
 import workboardimg from'@assets/projects/workboard-image.png'
 import Dday from '@assets/projects/d-day-img.png'
 import bargraph from '@assets/projects/BarGrahph-img.png'
+import meatballs from '@assets/meatballs.svg';
+import WorkBoardDropdownMenu from '@components/dropdown/WorkBoardDropdownMenu';
 import {ReactComponent as WorkboxIcon} from '@assets/projects/workbox.svg'
 import { vars } from 'token';
 import { Typography } from '@components/common/Typography';
+import useDropdown from '@hooks/useDropdown';
+
+
+// interface Work {
+//   workId: number;
+//   title: string;
+//   description: string;
+//   startDate: Date;
+//   endDate: Date;
+//   memberIds: number[];
+// }
 
 const ProjectBoard = styled.li`
   padding: 12px;
@@ -17,9 +30,17 @@ const ProjectBoard = styled.li`
   margin: 8px;
 `;
 
+
 const ProjectBoardHeader = styled.section`
   display: flex;
   align-items: center;
+  justify-content: space-between;
+`;
+
+const Header = styled.section`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   gap: 8px;
   img {
     width: 24px;
@@ -27,6 +48,11 @@ const ProjectBoardHeader = styled.section`
   }
 `;
 
+
+const MeatBalls = styled.div`
+  cursor: pointer;
+  position: relative;
+`;
 
 const ProjectBoardDescription = styled.p`
   height: auto;
@@ -93,15 +119,32 @@ const Icon = styled.div`
 
 
 const WorkBoard= () => {
+  const [
+    isOpenProjectDropdownMenu,
+    toggleProjectDropdownMenu,
+    projectDropdownMenuRef,
+  ] = useDropdown();
 
   return (
     <ProjectBoard>
       <ProjectBoardHeader>
-      <img src={workboardimg}/>
-      <Typography variant="heading-4" color="black">업무명</Typography>
+        <Header>
+          <img src={workboardimg}/>
+          <Typography variant="heading-4" color="black">업무제목</Typography>
+        </Header>
+        <MeatBalls ref={projectDropdownMenuRef}>
+          <img
+            src={meatballs}
+            alt="보드 더보기"
+            onClick={toggleProjectDropdownMenu}
+          />
+          <WorkBoardDropdownMenu
+            isOpen={isOpenProjectDropdownMenu}
+          />
+        </MeatBalls>
       </ProjectBoardHeader>
       <ProjectBoardDescription>
-        <Typography variant="paragraph" color="black">요약 내용</Typography>
+        <Typography variant="paragraph" color="black">요약내용</Typography>
       </ProjectBoardDescription>
       <BarGraph>
         <img src={bargraph}/> 

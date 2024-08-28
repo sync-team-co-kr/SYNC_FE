@@ -3,7 +3,7 @@ import { Button } from '@components/common/Button';
 import CreateProjectModal from '@components/modal/CreateProjectModal';
 import { useModal } from '@hooks';
 import styled from 'styled-components';
-import ProjectWorkBoardItem from '@components/project/works/ProjectWorkBoardItem';
+import ProjectWorkBoardList from '@components/project/works/ProjectWorkBoardList';
 
 const Section = styled.section`
   display: flex;
@@ -86,7 +86,7 @@ const ProjectWorkBoards = () => {
         </ProjectAddButton> */}
       </ProjectBoardHeader>
       <ProjectWorkList>
-        <ProjectWorkBoardItem/>
+        <ProjectWorkBoardList/>
       </ProjectWorkList>
     </Section>
   );
