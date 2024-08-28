@@ -41,6 +41,8 @@ function CreateProjectModal({ closeModal }: { closeModal?: setIsModalOpen }) {
       startDate: startDate?.toISOString(),
       endDate: endDate?.toISOString(),
     });
+
+    console.log(title, subTitle, description, startDate, endDate);
   };
 
   return (
