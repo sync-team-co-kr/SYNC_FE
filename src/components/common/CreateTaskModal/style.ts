@@ -14,8 +14,21 @@ export const ContainerHeader = styled.div`
 `;
 
 export const ContainerContent = styled.div`
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: 24px;
-  grid-template-columns: repeat(2, 1fr);
+  width: 100%;
   position: relative;
+`;
+
+export const SectionContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  max-width: 338px;
+  gap: 8px;
+`;
+
+export const ButtonGroup = styled.div`
+  display: flex;
+  gap: 8px;
 `;

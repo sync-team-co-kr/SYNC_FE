@@ -5,6 +5,7 @@ export interface SelectProviderProps {
   hasSearch?: boolean;
   label?: string;
   isOpen?: boolean;
+  listLabel?: string;
 }
 
 export interface SelectListProps {

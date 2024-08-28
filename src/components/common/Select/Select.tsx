@@ -1,9 +1,11 @@
 import { useState } from 'react';
 
+import { Typography } from '@components/common/Typography';
+
 import { SelectButton } from './Select.Button';
 import { SelectList } from './Select.list';
 import { SelectProvider } from './Select.provider';
-import { SelectContainer } from './style';
+import { LabelContainer, SelectContainer } from './style';
 
 type SelectProps = {
   value: string;
@@ -12,6 +14,8 @@ type SelectProps = {
   type: 'checkbox' | 'select';
   hasSearch?: boolean;
   label?: string;
+  listLabel?: string;
+  isEssential?: boolean;
 };
 
 export const Select = ({
@@ -21,6 +25,8 @@ export const Select = ({
   type,
   hasSearch,
   label,
+  listLabel,
+  isEssential,
 }: SelectProps) => {
   const [isOpen, setToggleOpen] = useState(false);
 
@@ -33,8 +39,20 @@ export const Select = ({
       type={type}
       hasSearch={hasSearch}
       label={label}
+      listLabel={listLabel}
+      isEssential={isEssential}
     >
       <SelectContainer>
+        <LabelContainer>
+          {isEssential && (
+            <Typography variant="small-text-b" color="negativeRed">
+              *
+            </Typography>
+          )}
+          <Typography variant="small-text-b" color="black35">
+            {label}
+          </Typography>
+        </LabelContainer>
         <SelectButton onClick={() => setToggleOpen(!isOpen)} />
         <SelectList onSelect={setValue} />
       </SelectContainer>

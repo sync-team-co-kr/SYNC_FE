@@ -24,6 +24,8 @@ export const SelectProvider = ({
   hasSearch?: boolean;
   value: string;
   label?: string;
+  listLabel?: string;
+  isEssential?: boolean;
 }>) => {
   return (
     <SelectContext.Provider value={props}>{children}</SelectContext.Provider>

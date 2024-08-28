@@ -13,10 +13,11 @@ const SelectButtonContainer = styled.div<{ isOpen: boolean }>`
   padding: 12px 8px;
   border-radius: 4px;
   transition: all 0.25s ease-in;
+  cursor: pointer;
   ${({ isOpen }) =>
     isOpen
       ? `border: 2px solid ${vars.sementic.color.primaryOrange}`
-      : `border: 1px solid ${vars.sementic.color.black10}`};
+      : `border: 1px solid ${vars.sementic.color.black20}`};
 `;
 
 interface SelectButtonProps {

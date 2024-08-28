@@ -12,7 +12,7 @@ import { SelectListProps } from './types';
 const ListContainer = styled.div`
   width: 100%;
   position: absolute;
-  top: 55px;
+  top: 80px;
   left: 0;
   background: ${vars.sementic.color.white};
   box-shadow: 0px 0px 25px 0px rgba(0, 0, 0, 0.05);
@@ -70,7 +70,7 @@ export const SelectList = ({ onSelect }: SelectListProps) => {
   return (
     <ListContainer>
       <Typography variant="paragraph" color="black70">
-        {selectContext.label}
+        {selectContext.listLabel}
       </Typography>
       {selectContext.hasSearch && (
         <Textfield
