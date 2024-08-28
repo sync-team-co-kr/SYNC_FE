@@ -82,7 +82,7 @@ export const CommonButton = styled.button<{
       case 'fill':
       case 'fillGray':
       case 'text':
-        return 'none';
+        return 'transparent';
       default:
         return vars.sementic.color.black10;
     }
