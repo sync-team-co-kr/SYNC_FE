@@ -1,22 +1,18 @@
 import React from 'react';
 
-import { styled } from 'styled-components';
-import { FastOmit, IStyledComponent } from 'styled-components/dist/types';
+import { IStyledComponent, styled } from 'styled-components';
+import { FastOmit } from 'styled-components/dist/types';
 
-type createProjectModalStyleComponentList =
+type modifyProjectModalStyleComponentList =
   | 'Header'
   | 'Form'
   | 'InputArea'
-  | 'InputWithCover'
   | 'ToggleArea'
-  | 'InputWithCalendarArea'
-  | 'InputWithCaelndar'
-  | 'CalendarSVGCover'
-  | 'ActiveButton'
+  | 'CalendarArea'
   | 'Submit';
 
-const StyleCreateProjectModal: {
-  [key in createProjectModalStyleComponentList]: IStyledComponent<
+const StyleModifyProjectModal: {
+  [key in modifyProjectModalStyleComponentList]: IStyledComponent<
     'web',
     FastOmit<
       React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>,
@@ -79,15 +75,6 @@ const StyleCreateProjectModal: {
       gap: 8px;
     }
   `,
-  InputWithCover: styled.div`
-    height: 44px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    input {
-      flex-grow: 1;
-    }
-  `,
   ToggleArea: styled.div`
     display: flex;
     justify-content: space-between;
@@ -97,7 +84,7 @@ const StyleCreateProjectModal: {
       font-size: 12px;
     }
   `,
-  InputWithCalendarArea: styled.div`
+  CalendarArea: styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -105,29 +92,6 @@ const StyleCreateProjectModal: {
     align-self: stretch;
     label {
       flex-grow: 1;
-    }
-  `,
-  InputWithCaelndar: styled.div`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    position: relative;
-    input {
-      width: 100%;
-      padding-right: 42px;
-    }
-  `,
-  CalendarSVGCover: styled.div`
-    position: absolute;
-    right: 21px;
-  `,
-  ActiveButton: styled.div`
-    width: 18px;
-    height: 18px;
-    position: relative;
-    img {
-      width: 18px;
-      height: 18px;
     }
   `,
   Submit: styled.div`
@@ -162,4 +126,4 @@ const StyleCreateProjectModal: {
   `,
 };
 
-export default StyleCreateProjectModal;
+export default StyleModifyProjectModal;

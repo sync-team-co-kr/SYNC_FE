@@ -4,6 +4,7 @@ import { ReactComponent as Close } from '@assets/cancel-x.svg';
 import { TaskItem } from '@components/TaskItem';
 import { Button } from '@components/common/Button';
 import { Typography } from '@components/common/Typography';
+import { useGetProjectList } from '@services/project/Project.hooks';
 
 import {
   CalendarTaskDropdownContainer,
@@ -21,6 +22,8 @@ const CalendarTaskDropdown = (
   }: CalendarTaskDropdownProps,
   ref: ForwardedRef<HTMLDivElement>,
 ) => {
+  const { projectListData } = useGetProjectList();
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -57,20 +60,22 @@ const CalendarTaskDropdown = (
 
         <CalendarTaskDropdownContent>
           <TaskSelectItemList>
-            <TaskItem
-              title="테스트"
-              subTitle="테스트"
-              date={{
-                start: new Date(),
-                end: new Date(new Date().setHours(new Date().getHours() + 1)),
-              }}
-              works={['task']}
-              situations={['doing']}
-              thumbnail="https://via.placeholder.com/150"
-              onClick={() => {
-                console.log('click');
-              }}
-            />
+            {projectListData?.map((project) => (
+              <TaskItem
+                situations={[]}
+                onClick={() => {
+                  console.log('click');
+                }}
+                works={[]}
+                key={project.projectId}
+                title={project.title}
+                subTitle={project.subTitle}
+                date={{
+                  start: project.startDate,
+                  end: project.endDate,
+                }}
+              />
+            ))}
           </TaskSelectItemList>
         </CalendarTaskDropdownContent>
       </Component>

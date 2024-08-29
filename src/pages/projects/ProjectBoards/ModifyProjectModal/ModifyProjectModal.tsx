@@ -1,60 +1,50 @@
 import React, { useState } from 'react';
 
 import CancelButton from '@assets/cancel-x.svg';
+import { Button } from '@components/common/Button';
 import InputArea from '@components/common/InputArea';
 import InputWithCalendarArea from '@components/common/InputArea/InputWithCalendar';
 import InputWithIconArea from '@components/common/InputArea/InputWithIconArea';
-import { setIsModalOpen } from '@hooks/useModal';
-import { useCreateProject } from '@services/project/Project.hooks';
+import useModal from '@hooks/useModal';
+import { useEditProject } from '@services/project/Project.hooks';
 
-import StyleCreateProjectModal from './CreateProjectModal.style';
+import StyleModifyProjectModal from './ModifyProjectModal.style';
 
-/** 추후 swagger에 정의된 타입으로 변경 */
-export interface ICreateProjectRequest {
-  title: string;
-  subTitle: string;
-  description: string;
+interface ModifyProjectModalProps {
+  projectId: number;
 }
 
-function CreateProjectModal({ closeModal }: { closeModal?: setIsModalOpen }) {
-  /*
-    const [newProject, setNewProject] = useState<ICreateProjectRequest>({
-    title: '',
-    subTitle: '',
-    description: '',
-  });
-  */
+function ModifyProjectModal({ projectId }: ModifyProjectModalProps) {
   const [title, setTitle] = useState('');
   const [subTitle, setSubTitle] = useState('');
   const [description, setDescription] = useState('');
   const [startDate, setStartDate] = useState<Date>();
   const [endDate, setEndDate] = useState<Date>();
-  const { createProjectMutate } = useCreateProject();
+  const [closeModal] = useModal();
 
-  const handleCreateProject = async (e: React.MouseEvent<HTMLInputElement>) => {
-    e.preventDefault();
+  const { editProjectMutate } = useEditProject();
 
-    createProjectMutate({
+  const handleModifyProject = () => {
+    editProjectMutate({
+      projectId,
       title,
       subTitle,
       description,
       startDate: startDate?.toISOString(),
       endDate: endDate?.toISOString(),
     });
-
-    console.log(title, subTitle, description, startDate, endDate);
   };
 
   return (
     <>
-      <StyleCreateProjectModal.Header>
-        <h1>프로젝트 추가</h1>
+      <StyleModifyProjectModal.Header>
+        <h1>프로젝트 설정</h1>
         <button>
           <img src={CancelButton} alt="닫기" />
         </button>
-      </StyleCreateProjectModal.Header>
+      </StyleModifyProjectModal.Header>
 
-      <StyleCreateProjectModal.Form>
+      <StyleModifyProjectModal.Form>
         <InputWithIconArea
           value={title}
           setValue={setTitle}
@@ -76,16 +66,16 @@ function CreateProjectModal({ closeModal }: { closeModal?: setIsModalOpen }) {
           placeholderText="프로젝트 설명"
         />
 
-        <StyleCreateProjectModal.InputArea>
-          <StyleCreateProjectModal.ToggleArea>
+        <StyleModifyProjectModal.InputArea>
+          <StyleModifyProjectModal.ToggleArea>
             <label>일정</label>
             <div>
               <span></span>
               <div>토글</div>
             </div>
-          </StyleCreateProjectModal.ToggleArea>
+          </StyleModifyProjectModal.ToggleArea>
 
-          <StyleCreateProjectModal.InputWithCalendarArea>
+          <StyleModifyProjectModal.CalendarArea>
             <InputWithCalendarArea
               value={startDate}
               setValue={setStartDate}
@@ -104,16 +94,28 @@ function CreateProjectModal({ closeModal }: { closeModal?: setIsModalOpen }) {
               setValue={setEndDate}
               placeholderText="프로젝트 종료 날짜"
             />
-          </StyleCreateProjectModal.InputWithCalendarArea>
-        </StyleCreateProjectModal.InputArea>
+          </StyleModifyProjectModal.CalendarArea>
+        </StyleModifyProjectModal.InputArea>
 
-        <StyleCreateProjectModal.Submit>
-          <button onClick={closeModal}>취소</button>
-          <input type="submit" value="추가하기" onClick={handleCreateProject} />
-        </StyleCreateProjectModal.Submit>
-      </StyleCreateProjectModal.Form>
+        <StyleModifyProjectModal.Submit>
+          <Button
+            size="medium"
+            variant="text"
+            hasIcon={false}
+            onClick={() => closeModal(ModifyProjectModal)}
+            text="취소"
+          />
+          <Button
+            size="medium"
+            variant="fill"
+            hasIcon={false}
+            onClick={handleModifyProject}
+            text="완료"
+          />
+        </StyleModifyProjectModal.Submit>
+      </StyleModifyProjectModal.Form>
     </>
   );
 }
 
-export default CreateProjectModal;
+export default ModifyProjectModal;
