@@ -15,12 +15,14 @@ import { Typography } from '@components/common/Typography';
 import { modalStore } from '@libs/store';
 import { useTaskActions, useTaskState } from '@libs/store/task/task';
 import { useGetProjectList } from '@services/project/Project.hooks';
+import { useCreateTask } from '@services/task/Task.hooks';
 
 import { SELECT_STATUS } from './constants';
 import {
   ButtonGroup,
   Container,
   ContainerContent,
+  ContainerFooter,
   ContainerHeader,
   SectionContainer,
 } from './style';
@@ -32,7 +34,7 @@ export const CreateTaskModal = () => {
 
   // 업무 생성 모달 payload 값들을 가져오는 state
   // const { resetPayload } = useTaskActions();
-  const { payload, project } = useTaskState();
+  const { payload, project, errorList } = useTaskState();
 
   // 업무 생성 모달 payload 값들을 set 해주는 actions
   const { setProject, setTitle, setStatus } = useTaskActions();
@@ -45,7 +47,25 @@ export const CreateTaskModal = () => {
   // 검색 필터링된 프로젝트 리스트
   const [projectList, setProjectList] = useState(projectListData);
 
+  const { createTaskMutate } = useCreateTask();
+  const handleCreateTask = () => {
+    if (errorList.length > 0) {
+      alert('필수 입력값을 입력해주세요');
+      return;
+    }
+    createTaskMutate(payload, {
+      onSuccess: () => {
+        alert('업무가 생성되었습니다.');
+      },
+
+      onError: (error) => {
+        alert(error);
+      },
+    });
+  };
+
   // 프로젝트 검색
+
   const handleProjectSearch = (e: ChangeEvent<HTMLInputElement>) => {
     setProjectSearch(e.target.value);
     setProjectList(searchFilter(e.target.value, projectListData));
@@ -54,8 +74,6 @@ export const CreateTaskModal = () => {
   useEffect(() => {
     setProjectList(projectListData);
   }, [projectListData]);
-
-  console.log(payload);
 
   return (
     <Container>
@@ -316,6 +334,15 @@ export const CreateTaskModal = () => {
           </Select>
         </SectionContainer>
       </ContainerContent>
+      <ContainerFooter>
+        <Button variant="text" size="medium" text="취소" onClick={closeModal} />
+        <Button
+          variant="fill"
+          size="medium"
+          text="저장"
+          onClick={handleCreateTask}
+        />
+      </ContainerFooter>
     </Container>
   );
 };
