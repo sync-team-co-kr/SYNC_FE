@@ -30,16 +30,22 @@ import {
 export const CreateTaskModal = () => {
   const { closeModal } = modalStore();
 
+  // 업무 생성 모달 payload 값들을 가져오는 state
   // const { resetPayload } = useTaskActions();
   const { payload, project } = useTaskState();
 
+  // 업무 생성 모달 payload 값들을 set 해주는 actions
   const { setProject, setTitle, setStatus } = useTaskActions();
 
+  // projectData를 가져오는 hooks
   const { projectListData } = useGetProjectList() ?? {};
 
+  // 프로젝트 검색 state
   const [projectSearch, setProjectSearch] = useState('');
+  // 검색 필터링된 프로젝트 리스트
   const [projectList, setProjectList] = useState(projectListData);
 
+  // 프로젝트 검색
   const handleProjectSearch = (e: ChangeEvent<HTMLInputElement>) => {
     setProjectSearch(e.target.value);
     setProjectList(searchFilter(e.target.value, projectListData));
@@ -292,6 +298,21 @@ export const CreateTaskModal = () => {
               ))}
             </SelectList>
             <SelectButton />
+          </Select>
+        </SectionContainer>
+        {/* status end */}
+
+        {/* owner */}
+        <SectionContainer>
+          <LabelContainer>
+            <Typography variant="small-text-b" color="black35">
+              담당자
+            </Typography>
+          </LabelContainer>
+          {/* owner 추가되어야 함 */}
+          <Select listLabel="담당자" value={'담당자'} type="select">
+            <SelectButton />
+            {/* @TODO owner 추가시 list 뿌려주기 */}
           </Select>
         </SectionContainer>
       </ContainerContent>
