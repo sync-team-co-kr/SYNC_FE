@@ -14,4 +14,8 @@ export const LabelContainer = styled.div`
   align-items: center;
 `;
 
-
+export const TaskContainer = styled.div`
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+`;

@@ -18,7 +18,12 @@ export const CommonButton = styled.button<{
   font-size: ${vars.sementic.typography['heading-5'].fontSize};
   font-weight: ${vars.sementic.typography['heading-5'].fontWeight};
   display: inline-flex;
-  border-radius: 8px;
+  border-radius: ${({ variant }) => {
+    if (variant === 'task' || variant === 'subTask' || variant === 'quest') {
+      return '4px';
+    }
+    return '8px';
+  }};
   justify-content: center;
   outline: none;
   align-items: center;

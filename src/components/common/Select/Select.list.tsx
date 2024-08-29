@@ -22,6 +22,20 @@ const ListContainer = styled.div`
   flex-direction: column;
 `;
 
+export const SelectItem = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.25s;
+
+  &:hover {
+    background-color: ${vars.sementic.color.black10};
+  }
+`;
+
 export const SelectList = ({ children }: PropsWithChildren) => {
   const selectContext = useSelectContext();
   const { isActivated } = selectContext;

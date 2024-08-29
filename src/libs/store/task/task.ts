@@ -58,6 +58,7 @@ const initialState: TaskState = {
     endDate: new Date(),
     memberIds: [],
   },
+
   errorList: [],
 };
 

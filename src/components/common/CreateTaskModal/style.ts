@@ -23,11 +23,15 @@ export const ContainerContent = styled.div`
   position: relative;
 `;
 
-export const SectionContainer = styled.div`
+export const SectionContainer = styled.div<{
+  direction?: 'column' | 'row';
+  maxwidth?: string;
+  gap?: number;
+}>`
   display: flex;
-  flex-direction: column;
-  max-width: 338px;
-  gap: 8px;
+  flex-direction: ${({ direction }) => direction || 'column'};
+  max-width: ${({ maxwidth }) => maxwidth || '338px'};
+  gap: ${({ gap }) => gap || 8}px;
   position: relative;
 `;
 

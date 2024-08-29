@@ -32,7 +32,7 @@ export const SelectButton = () => {
       <Typography color="black70" variant="paragraph">
         {selectContext.value}
       </Typography>
-      <ArrowBottom />
+      <ArrowBottom width={18} height={18} />
     </SelectButtonContainer>
   );
 };

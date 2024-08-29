@@ -1,4 +1,4 @@
-import { createContext, useContext } from 'react';
+import { ReactNode, createContext, useContext } from 'react';
 import type { Dispatch, PropsWithChildren, SetStateAction } from 'react';
 
 import type { SelectProviderProps } from './types';
@@ -17,16 +17,14 @@ export const SelectProvider = ({
   children,
   ...props
 }: PropsWithChildren<{
-  value: string;
+  value: string | number | ReactNode;
   type: 'checkbox' | 'select';
   hasSearch?: boolean;
-  label?: string;
   isOpen?: boolean;
   listLabel?: string;
   isEssential?: boolean;
   isActivated?: boolean;
   setToggleOpen: Dispatch<SetStateAction<boolean>>;
-  setValue: (value: any[] | any) => void;
 }>) => {
   return (
     <SelectContext.Provider value={props}>{children}</SelectContext.Provider>

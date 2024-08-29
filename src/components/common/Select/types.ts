@@ -1,10 +1,10 @@
+import { ReactNode } from 'react';
+
 export interface SelectProviderProps {
-  value: string;
+  value: string | number | ReactNode;
   type: 'checkbox' | 'select';
   hasSearch?: boolean;
-  label?: string;
   listLabel?: string;
   isEssential?: boolean;
   isActivated?: boolean;
-  setValue: (value: any[] | any) => void;
 }

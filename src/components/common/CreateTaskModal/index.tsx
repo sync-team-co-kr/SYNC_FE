@@ -1,19 +1,22 @@
 // 업무 생성 모달 내 form
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 
 import { ReactComponent as CloseX } from '@assets/cancel-x.svg';
 import { Button } from '@components/common/Button';
 import { Select } from '@components/common/Select/Select';
 import { SelectButton } from '@components/common/Select/Select.button';
-import { SelectList } from '@components/common/Select/Select.list';
+import { SelectItem, SelectList } from '@components/common/Select/Select.list';
 import { searchFilter } from '@components/common/Select/Select.utils';
-import { LabelContainer } from '@components/common/Select/style';
+import { LabelContainer, TaskContainer } from '@components/common/Select/style';
+import { Tag } from '@components/common/Tag';
+import { SituationProperty } from '@components/common/Tag/types';
 import Textfield from '@components/common/Textfield';
 import { Typography } from '@components/common/Typography';
 import { modalStore } from '@libs/store';
 import { useTaskActions, useTaskState } from '@libs/store/task/task';
 import { useGetProjectList } from '@services/project/Project.hooks';
 
+import { SELECT_STATUS } from './constants';
 import {
   ButtonGroup,
   Container,
@@ -30,7 +33,7 @@ export const CreateTaskModal = () => {
   // const { resetPayload } = useTaskActions();
   const { payload, project } = useTaskState();
 
-  const { setProject } = useTaskActions();
+  const { setProject, setTitle, setStatus } = useTaskActions();
 
   const { projectListData } = useGetProjectList() ?? {};
 
@@ -41,6 +44,10 @@ export const CreateTaskModal = () => {
     setProjectSearch(e.target.value);
     setProjectList(searchFilter(e.target.value, projectListData));
   };
+
+  useEffect(() => {
+    setProjectList(projectListData);
+  }, [projectListData]);
 
   console.log(payload);
 
@@ -60,16 +67,21 @@ export const CreateTaskModal = () => {
       </ContainerHeader>
       <ContainerContent>
         {/* project name */}
-
         <SectionContainer>
+          <LabelContainer>
+            <Typography variant="small-text-b" color="negativeRed">
+              *
+            </Typography>
+            <Typography variant="small-text-b" color="black35">
+              프로젝트 명
+            </Typography>
+          </LabelContainer>
           <Select
-            label="프로젝트 명"
             listLabel="프로젝트"
             isEssential
             value={
               project.title !== '' ? project.title : '프로젝트를 선택해 주세요'
             }
-            setValue={setProject}
             type="select"
           >
             <SelectButton />
@@ -82,10 +94,20 @@ export const CreateTaskModal = () => {
                 onChange={handleProjectSearch}
               />
               {projectList?.map((projectData) => (
-                <div key={projectData.projectId}>{projectData.title}</div>
+                <SelectItem
+                  onClick={() => {
+                    setProject(projectData);
+                  }}
+                  key={projectData.projectId}
+                >
+                  <Typography variant="paragraph" color="black70">
+                    {projectData.title}
+                  </Typography>
+                </SelectItem>
               ))}
             </SelectList>
           </Select>
+          {/* project name end */}
         </SectionContainer>
         {/* task state */}
         <SectionContainer>
@@ -123,6 +145,154 @@ export const CreateTaskModal = () => {
               }}
             />
           </ButtonGroup>
+        </SectionContainer>
+        {/* task state end */}
+
+        {/* task */}
+        <SectionContainer direction="row" gap={24} maxwidth="100%">
+          <TaskContainer>
+            <LabelContainer>
+              <Typography variant="small-text-b" color="negativeRed">
+                *
+              </Typography>
+              <Typography variant="small-text-b" color="black35">
+                테스크
+              </Typography>
+            </LabelContainer>
+            <Select
+              listLabel="테스크"
+              isEssential
+              value={payload.title}
+              type="select"
+            >
+              <SelectButton />
+            </Select>
+          </TaskContainer>
+          <TaskContainer>
+            <LabelContainer>
+              <Typography variant="small-text-b" color="negativeRed">
+                *
+              </Typography>
+              <Typography variant="small-text-b" color="black35">
+                서브 테스크
+              </Typography>
+            </LabelContainer>
+            <Select
+              listLabel="테스크"
+              isEssential
+              value={payload.title}
+              type="select"
+            >
+              <SelectButton />
+            </Select>
+          </TaskContainer>
+        </SectionContainer>
+        {/* task end */}
+
+        {/* icon & task name */}
+        <SectionContainer>
+          <LabelContainer>
+            <Typography variant="small-text-b" color="negativeRed">
+              *
+            </Typography>
+            <Typography variant="small-text-b" color="black35">
+              아이콘 & 업무명
+            </Typography>
+          </LabelContainer>
+          <Textfield
+            variant="outlined"
+            placeholder="업무명을 입력해주세요"
+            value={payload.title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
+        </SectionContainer>
+        {/* icon & task end */}
+
+        {/* date */}
+        <SectionContainer>
+          <LabelContainer>
+            <Typography variant="small-text-b" color="black35">
+              일정
+            </Typography>
+          </LabelContainer>
+          <SectionContainer direction="row" gap={24}>
+            <Textfield
+              variant="outlined"
+              placeholder="날짜"
+              value={''}
+              onChange={(e) => console.log(e.target.value)}
+            />
+            <Textfield
+              variant="outlined"
+              placeholder="날짜"
+              value={''}
+              onChange={(e) => console.log(e.target.value)}
+            />
+          </SectionContainer>
+          <SectionContainer direction="row" gap={24}>
+            <Textfield
+              variant="outlined"
+              placeholder="시간"
+              value={''}
+              onChange={(e) => console.log(e.target.value)}
+            />
+            <Textfield
+              variant="outlined"
+              placeholder="시간"
+              value={''}
+              onChange={(e) => console.log(e.target.value)}
+            />
+          </SectionContainer>
+        </SectionContainer>
+        {/* date end */}
+
+        {/* description */}
+        <SectionContainer>
+          <LabelContainer>
+            <Typography variant="small-text-b" color="black35">
+              설명
+            </Typography>
+          </LabelContainer>
+          <Textfield
+            variant="outlined"
+            placeholder="설명을 입력해주세요"
+            value={payload.description}
+            onChange={(e) => console.log(e.target.value)}
+          />
+        </SectionContainer>
+        {/* description end */}
+
+        {/*  status */}
+        <SectionContainer>
+          <LabelContainer>
+            <Typography variant="small-text-b" color="black35">
+              상태
+            </Typography>
+          </LabelContainer>
+          <Select
+            listLabel="상태"
+            value={
+              <Tag
+                type="situation"
+                property={
+                  SELECT_STATUS[payload.status].value as SituationProperty
+                }
+              />
+            }
+            type="select"
+          >
+            <SelectList>
+              {Object.values(SELECT_STATUS).map((status) => (
+                <SelectItem
+                  key={status.value}
+                  onClick={() => setStatus(status.id)}
+                >
+                  <Tag type="situation" property={status.value} />
+                </SelectItem>
+              ))}
+            </SelectList>
+            <SelectButton />
+          </Select>
         </SectionContainer>
       </ContainerContent>
     </Container>
