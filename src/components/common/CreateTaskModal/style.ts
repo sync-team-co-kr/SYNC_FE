@@ -28,6 +28,7 @@ export const SectionContainer = styled.div`
   flex-direction: column;
   max-width: 338px;
   gap: 8px;
+  position: relative;
 `;
 
 export const ButtonGroup = styled.div`

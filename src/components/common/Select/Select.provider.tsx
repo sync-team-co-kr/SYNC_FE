@@ -5,11 +5,11 @@ import type { SelectProviderProps } from './types';
 
 const SelectContext = createContext<
   SelectProviderProps & {
-    onClick: Dispatch<SetStateAction<any>>;
+    setToggleOpen: Dispatch<SetStateAction<boolean>>;
   }
 >(
   {} as SelectProviderProps & {
-    onClick: Dispatch<SetStateAction<any>>;
+    setToggleOpen: Dispatch<SetStateAction<boolean>>;
   },
 );
 
@@ -17,15 +17,16 @@ export const SelectProvider = ({
   children,
   ...props
 }: PropsWithChildren<{
-  onClick: Dispatch<SetStateAction<any>>;
-  isOpen?: boolean;
-  options: any[] | undefined;
+  value: string;
   type: 'checkbox' | 'select';
   hasSearch?: boolean;
-  value: string;
   label?: string;
+  isOpen?: boolean;
   listLabel?: string;
   isEssential?: boolean;
+  isActivated?: boolean;
+  setToggleOpen: Dispatch<SetStateAction<boolean>>;
+  setValue: (value: any[] | any) => void;
 }>) => {
   return (
     <SelectContext.Provider value={props}>{children}</SelectContext.Provider>

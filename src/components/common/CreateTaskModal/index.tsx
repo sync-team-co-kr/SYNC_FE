@@ -1,8 +1,14 @@
 // 업무 생성 모달 내 form
+import { ChangeEvent, useState } from 'react';
+
 import { ReactComponent as CloseX } from '@assets/cancel-x.svg';
 import { Button } from '@components/common/Button';
 import { Select } from '@components/common/Select/Select';
+import { SelectButton } from '@components/common/Select/Select.button';
+import { SelectList } from '@components/common/Select/Select.list';
+import { searchFilter } from '@components/common/Select/Select.utils';
 import { LabelContainer } from '@components/common/Select/style';
+import Textfield from '@components/common/Textfield';
 import { Typography } from '@components/common/Typography';
 import { modalStore } from '@libs/store';
 import { useTaskActions, useTaskState } from '@libs/store/task/task';
@@ -27,6 +33,14 @@ export const CreateTaskModal = () => {
   const { setProject } = useTaskActions();
 
   const { projectListData } = useGetProjectList() ?? {};
+
+  const [projectSearch, setProjectSearch] = useState('');
+  const [projectList, setProjectList] = useState(projectListData);
+
+  const handleProjectSearch = (e: ChangeEvent<HTMLInputElement>) => {
+    setProjectSearch(e.target.value);
+    setProjectList(searchFilter(e.target.value, projectListData));
+  };
 
   console.log(payload);
 
@@ -56,10 +70,22 @@ export const CreateTaskModal = () => {
               project.title !== '' ? project.title : '프로젝트를 선택해 주세요'
             }
             setValue={setProject}
-            options={projectListData ?? []}
             type="select"
-            hasSearch
-          />
+          >
+            <SelectButton />
+            <SelectList>
+              <Textfield
+                variant="search"
+                type="search"
+                placeholder="검색"
+                value={projectSearch}
+                onChange={handleProjectSearch}
+              />
+              {projectList?.map((projectData) => (
+                <div key={projectData.projectId}>{projectData.title}</div>
+              ))}
+            </SelectList>
+          </Select>
         </SectionContainer>
         {/* task state */}
         <SectionContainer>

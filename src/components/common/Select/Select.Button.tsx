@@ -20,17 +20,14 @@ const SelectButtonContainer = styled.div<{ isOpen: boolean }>`
       : `border: 1px solid ${vars.sementic.color.black20}`};
 `;
 
-interface SelectButtonProps {
-  onClick: () => void;
-}
-
-export const SelectButton = ({ onClick }: SelectButtonProps) => {
+export const SelectButton = () => {
   const selectContext = useSelectContext();
 
   return (
     <SelectButtonContainer
-      isOpen={selectContext.isOpen || false}
-      onClick={onClick}
+      isOpen={selectContext.isActivated || false}
+      aria-selected={selectContext.isActivated}
+      onClick={() => selectContext.setToggleOpen((prev) => !prev)}
     >
       <Typography color="black70" variant="paragraph">
         {selectContext.value}
