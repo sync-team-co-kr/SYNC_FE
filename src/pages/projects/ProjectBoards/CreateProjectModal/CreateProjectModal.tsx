@@ -4,6 +4,7 @@ import CancelButton from '@assets/cancel-x.svg';
 import InputArea from '@components/common/InputArea';
 import InputWithCalendarArea from '@components/common/InputArea/InputWithCalendar';
 import InputWithIconArea from '@components/common/InputArea/InputWithIconArea';
+import Toggle from '@components/common/Toggle/Toggle';
 import { setIsModalOpen } from '@hooks/useModal';
 import { useCreateProject } from '@services/project/Project.hooks';
 
@@ -29,6 +30,7 @@ function CreateProjectModal({ closeModal }: { closeModal?: setIsModalOpen }) {
   const [description, setDescription] = useState('');
   const [startDate, setStartDate] = useState<Date>();
   const [endDate, setEndDate] = useState<Date>();
+  const [active, setActive] = useState(false);
   const { createProjectMutate } = useCreateProject();
 
   const handleCreateProject = async (e: React.MouseEvent<HTMLInputElement>) => {
@@ -77,9 +79,12 @@ function CreateProjectModal({ closeModal }: { closeModal?: setIsModalOpen }) {
         <StyleCreateProjectModal.InputArea>
           <StyleCreateProjectModal.ToggleArea>
             <label>일정</label>
-            <div>
-              <span></span>
-              <div>토글</div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <span>시간 포함</span>
+              <Toggle
+                isActive={active}
+                toggleSwtich={() => setActive((prevState) => !prevState)}
+              />
             </div>
           </StyleCreateProjectModal.ToggleArea>
 
