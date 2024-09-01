@@ -4,6 +4,7 @@ import CancelButton from '@assets/cancel-x.svg';
 import InputArea from '@components/common/InputArea';
 import InputWithCalendarArea from '@components/common/InputArea/InputWithCalendar';
 import InputWithIconArea from '@components/common/InputArea/InputWithIconArea';
+import InputWithTimePicker from '@components/common/InputArea/InputWithTimePicker';
 import Toggle from '@components/common/Toggle/Toggle';
 import { setIsModalOpen } from '@hooks/useModal';
 import { useCreateProject } from '@services/project/Project.hooks';
@@ -30,6 +31,8 @@ function CreateProjectModal({ closeModal }: { closeModal?: setIsModalOpen }) {
   const [description, setDescription] = useState('');
   const [startDate, setStartDate] = useState<Date>();
   const [endDate, setEndDate] = useState<Date>();
+  const [startTime, setStartTime] = useState(0);
+  const [endTime, setEndTime] = useState(0);
   const [active, setActive] = useState(false);
   const { createProjectMutate } = useCreateProject();
 
@@ -95,17 +98,25 @@ function CreateProjectModal({ closeModal }: { closeModal?: setIsModalOpen }) {
               placeholderText="프로젝트 시작 날짜"
             />
 
-            <div
-              style={{
-                width: '10px',
-                height: '1px',
-                backgroundColor: '#bfbfbf',
-              }}
-            ></div>
+            <StyleCreateProjectModal.CrossDash></StyleCreateProjectModal.CrossDash>
             <InputWithCalendarArea
               value={endDate}
               setValue={setEndDate}
               placeholderText="프로젝트 종료 날짜"
+            />
+          </StyleCreateProjectModal.InputWithCalendarArea>
+
+          <StyleCreateProjectModal.InputWithCalendarArea>
+            <InputWithTimePicker
+              value={startTime}
+              setValue={setStartTime}
+              placeholderText="프로젝트 시작 시간"
+            />
+            <StyleCreateProjectModal.CrossDash></StyleCreateProjectModal.CrossDash>
+            <InputWithTimePicker
+              value={endTime}
+              setValue={setEndTime}
+              placeholderText="프로젝트 시작 시간"
             />
           </StyleCreateProjectModal.InputWithCalendarArea>
         </StyleCreateProjectModal.InputArea>

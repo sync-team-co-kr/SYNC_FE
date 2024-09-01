@@ -15,6 +15,7 @@ const CalendarDropdownWrapper = styled.section<{ $isopen: boolean }>`
   align-items: center;
   gap: 8px;
   position: absolute;
+  z-index: 50;
 `;
 
 const CalendarDropdownHeader = styled.section`

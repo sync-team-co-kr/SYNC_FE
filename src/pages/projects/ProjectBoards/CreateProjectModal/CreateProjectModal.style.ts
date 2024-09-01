@@ -2,6 +2,7 @@ import React from 'react';
 
 import { styled } from 'styled-components';
 import { FastOmit, IStyledComponent } from 'styled-components/dist/types';
+import { vars } from 'token';
 
 type createProjectModalStyleComponentList =
   | 'Header'
@@ -11,6 +12,7 @@ type createProjectModalStyleComponentList =
   | 'ToggleArea'
   | 'InputWithCalendarArea'
   | 'InputWithCaelndar'
+  | 'CrossDash'
   | 'CalendarSVGCover'
   | 'ActiveButton'
   | 'Submit';
@@ -116,6 +118,11 @@ const StyleCreateProjectModal: {
       width: 100%;
       padding-right: 42px;
     }
+  `,
+  CrossDash: styled.div`
+    width: 10px;
+    height: 1px;
+    background-color: ${vars.sementic.color.black20};
   `,
   CalendarSVGCover: styled.div`
     position: absolute;
