@@ -1,61 +1,32 @@
-import { useState } from 'react';
+import { PropsWithChildren, ReactNode, useState } from 'react';
 
-import { Typography } from '@components/common/Typography';
-
-import { SelectButton } from './Select.Button';
-import { SelectList } from './Select.list';
 import { SelectProvider } from './Select.provider';
-import { LabelContainer, SelectContainer } from './style';
 
 type SelectProps = {
-  value: string;
-  setValue: (value: any[] | any) => void;
-  options: any[];
+  value: string | number | ReactNode;
   type: 'checkbox' | 'select';
-  hasSearch?: boolean;
-  label?: string;
   listLabel?: string;
   isEssential?: boolean;
 };
 
 export const Select = ({
-  value,
-  setValue,
-  options,
-  type,
-  hasSearch,
-  label,
-  listLabel,
-  isEssential,
-}: SelectProps) => {
+  children,
+  ...props
+}: SelectProps & PropsWithChildren) => {
   const [isOpen, setToggleOpen] = useState(false);
+
+  const { value, type, listLabel, isEssential } = props;
 
   return (
     <SelectProvider
-      isOpen={isOpen}
-      onClick={setValue}
+      isActivated={isOpen}
       value={value}
-      options={options}
       type={type}
-      hasSearch={hasSearch}
-      label={label}
       listLabel={listLabel}
       isEssential={isEssential}
+      setToggleOpen={setToggleOpen}
     >
-      <SelectContainer>
-        <LabelContainer>
-          {isEssential && (
-            <Typography variant="small-text-b" color="negativeRed">
-              *
-            </Typography>
-          )}
-          <Typography variant="small-text-b" color="black35">
-            {label}
-          </Typography>
-        </LabelContainer>
-        <SelectButton onClick={() => setToggleOpen(!isOpen)} />
-        <SelectList onSelect={setValue} />
-      </SelectContainer>
+      {children}
     </SelectProvider>
   );
 };

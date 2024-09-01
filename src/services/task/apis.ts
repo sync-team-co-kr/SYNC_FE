@@ -1,7 +1,9 @@
 import { requiredJwtTokeninstance } from '@libs/axios/axios';
+import { CreateTaskPayload } from '@services/swagger/output/data-contracts';
 
-export const getTask = async () => {
-  const response = await requiredJwtTokeninstance.get(`user/api/task/v1`);
-
-  return response.data;
+export const createTask = async ({ ...payload }: CreateTaskPayload) => {
+  return requiredJwtTokeninstance.post('/user/api/task/v1', {
+    data: payload,
+    images: [],
+  });
 };
