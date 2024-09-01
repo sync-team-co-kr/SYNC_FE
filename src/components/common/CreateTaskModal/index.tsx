@@ -2,6 +2,7 @@
 import { ChangeEvent, useEffect, useState } from 'react';
 
 import { ReactComponent as CloseX } from '@assets/cancel-x.svg';
+import { Editor } from '@components/Editor';
 import { Button } from '@components/common/Button';
 import { Select } from '@components/common/Select/Select';
 import { SelectButton } from '@components/common/Select/Select.button';
@@ -37,7 +38,8 @@ export const CreateTaskModal = () => {
   const { payload, project, errorList } = useTaskState();
 
   // 업무 생성 모달 payload 값들을 set 해주는 actions
-  const { setProject, setTitle, setStatus } = useTaskActions();
+  const { setProject, setTitle, setStatus, setDescription, setTaskType } =
+    useTaskActions();
 
   // projectData를 가져오는 hooks
   const { projectListData } = useGetProjectList() ?? {};
@@ -146,26 +148,29 @@ export const CreateTaskModal = () => {
           <ButtonGroup>
             <Button
               size="small"
+              isSelect={payload.taskType === 'task'}
               variant="task"
               text="테스크"
               onClick={() => {
-                console.log('task');
+                setTaskType('task');
               }}
             />
             <Button
               size="small"
               variant="subTask"
+              isSelect={payload.taskType === 'subTask'}
               text="서브 테스크"
               onClick={() => {
-                console.log('sub task');
+                setTaskType('subTask');
               }}
             />
             <Button
               size="small"
               variant="quest"
+              isSelect={payload.taskType === 'quest'}
               text="퀘스트"
               onClick={() => {
-                console.log('퀘스트');
+                setTaskType('quest');
               }}
             />
           </ButtonGroup>
@@ -173,7 +178,7 @@ export const CreateTaskModal = () => {
         {/* task state end */}
 
         {/* task */}
-        <SectionContainer direction="row" gap={24} maxwidth="100%">
+        <SectionContainer direction="row" gap={24} maxWidth="100%">
           <TaskContainer>
             <LabelContainer>
               <Typography variant="small-text-b" color="negativeRed">
@@ -277,11 +282,10 @@ export const CreateTaskModal = () => {
               설명
             </Typography>
           </LabelContainer>
-          <Textfield
-            variant="outlined"
-            placeholder="설명을 입력해주세요"
+          <Editor
             value={payload.description}
-            onChange={(e) => console.log(e.target.value)}
+            placeholder="프로젝트 부제목을 입력해주세요"
+            onChangeText={(text) => setDescription(text)}
           />
         </SectionContainer>
         {/* description end */}

@@ -1,6 +1,7 @@
-import { PropsWithChildren } from 'react';
+import { PropsWithChildren, useRef } from 'react';
 
 import { Typography } from '@components/common/Typography';
+import { useHandleOutsideHooks } from '@hooks/useHandleOutsideHooks';
 import { styled } from 'styled-components';
 import { vars } from 'token';
 
@@ -37,13 +38,16 @@ export const SelectItem = styled.div`
 `;
 
 export const SelectList = ({ children }: PropsWithChildren) => {
+  const selectRef = useRef<HTMLDivElement>(null);
   const selectContext = useSelectContext();
   const { isActivated } = selectContext;
+
+  useHandleOutsideHooks(selectRef, () => selectContext.setToggleOpen(false));
 
   if (!isActivated) return null;
 
   return (
-    <ListContainer>
+    <ListContainer ref={selectRef}>
       <Typography variant="paragraph" color="black70">
         {selectContext.listLabel}
       </Typography>

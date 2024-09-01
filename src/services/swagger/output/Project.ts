@@ -20,7 +20,7 @@ export class Project<
   SecurityDataType = unknown,
 > extends HttpClient<SecurityDataType> {
   /**
-   * @description HOST = 129.213.161.199:31585
+   * @description HOST = 150.136.153.235:31585
    *
    * @tags member-controller
    * @name GetUsersFromTask
@@ -64,7 +64,7 @@ export class Project<
       ...params,
     });
   /**
-   * @description HOST = 129.213.161.199:31585
+   * @description HOST = 150.136.153.235:31585
    *
    * @tags project-controller
    * @name GetProjects

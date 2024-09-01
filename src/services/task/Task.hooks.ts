@@ -7,7 +7,10 @@ export const useCreateTask = () => {
   const queryClient = useQueryClient();
 
   const createTaskMutation = useMutation({
-    mutationFn: (newTask: CreateTaskRequestDto) => createTask(newTask),
+    mutationFn: (newTask: CreateTaskRequestDto) =>
+      createTask({
+        data: newTask,
+      }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['tasks'] });
     },

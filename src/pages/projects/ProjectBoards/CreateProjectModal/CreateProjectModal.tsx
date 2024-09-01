@@ -38,8 +38,8 @@ function CreateProjectModal({ closeModal }: { closeModal?: setIsModalOpen }) {
       title,
       subTitle,
       description,
-      startDate: startDate?.toISOString(),
-      endDate: endDate?.toISOString(),
+      startDate: startDate!.toISOString(),
+      endDate: endDate!.toISOString(),
     });
 
     console.log(title, subTitle, description, startDate, endDate);
