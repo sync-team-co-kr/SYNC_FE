@@ -144,14 +144,6 @@ const useTaskStore = create<TaskState & TaskActions>((set) => ({
         },
       }));
     },
-    setTaskType: (taskType) => {
-      set((state) => ({
-        payload: {
-          ...state.payload,
-          taskType,
-        },
-      }));
-    },
     setImages: (image) => {
       set((state) => ({
         payload: {
