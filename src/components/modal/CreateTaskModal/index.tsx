@@ -285,7 +285,7 @@ export const CreateTaskModal = () => {
         {/* date end */}
 
         {/* description */}
-        <SectionContainer>
+        <SectionContainer maxWidth="100%">
           <LabelContainer>
             <Typography variant="small-text-b" color="black35">
               설명
