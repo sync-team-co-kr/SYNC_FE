@@ -7,6 +7,7 @@ import {
   deleteProject,
   editProject,
   getProject,
+  getProjectIdList,
   getProjectList,
 } from './apis';
 
@@ -18,6 +19,16 @@ export const useGetProjectList = () => {
   });
 
   return { projectListData };
+};
+
+// ProjectList id list hooks
+export const useGetProjectIdList = () => {
+  const { data: projectIdsList } = useQuery({
+    queryKey: ['projectIds'],
+    queryFn: getProjectIdList,
+  });
+
+  return { projectIdsList };
 };
 
 // project hooks

@@ -5,6 +5,8 @@ import { Typography } from '@components/common/Typography';
 import { EditTaskModal } from '@components/modal/EditTaskModal';
 import useModal from '@hooks/useModal';
 import { useTaskActions } from '@libs/store/task/task';
+import { useGetProjectIdList } from '@services/project/Project.hooks';
+import { useGetTasks } from '@services/task/Task.hooks';
 import styled from 'styled-components';
 
 import { CalendarContext } from './Calendar.provider';
@@ -41,7 +43,11 @@ export const CalendarDay = () => {
   const [openModal] = useModal();
 
   const { setTaskId } = useTaskActions();
+  const { projectIdsList } = useGetProjectIdList() ?? {};
 
+  const { tasks } = useGetTasks(projectIdsList);
+
+  console.log(tasks);
   const { value } = useContext(CalendarContext);
   const returnStatus = (status: number) => {
     switch (status) {

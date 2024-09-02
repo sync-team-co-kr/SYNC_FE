@@ -5,6 +5,24 @@ import { CreateProjectRequestDto } from '@services/swagger/output/data-contracts
 import { AxiosResponse } from 'axios';
 
 /**
+ * 프로젝트 리스트의 id들만 가져오는 API
+ */
+export const getProjectIdList = async () => {
+  const { userId: storageUserId } = window.localStorage;
+
+  const getProjectIdsRes: AxiosResponse<
+    AxiosResByData<any>,
+    any
+  > = await requiredJwtTokeninstance.get(
+    `/project/api/v2?userId=${storageUserId}`,
+  );
+
+  const { userId } = getProjectIdsRes.data.data;
+
+  return userId;
+};
+
+/**
  * 프로젝트 리스트를 가져오는 API
  */
 

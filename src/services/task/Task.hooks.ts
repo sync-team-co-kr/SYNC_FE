@@ -1,7 +1,30 @@
 import { CreateTaskRequestDto } from '@services/swagger/output/data-contracts';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
-import { createTask, getTaskChildren } from './apis';
+import { createTask, getTaskChildren, getTaskList } from './apis';
+
+// 업무 리스트 가져오는 Hook
+
+export const useGetTasks = (projectId: number[]) => {
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['tasks', projectId],
+    queryFn: async () => {
+      const result = await Promise.all(projectId.map((id) => getTaskList(id)));
+      return result.map((res) => res.data);
+    },
+  });
+
+  return { tasks: data, isLoading, error };
+};
+
+export const useGetTaskList = (projectId: number) => {
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['task'],
+    queryFn: () => getTaskList(projectId),
+  });
+
+  return { task: data, isLoading, error };
+};
 
 // 업무 생성 Hook
 export const useCreateTask = () => {

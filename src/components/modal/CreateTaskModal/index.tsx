@@ -180,44 +180,51 @@ export const CreateTaskModal = () => {
         {/* task state end */}
 
         {/* task */}
-        <SectionContainer direction="row" gap={24} maxWidth="100%">
-          <TaskContainer>
-            <LabelContainer>
-              <Typography variant="small-text-b" color="negativeRed">
-                *
-              </Typography>
-              <Typography variant="small-text-b" color="black35">
-                테스크
-              </Typography>
-            </LabelContainer>
-            <Select
-              listLabel="테스크"
-              isEssential
-              value={payload.title}
-              type="select"
-            >
-              <SelectButton />
-            </Select>
-          </TaskContainer>
-          <TaskContainer>
-            <LabelContainer>
-              <Typography variant="small-text-b" color="negativeRed">
-                *
-              </Typography>
-              <Typography variant="small-text-b" color="black35">
-                서브 테스크
-              </Typography>
-            </LabelContainer>
-            <Select
-              listLabel="테스크"
-              isEssential
-              value={payload.title}
-              type="select"
-            >
-              <SelectButton />
-            </Select>
-          </TaskContainer>
-        </SectionContainer>
+        {payload.taskType !== 'task' && (
+          <SectionContainer direction="row" gap={24}>
+            {payload.taskType === 'subTask' && (
+              <TaskContainer>
+                <LabelContainer>
+                  <Typography variant="small-text-b" color="negativeRed">
+                    *
+                  </Typography>
+                  <Typography variant="small-text-b" color="black35">
+                    테스크
+                  </Typography>
+                </LabelContainer>
+                <Select
+                  listLabel="테스크"
+                  isEssential
+                  value={payload.title}
+                  type="select"
+                >
+                  <SelectButton />
+                </Select>
+              </TaskContainer>
+            )}
+
+            {payload.taskType === 'quest' && (
+              <TaskContainer>
+                <LabelContainer>
+                  <Typography variant="small-text-b" color="negativeRed">
+                    *
+                  </Typography>
+                  <Typography variant="small-text-b" color="black35">
+                    서브 테스크
+                  </Typography>
+                </LabelContainer>
+                <Select
+                  listLabel="테스크"
+                  isEssential
+                  value={payload.title}
+                  type="select"
+                >
+                  <SelectButton />
+                </Select>
+              </TaskContainer>
+            )}
+          </SectionContainer>
+        )}
         {/* task end */}
 
         {/* icon & task name */}
