@@ -37,6 +37,7 @@ export const useCreateTask = () => {
         images: newTask.images,
         titleimage: newTask.images,
       }),
+
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['tasks'] });
     },
