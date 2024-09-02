@@ -79,19 +79,19 @@ export interface CreateTaskRequestDto {
    * 업무 종료일
    * @format date-time
    */
-  endDate?: string;
+  endDate?: string | Date;
   /**
    * 업무 시작일
    * @format date-time
    */
-  startDate?: string;
+  startDate?: string | Date;
   /** 업무 이름 */
   title: string;
   /**
    * 상위 업무 아이디, null == 프로젝트 최상위 업무
    * @format int64
    */
-  parentTaskId?: number;
+  parentTaskId?: number | null;
   /**
    * 생성할 업무의 프로젝트 아이디
    * @format int64

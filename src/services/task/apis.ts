@@ -8,9 +8,10 @@ export const getTaskList = async (projectId: number) => {
 };
 
 export const createTask = async ({ ...payload }: CreateTaskPayload) => {
-  return requiredJwtTokeninstance.post('/user/api/task/v1', {
-    data: payload,
-    images: [],
+  return requiredJwtTokeninstance.post('/user/api/task', {
+    data: payload.data,
+    images: payload.images,
+    titleimage: payload.titleimage,
   });
 };
 

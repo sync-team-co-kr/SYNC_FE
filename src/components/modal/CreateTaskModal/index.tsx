@@ -4,6 +4,7 @@ import { ChangeEvent, useEffect, useState } from 'react';
 import { ReactComponent as CloseX } from '@assets/cancel-x.svg';
 import { Editor } from '@components/Editor';
 import { Button } from '@components/common/Button';
+import InputWithCalendarArea from '@components/common/InputArea/InputWithCalendar';
 import { Select } from '@components/common/Select/Select';
 import { SelectButton } from '@components/common/Select/Select.button';
 import { SelectItem, SelectList } from '@components/common/Select/Select.list';
@@ -17,6 +18,7 @@ import { modalStore } from '@libs/store';
 import { useTaskActions, useTaskState } from '@libs/store/task/task';
 import { useGetProjectList } from '@services/project/Project.hooks';
 import { useCreateTask } from '@services/task/Task.hooks';
+
 
 import { SELECT_STATUS } from './constants';
 import {
@@ -38,13 +40,19 @@ export const CreateTaskModal = () => {
   const { payload, project, errorList } = useTaskState();
 
   // 업무 생성 모달 payload 값들을 set 해주는 actions
-  const { setProject, setTitle, setStatus, setDescription, setTaskType } =
-    useTaskActions();
+  const {
+    setProject,
+    setTitle,
+    setStatus,
+    setDescription,
+    setParentTaskId,
+    setProjectId,
+    setStartDate,
+    setEndDate,
+  } = useTaskActions();
 
   // projectData를 가져오는 hooks
   const { projectListData } = useGetProjectList() ?? {};
-
-  console.log(projectListData);
 
   // 프로젝트 검색 state
   const [projectSearch, setProjectSearch] = useState('');
@@ -52,20 +60,32 @@ export const CreateTaskModal = () => {
   const [projectList, setProjectList] = useState(projectListData);
 
   const { createTaskMutate } = useCreateTask();
+
   const handleCreateTask = () => {
     if (errorList.length > 0) {
       alert('필수 입력값을 입력해주세요');
       return;
     }
-    createTaskMutate(payload, {
-      onSuccess: () => {
-        alert('업무가 생성되었습니다.');
+    createTaskMutate(
+      {
+        projectId: payload.projectId,
+        title: payload.title,
+        description: payload.description,
+        parentTaskId: payload.parentTaskId === 0 ? null : payload.parentTaskId,
+        startDate: payload.startDate,
+        endDate: payload.endDate,
+        images: [],
       },
+      {
+        onSuccess: () => {
+          console.log(payload);
+        },
 
-      onError: (error) => {
-        alert(error);
+        onError: (error) => {
+          alert(error);
+        },
       },
-    });
+    );
   };
 
   // 프로젝트 검색
@@ -125,6 +145,7 @@ export const CreateTaskModal = () => {
                 <SelectItem
                   onClick={() => {
                     setProject(projectData);
+                    setProjectId(projectData.projectId);
                   }}
                   key={projectData.projectId}
                 >
@@ -150,29 +171,29 @@ export const CreateTaskModal = () => {
           <ButtonGroup>
             <Button
               size="small"
-              isSelect={payload.taskType === 'task'}
+              isSelect={payload.parentTaskId === 0}
               variant="task"
               text="테스크"
               onClick={() => {
-                setTaskType('task');
+                setParentTaskId(0);
               }}
             />
             <Button
               size="small"
               variant="subTask"
-              isSelect={payload.taskType === 'subTask'}
+              isSelect={payload.parentTaskId === 1}
               text="서브 테스크"
               onClick={() => {
-                setTaskType('subTask');
+                setParentTaskId(1);
               }}
             />
             <Button
               size="small"
               variant="quest"
-              isSelect={payload.taskType === 'quest'}
+              isSelect={payload.parentTaskId === 2}
               text="퀘스트"
               onClick={() => {
-                setTaskType('quest');
+                setParentTaskId(2);
               }}
             />
           </ButtonGroup>
@@ -180,9 +201,9 @@ export const CreateTaskModal = () => {
         {/* task state end */}
 
         {/* task */}
-        {payload.taskType !== 'task' && (
+        {payload.parentTaskId !== 0 && (
           <SectionContainer direction="row" gap={24}>
-            {payload.taskType === 'subTask' && (
+            {payload.parentTaskId === 1 && (
               <TaskContainer>
                 <LabelContainer>
                   <Typography variant="small-text-b" color="negativeRed">
@@ -203,7 +224,7 @@ export const CreateTaskModal = () => {
               </TaskContainer>
             )}
 
-            {payload.taskType === 'quest' && (
+            {payload.parentTaskId === 2 && (
               <TaskContainer>
                 <LabelContainer>
                   <Typography variant="small-text-b" color="negativeRed">
@@ -254,17 +275,15 @@ export const CreateTaskModal = () => {
             </Typography>
           </LabelContainer>
           <SectionContainer direction="row" gap={24}>
-            <Textfield
-              variant="outlined"
-              placeholder="날짜"
-              value={''}
-              onChange={(e) => console.log(e.target.value)}
+            <InputWithCalendarArea
+              value={new Date(payload.startDate || new Date())}
+              setValue={(date) => setStartDate(date as Date)}
+              placeholderText="시작 날짜"
             />
-            <Textfield
-              variant="outlined"
-              placeholder="날짜"
-              value={''}
-              onChange={(e) => console.log(e.target.value)}
+            <InputWithCalendarArea
+              value={new Date(payload.endDate || new Date())}
+              setValue={(date) => setEndDate(date as Date)}
+              placeholderText="종료 날짜"
             />
           </SectionContainer>
           <SectionContainer direction="row" gap={24}>

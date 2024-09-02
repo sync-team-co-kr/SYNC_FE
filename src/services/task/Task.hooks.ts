@@ -34,6 +34,8 @@ export const useCreateTask = () => {
     mutationFn: (newTask: CreateTaskRequestDto) =>
       createTask({
         data: newTask,
+        images: newTask.images,
+        titleimage: newTask.images,
       }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['tasks'] });

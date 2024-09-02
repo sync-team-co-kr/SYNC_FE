@@ -46,7 +46,7 @@ export const EditTaskModal = ({
     setTitle,
     setStatus,
     setDescription,
-    setTaskType,
+    setParentTaskId,
     // setEditTask,
   } = useTaskActions();
 
@@ -163,29 +163,29 @@ export const EditTaskModal = ({
           <ButtonGroup>
             <Button
               size="small"
-              isSelect={payload.taskType === 'task'}
+              isSelect={payload.parentTaskId === 0}
               variant="task"
               text="테스크"
               onClick={() => {
-                setTaskType('task');
+                setParentTaskId(0);
               }}
             />
             <Button
               size="small"
               variant="subTask"
-              isSelect={payload.taskType === 'subTask'}
+              isSelect={payload.parentTaskId === 1}
               text="서브 테스크"
               onClick={() => {
-                setTaskType('subTask');
+                setParentTaskId(1);
               }}
             />
             <Button
               size="small"
               variant="quest"
-              isSelect={payload.taskType === 'quest'}
+              isSelect={payload.parentTaskId === 2}
               text="퀘스트"
               onClick={() => {
-                setTaskType('quest');
+                setParentTaskId(2);
               }}
             />
           </ButtonGroup>

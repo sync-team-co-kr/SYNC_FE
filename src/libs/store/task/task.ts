@@ -4,7 +4,7 @@ import { create } from 'zustand';
 
 // 업무 생성 State
 type TaskState = {
-  payload: CreateTaskRequestDto & { status: number; taskType: string };
+  payload: CreateTaskRequestDto & { status: number };
   project: Project;
   errorList: string[];
   taskId: number;
@@ -15,13 +15,12 @@ type TaskActions = {
     // 업무 state 변경
     setTitle: (title: string) => void;
     setDescription: (description: string) => void;
-    setStartDate: (startDate: string) => void;
-    setEndDate: (endDate: string) => void;
+    setStartDate: (startDate: Date) => void;
+    setEndDate: (endDate: Date) => void;
     setParentTaskId: (parentTaskId: number) => void;
     setProjectId: (projectId: number) => void;
     setStatus: (status: number) => void;
     setImages: (image: File) => void;
-    setTaskType: (taskType: string) => void;
 
     // reset
     resetPayload: () => void;
@@ -49,13 +48,12 @@ const initialState: TaskState = {
   payload: {
     title: '',
     description: '',
-    startDate: '',
-    endDate: '',
+    startDate: new Date(),
+    endDate: new Date(),
     parentTaskId: 0,
     projectId: 0,
     images: [],
     status: 0,
-    taskType: 'task',
   },
   project: {
     projectId: 0,
@@ -133,14 +131,6 @@ const useTaskStore = create<TaskState & TaskActions>((set) => ({
         payload: {
           ...state.payload,
           status,
-        },
-      }));
-    },
-    setTaskType: (taskType) => {
-      set((state) => ({
-        payload: {
-          ...state.payload,
-          taskType,
         },
       }));
     },
