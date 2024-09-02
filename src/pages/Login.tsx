@@ -189,7 +189,6 @@ export default function Login() {
       if (loginResponse.result === 'OK') {
         // 임시로 userId를 localStorage에 저장.. response 값에 useId 가 null로 응답됌
         localStorage.setItem('userId', loginForm.userId);
-        console.log(loginResponse);
 
         window.alert('로그인 성공!');
         window.location.href = '/';
