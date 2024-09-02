@@ -1,6 +1,6 @@
 import { styled } from 'styled-components';
 
-export const SelectContainer = styled.div`
+export const SelectElement = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -14,4 +14,8 @@ export const LabelContainer = styled.div`
   align-items: center;
 `;
 
-
+export const TaskContainer = styled.div`
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+`;

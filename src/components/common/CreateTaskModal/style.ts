@@ -1,6 +1,4 @@
-import { Button } from '@components/common/Button';
 import styled from 'styled-components';
-import { vars } from 'token';
 
 export const Container = styled.div`
   width: 700px;
@@ -23,44 +21,24 @@ export const ContainerContent = styled.div`
   position: relative;
 `;
 
-export const SectionContainer = styled.div`
+export const SectionContainer = styled.div<{
+  direction?: 'column' | 'row';
+  maxwidth?: string;
+  gap?: number;
+}>`
   display: flex;
-  flex-direction: column;
-  max-width: 338px;
-  gap: 8px;
+  flex-direction: ${({ direction }) => direction || 'column'};
+  max-width: ${({ maxwidth }) => maxwidth || '338px'};
+  gap: ${({ gap }) => gap || 8}px;
+  position: relative;
 `;
 
 export const ButtonGroup = styled.div`
   display: flex;
   gap: 8px;
 `;
-
-export const TaskButton = styled(Button)<{ works: string }>`
-  ${({ works }) => {
-    switch (works) {
-      case 'task':
-        return `
-        border: 1px solid ${vars.sementic.color.purple};
-        color: ${vars.sementic.color.purple};
-      `;
-
-      case 'subTask':
-        return `
-        border: 1px solid ${vars.sementic.color.alertOrange};
-        color: ${vars.sementic.color.alertOrange};
-      `;
-
-      case 'quest':
-        return `
-        border: 1px solid ${vars.sementic.color.green};
-        color: ${vars.sementic.color.green};
-      `;
-
-      default:
-        return `
-        border: 1px solid ${vars.sementic.color.purple};
-        color: ${vars.sementic.color.purple};
-      `;
-    }
-  }}
+export const ContainerFooter = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
 `;
