@@ -24,32 +24,79 @@ const HourPicker = styled.ul`
   }
 `;
 
+const PickerElement = styled.li<{ $hasCurrent: boolean }>`
+  color: ${(props) =>
+    props.$hasCurrent
+      ? vars.sementic.color.black
+      : vars.sementic.color.black20};
+`;
+
 interface TimePickerDropdownProps {
   isOpen: boolean;
+  currentHour: number | null;
+  setHour: React.Dispatch<React.SetStateAction<number | null>>;
+  currentMinute: number | null;
+  setMinute: React.Dispatch<React.SetStateAction<number | null>>;
 }
 
-const TimePickerDropdown = ({ isOpen }: TimePickerDropdownProps) => {
+const TimePickerDropdown = ({
+  isOpen,
+  currentHour,
+  setHour,
+  currentMinute,
+  setMinute,
+}: TimePickerDropdownProps) => {
   const [hours, setHours] = useState([1, 2, 3]);
-  const wheelTimePicker = (e: React.WheelEvent<HTMLUListElement>) => {
-    if (e.deltaX > 0)
+  const [minutes, setMinutes] = useState([1, 2, 3]);
+
+  const wheelTimePicker = (
+    e: React.WheelEvent<HTMLUListElement>,
+    maxValue: number,
+  ) => {
+    if (e.deltaY > 0)
       return setHours((prevState) =>
-        prevState.map((hour) => (hour + 1 >= 24 ? 0 : hour + 1)),
+        prevState.map((hour) => (hour + 1 > maxValue ? 0 : hour + 1)),
       );
     return setHours((prevState) =>
-      prevState.map((hour) => (hour - 1 < 0 ? 23 : hour - 1)),
+      prevState.map((hour) => (hour - 1 < 0 ? maxValue : hour - 1)),
+    );
+  };
+
+  const wheelMinutesPicker = (
+    e: React.WheelEvent<HTMLUListElement>,
+    maxValue: number,
+  ) => {
+    if (e.deltaY > 0)
+      return setMinutes((prevState) =>
+        prevState.map((hour) => (hour + 1 > maxValue ? 0 : hour + 1)),
+      );
+    return setMinutes((prevState) =>
+      prevState.map((hour) => (hour - 1 < 0 ? maxValue : hour - 1)),
     );
   };
 
   return (
     <CalendarDropdownWrapper $isopen={isOpen}>
-      <HourPicker onWheel={wheelTimePicker}>
+      <HourPicker onWheel={(e) => wheelTimePicker(e, 23)}>
         {hours.map((hour) => (
-          <li key={hour}>{hour.toString().padStart(0, '2')}</li>
+          <PickerElement
+            key={hour}
+            onClick={() => setHour(hour)}
+            $hasCurrent={hour === currentHour}
+          >
+            {hour.toString().padStart(2, '0')}
+          </PickerElement>
         ))}
       </HourPicker>
-      <HourPicker>
-        {[58, 59, 60].map((hour) => (
-          <li key={hour}>{hour}</li>
+      <HourPicker onWheel={(e) => wheelMinutesPicker(e, 59)}>
+        {minutes.map((minute) => (
+          <PickerElement
+            key={minute}
+            onClick={() => setMinute(minute)}
+            $hasCurrent={minute === currentMinute}
+          >
+            {minute.toString().padStart(2, '0')}
+          </PickerElement>
         ))}
       </HourPicker>
     </CalendarDropdownWrapper>

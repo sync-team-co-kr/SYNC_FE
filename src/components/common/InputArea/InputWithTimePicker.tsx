@@ -1,13 +1,14 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { ReactComponent as TimePickerIcon } from '@assets/input/time.svg';
 import TimePickerDropdown from '@components/dropdown/TimePickerDropdown';
 import useDropdown from '@hooks/useDropdown';
+import { ProjectPeriodTime } from '@pages/projects/ProjectBoards/CreateProjectModal/CreateProjectModal';
 import { styled } from 'styled-components';
 
 interface InputWithTimePickerProps {
-  value?: number;
-  setValue: React.Dispatch<React.SetStateAction<number>>;
+  value: ProjectPeriodTime;
+  setValue: React.Dispatch<React.SetStateAction<ProjectPeriodTime>>;
   labelText?: string;
   placeholderText: string;
 }
@@ -28,18 +29,33 @@ const TimePickerSvg = styled.div`
 
 const InputWithTimePicker = ({
   value,
+  setValue,
   placeholderText,
 }: InputWithTimePickerProps) => {
+  const [hour, setHour] = useState<number | null>(null);
+  const [minute, setMinute] = useState<number | null>(null);
   const [
     isOpenTimePickerDropdown,
     toggleTimePickerDropdown,
     timePickerDropdownRef,
   ] = useDropdown();
+
+  useEffect(() => {
+    setValue({
+      hour,
+      minute,
+    });
+  }, [hour, minute]);
+
   return (
     <SInputWithTimePicker>
       <input
         type="text"
-        value={value?.toString()}
+        value={
+          value.hour && value.minute
+            ? `${value.hour.toString().padStart(2, '0')} : ${value.minute.toString().padStart(2, '0')}`
+            : ''
+        }
         placeholder={placeholderText}
         readOnly
       />
@@ -50,7 +66,13 @@ const InputWithTimePicker = ({
           onClick={toggleTimePickerDropdown}
         />
       </TimePickerSvg>
-      <TimePickerDropdown isOpen={isOpenTimePickerDropdown} />
+      <TimePickerDropdown
+        isOpen={isOpenTimePickerDropdown}
+        currentHour={hour}
+        setHour={setHour}
+        currentMinute={minute}
+        setMinute={setMinute}
+      />
     </SInputWithTimePicker>
   );
 };

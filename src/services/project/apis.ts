@@ -18,13 +18,13 @@ export const getProjectList = async () => {
    */
 
   const getProjectIdsRes: AxiosResponse<
-    AxiosResByData<number[]>,
+    AxiosResByData<{ userId: number[] }>,
     any
   > = await requiredJwtTokeninstance.get(
     '/project/api/v2?userId=abc123@gmail.com',
   );
 
-  const joinedProjectIds = getProjectIdsRes.data.data.join(',');
+  const joinedProjectIds = getProjectIdsRes.data.data.userId.join(',');
 
   const getProjectListResponse: AxiosResponse<AxiosResByData<Project[]>> =
     await requiredJwtTokeninstance.get(

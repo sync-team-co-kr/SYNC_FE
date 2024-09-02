@@ -8,6 +8,7 @@ import InputWithTimePicker from '@components/common/InputArea/InputWithTimePicke
 import Toggle from '@components/common/Toggle/Toggle';
 import { setIsModalOpen } from '@hooks/useModal';
 import { useCreateProject } from '@services/project/Project.hooks';
+import { add } from 'date-fns';
 
 import StyleCreateProjectModal from './CreateProjectModal.style';
 
@@ -16,6 +17,11 @@ export interface ICreateProjectRequest {
   title: string;
   subTitle: string;
   description: string;
+}
+
+export interface ProjectPeriodTime {
+  hour: number | null;
+  minute: number | null;
 }
 
 function CreateProjectModal({ closeModal }: { closeModal?: setIsModalOpen }) {
@@ -31,21 +37,50 @@ function CreateProjectModal({ closeModal }: { closeModal?: setIsModalOpen }) {
   const [description, setDescription] = useState('');
   const [startDate, setStartDate] = useState<Date>();
   const [endDate, setEndDate] = useState<Date>();
-  const [startTime, setStartTime] = useState(0);
-  const [endTime, setEndTime] = useState(0);
+  const [startTime, setStartTime] = useState<ProjectPeriodTime>({
+    hour: null,
+    minute: null,
+  });
+  const [endTime, setEndTime] = useState<ProjectPeriodTime>({
+    hour: null,
+    minute: null,
+  });
   const [active, setActive] = useState(false);
   const { createProjectMutate } = useCreateProject();
 
   const handleCreateProject = async (e: React.MouseEvent<HTMLInputElement>) => {
     e.preventDefault();
 
-    createProjectMutate({
+    if (startDate && endDate && startTime.hour && startTime.minute) {
+      const { hour, minute } = startTime;
+      const projectStartDate = add(new Date(startDate), {
+        hours: hour + 9,
+        minutes: minute,
+      });
+
+      const projectEndDate = add(new Date(endDate), {
+        hours: endTime.hour ? endTime.hour + 9 : 0,
+        minutes: endTime.minute || 0,
+      });
+
+      createProjectMutate({
+        title,
+        subTitle,
+        description,
+        startDate: projectStartDate.toISOString(),
+        endDate: projectEndDate.toISOString(),
+      });
+    }
+
+    /*
+        createProjectMutate({
       title,
       subTitle,
       description,
       startDate: startDate?.toISOString(),
       endDate: endDate?.toISOString(),
     });
+    */
   };
 
   return (
