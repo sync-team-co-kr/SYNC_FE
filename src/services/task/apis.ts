@@ -7,3 +7,7 @@ export const createTask = async ({ ...payload }: CreateTaskPayload) => {
     images: [],
   });
 };
+
+export const getTaskChildren = async (taskId: number) => {
+  return requiredJwtTokeninstance.get(`/api/task/v1/${taskId}`);
+};

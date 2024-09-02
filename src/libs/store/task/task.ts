@@ -7,9 +7,11 @@ type TaskState = {
   payload: CreateTaskRequestDto & { status: number; taskType: string };
   project: Project;
   errorList: string[];
+  taskId: number;
 };
 type TaskActions = {
   actions: {
+    setTaskId: (taskId: number) => void;
     // 업무 state 변경
     setTitle: (title: string) => void;
     setDescription: (description: string) => void;
@@ -23,6 +25,9 @@ type TaskActions = {
 
     // reset
     resetPayload: () => void;
+
+    // edit
+    setEditTask: (task: CreateTaskRequestDto) => void;
 
     // project
     setProject: (project: Project) => void;
@@ -40,6 +45,7 @@ type TaskActions = {
 };
 
 const initialState: TaskState = {
+  taskId: 0,
   payload: {
     title: '',
     description: '',
@@ -69,6 +75,11 @@ const initialState: TaskState = {
 const useTaskStore = create<TaskState & TaskActions>((set) => ({
   ...initialState,
   actions: {
+    setTaskId: (taskId) => {
+      set(() => ({
+        taskId,
+      }));
+    },
     setTitle: (title) => {
       set((state) => ({
         payload: {
@@ -144,6 +155,15 @@ const useTaskStore = create<TaskState & TaskActions>((set) => ({
     resetPayload: () => {
       set(() => ({
         ...initialState,
+      }));
+    },
+    // edit
+    setEditTask: (task) => {
+      set((state) => ({
+        payload: {
+          ...state.payload,
+          ...task,
+        },
       }));
     },
 

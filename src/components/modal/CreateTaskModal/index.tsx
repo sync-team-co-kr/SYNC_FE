@@ -44,6 +44,8 @@ export const CreateTaskModal = () => {
   // projectData를 가져오는 hooks
   const { projectListData } = useGetProjectList() ?? {};
 
+  console.log(projectListData);
+
   // 프로젝트 검색 state
   const [projectSearch, setProjectSearch] = useState('');
   // 검색 필터링된 프로젝트 리스트
