@@ -187,7 +187,7 @@ export default function Login() {
     try {
       const loginResponse = await loginAPI({ ...loginForm });
       if (loginResponse.result === 'OK') {
-        console.log(loginResponse);
+        localStorage.setItem('loggedUserId', loginForm.userId);
 
         window.alert('로그인 성공!');
         window.location.href = '/';
