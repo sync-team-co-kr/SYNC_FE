@@ -38,15 +38,13 @@ export const getProjectList = async () => {
   const { userId: storageUserId } = window.localStorage;
 
   const getProjectIdsRes: AxiosResponse<
-    AxiosResByData<any>,
+    AxiosResByData<{ userId: number[] }>,
     any
   > = await requiredJwtTokeninstance.get(
     `/project/api/v2?userId=${storageUserId}`,
   );
 
-  const { userId } = getProjectIdsRes.data.data;
-
-  const joinedProjectIds = userId.join(',');
+  const joinedProjectIds = getProjectIdsRes.data.data.userId.join(',');
 
   const getProjectListResponse: AxiosResponse<AxiosResByData<Project[]>> =
     await requiredJwtTokeninstance.get(
