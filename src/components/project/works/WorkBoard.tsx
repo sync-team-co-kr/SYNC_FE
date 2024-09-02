@@ -30,11 +30,20 @@ const ProjectBoard = styled.li`
   margin: 8px;
 `;
 
+const MeatBalls = styled.div`
+ cursor: pointer;
+  position: relative;
+  display: none;
+`;
 
 const ProjectBoardHeader = styled.section`
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  &:hover ${MeatBalls} {
+    display: block;
+  }
 `;
 
 const Header = styled.section`
@@ -46,12 +55,6 @@ const Header = styled.section`
     width: 24px;
     height: 24px;
   }
-`;
-
-
-const MeatBalls = styled.div`
-  cursor: pointer;
-  position: relative;
 `;
 
 const ProjectBoardDescription = styled.p`
