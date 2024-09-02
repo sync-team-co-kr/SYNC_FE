@@ -22,7 +22,6 @@ type TaskActions = {
     setProjectId: (projectId: number) => void;
     setStatus: (status: number) => void;
     setImages: (image: File) => void;
-    setTaskType: (taskType: string) => void;
 
     // titleImage
     setTitleImage: (titleImage: string | undefined) => void;
@@ -142,14 +141,6 @@ const useTaskStore = create<TaskState & TaskActions>((set) => ({
         payload: {
           ...state.payload,
           status,
-        },
-      }));
-    },
-    setTaskType: (taskType) => {
-      set((state) => ({
-        payload: {
-          ...state.payload,
-          taskType,
         },
       }));
     },
