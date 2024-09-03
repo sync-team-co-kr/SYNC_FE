@@ -28,11 +28,10 @@ export const TabElement = styled.div`
   ${vars.sementic.typography['heading-5']};
 `;
 
-export const TabListElement = styled.div`
+export const TabListElement = styled.div<{ padding?: string }>`
   position: relative;
   display: inline-flex;
-  padding: 40px 12px 0 40px;
-
+  padding: ${({ padding }) => padding || '40px 12px 0 40px;'};
   width: 100%;
   border-bottom: 1px solid ${vars.sementic.color.black10};
   white-space: nowrap;
@@ -40,7 +39,7 @@ export const TabListElement = styled.div`
   ${tabListStyle()};
 `;
 
-export const TabPanelElement = styled.div`
-  padding: 20px 40px;
+export const TabPanelElement = styled.div<{ padding?: string }>`
+  padding: ${({ padding }) => padding || '24px 40px'};
   width: 100%;
 `;

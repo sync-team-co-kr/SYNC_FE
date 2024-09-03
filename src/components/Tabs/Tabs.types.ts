@@ -11,7 +11,9 @@ interface TabsBaseProps extends PropsWithChildren<{}> {
 
 export type DefaultTabProps = TabsBaseProps;
 
-export type TabListProps = PropsWithChildren;
+export type TabListProps = PropsWithChildren & {
+  padding?: string;
+};
 
 type TabBaseProps = {
   _index?: number;
@@ -28,4 +30,5 @@ export type TabPanelsProps = PropsWithChildren;
 export type TabPanelProps = PropsWithChildren & {
   render?: boolean;
   _index?: number;
+  padding?: string;
 };
