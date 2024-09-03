@@ -36,6 +36,7 @@ export const ProfileDropdown = () => {
     const file = e.target.files?.[0];
     if (file) {
       setFileName(file.name);
+      setTitleImage(URL.createObjectURL(file));
     }
   };
 
@@ -63,7 +64,6 @@ export const ProfileDropdown = () => {
     );
 
     setEmojiList(filteredEmojiList);
-    console.log(filteredEmojiList);
   };
 
   return (
@@ -72,7 +72,11 @@ export const ProfileDropdown = () => {
         <img
           width={24}
           height={24}
-          src={EMOJI_LIST[titleImage as keyof typeof EMOJI_LIST]}
+          src={
+            titleImage && titleImage.startsWith('blob:')
+              ? titleImage
+              : EMOJI_LIST[titleImage as keyof typeof EMOJI_LIST]
+          }
         />
       }
       type="select"
