@@ -33,14 +33,42 @@ export const createTask = async ({ ...payload }: CreateTaskPayload) => {
   let updatedDescription = payload.data.description;
 
   imageUrls.forEach((imageUrl) => {
-    const uuid = randomUuid();
-    const fileName = imageUrl.split('/').pop();
-    const newImageName = `${uuid}_${fileName}`;
+    if (imageUrl.startsWith('data:image/')) {
+      // uuid 생성 및 파일명 처리
+      const uuid = randomUuid();
+      const fileName = imageUrl.split('/').pop()?.split(';')[0] || 'image.png';
+      const newImageName = `${uuid}_${fileName}`;
 
-    const newImageUrl = `http://150.136.153.235:30080/mnt/oraclevdb/task/description/${newImageName}`;
-    updatedDescription = updatedDescription?.replace(imageUrl, newImageUrl);
+      // 이미지 경로 업데이트
+      const newImageUrl = `http://150.136.153.235:31585/mnt/oraclevdb/task/description/${newImageName}`;
+      updatedDescription = updatedDescription?.replace(imageUrl, newImageUrl);
 
-    formData.append(`images`, newImageUrl);
+      // base64 -> Blob 변환
+      try {
+        const base64Data = imageUrl.split(',')[1];
+        const contentType =
+          imageUrl.match(/data:(.*?);base64/)?.[1] || 'image/png';
+        const byteCharacters = atob(base64Data);
+        const byteNumbers = new Array(byteCharacters.length);
+
+        /* eslint-disable no-plusplus */
+        for (let i = 0; i < byteCharacters.length; i++) {
+          byteNumbers[i] = byteCharacters.charCodeAt(i);
+        }
+
+        const byteArray = new Uint8Array(byteNumbers);
+        const imageFile = new File([byteArray], newImageName, {
+          type: contentType,
+        });
+
+        // formData에 이미지 추가
+        formData.append(`images`, imageFile, newImageName);
+      } catch (error) {
+        console.error('이미지 변환 실패', error);
+      }
+    } else {
+      console.error('이미지 경로가 잘못되었습니다.', imageUrl);
+    }
   });
 
   const formDataList = {
