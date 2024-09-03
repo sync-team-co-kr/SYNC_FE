@@ -8,6 +8,7 @@ type TaskState = {
   project: Project;
   errorList: string[];
   taskId: number;
+  titleImage: string | null;
 };
 type TaskActions = {
   actions: {
@@ -21,6 +22,9 @@ type TaskActions = {
     setProjectId: (projectId: number) => void;
     setStatus: (status: number) => void;
     setImages: (image: File) => void;
+
+    // titleImage
+    setTitleImage: (titleImage: string | null) => void;
 
     // reset
     resetPayload: () => void;
@@ -44,6 +48,7 @@ type TaskActions = {
 };
 
 const initialState: TaskState = {
+  titleImage: null,
   taskId: 0,
   payload: {
     title: '',
@@ -73,6 +78,11 @@ const initialState: TaskState = {
 const useTaskStore = create<TaskState & TaskActions>((set) => ({
   ...initialState,
   actions: {
+    setTitleImage: (titleImage) => {
+      set(() => ({
+        titleImage,
+      }));
+    },
     setTaskId: (taskId) => {
       set(() => ({
         taskId,

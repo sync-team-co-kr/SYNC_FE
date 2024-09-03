@@ -11,4 +11,5 @@ export interface TextfieldProps extends InputHTMLAttributes<HTMLInputElement> {
   variant: Variant;
   width?: string;
   initialValue?: boolean;
+  selectIcon?: boolean;
 }

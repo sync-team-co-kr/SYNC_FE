@@ -259,6 +259,7 @@ export const CreateTaskModal = () => {
             </Typography>
           </LabelContainer>
           <Textfield
+            selectIcon
             variant="outlined"
             placeholder="업무명을 입력해주세요"
             value={payload.title}
