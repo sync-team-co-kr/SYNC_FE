@@ -8,7 +8,8 @@ import InputWithTimePicker from '@components/common/InputArea/InputWithTimePicke
 import Toggle from '@components/common/Toggle/Toggle';
 import { setIsModalOpen } from '@hooks/useModal';
 import { useCreateProject } from '@services/project/Project.hooks';
-import { add } from 'date-fns';
+import { CreateProjectRequestDto } from '@services/swagger/output/data-contracts';
+import { add, isBefore } from 'date-fns';
 
 import StyleCreateProjectModal from './CreateProjectModal.style';
 
@@ -45,17 +46,30 @@ function CreateProjectModal({ closeModal }: { closeModal?: setIsModalOpen }) {
     hour: null,
     minute: null,
   });
-  const [active, setActive] = useState(false);
+  const [includeTime, setIncludeTime] = useState(false);
   const { createProjectMutate } = useCreateProject();
+
+  const requestCreateProject = (newProject: CreateProjectRequestDto) =>
+    createProjectMutate(newProject);
+
+  const ValidateProject = (newProject: CreateProjectRequestDto) => {
+    const { startDate: projectStartDate, endDate: projectEndDate } = newProject;
+    if (
+      projectStartDate &&
+      projectEndDate &&
+      isBefore(projectStartDate, projectEndDate)
+    ) {
+      requestCreateProject(newProject);
+    }
+  };
 
   const handleCreateProject = async (e: React.MouseEvent<HTMLInputElement>) => {
     e.preventDefault();
 
-    if (startDate && endDate && startTime.hour && startTime.minute) {
-      const { hour, minute } = startTime;
+    if (startDate && endDate && includeTime) {
       const projectStartDate = add(new Date(startDate), {
-        hours: hour + 9,
-        minutes: minute,
+        hours: startTime.hour ? startTime.hour + 9 : 0,
+        minutes: startTime.minute || 0,
       });
 
       const projectEndDate = add(new Date(endDate), {
@@ -63,7 +77,7 @@ function CreateProjectModal({ closeModal }: { closeModal?: setIsModalOpen }) {
         minutes: endTime.minute || 0,
       });
 
-      createProjectMutate({
+      ValidateProject({
         title,
         subTitle,
         description,
@@ -71,16 +85,6 @@ function CreateProjectModal({ closeModal }: { closeModal?: setIsModalOpen }) {
         endDate: projectEndDate.toISOString(),
       });
     }
-
-    /*
-        createProjectMutate({
-      title,
-      subTitle,
-      description,
-      startDate: startDate?.toISOString(),
-      endDate: endDate?.toISOString(),
-    });
-    */
   };
 
   return (
@@ -120,8 +124,8 @@ function CreateProjectModal({ closeModal }: { closeModal?: setIsModalOpen }) {
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <span>시간 포함</span>
               <Toggle
-                isActive={active}
-                toggleSwtich={() => setActive((prevState) => !prevState)}
+                isActive={includeTime}
+                toggleSwtich={() => setIncludeTime((prevState) => !prevState)}
               />
             </div>
           </StyleCreateProjectModal.ToggleArea>
@@ -146,12 +150,14 @@ function CreateProjectModal({ closeModal }: { closeModal?: setIsModalOpen }) {
               value={startTime}
               setValue={setStartTime}
               placeholderText="프로젝트 시작 시간"
+              isDisabled={!includeTime}
             />
             <StyleCreateProjectModal.CrossDash></StyleCreateProjectModal.CrossDash>
             <InputWithTimePicker
               value={endTime}
               setValue={setEndTime}
               placeholderText="프로젝트 시작 시간"
+              isDisabled={!includeTime}
             />
           </StyleCreateProjectModal.InputWithCalendarArea>
         </StyleCreateProjectModal.InputArea>

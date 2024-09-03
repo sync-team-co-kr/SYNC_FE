@@ -5,19 +5,27 @@ import TimePickerDropdown from '@components/dropdown/TimePickerDropdown';
 import useDropdown from '@hooks/useDropdown';
 import { ProjectPeriodTime } from '@pages/projects/ProjectBoards/CreateProjectModal/CreateProjectModal';
 import { styled } from 'styled-components';
+import { vars } from 'token';
 
 interface InputWithTimePickerProps {
   value: ProjectPeriodTime;
   setValue: React.Dispatch<React.SetStateAction<ProjectPeriodTime>>;
   labelText?: string;
   placeholderText: string;
+  isDisabled: boolean;
 }
 
-const SInputWithTimePicker = styled.div`
+const SInputWithTimePicker = styled.div<{ $isdisabled: boolean }>`
   display: flex;
   flex-direction: column;
   justify-content: center;
   position: relative;
+  input {
+    background-color: ${(props) =>
+      props.$isdisabled
+        ? vars.sementic.color.black10
+        : vars.sementic.color.white};
+  }
 `;
 
 const TimePickerSvg = styled.div`
@@ -31,6 +39,7 @@ const InputWithTimePicker = ({
   value,
   setValue,
   placeholderText,
+  isDisabled,
 }: InputWithTimePickerProps) => {
   const [hour, setHour] = useState<number | null>(null);
   const [minute, setMinute] = useState<number | null>(null);
@@ -48,7 +57,7 @@ const InputWithTimePicker = ({
   }, [hour, minute]);
 
   return (
-    <SInputWithTimePicker>
+    <SInputWithTimePicker $isdisabled={isDisabled}>
       <input
         type="text"
         value={
@@ -58,12 +67,13 @@ const InputWithTimePicker = ({
         }
         placeholder={placeholderText}
         readOnly
+        disabled={isDisabled}
       />
       <TimePickerSvg ref={timePickerDropdownRef}>
         <TimePickerIcon
           width={18}
           height={18}
-          onClick={toggleTimePickerDropdown}
+          onClick={!isDisabled ? toggleTimePickerDropdown : undefined}
         />
       </TimePickerSvg>
       <TimePickerDropdown
