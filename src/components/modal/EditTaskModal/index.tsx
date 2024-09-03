@@ -54,10 +54,8 @@ export const EditTaskModal = ({
   // projectData를 가져오는 hooks
   const { projectListData } = useGetProjectList() ?? {};
 
-  const { taskId } = useTaskState();
   // project 자식 업무를 가져오는 hooks
-  const { taskChildren } = useGetTaskChildren(taskId);
-  console.log(taskChildren);
+  // const { taskChildren } = useGetTaskChildren(taskId);
 
   // 프로젝트 검색 state
   const [projectSearch, setProjectSearch] = useState('');

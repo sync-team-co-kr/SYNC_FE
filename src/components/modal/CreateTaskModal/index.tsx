@@ -78,7 +78,7 @@ export const CreateTaskModal = () => {
       },
       {
         onSuccess: () => {
-          console.log(payload);
+          console.log('success');
         },
 
         onError: (error) => {
