@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
 
 import {
   EMOJI_LIST,
@@ -10,41 +10,38 @@ import { TabList } from '@components/Tabs/Tab.list';
 import { TabPanel, TabPanels } from '@components/Tabs/Tab.panel';
 import { Tabs } from '@components/Tabs/Tabs';
 import { Typography } from '@components/common';
+import { Button } from '@components/common/Button';
 import { Select } from '@components/common/Select/Select';
 import { SelectButton } from '@components/common/Select/Select.button';
 import { SelectList } from '@components/common/Select/Select.list';
 import Textfield from '@components/common/Textfield';
 import { useTaskActions, useTaskState } from '@libs/store/task/task';
-import styled from 'styled-components';
 
-const EmojiContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  grid-gap: 12px;
-  max-width: 408px;
-`;
-
-const EmojiListContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: column;
-  gap: 18px;
-  width: 100%;
-  align-items: center;
-`;
-
-const EmojiIconContainer = styled.div`
-  display: grid;
-  grid-template-columns: repeat(12, 24px);
-  grid-gap: 8px;
-  width: 100%;
-`;
+import {
+  EmojiContainer,
+  EmojiIconContainer,
+  EmojiListContainer,
+} from './style';
 
 export const ProfileDropdown = () => {
   const { titleImage } = useTaskState();
   const { setTitleImage } = useTaskActions();
   const [emojiSearch, setEmojiSearch] = useState('');
   const [emojiList, setEmojiList] = useState<string[]>([]);
+
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [fileName, setFileName] = useState<string>('');
+
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setFileName(file.name);
+    }
+  };
+
+  const handleFileUpload = () => {
+    fileInputRef.current?.click();
+  };
 
   useEffect(() => {
     if (!titleImage) {
@@ -171,6 +168,27 @@ export const ProfileDropdown = () => {
                   </>
                 )}
               </EmojiListContainer>
+            </TabPanel>
+
+            <TabPanel padding="20px 0"></TabPanel>
+
+            <TabPanel padding="20px 0">
+              <Button
+                fullWidth
+                size="medium"
+                variant="outline"
+                text={fileName || '파일 업로드'}
+                onClick={handleFileUpload}
+              />
+              <input
+                type="file"
+                ref={fileInputRef}
+                onChange={handleFileChange}
+                style={{ display: 'none' }}
+              />
+              <Typography variant="small-text" color="black35">
+                권장 규격은 250 x 250픽셀 입니다.
+              </Typography>
             </TabPanel>
           </TabPanels>
         </Tabs>
