@@ -5,7 +5,6 @@ import { ReactComponent as CloseX } from '@assets/cancel-x.svg';
 import { Editor } from '@components/Editor';
 import { Button } from '@components/common/Button';
 import InputWithCalendarArea from '@components/common/InputArea/InputWithCalendar';
-import InputWithCalendarArea from '@components/common/InputArea/InputWithCalendar';
 import { Select } from '@components/common/Select/Select';
 import { SelectButton } from '@components/common/Select/Select.button';
 import { SelectItem, SelectList } from '@components/common/Select/Select.list';
