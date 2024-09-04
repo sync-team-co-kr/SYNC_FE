@@ -136,7 +136,7 @@ import WorriedFace from './worried-face.svg';
 import Yarn from './yarn.svg';
 import YoYo from './yo-yo.svg';
 
-export const NON_FACE_EMOJI_LIST = {
+const NON_FACE_EMOJI_LIST = {
   Checkmarkbutton,
   Pushpin,
   AdmissionTicket,
@@ -218,7 +218,7 @@ export const NON_FACE_EMOJI_LIST = {
   YoYo,
 } as const;
 
-export const FACE_EMOJI_LIST = {
+const FACE_EMOJI_LIST = {
   AngryFace,
   AnguishedFace,
   AnxiousFaceWithSweat,
