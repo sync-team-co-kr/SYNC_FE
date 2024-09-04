@@ -36,6 +36,8 @@ export const Textfield = (
     initialValue,
     width = '100%',
     selectIcon,
+    selectIconOnClick,
+    selectIconValue,
   }: TextfieldProps,
   ref: Ref<HTMLDivElement>,
   type: HTMLInputTypeAttribute = 'text',
@@ -51,7 +53,12 @@ export const Textfield = (
       )}
       <Wrapper>
         {hasIcon && <ProfileProject width={32} height={32} />}
-        {selectIcon && <ProfileDropdown />}
+        {selectIcon && (
+          <ProfileDropdown
+            selectIconValue={selectIconValue as string}
+            selectIconOnClick={selectIconOnClick as (icon: string) => void}
+          />
+        )}
         <TextfieldContainer
           disabled={disabled}
           variant={variant}

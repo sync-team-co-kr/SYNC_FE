@@ -220,7 +220,7 @@ export interface CreateTaskPayload {
   /** 업무를 생성하기 위한 DTO */
   data: CreateTaskRequestDto;
   images?: File[];
-  titleimage?: File[];
+  titleimage?: File[] | undefined | string;
 }
 
 export type CreateTaskData = SuccessResponse;

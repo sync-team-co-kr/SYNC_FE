@@ -68,15 +68,20 @@ export const EditTaskModal = ({
       alert('필수 입력값을 입력해주세요');
       return;
     }
-    createTaskMutate(payload, {
-      onSuccess: () => {
-        alert('업무가 생성되었습니다.');
+    createTaskMutate(
+      {
+        data: payload,
       },
+      {
+        onSuccess: () => {
+          alert('업무가 생성되었습니다.');
+        },
 
-      onError: (error) => {
-        alert(error);
+        onError: (error) => {
+          alert(error);
+        },
       },
-    });
+    );
   };
 
   // 프로젝트 검색

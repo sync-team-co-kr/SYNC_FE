@@ -1,4 +1,4 @@
-import { CreateTaskRequestDto } from '@services/swagger/output/data-contracts';
+import { CreateTaskPayload } from '@services/swagger/output/data-contracts';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { createTask, getTaskChildren, getTaskList } from './apis';
@@ -31,13 +31,12 @@ export const useCreateTask = () => {
   const queryClient = useQueryClient();
 
   const createTaskMutation = useMutation({
-    mutationFn: (newTask: CreateTaskRequestDto) =>
+    mutationFn: (newTask: CreateTaskPayload) =>
       createTask({
-        data: newTask,
+        data: newTask.data,
         images: newTask.images,
-        titleimage: newTask.images,
+        titleimage: newTask.titleimage,
       }),
-
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['tasks'] });
     },

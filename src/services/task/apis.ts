@@ -29,6 +29,8 @@ const extractImageUrls = (description: string | undefined): string[] => {
 export const createTask = async ({ ...payload }: CreateTaskPayload) => {
   const formData = new FormData();
   const imageUrls = extractImageUrls(payload.data.description);
+  const titleImage = payload.titleimage;
+  console.log('titleImage', titleImage);
 
   let updatedDescription = payload.data.description;
 

@@ -8,7 +8,7 @@ type TaskState = {
   project: Project;
   errorList: string[];
   taskId: number;
-  titleImage: string | null;
+  titleImage: string | undefined;
 };
 type TaskActions = {
   actions: {
@@ -24,7 +24,7 @@ type TaskActions = {
     setImages: (image: File) => void;
 
     // titleImage
-    setTitleImage: (titleImage: string | null) => void;
+    setTitleImage: (titleImage: string | undefined) => void;
 
     // reset
     resetPayload: () => void;
@@ -48,7 +48,7 @@ type TaskActions = {
 };
 
 const initialState: TaskState = {
-  titleImage: null,
+  titleImage: undefined,
   taskId: 0,
   payload: {
     title: '',

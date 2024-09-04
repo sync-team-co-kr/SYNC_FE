@@ -36,7 +36,7 @@ export const CreateTaskModal = () => {
 
   // 업무 생성 모달 payload 값들을 가져오는 state
   // const { resetPayload } = useTaskActions();
-  const { payload, project, errorList } = useTaskState();
+  const { payload, project, errorList, titleImage } = useTaskState();
 
   // 업무 생성 모달 payload 값들을 set 해주는 actions
   const {
@@ -48,6 +48,7 @@ export const CreateTaskModal = () => {
     setProjectId,
     setStartDate,
     setEndDate,
+    setTitleImage,
   } = useTaskActions();
 
   // projectData를 가져오는 hooks
@@ -68,13 +69,17 @@ export const CreateTaskModal = () => {
 
     createTaskMutate(
       {
-        projectId: payload.projectId,
-        title: payload.title,
-        description: payload.description,
-        parentTaskId: payload.parentTaskId === 0 ? null : payload.parentTaskId,
-        startDate: payload.startDate,
-        endDate: payload.endDate,
+        data: {
+          projectId: payload.projectId,
+          title: payload.title,
+          description: payload.description,
+          parentTaskId:
+            payload.parentTaskId === 0 ? null : payload.parentTaskId,
+          startDate: payload.startDate,
+          endDate: payload.endDate,
+        },
         images: [],
+        titleimage: titleImage,
       },
       {
         onSuccess: () => {
@@ -260,6 +265,8 @@ export const CreateTaskModal = () => {
           </LabelContainer>
           <Textfield
             selectIcon
+            selectIconOnClick={(icon) => setTitleImage(icon as string)}
+            selectIconValue={titleImage}
             variant="outlined"
             placeholder="업무명을 입력해주세요"
             value={payload.title}

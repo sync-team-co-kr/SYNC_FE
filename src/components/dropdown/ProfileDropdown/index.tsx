@@ -15,17 +15,24 @@ import { Select } from '@components/common/Select/Select';
 import { SelectButton } from '@components/common/Select/Select.button';
 import { SelectList } from '@components/common/Select/Select.list';
 import Textfield from '@components/common/Textfield';
-import { useTaskActions, useTaskState } from '@libs/store/task/task';
 
 import {
   EmojiContainer,
   EmojiIconContainer,
+  EmojiImageContainer,
   EmojiListContainer,
+  InputIconContainer,
 } from './style';
 
-export const ProfileDropdown = () => {
-  const { titleImage } = useTaskState();
-  const { setTitleImage } = useTaskActions();
+type ProfileDropdownProps = {
+  selectIconValue: string;
+  selectIconOnClick: (value: string) => void;
+};
+
+export const ProfileDropdown = ({
+  selectIconValue,
+  selectIconOnClick,
+}: ProfileDropdownProps) => {
   const [emojiSearch, setEmojiSearch] = useState('');
   const [emojiList, setEmojiList] = useState<string[]>([]);
 
@@ -36,7 +43,7 @@ export const ProfileDropdown = () => {
     const file = e.target.files?.[0];
     if (file) {
       setFileName(file.name);
-      setTitleImage(URL.createObjectURL(file));
+      selectIconOnClick(URL.createObjectURL(file));
     }
   };
 
@@ -45,10 +52,10 @@ export const ProfileDropdown = () => {
   };
 
   useEffect(() => {
-    if (!titleImage) {
-      setTitleImage('SmilingFaceWithSunglasses');
+    if (!selectIconValue) {
+      selectIconOnClick('SmilingFaceWithSunglasses');
     }
-  }, [titleImage, setTitleImage]);
+  }, [selectIconOnClick, selectIconValue]);
 
   // emoji 검색
   const handleEmojiSearch = (emoji: string) => {
@@ -69,15 +76,15 @@ export const ProfileDropdown = () => {
   return (
     <Select
       value={
-        <img
-          width={24}
-          height={24}
-          src={
-            titleImage && titleImage.startsWith('blob:')
-              ? titleImage
-              : EMOJI_LIST[titleImage as keyof typeof EMOJI_LIST]
-          }
-        />
+        <InputIconContainer>
+          <img
+            src={
+              selectIconValue && selectIconValue.startsWith('blob:')
+                ? selectIconValue
+                : EMOJI_LIST[selectIconValue as keyof typeof EMOJI_LIST]
+            }
+          />
+        </InputIconContainer>
       }
       type="select"
     >
@@ -112,13 +119,12 @@ export const ProfileDropdown = () => {
                         const emojiSrc =
                           EMOJI_LIST[emoji as keyof typeof EMOJI_LIST];
                         return (
-                          <img
-                            width={24}
-                            height={24}
+                          <EmojiImageContainer
                             key={emoji}
-                            onClick={() => setTitleImage(emoji)}
-                            src={emojiSrc}
-                          />
+                            onClick={() => selectIconOnClick(emoji)}
+                          >
+                            <img src={emojiSrc} />
+                          </EmojiImageContainer>
                         );
                       })}
                     </EmojiIconContainer>
@@ -136,13 +142,12 @@ export const ProfileDropdown = () => {
                               emoji as keyof typeof FACE_EMOJI_LIST
                             ];
                           return (
-                            <img
-                              width={24}
-                              height={24}
+                            <EmojiImageContainer
                               key={emoji}
-                              onClick={() => setTitleImage(emoji)}
-                              src={emojiSrc}
-                            />
+                              onClick={() => selectIconOnClick(emoji)}
+                            >
+                              <img src={emojiSrc} />
+                            </EmojiImageContainer>
                           );
                         })}
                       </EmojiIconContainer>
@@ -158,13 +163,12 @@ export const ProfileDropdown = () => {
                               emoji as keyof typeof NON_FACE_EMOJI_LIST
                             ];
                           return (
-                            <img
-                              width={24}
-                              height={24}
+                            <EmojiImageContainer
                               key={emoji}
-                              onClick={() => setTitleImage(emoji)}
-                              src={emojiSrc}
-                            />
+                              onClick={() => selectIconOnClick(emoji)}
+                            >
+                              <img src={emojiSrc} />
+                            </EmojiImageContainer>
                           );
                         })}
                       </EmojiIconContainer>
