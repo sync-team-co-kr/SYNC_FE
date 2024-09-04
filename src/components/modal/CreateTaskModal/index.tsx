@@ -5,7 +5,6 @@ import { ReactComponent as CloseX } from '@assets/cancel-x.svg';
 import { Editor } from '@components/Editor';
 import { Button } from '@components/common/Button';
 import InputWithCalendarArea from '@components/common/InputArea/InputWithCalendar';
-import InputWithCalendarArea from '@components/common/InputArea/InputWithCalendar';
 import { Select } from '@components/common/Select/Select';
 import { SelectButton } from '@components/common/Select/Select.button';
 import { SelectItem, SelectList } from '@components/common/Select/Select.list';
@@ -19,7 +18,6 @@ import { modalStore } from '@libs/store';
 import { useTaskActions, useTaskState } from '@libs/store/task/task';
 import { useGetProjectList } from '@services/project/Project.hooks';
 import { useCreateTask } from '@services/task/Task.hooks';
-
 
 import { SELECT_STATUS } from './constants';
 import {
