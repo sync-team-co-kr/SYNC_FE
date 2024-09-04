@@ -5,7 +5,7 @@ import { ReactComponent as CloseX } from '@assets/cancel-x.svg';
 import { Editor } from '@components/Editor';
 import { Button } from '@components/common/Button';
 import { Select } from '@components/common/Select/Select';
-import { SelectButton } from '@components/common/Select/Select.Button';
+import { SelectButton } from '@components/common/Select/Select.button';
 import { SelectItem, SelectList } from '@components/common/Select/Select.list';
 import { searchFilter } from '@components/common/Select/Select.utils';
 import { LabelContainer, TaskContainer } from '@components/common/Select/style';
@@ -25,7 +25,7 @@ import {
 import { modalStore } from '@libs/store';
 import { useTaskActions, useTaskState } from '@libs/store/task/task';
 import { useGetProjectList } from '@services/project/Project.hooks';
-import { useCreateTask, useGetTaskChildren } from '@services/task/Task.hooks';
+import { useCreateTask } from '@services/task/Task.hooks';
 
 import { EditTaskModalProps } from './types';
 
