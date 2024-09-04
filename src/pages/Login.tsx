@@ -187,8 +187,12 @@ export default function Login() {
     try {
       const loginResponse = await loginAPI({ ...loginForm });
       if (loginResponse.result === 'OK') {
+<<<<<<< HEAD
         // 임시로 userId를 localStorage에 저장.. response 값에 useId 가 null로 응답됌
         localStorage.setItem('userId', loginForm.userId);
+=======
+        localStorage.setItem('loggedUserId', loginForm.userId);
+>>>>>>> 9791a2b (fix : /project/api/v2 params에 특정 아이디 대신 로그인 중인 회원 아이디가 들어가도록 변경)
 
         window.alert('로그인 성공!');
         window.location.href = '/';
