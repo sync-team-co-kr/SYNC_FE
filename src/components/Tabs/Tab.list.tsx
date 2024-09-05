@@ -5,7 +5,7 @@ import { TabListElement } from './Tabs.style';
 import { TabListProps } from './Tabs.types';
 import { getValidChildren } from './Tabs.utils';
 
-export const TabList = ({ children }: TabListProps) => {
+export const TabList = ({ children, padding }: TabListProps) => {
   const tabContext = useTabContext();
 
   const renderTabs = () =>
@@ -19,5 +19,5 @@ export const TabList = ({ children }: TabListProps) => {
       });
     });
 
-  return <TabListElement>{renderTabs()}</TabListElement>;
+  return <TabListElement padding={padding}>{renderTabs()}</TabListElement>;
 };

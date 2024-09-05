@@ -5,6 +5,19 @@ import { vars } from 'token';
 
 import { useSelectContext } from './Select.provider';
 
+const EmojiButtonContainer = styled.div`
+  display: inline-flex;
+  width: fit-content;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+
+  img {
+    width: 100%;
+    height: 100%;
+  }
+`;
+
 const SelectButtonContainer = styled.div<{ isOpen: boolean }>`
   display: flex;
   justify-content: space-between;
@@ -20,8 +33,23 @@ const SelectButtonContainer = styled.div<{ isOpen: boolean }>`
       : `border: 1px solid ${vars.sementic.color.black20}`};
 `;
 
-export const SelectButton = () => {
+interface SelectButtonProps {
+  type?: 'select' | 'emoji';
+}
+
+export const SelectButton = ({ type }: SelectButtonProps) => {
   const selectContext = useSelectContext();
+
+  if (type === 'emoji') {
+    return (
+      <EmojiButtonContainer
+        aria-selected={selectContext.isActivated}
+        onClick={() => selectContext.setToggleOpen((prev) => !prev)}
+      >
+        {selectContext.value}
+      </EmojiButtonContainer>
+    );
+  }
 
   return (
     <SelectButtonContainer

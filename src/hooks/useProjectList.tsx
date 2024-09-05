@@ -47,6 +47,8 @@ const useProjectList: useProjectListType = () => {
   const queryClient = useQueryClient();
 
   const getAllProject = async () => {
+    const { userId } = window.localStorage;
+
     try {
       const getProjectIdsResponse: AxiosResponse<
         AxiosRes2<number[]>,

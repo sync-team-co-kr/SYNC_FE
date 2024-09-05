@@ -1,15 +1,16 @@
-import { PropsWithChildren } from 'react';
+import { PropsWithChildren, useRef } from 'react';
 
 import { Typography } from '@components/common/Typography';
+import { useHandleOutsideHooks } from '@hooks/useHandleOutsideHooks';
 import { styled } from 'styled-components';
 import { vars } from 'token';
 
 import { useSelectContext } from './Select.provider';
 
-const ListContainer = styled.div`
-  width: 100%;
+const ListContainer = styled.div<{ width?: string }>`
+  width: ${({ width }) => width ?? '100%'};
   position: absolute;
-  z-index: 1;
+  z-index: 2;
   top: 100%;
   left: 0;
   background: ${vars.sementic.color.white};
@@ -36,14 +37,24 @@ export const SelectItem = styled.div`
   }
 `;
 
-export const SelectList = ({ children }: PropsWithChildren) => {
+interface SelectListProps {
+  width?: string;
+}
+
+export const SelectList = ({
+  children,
+  width,
+}: PropsWithChildren & SelectListProps) => {
+  const selectRef = useRef<HTMLDivElement>(null);
   const selectContext = useSelectContext();
   const { isActivated } = selectContext;
+
+  useHandleOutsideHooks(selectRef, () => selectContext.setToggleOpen(false));
 
   if (!isActivated) return null;
 
   return (
-    <ListContainer>
+    <ListContainer width={width} ref={selectRef}>
       <Typography variant="paragraph" color="black70">
         {selectContext.listLabel}
       </Typography>

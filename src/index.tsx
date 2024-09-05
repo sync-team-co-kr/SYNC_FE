@@ -1,6 +1,7 @@
 import React from 'react';
 import { CookiesProvider } from 'react-cookie';
 import ReactDOM from 'react-dom/client';
+import 'react-quill/dist/quill.snow.css';
 import { BrowserRouter } from 'react-router-dom';
 
 import { MainRoutes } from '@routes';

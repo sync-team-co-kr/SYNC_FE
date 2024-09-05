@@ -3,6 +3,7 @@ import { vars } from 'token';
 
 export const CommonButton = styled.button<{
   size: 'small' | 'medium';
+  fullWidth?: boolean;
   variant:
     | 'outline'
     | 'fill'
@@ -27,6 +28,7 @@ export const CommonButton = styled.button<{
   justify-content: center;
   outline: none;
   align-items: center;
+  width: ${({ fullWidth }) => (fullWidth ? '100%' : 'auto')};
   gap: 12px;
   padding: ${({ hasText }) => (hasText ? '12px 16px' : '12px')};
   height: ${({ size }) => (size === 'small' ? '36px' : '42px')};

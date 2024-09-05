@@ -6,7 +6,8 @@ export interface ButtonProps {
     | 'outline'
     | 'fill'
     | 'fillGray'
-    | 'text' | 'fillRed'
+    | 'text'
+    | 'fillRed'
     | 'task'
     | 'subTask'
     | 'quest';
@@ -17,4 +18,5 @@ export interface ButtonProps {
   text?: string;
   renderIcon?: React.ReactNode;
   isSelect?: boolean;
+  fullWidth?: boolean;
 }

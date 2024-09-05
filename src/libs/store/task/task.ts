@@ -4,24 +4,33 @@ import { create } from 'zustand';
 
 // 업무 생성 State
 type TaskState = {
-  payload: CreateTaskRequestDto;
+  payload: CreateTaskRequestDto & { status: number };
   project: Project;
   errorList: string[];
+  taskId: number;
+  titleImage: string | undefined;
 };
 type TaskActions = {
   actions: {
+    setTaskId: (taskId: number) => void;
     // 업무 state 변경
     setTitle: (title: string) => void;
     setDescription: (description: string) => void;
-    setStartDate: (startDate: string) => void;
-    setEndDate: (endDate: string) => void;
+    setStartDate: (startDate: Date) => void;
+    setEndDate: (endDate: Date) => void;
     setParentTaskId: (parentTaskId: number) => void;
     setProjectId: (projectId: number) => void;
     setStatus: (status: number) => void;
     setImages: (image: File) => void;
 
+    // titleImage
+    setTitleImage: (titleImage: string | undefined) => void;
+
     // reset
     resetPayload: () => void;
+
+    // edit
+    setEditTask: (task: CreateTaskRequestDto) => void;
 
     // project
     setProject: (project: Project) => void;
@@ -39,15 +48,17 @@ type TaskActions = {
 };
 
 const initialState: TaskState = {
+  titleImage: undefined,
+  taskId: 0,
   payload: {
     title: '',
     description: '',
-    startDate: '',
-    endDate: '',
+    startDate: new Date(),
+    endDate: new Date(),
     parentTaskId: 0,
     projectId: 0,
-    status: 0,
     images: [],
+    status: 0,
   },
   project: {
     projectId: 0,
@@ -67,6 +78,16 @@ const initialState: TaskState = {
 const useTaskStore = create<TaskState & TaskActions>((set) => ({
   ...initialState,
   actions: {
+    setTitleImage: (titleImage) => {
+      set(() => ({
+        titleImage,
+      }));
+    },
+    setTaskId: (taskId) => {
+      set(() => ({
+        taskId,
+      }));
+    },
     setTitle: (title) => {
       set((state) => ({
         payload: {
@@ -134,6 +155,15 @@ const useTaskStore = create<TaskState & TaskActions>((set) => ({
     resetPayload: () => {
       set(() => ({
         ...initialState,
+      }));
+    },
+    // edit
+    setEditTask: (task) => {
+      set((state) => ({
+        payload: {
+          ...state.payload,
+          ...task,
+        },
       }));
     },
 

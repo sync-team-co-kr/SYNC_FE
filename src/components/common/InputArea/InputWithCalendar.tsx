@@ -5,10 +5,7 @@ import CalendarDropdown from '@components/dropdown/CalendarDropdown';
 import useDropdown from '@hooks/useDropdown';
 import { format } from 'date-fns';
 
-import {
-  CalendarSVG,
-  SInputWithCalendar,
-} from './InputArea.style';
+import { CalendarSVG, SInputWithCalendar } from './InputArea.style';
 
 interface InputWithCalendarAreaProps {
   value?: Date;
