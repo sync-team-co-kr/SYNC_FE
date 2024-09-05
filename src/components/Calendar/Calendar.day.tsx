@@ -64,7 +64,6 @@ export const CalendarDay = () => {
 
   const EditModalOpenHandler = (taskId: number) => {
     openModal(EditTaskModal);
-
     setTaskId(taskId);
   };
 
