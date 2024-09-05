@@ -10,6 +10,7 @@
  */
 
 import {
+  AcceInviteData,
   CreateProjectData,
   CreateProjectRequestDto,
   CreateTaskData,
@@ -19,6 +20,9 @@ import {
   DeleteTaskData,
   DeleteTaskRequestDto,
   GetCurrentUserInfoData,
+  GetLinkData,
+  GetMembersByUserIdsData,
+  GetUsersFromProjectData,
   GetUsersInfoData,
   MemberAddToProjectData,
   MemberAddToTaskData,
@@ -26,6 +30,9 @@ import {
   MemberMappingToTaskRequestDto,
   ModifyPwdData,
   ModifyPwdRequestDto,
+  ProjectInviteRequestDto,
+  SendEmailLinkData,
+  SendLinkRequestDto,
   UpdateProjectData,
   UpdateProjectRequestDto,
   UpdateTaskData,
@@ -138,7 +145,7 @@ export class User<
       ...params,
     });
   /**
-   * @description HOST = 150.136.153.235:30080 <br>ValidationDetails : CreateTaskRequestDto
+   * @description HOST = 150.136.153.235:30080 <br>ValidationDetails : CreateTaskRequestDto <br>depth는 parentTask의 depth에 따라 결정 되며, 최상위 업무는 0, 그 하위 업무는 1, 그 하위 업무는 2로 결정됩니다. parentTask의 depth가 2일 경우, 생성되지 않습니다.
    *
    * @tags task-controller
    * @name CreateTask
@@ -192,6 +199,107 @@ export class User<
       method: 'POST',
       body: data,
       type: ContentType.Json,
+      ...params,
+    });
+  /**
+   * @description 프로젝트 초대를 수락 합니다.
+   *
+   * @tags invite-controller
+   * @name AcceInvite
+   * @summary 프로젝트 초대수락
+   * @request POST:/user/api/invite
+   * @response `200` `AcceInviteData` OK
+   */
+  acceInvite = (data: ProjectInviteRequestDto, params: RequestParams = {}) =>
+    this.request<AcceInviteData, any>({
+      path: `/user/api/invite`,
+      method: 'POST',
+      body: data,
+      type: ContentType.Json,
+      ...params,
+    });
+  /**
+   * @description 이메일로 프로젝트 초대장을 전송합니다.
+   *
+   * @tags invite-controller
+   * @name SendEmailLink
+   * @summary 프로젝트 이메일로 초대하기
+   * @request POST:/user/api/email
+   * @response `200` `SendEmailLinkData` OK
+   */
+  sendEmailLink = (data: SendLinkRequestDto, params: RequestParams = {}) =>
+    this.request<SendEmailLinkData, any>({
+      path: `/user/api/email`,
+      method: 'POST',
+      body: data,
+      type: ContentType.Json,
+      ...params,
+    });
+  /**
+   * @description HOST = 150.136.153.235:30080
+   *
+   * @tags member-controller
+   * @name GetUsersFromProject
+   * @summary 프로젝트의 멤버들을 가져오기 위한 API
+   * @request GET:/user/api/member/v2
+   * @response `200` `GetUsersFromProjectData` OK
+   */
+  getUsersFromProject = (
+    query: {
+      projectIds: number[];
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<GetUsersFromProjectData, any>({
+      path: `/user/api/member/v2`,
+      method: 'GET',
+      query: query,
+      ...params,
+    });
+  /**
+   * @description HOST = 150.136.153.235:30080
+   *
+   * @tags member-controller
+   * @name GetMembersByUserIds
+   * @summary 유저들의 멤버정보를 가져오기 위한 API
+   * @request GET:/user/api/member/v1
+   * @response `200` `GetMembersByUserIdsData` OK
+   */
+  getMembersByUserIds = (
+    query: {
+      userIds: number[];
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<GetMembersByUserIdsData, any>({
+      path: `/user/api/member/v1`,
+      method: 'GET',
+      query: query,
+      ...params,
+    });
+  /**
+   * @description 프로젝트 고유 초대 URL을 가져옵니다.
+   *
+   * @tags invite-controller
+   * @name GetLink
+   * @summary 프로젝트 초대 URL 가져오기
+   * @request GET:/user/api/link
+   * @response `200` `GetLinkData` OK
+   */
+  getLink = (
+    query: {
+      /**
+       * Project PK 값
+       * @format int64
+       */
+      projectId: number;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<GetLinkData, any>({
+      path: `/user/api/link`,
+      method: 'GET',
+      query: query,
       ...params,
     });
   /**

@@ -50,6 +50,7 @@ export const TabPanel: TabPanelComponent = forwardRef(function TabPanel<
   return (
     <Element
       role="tabpanel"
+      padding={props.padding}
       tabIndex={0}
       ref={ref}
       {...attributes.panel}

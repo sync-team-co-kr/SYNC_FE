@@ -2,9 +2,10 @@
 import { ChangeEvent, useEffect, useState } from 'react';
 
 import { ReactComponent as CloseX } from '@assets/cancel-x.svg';
+import { Editor } from '@components/Editor';
 import { Button } from '@components/common/Button';
 import { Select } from '@components/common/Select/Select';
-import { SelectButton } from '@components/common/Select/Select.Button';
+import { SelectButton } from '@components/common/Select/Select.button';
 import { SelectItem, SelectList } from '@components/common/Select/Select.list';
 import { searchFilter } from '@components/common/Select/Select.utils';
 import { LabelContainer, TaskContainer } from '@components/common/Select/style';
@@ -12,12 +13,7 @@ import { Tag } from '@components/common/Tag';
 import { SituationProperty } from '@components/common/Tag/types';
 import Textfield from '@components/common/Textfield';
 import { Typography } from '@components/common/Typography';
-import { modalStore } from '@libs/store';
-import { useTaskActions, useTaskState } from '@libs/store/task/task';
-import { useGetProjectList } from '@services/project/Project.hooks';
-import { useCreateTask } from '@services/task/Task.hooks';
-
-import { SELECT_STATUS } from './constants';
+import { SELECT_STATUS } from '@components/modal/CreateTaskModal/constants';
 import {
   ButtonGroup,
   Container,
@@ -25,11 +21,19 @@ import {
   ContainerFooter,
   ContainerHeader,
   SectionContainer,
-} from './style';
+} from '@components/modal/CreateTaskModal/style';
+import { modalStore } from '@libs/store';
+import { useTaskActions, useTaskState } from '@libs/store/task/task';
+import { useGetProjectList } from '@services/project/Project.hooks';
+import { useCreateTask } from '@services/task/Task.hooks';
+
+import { EditTaskModalProps } from './types';
 
 // 업무 생성 모달
 
-export const CreateTaskModal = () => {
+export const EditTaskModal = ({
+  editType = 'calendar',
+}: EditTaskModalProps) => {
   const { closeModal } = modalStore();
 
   // 업무 생성 모달 payload 값들을 가져오는 state
@@ -37,10 +41,21 @@ export const CreateTaskModal = () => {
   const { payload, project, errorList } = useTaskState();
 
   // 업무 생성 모달 payload 값들을 set 해주는 actions
-  const { setProject, setTitle, setStatus } = useTaskActions();
+  const {
+    setProject,
+    setTitle,
+    setStatus,
+    setDescription,
+    setParentTaskId,
+    // setEditTask,
+  } = useTaskActions();
 
+  console.log(editType);
   // projectData를 가져오는 hooks
   const { projectListData } = useGetProjectList() ?? {};
+
+  // project 자식 업무를 가져오는 hooks
+  // const { taskChildren } = useGetTaskChildren(taskId);
 
   // 프로젝트 검색 state
   const [projectSearch, setProjectSearch] = useState('');
@@ -53,15 +68,20 @@ export const CreateTaskModal = () => {
       alert('필수 입력값을 입력해주세요');
       return;
     }
-    createTaskMutate(payload, {
-      onSuccess: () => {
-        alert('업무가 생성되었습니다.');
+    createTaskMutate(
+      {
+        data: payload,
       },
+      {
+        onSuccess: () => {
+          alert('업무가 생성되었습니다.');
+        },
 
-      onError: (error) => {
-        alert(error);
+        onError: (error) => {
+          alert(error);
+        },
       },
-    });
+    );
   };
 
   // 프로젝트 검색
@@ -79,7 +99,7 @@ export const CreateTaskModal = () => {
     <Container>
       <ContainerHeader>
         <Typography variant="heading-3" color="black">
-          업무 생성
+          업무 수정
         </Typography>
         <Button
           hasIcon
@@ -146,26 +166,29 @@ export const CreateTaskModal = () => {
           <ButtonGroup>
             <Button
               size="small"
+              isSelect={payload.parentTaskId === 0}
               variant="task"
               text="테스크"
               onClick={() => {
-                console.log('task');
+                setParentTaskId(0);
               }}
             />
             <Button
               size="small"
               variant="subTask"
+              isSelect={payload.parentTaskId === 1}
               text="서브 테스크"
               onClick={() => {
-                console.log('sub task');
+                setParentTaskId(1);
               }}
             />
             <Button
               size="small"
               variant="quest"
+              isSelect={payload.parentTaskId === 2}
               text="퀘스트"
               onClick={() => {
-                console.log('퀘스트');
+                setParentTaskId(2);
               }}
             />
           </ButtonGroup>
@@ -173,7 +196,7 @@ export const CreateTaskModal = () => {
         {/* task state end */}
 
         {/* task */}
-        <SectionContainer direction="row" gap={24} maxwidth="100%">
+        <SectionContainer direction="row" gap={24} maxWidth="100%">
           <TaskContainer>
             <LabelContainer>
               <Typography variant="small-text-b" color="negativeRed">
@@ -277,11 +300,10 @@ export const CreateTaskModal = () => {
               설명
             </Typography>
           </LabelContainer>
-          <Textfield
-            variant="outlined"
-            placeholder="설명을 입력해주세요"
+          <Editor
             value={payload.description}
-            onChange={(e) => console.log(e.target.value)}
+            placeholder="프로젝트 부제목을 입력해주세요"
+            onChangeText={(text) => setDescription(text)}
           />
         </SectionContainer>
         {/* description end */}

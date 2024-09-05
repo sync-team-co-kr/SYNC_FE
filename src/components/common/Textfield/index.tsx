@@ -2,6 +2,7 @@ import { HTMLInputTypeAttribute, Ref, forwardRef } from 'react';
 
 import { ReactComponent as ProfileProject } from '@assets/Profile_Project.svg';
 import { ReactComponent as Search } from '@assets/searchSM.svg';
+import { ProfileDropdown } from '@components/dropdown/ProfileDropdown';
 import styled from 'styled-components';
 
 import {
@@ -34,12 +35,14 @@ export const Textfield = (
     hasIcon,
     initialValue,
     width = '100%',
+    selectIcon,
+    selectIconOnClick,
+    selectIconValue,
   }: TextfieldProps,
   ref: Ref<HTMLDivElement>,
   type: HTMLInputTypeAttribute = 'text',
 ) => {
   const isSearch = variant === 'search';
-
   return (
     <Element ref={ref} width={width}>
       {label && (
@@ -50,6 +53,12 @@ export const Textfield = (
       )}
       <Wrapper>
         {hasIcon && <ProfileProject width={32} height={32} />}
+        {selectIcon && (
+          <ProfileDropdown
+            selectIconValue={selectIconValue as string}
+            selectIconOnClick={selectIconOnClick as (icon: string) => void}
+          />
+        )}
         <TextfieldContainer
           disabled={disabled}
           variant={variant}
