@@ -1,4 +1,5 @@
 import { EditProjectParams } from '@customTypes/project';
+import { useLoggedInUserStore } from '@libs/store';
 import { CreateProjectRequestDto } from '@services/swagger/output/data-contracts';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
@@ -12,6 +13,8 @@ import {
 
 // projectList hooks
 export const useGetProjectList = () => {
+  const { loggedInUser } = useLoggedInUserStore();
+  console.log(loggedInUser);
   const { data: projectListData } = useQuery({
     queryKey: ['projects'],
     queryFn: getProjectList,

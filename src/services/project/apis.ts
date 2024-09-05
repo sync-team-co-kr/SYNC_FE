@@ -12,17 +12,15 @@ export const getProjectList = async () => {
   /**
    *  /api/user/info/v1 반환값으로 userId가 추가될 때
    * /project/api/v2 userId의 params 값으로 사용
-   *
-   *  const cookies = new Cookies(null, { path: '/' });
-   *  const loggedInUser = cookies.get('loggedInUser');
    */
-  const { userId: storageUserId } = window.localStorage;
-  
+
+  const loggedInUserId = localStorage.getItem('loggedUserId');
+
   const getProjectIdsRes: AxiosResponse<
     AxiosResByData<{ userId: number[] }>,
     any
   > = await requiredJwtTokeninstance.get(
-    `/project/api/v2?userId=${storageUserId}`,
+    `/project/api/v2?userId=${loggedInUserId}`,
   );
 
   const joinedProjectIds = getProjectIdsRes.data.data.userId.join(',');
