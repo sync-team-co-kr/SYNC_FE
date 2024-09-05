@@ -1,9 +1,14 @@
 import { ForwardedRef, forwardRef, useEffect } from 'react';
 
+// import { useSearchParams } from 'react-router-dom';
 import { ReactComponent as Close } from '@assets/cancel-x.svg';
 import { TaskItem } from '@components/TaskItem';
 import { Button } from '@components/common/Button';
 import { Typography } from '@components/common/Typography';
+import { CreateTaskModal } from '@components/modal/CreateTaskModal';
+import { Project } from '@customTypes/project';
+import useModal from '@hooks/useModal';
+import { useTaskActions } from '@libs/store/task/task';
 import { useGetProjectList } from '@services/project/Project.hooks';
 
 import {
@@ -23,6 +28,13 @@ const CalendarTaskDropdown = (
   ref: ForwardedRef<HTMLDivElement>,
 ) => {
   const { projectListData } = useGetProjectList();
+  const [openModal] = useModal();
+
+  const { setProject } = useTaskActions();
+  const handleOpenCreateTaskModal = (project: Project) => {
+    openModal(CreateTaskModal);
+    setProject(project);
+  };
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -63,9 +75,7 @@ const CalendarTaskDropdown = (
             {projectListData?.map((project) => (
               <TaskItem
                 situations={[]}
-                onClick={() => {
-                  console.log('click');
-                }}
+                onClick={() => handleOpenCreateTaskModal(project)}
                 works={[]}
                 key={project.projectId}
                 title={project.title}
