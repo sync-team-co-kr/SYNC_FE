@@ -9,7 +9,7 @@ import { vars } from 'token';
 import { Typography } from '@components/common/Typography';
 import useDropdown from '@hooks/useDropdown';
 import { useModal } from '@hooks';
-import { UpdateTaskModal } from './UpdateTaskModal';
+import { UpdateTaskModal } from '../Task/UpdateTaskModal';
 
 const ProjectBoard = styled.li`
   padding: 12px;
@@ -111,7 +111,7 @@ const Icon = styled.div`
 `;
 
 
-const WorkBoard = () => {
+const TaskBoard = () => {
   const [
     isOpenProjectDropdownMenu,
     toggleProjectDropdownMenu,
@@ -165,4 +165,4 @@ const WorkBoard = () => {
   );
 };
 
-export default WorkBoard;
+export default TaskBoard;

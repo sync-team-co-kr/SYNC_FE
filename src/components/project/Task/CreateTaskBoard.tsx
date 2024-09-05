@@ -106,12 +106,12 @@ const ProjectFooter = styled.div`
   padding: 8px;
 `;
 
-interface ProjectCreateWorkBoardProps {
+interface ProjectCreateTaskBoardProps {
   onClose: () => void;
   onTaskCreated: (newTask: AxiosResByData<any>) => void; // 타입을 맞춤
 }
 
-const ProjectCreateWorkBoard = ({ onClose, onTaskCreated }: ProjectCreateWorkBoardProps) => {
+const CreateTaskBoard = ({ onClose, onTaskCreated }: ProjectCreateTaskBoardProps) => {
   const [workBoard, setWorkBoard] = useState({
     description: '',
     endDate: new Date().toISOString(),
@@ -207,4 +207,4 @@ const ProjectCreateWorkBoard = ({ onClose, onTaskCreated }: ProjectCreateWorkBoa
   );
 };
 
-export default ProjectCreateWorkBoard;
+export default CreateTaskBoard;

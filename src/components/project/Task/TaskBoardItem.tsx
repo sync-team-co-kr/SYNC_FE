@@ -4,11 +4,11 @@ import { ReactComponent as WorkboxIcon } from '@assets/projects/workbox.svg';
 import { ReactComponent as CreateIcon } from '@assets/projects/create.svg';
 import { useState } from 'react';
 import { vars } from 'token';
-import ProjectCreateWorkBoard from './ProjectCreateWorkBoard';
-import WorkBoard from './WorkBoard';
+import CreateTaskBoard from './CreateTaskBoard';
+import WorkBoard from './TaskBoard';
 
 // Props 타입 정의
-interface ProjectWorkBoardContainerProps {
+interface TaskBoardContainerProps {
   borderColor?: string;
   backgroundColor?: string;
 }
@@ -18,7 +18,7 @@ type TypographyColor = "negativeRed" | "primaryLightOrange" | "primaryOrange" | 
   "lightRed" | "alertLightOrange" | "lightPurple" | "purple";
 
 
-const ProjectWorkBoardContainer = styled.li<ProjectWorkBoardContainerProps>`
+const ProjectWorkBoardContainer = styled.li<TaskBoardContainerProps>`
   width: 414px;
   min-height: 100px;
   border-radius: 12px;
@@ -67,7 +67,7 @@ const Icon = styled.div`
   margin: 0 8px 0 8px;
 `;
 
-interface ProjectWorkBoardToDoProps {
+interface TaskBoardItemProps {
   title?: string;
   count?: number;
   titleColor?: TypographyColor;  // 타입을 제한된 색상으로 지정
@@ -76,14 +76,14 @@ interface ProjectWorkBoardToDoProps {
   workBoardVisible?: boolean;
 }
 
-const ProjectWorkBoardToDo = ({
+const TaskBoardItem = ({
   title = 'Title',
   count = 0,
   titleColor = 'negativeRed',
   borderColor,
   backgroundColor,
   // workBoardVisible = true,
-}: ProjectWorkBoardToDoProps) => {
+}: TaskBoardItemProps) => {
   const [isClicked, setIsClick] = useState(false);
   const [workBoards, setWorkBoards] = useState<any[]>([]); // 워크보드 상태
 
@@ -112,7 +112,7 @@ const ProjectWorkBoardToDo = ({
         <WorkBoard key={index} {...board} />
       ))} */}
       {isClicked ? (
-        <ProjectCreateWorkBoard onClose={() => handleClick(false)} onTaskCreated={handleTaskCreated} />
+        <CreateTaskBoard onClose={() => handleClick(false)} onTaskCreated={handleTaskCreated} />
       ) : (
         <ProjectCreatWork onClick={() => handleClick(true)}>
           <Icon>
@@ -125,4 +125,4 @@ const ProjectWorkBoardToDo = ({
   );
 };
 
-export default ProjectWorkBoardToDo;
+export default TaskBoardItem;
