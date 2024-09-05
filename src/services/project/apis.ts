@@ -8,13 +8,13 @@ import { AxiosResponse } from 'axios';
  * 프로젝트 리스트의 id들만 가져오는 API
  */
 export const getProjectIdList = async () => {
-  const { userId: storageUserId } = window.localStorage;
+  const { loggedUserId } = window.localStorage;
 
   const getProjectIdsRes: AxiosResponse<
     AxiosResByData<any>,
     any
   > = await requiredJwtTokeninstance.get(
-    `/project/api/v2?userId=${storageUserId}`,
+    `/project/api/v2?userId=${loggedUserId}`,
   );
 
   const { userId } = getProjectIdsRes.data.data;
