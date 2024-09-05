@@ -26,6 +26,8 @@ export interface UpdateTaskRequestDto {
   /**
    * 업무 상태 ( 0: 진행중, 1: 완료, 2: 보류)
    * @format int32
+   * @min 0
+   * @max 2
    */
   status: number;
   /** 업무 이름 */
@@ -45,7 +47,7 @@ export interface UpdateTaskRequestDto {
 export interface SuccessResponse {
   message?: string;
   result?: boolean;
-  value?: object;
+  data?: object;
 }
 
 export interface ModifyPwdRequestDto {
@@ -77,24 +79,19 @@ export interface CreateTaskRequestDto {
    * 업무 종료일
    * @format date-time
    */
-  endDate?: string;
+  endDate?: string | Date;
   /**
    * 업무 시작일
    * @format date-time
    */
-  startDate?: string;
-  /**
-   * 업무 상태 ( 0: 진행중, 1: 완료, 2: 보류)
-   * @format int32
-   */
-  status: number;
+  startDate?: string | Date;
   /** 업무 이름 */
   title: string;
   /**
    * 상위 업무 아이디, null == 프로젝트 최상위 업무
    * @format int64
    */
-  parentTaskId?: number;
+  parentTaskId?: number | null;
   /**
    * 생성할 업무의 프로젝트 아이디
    * @format int64
@@ -107,21 +104,21 @@ export interface CreateTaskRequestDto {
 /** 프로젝트를 생성하기 위한 DTO */
 export interface CreateProjectRequestDto {
   /** 프로젝트 설명 */
-  description?: string;
+  description: string;
   /** 프로젝트 이름 */
   title: string;
   /** 프로젝트 부제목 */
-  subTitle?: string;
+  subTitle: string;
   /**
    * 프로젝트 시작일
    * @format date-time
    */
-  startDate?: string;
+  startDate: string;
   /**
    * 프로젝트 종료일
    * @format date-time
    */
-  endDate?: string;
+  endDate: string;
 }
 
 /** 프로젝트 멤버에 업무를 할당하기 위한 DTO */
@@ -151,6 +148,18 @@ export interface MemberMappingToProjectRequestDto {
   isManager: number;
 }
 
+export interface ProjectInviteRequestDto {
+  /** @format uuid */
+  token?: string;
+}
+
+export interface SendLinkRequestDto {
+  /** @format int64 */
+  projectId?: number;
+  title?: string;
+  email?: string;
+}
+
 /** 회원가입 요청 DTO */
 export interface SignupRequestDto {
   /** 사용자 이름 */
@@ -170,22 +179,6 @@ export interface SignupRequestDto {
   password: string;
   /** 사용자 이메일 */
   email?: string;
-}
-
-/** 프로젝트 멤버들의 UserId를 가져오는 RESPONSE DTO */
-export interface GetUserIdsByProjectsResponseDto {
-  userIds?: number[];
-  /** @format int64 */
-  projectId?: number;
-}
-
-/** 해당 업무의 하위 업무를 가져오기 위한 DTO */
-export interface GetTaskRequestDto {
-  /**
-   * 업무 아이디
-   * @format int64
-   */
-  taskId: number;
 }
 
 /** 해당 업무를 삭제하기 위한 DTO */
@@ -225,8 +218,9 @@ export type DeleteProjectData = SuccessResponse;
 
 export interface CreateTaskPayload {
   /** 업무를 생성하기 위한 DTO */
-  createTaskRequestDto?: CreateTaskRequestDto;
+  data: CreateTaskRequestDto;
   images?: File[];
+  titleimage?: File[] | undefined | string;
 }
 
 export type CreateTaskData = SuccessResponse;
@@ -235,7 +229,17 @@ export type MemberAddToTaskData = SuccessResponse;
 
 export type MemberAddToProjectData = SuccessResponse;
 
+export type AcceInviteData = SuccessResponse;
+
+export type SendEmailLinkData = SuccessResponse;
+
 export type SignupData = string;
+
+export type GetUsersFromProjectData = SuccessResponse;
+
+export type GetMembersByUserIdsData = SuccessResponse;
+
+export type GetLinkData = SuccessResponse;
 
 export type GetUsersInfoData = SuccessResponse;
 
@@ -247,8 +251,8 @@ export type GetProjectsByUserLoginIdData = SuccessResponse;
 
 export type GetProjectsData = any;
 
-export type GetUsersFromProjectData = GetUserIdsByProjectsResponseDto[];
-
 export type ReqAlarmListData = any;
+
+export type GetTasksByProjectIdData = any;
 
 export type GetOnlyChildrenTasksData = any;

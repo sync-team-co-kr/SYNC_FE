@@ -5,6 +5,24 @@ import { CreateProjectRequestDto } from '@services/swagger/output/data-contracts
 import { AxiosResponse } from 'axios';
 
 /**
+ * 프로젝트 리스트의 id들만 가져오는 API
+ */
+export const getProjectIdList = async () => {
+  const { userId: storageUserId } = window.localStorage;
+
+  const getProjectIdsRes: AxiosResponse<
+    AxiosResByData<any>,
+    any
+  > = await requiredJwtTokeninstance.get(
+    `/project/api/v2?userId=${storageUserId}`,
+  );
+
+  const { userId } = getProjectIdsRes.data.data;
+
+  return userId;
+};
+
+/**
  * 프로젝트 리스트를 가져오는 API
  */
 
@@ -12,16 +30,15 @@ export const getProjectList = async () => {
   /**
    *  /api/user/info/v1 반환값으로 userId가 추가될 때
    * /project/api/v2 userId의 params 값으로 사용
-   *
-   *  const cookies = new Cookies(null, { path: '/' });
-   *  const loggedInUser = cookies.get('loggedInUser');
    */
+
+  const loggedInUserId = localStorage.getItem('loggedUserId');
 
   const getProjectIdsRes: AxiosResponse<
     AxiosResByData<{ userId: number[] }>,
     any
   > = await requiredJwtTokeninstance.get(
-    '/project/api/v2?userId=abc123@gmail.com',
+    `/project/api/v2?userId=${loggedInUserId}`,
   );
 
   const joinedProjectIds = getProjectIdsRes.data.data.userId.join(',');

@@ -18,12 +18,11 @@ const ModalWrapper = styled.div<{ $isActive: boolean }>`
 `;
 
 const Container = styled.section`
-  padding: 50px;
+  padding: 32px;
   background: #fff;
   border-radius: 12px;
   display: flex;
   flex-direction: column;
-  gap: 32px;
 `;
 
 export interface ModalRef {

@@ -2,12 +2,22 @@ import { useContext } from 'react';
 
 import { TimeTable } from '@components/TimeTable';
 import { Typography } from '@components/common/Typography';
-import { setHours } from 'date-fns';
+import { EditTaskModal } from '@components/modal/EditTaskModal';
+import useModal from '@hooks/useModal';
+import { useTaskActions } from '@libs/store/task/task';
+import { useGetProjectIdList } from '@services/project/Project.hooks';
+import { useGetTasks } from '@services/task/Task.hooks';
 import styled from 'styled-components';
-import { vars } from 'token';
 
 import { CalendarContext } from './Calendar.provider';
-import { TaskData } from './Calendar.types';
+import {
+  GraphContainer,
+  GraphItemsContainer,
+  TimeContainer,
+  TimeTableContainer,
+  TimeTableItem,
+  TimeTableLabel,
+} from './Calendar.style';
 import {
   formatTimeIntl,
   generateTimeSlots,
@@ -15,12 +25,9 @@ import {
   getRowSpan,
   getSchedulesForTimeSlot,
 } from './Calendar.utils';
+import { dummySchedules } from './constants';
 
-/**
- * 시간대별로 일정을 보여주는 컴포넌트
- */
-
-const Container = styled.div`
+const DayContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -28,82 +35,19 @@ const Container = styled.div`
   width: 100%;
 `;
 
-const TimeContainer = styled.div`
-  display: flex;
-  height: 100%;
-  flex-direction: row;
-`;
-
-const TimeTableLabel = styled.div`
-  display: grid;
-  grid-template-columns: 33px 2fr;
-  column-gap: 10px;
-  width: 100%;
-`;
-
-const GraphItemsContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  height: 158px;
-  padding: 9px;
-  overflow-y: auto;
-`;
-
-const GraphContainer = styled.div`
-  display: grid;
-  grid-template-columns: 33px 2fr;
-  column-gap: 16px;
-  align-items: center;
-`;
-
-const TimeTableItem = styled.div`
-  width: 100%;
-  display: grid;
-  grid-template-rows: repeat(78, 12px);
-  padding: 6px 2.5px;
-  border-top: 1px solid ${vars.sementic.color.black10};
-  column-gap: 12px;
-  grid-auto-flow: row;
-  position: relative;
-
-  &::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    background: linear-gradient(
-      to bottom,
-      transparent 0%,
-      transparent calc(12px * 6 - 1px),
-      ${vars.sementic.color.black10} calc(12px * 6),
-      transparent calc(12px * 6 + 1px),
-      transparent 100%
-    );
-    background-size: 100% calc(12px * 6 + 1px);
-  }
-`;
-
-const TimeTableContainer = styled.div`
-  display: grid;
-
-  grid-template-rows: repeat(78, 12px);
-`;
-
-const dummySchedules: TaskData[] = Array.from({ length: 10 }, (_, i) => ({
-  id: i,
-  title: `일정 ${i}`,
-  description: '일정 설명',
-  // startDate, endDate 모두 다르게 설정
-  startDate: setHours(new Date(), i + 1),
-  endDate: setHours(new Date(), i + 2),
-  status: i % 3,
-}));
+/**
+ * 시간대별로 일정을 보여주는 컴포넌트
+ */
 
 export const CalendarDay = () => {
+  const [openModal] = useModal();
+
+  const { setTaskId } = useTaskActions();
+  const { projectIdsList } = useGetProjectIdList() ?? {};
+
+  const { tasks } = useGetTasks(projectIdsList);
+
+  console.log(tasks);
   const { value } = useContext(CalendarContext);
   const returnStatus = (status: number) => {
     switch (status) {
@@ -118,10 +62,16 @@ export const CalendarDay = () => {
     }
   };
 
+  const EditModalOpenHandler = (taskId: number) => {
+    openModal(EditTaskModal);
+
+    setTaskId(taskId);
+  };
+
   const schedulesTimeLine = getSchedulesForTimeSlot(dummySchedules, value);
 
   return (
-    <Container>
+    <DayContainer>
       <GraphContainer>
         <Typography color="black35" variant="small-text">
           종일
@@ -130,6 +80,7 @@ export const CalendarDay = () => {
           {schedulesTimeLine.map((schedule) => (
             <TimeTable
               key={schedule.id}
+              onClick={() => EditModalOpenHandler(schedule.id)}
               variant="graph"
               status={returnStatus(schedule.status)}
               startTime={formatTimeIntl(schedule.startDate)}
@@ -168,6 +119,7 @@ export const CalendarDay = () => {
               <TimeTable
                 key={`${schedule.id}-${i}`}
                 variant="timeTableMedium"
+                onClick={() => EditModalOpenHandler(schedule.id)}
                 status={returnStatus(schedule.status)}
                 startTime={formatTimeIntl(schedule.startDate)}
                 endTime={formatTimeIntl(schedule.endDate)}
@@ -183,6 +135,6 @@ export const CalendarDay = () => {
           })}
         </TimeTableItem>
       </TimeContainer>
-    </Container>
+    </DayContainer>
   );
 };

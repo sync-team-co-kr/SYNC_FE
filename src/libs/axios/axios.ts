@@ -30,6 +30,7 @@ requiredJwtTokeninstance.interceptors.response.use(
       const { data } = axiosError.response;
 
       if (data.message.split(' ').slice(0, 2).join(' ') === 'JWT expired') {
+        localStorage.clear();
         window.alert('토큰 유효기간 만료. 로그인 창으로 돌아갑니다.');
         window.location.href = '/login';
         return Promise.reject(axiosError);

@@ -1,3 +1,5 @@
+import { Project } from '@customTypes/project';
+
 // calendar store
 export type TaskCalendar = 'month' | 'week' | 'day';
 export type TaskCalendarButton = 'prev' | 'next';
@@ -28,3 +30,14 @@ export type TaskFilterActions = {
     setSituationState: (situationState: Situation) => void;
   };
 };
+
+// task + project store
+
+export type TaskStore = {
+  projects: Project[];
+};
+export interface TaskActions {
+  actions: {
+    setProjects: (projects: Project[]) => void;
+  };
+}

@@ -35,6 +35,7 @@ export const TaskSelectItemList = styled.div`
   width: 100%;
   display: flex;
   gap: 24px;
+  flex-direction: column;
 `;
 
 export const TaskSelectItem = styled.div``;
