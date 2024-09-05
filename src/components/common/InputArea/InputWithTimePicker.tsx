@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 
 import { ReactComponent as TimePickerIcon } from '@assets/input/time.svg';
 import TimePickerDropdown from '@components/dropdown/TimePickerDropdown';
 import useDropdown from '@hooks/useDropdown';
+import useTimePicker from '@hooks/useTimePicker';
 import { ProjectPeriodTime } from '@pages/projects/ProjectBoards/CreateProjectModal/CreateProjectModal';
 import { styled } from 'styled-components';
 import { vars } from 'token';
@@ -41,8 +42,7 @@ const InputWithTimePicker = ({
   placeholderText,
   isDisabled,
 }: InputWithTimePickerProps) => {
-  const [hour, setHour] = useState<number | null>(null);
-  const [minute, setMinute] = useState<number | null>(null);
+  const { pickedTime, setPickedTime } = useTimePicker();
   const [
     isOpenTimePickerDropdown,
     toggleTimePickerDropdown,
@@ -50,11 +50,12 @@ const InputWithTimePicker = ({
   ] = useDropdown();
 
   useEffect(() => {
+    const { hour, minute } = pickedTime;
     setValue({
       hour,
       minute,
     });
-  }, [hour, minute]);
+  }, [pickedTime.hour, pickedTime.minute]);
 
   return (
     <SInputWithTimePicker $isdisabled={isDisabled}>
@@ -78,10 +79,10 @@ const InputWithTimePicker = ({
       </TimePickerSvg>
       <TimePickerDropdown
         isOpen={isOpenTimePickerDropdown}
-        currentHour={hour}
-        setHour={setHour}
-        currentMinute={minute}
-        setMinute={setMinute}
+        usePickedTimeState={{
+          state: pickedTime,
+          setState: setPickedTime,
+        }}
       />
     </SInputWithTimePicker>
   );

@@ -187,7 +187,6 @@ export default function Login() {
     try {
       const loginResponse = await loginAPI({ ...loginForm });
       if (loginResponse.result === 'OK') {
-        console.log(loginResponse);
 
         window.alert('로그인 성공!');
         window.location.href = '/';
@@ -214,7 +213,6 @@ export default function Login() {
         withCredentials: true,
       },
     );
-    console.log(res);
   };
 
   return (

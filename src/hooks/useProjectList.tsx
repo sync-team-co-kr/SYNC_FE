@@ -55,8 +55,6 @@ const useProjectList: useProjectListType = () => {
         `/project/api/v2?userId=abc123@gmail.com`,
       );
 
-      console.log(getProjectIdsResponse);
-
       const getProjectListResponse: AxiosResponse<AxiosRes2<IProject[]>> =
         await requiredJwtTokeninstance.get(
           `http://150.136.153.235:31585/project/api/v1?projectIds=${getProjectIdsResponse.data.data.join(',')}`,
