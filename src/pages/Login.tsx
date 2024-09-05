@@ -187,6 +187,7 @@ export default function Login() {
     try {
       const loginResponse = await loginAPI({ ...loginForm });
       if (loginResponse.result === 'OK') {
+        localStorage.setItem('userId', loginForm.userId);
         console.log(loginResponse);
 
         window.alert('로그인 성공!');

@@ -16,12 +16,13 @@ export const getProjectList = async () => {
    *  const cookies = new Cookies(null, { path: '/' });
    *  const loggedInUser = cookies.get('loggedInUser');
    */
-
+  const { userId: storageUserId } = window.localStorage;
+  
   const getProjectIdsRes: AxiosResponse<
     AxiosResByData<{ userId: number[] }>,
     any
   > = await requiredJwtTokeninstance.get(
-    '/project/api/v2?userId=abc123@gmail.com',
+    `/project/api/v2?userId=${storageUserId}`,
   );
 
   const joinedProjectIds = getProjectIdsRes.data.data.userId.join(',');
