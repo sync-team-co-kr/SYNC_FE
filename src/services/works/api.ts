@@ -19,47 +19,61 @@ import { AxiosResponse } from 'axios';
  *  result: boolean;
  *  message: string;
  * }
+ *
  */
 
-export const createTask = async (newTask: CreateTaskRequestDto) => {
+interface CreateTaskParams extends CreateTaskRequestDto {
+  status: number;
+}
+
+export const createTask = async (newTask: CreateTaskParams) => {
   try {
     // FormData 객체 생성
     const formData = new FormData();
 
+    const {
+      title,
+      description,
+      startDate,
+      endDate,
+      parentTaskId,
+      projectId,
+      images,
+    } = newTask;
+
     // CreateTaskRequestDto의 필드를 FormData에 추가
-    formData.append('title', newTask.title);
-    if (newTask.description) {
-      formData.append('description', newTask.description);
+    formData.append('title', title);
+    if (description) {
+      formData.append('description', description);
     }
-    if (newTask.startDate) {
-      formData.append('startDate', newTask.startDate);
+    if (startDate && typeof startDate === 'string') {
+      formData.append('startDate', startDate);
     }
-    if (newTask.endDate) {
-      formData.append('endDate', newTask.endDate);
+    if (endDate && typeof endDate === 'string') {
+      formData.append('endDate', endDate);
     }
+
     formData.append('status', newTask.status.toString());
-    formData.append('projectId', newTask.projectId.toString());
 
-    if (newTask.parentTaskId !== undefined) {
-      formData.append('parentTaskId', newTask.parentTaskId.toString());
+    formData.append('projectId', projectId.toString());
+
+    if (parentTaskId && parentTaskId !== undefined) {
+      formData.append('parentTaskId', parentTaskId.toString());
     }
 
-    if (newTask.images && newTask.images.length > 0) {
-      newTask.images.forEach((image, index) => {
+    if (images && images.length > 0) {
+      images.forEach((image, index) => {
         formData.append(`images[${index}]`, image);
       });
     }
 
     // API 요청
-    const createTaskResponse: AxiosResponse<AxiosResByData<any>> = await requiredJwtTokeninstance.post(
-      '/user/api/task/v1',
-      formData,
-      {
+    const createTaskResponse: AxiosResponse<AxiosResByData<any>> =
+      await requiredJwtTokeninstance.post('/user/api/task/v1', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
-      }
-    );
+      });
 
     console.log('업무가 성공적으로 생성되었습니다:', createTaskResponse.data);
 

@@ -1,6 +1,6 @@
 // import Add from '@assets/add.svg';
 import { Button } from '@components/common/Button';
-import ProjectWorkBoardList from '@components/project/works/ProjectWorkBoardList';
+import TaskBoardList from '@components/project/Task/TaskBoardList';
 import { useModal } from '@hooks';
 import CreateProjectModal from '@pages/projects/ProjectBoards/CreateProjectModal/CreateProjectModal';
 import styled from 'styled-components';
@@ -83,7 +83,7 @@ const ProjectWorkBoards = () => {
         </ProjectAddButton> */}
       </ProjectBoardHeader>
       <ProjectWorkList>
-        <ProjectWorkBoardList />
+        <TaskBoardList />
       </ProjectWorkList>
     </Section>
   );

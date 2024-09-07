@@ -1,11 +1,11 @@
 // 업무 생성 모달 내 form
-import projectIcon from '@assets/project-icon.png';
 import { ReactComponent as CloseX } from '@assets/cancel-x.svg';
+import projectIcon from '@assets/project-icon.png';
 import { Button } from '@components/common/Button';
 import { Select } from '@components/common/Select/Select';
-import { SelectButton } from '@components/common/Select/Select.Button'
+import { SelectButton } from '@components/common/Select/Select.Button';
 import { SelectItem, SelectList } from '@components/common/Select/Select.list';
-import { LabelContainer,} from '@components/common/Select/style';
+import { LabelContainer } from '@components/common/Select/style';
 import { Tag } from '@components/common/Tag';
 import { SituationProperty } from '@components/common/Tag/types';
 import Textfield from '@components/common/Textfield';
@@ -13,18 +13,19 @@ import { Typography } from '@components/common/Typography';
 import { modalStore } from '@libs/store';
 import { useTaskActions, useTaskState } from '@libs/store/task/task';
 import { useCreateTask } from '@services/task/Task.hooks';
+
 import { SELECT_STATUS } from './constants';
 import {
   Container,
   ContainerContent,
-  LeftContent,
-  RightContent,
   ContainerFooter,
   ContainerHeader,
+  LeftContent,
+  RightContent,
   SectionContainer,
-  UpperHeader,
   SideHeader,
   TitleHeader,
+  UpperHeader,
 } from './style';
 
 // 업무 생성 모달
@@ -41,24 +42,27 @@ export const UpdateTaskModal = () => {
 
   // projectData를 가져오는 hooks
 
-
   const { createTaskMutate } = useCreateTask();
   const handleCreateTask = () => {
     if (errorList.length > 0) {
       alert('필수 입력값을 입력해주세요');
       return;
     }
-    createTaskMutate(payload, {
-      onSuccess: () => {
-        alert('업무가 생성되었습니다.');
+    createTaskMutate(
+      {
+        data: payload,
       },
+      {
+        onSuccess: () => {
+          alert('업무가 생성되었습니다.');
+        },
 
-      onError: (error) => {
-        alert(error);
+        onError: (error) => {
+          alert(error);
+        },
       },
-    });
+    );
   };
-
 
   return (
     <Container>
@@ -67,22 +71,22 @@ export const UpdateTaskModal = () => {
           <Typography variant="heading-5" color="black70">
             가상의 프로젝트 1 / 테스크
           </Typography>
-            <SideHeader>
-              <Button
-                hasIcon
-                renderIcon={<CloseX width={24} height={24} />}
-                onClick={closeModal}
-                size="small"
-                variant="text"
-              />
-            </SideHeader>
-          </UpperHeader>
-          <TitleHeader>
-            <img src={projectIcon} alt='프로젝트아이콘'/>
-            <Typography variant="heading-4" color="black">
-                업무 명
-            </Typography>
-          </TitleHeader>
+          <SideHeader>
+            <Button
+              hasIcon
+              renderIcon={<CloseX width={24} height={24} />}
+              onClick={closeModal}
+              size="small"
+              variant="text"
+            />
+          </SideHeader>
+        </UpperHeader>
+        <TitleHeader>
+          <img src={projectIcon} alt="프로젝트아이콘" />
+          <Typography variant="heading-4" color="black">
+            업무 명
+          </Typography>
+        </TitleHeader>
       </ContainerHeader>
       <ContainerContent>
         <LeftContent>
@@ -127,7 +131,7 @@ export const UpdateTaskModal = () => {
           {/*  status */}
           <SectionContainer>
             <Typography variant="heading-4" color="black">
-                세부사항
+              세부사항
             </Typography>
             <LabelContainer>
               <Typography variant="small-text-b" color="black35">
@@ -211,16 +215,16 @@ export const UpdateTaskModal = () => {
           </SectionContainer>
           {/* date end */}
         </RightContent>
-        </ContainerContent>
-        <ContainerFooter>
-          <Button variant="text" size="medium" text="취소" onClick={closeModal} />
-          <Button
-            variant="fill"
-            size="medium"
-            text="완료"
-            onClick={handleCreateTask}
-          />
-        </ContainerFooter>
+      </ContainerContent>
+      <ContainerFooter>
+        <Button variant="text" size="medium" text="취소" onClick={closeModal} />
+        <Button
+          variant="fill"
+          size="medium"
+          text="완료"
+          onClick={handleCreateTask}
+        />
+      </ContainerFooter>
     </Container>
   );
 };

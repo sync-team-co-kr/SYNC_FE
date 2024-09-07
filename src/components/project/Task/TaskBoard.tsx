@@ -1,15 +1,15 @@
-import styled from 'styled-components';
-import workboardimg from '@assets/projects/workboard-image.png';
-import Dday from '@assets/projects/d-day-img.png';
-import bargraph from '@assets/projects/BarGrahph-img.png';
 import meatballs from '@assets/meatballs.svg';
-import WorkBoardDropdownMenu from '@components/dropdown/WorkBoardDropdownMenu';
+import bargraph from '@assets/projects/BarGrahph-img.png';
+import Dday from '@assets/projects/d-day-img.png';
+import workboardimg from '@assets/projects/workboard-image.png';
 import { ReactComponent as WorkboxIcon } from '@assets/projects/workbox.svg';
-import { vars } from 'token';
 import { Typography } from '@components/common/Typography';
-import useDropdown from '@hooks/useDropdown';
+import WorkBoardDropdownMenu from '@components/dropdown/WorkBoardDropdownMenu';
+import { UpdateTaskModal } from '@components/project/Task/UpdateTaskModal';
 import { useModal } from '@hooks';
-import { UpdateTaskModal } from '../Task/UpdateTaskModal';
+import useDropdown from '@hooks/useDropdown';
+import styled from 'styled-components';
+import { vars } from 'token';
 
 const ProjectBoard = styled.li`
   padding: 12px;
@@ -20,7 +20,7 @@ const ProjectBoard = styled.li`
   flex-direction: column;
   gap: 8px;
   margin: 8px;
-  cursor: pointer;  // 클릭 시 커서 변경
+  cursor: pointer; // 클릭 시 커서 변경
 `;
 
 const MeatBalls = styled.div`
@@ -110,7 +110,6 @@ const Icon = styled.div`
   margin: 0 8px 0 8px;
 `;
 
-
 const TaskBoard = () => {
   const [
     isOpenProjectDropdownMenu,
@@ -126,7 +125,9 @@ const TaskBoard = () => {
         <ProjectBoardHeader>
           <Header>
             <img src={workboardimg} alt="작업 보드" />
-            <Typography variant="heading-4" color="black">업무제목</Typography>
+            <Typography variant="heading-4" color="black">
+              업무제목
+            </Typography>
           </Header>
           <MeatBalls ref={projectDropdownMenuRef}>
             <img
@@ -134,15 +135,18 @@ const TaskBoard = () => {
               alt="보드 더보기"
               onClick={toggleProjectDropdownMenu}
             />
-            <WorkBoardDropdownMenu
-              isOpen={isOpenProjectDropdownMenu}
-            />
+            <WorkBoardDropdownMenu isOpen={isOpenProjectDropdownMenu} />
           </MeatBalls>
         </ProjectBoardHeader>
         <ProjectBoardContent
-          onClick={() => {openModal(UpdateTaskModal);}}>
+          onClick={() => {
+            openModal(UpdateTaskModal);
+          }}
+        >
           <ProjectBoardDescription>
-            <Typography variant="paragraph" color="black">요약내용</Typography>
+            <Typography variant="paragraph" color="black">
+              요약내용
+            </Typography>
           </ProjectBoardDescription>
           <BarGraph>
             <img src={bargraph} alt="막대 그래프" />
@@ -158,7 +162,9 @@ const TaskBoard = () => {
           <Icon>
             <WorkboxIcon stroke={vars.sementic.color.black70} />
           </Icon>
-          <Typography variant="heading-5" color="black70">하위업무</Typography>
+          <Typography variant="heading-5" color="black70">
+            하위업무
+          </Typography>
         </SubTask>
       </ProjectBoard>
     </>
