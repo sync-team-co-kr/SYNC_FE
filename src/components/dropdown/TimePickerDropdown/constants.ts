@@ -1,0 +1,2 @@
+export const MINUTE_TIME_PICKER_MAX_VALUE = 60;
+export const HOUR_TIME_PICKER_MAX_VALUE = 24;

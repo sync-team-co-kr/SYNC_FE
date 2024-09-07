@@ -1,8 +1,8 @@
 // import Add from '@assets/add.svg';
 import styled from 'styled-components';
-import ProjectWorkBoardToDo from '@components/project/ProjecWorkBoardToDo';
-import ProjectWorkBoardDoing from './ProjecWorkBoardDoing';
-import ProjectWorkBoardDone from './ProjecWorkBoardDone';
+import TaskBoardItem from '@components/project/Task/TaskBoardItem';
+import { vars } from 'token';
+
 
 const Section = styled.section`
   display: flex;
@@ -58,7 +58,7 @@ export interface Project {
   memberIds: number[];
 }
 
-const ProjectWorkBoardItem = () => {
+const TaskBoardList = () => {
   // const [isOpen, openModal, modalRef, CreateProjectModalWrapper, closeModal] =
   //   useModal();
 
@@ -75,12 +75,30 @@ const ProjectWorkBoardItem = () => {
         </ProjectAddButton> */}
       </ProjectBoardHeader>
       <ProjectWorkList>
-        <ProjectWorkBoardToDo/>
-        <ProjectWorkBoardDoing/>
-        <ProjectWorkBoardDone/>
+      <TaskBoardItem
+      title="해야할 일" 
+      count={0} 
+      titleColor="negativeRed" 
+      borderColor={vars.sementic.color.black10} 
+      backgroundColor={vars.sementic.color.lightRed} 
+      />
+       <TaskBoardItem 
+      title="하는 중" 
+      count={0} 
+      titleColor="positiveBlue" 
+      borderColor={vars.sementic.color.black10} 
+      backgroundColor={vars.sementic.color.lightBlue} 
+      />
+      <TaskBoardItem 
+      title="완료" 
+      count={0} 
+      titleColor="black35" 
+      borderColor={vars.sementic.color.black10} 
+      backgroundColor={vars.sementic.color.black10} 
+      />
       </ProjectWorkList>
     </Section>
   );
 };
 
-export default ProjectWorkBoardItem;
+export default TaskBoardList;

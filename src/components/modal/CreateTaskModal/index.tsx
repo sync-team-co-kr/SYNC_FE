@@ -6,7 +6,7 @@ import { Editor } from '@components/Editor';
 import { Button } from '@components/common/Button';
 import InputWithCalendarArea from '@components/common/InputArea/InputWithCalendar';
 import { Select } from '@components/common/Select/Select';
-import { SelectButton } from '@components/common/Select/Select.button';
+import { SelectButton } from '@components/common/Select/Select.Button';
 import { SelectItem, SelectList } from '@components/common/Select/Select.list';
 import { searchFilter } from '@components/common/Select/Select.utils';
 import { LabelContainer, TaskContainer } from '@components/common/Select/style';

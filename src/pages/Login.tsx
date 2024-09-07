@@ -187,6 +187,7 @@ export default function Login() {
     try {
       const loginResponse = await loginAPI({ ...loginForm });
       if (loginResponse.result === 'OK') {
+
         localStorage.setItem('loggedUserId', loginForm.userId);
 
         window.alert('로그인 성공!');
@@ -214,7 +215,6 @@ export default function Login() {
         withCredentials: true,
       },
     );
-    console.log(res);
   };
 
   return (

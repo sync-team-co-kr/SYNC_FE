@@ -12,7 +12,7 @@ import { Tabs } from '@components/Tabs/Tabs';
 import { Typography } from '@components/common';
 import { Button } from '@components/common/Button';
 import { Select } from '@components/common/Select/Select';
-import { SelectButton } from '@components/common/Select/Select.button';
+import { SelectButton } from '@components/common/Select/Select.Button';
 import { SelectList } from '@components/common/Select/Select.list';
 import Textfield from '@components/common/Textfield';
 
