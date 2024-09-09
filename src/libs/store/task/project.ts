@@ -1,3 +1,4 @@
+import { Project } from '@customTypes/project';
 import { create } from 'zustand';
 
 import { TaskActions, TaskStore } from './types';
@@ -6,21 +7,26 @@ import { TaskActions, TaskStore } from './types';
 
 // Initial state
 const initialState = {
-  projects: [],
+  project: {
+    projectId: 0,
+    title: '',
+    subTitle: '',
+    description: '',
+    startDate: new Date(),
+    endDate: new Date(),
+  },
 };
 
 const useTaskWithProjectStore = create<TaskStore & TaskActions>((set) => ({
-  ...initialState,
+  project: initialState.project,
   actions: {
-    setProjects: (projects) => {
-      set({ projects });
-    },
+    setProject: (project: Project) => set({ project }),
   },
 }));
 
 // taskWithProjectState 반환
 export const useTaskWithProjectState = () =>
-  useTaskWithProjectStore((state) => state.projects);
+  useTaskWithProjectStore((state) => state.project);
 
 // taskWithProjectActions 반환
 export const useTaskWithProjectActions = () =>

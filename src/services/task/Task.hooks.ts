@@ -10,7 +10,7 @@ export const useGetTasks = (projectId: number[]) => {
     queryKey: ['tasks', projectId],
     queryFn: async () => {
       const result = await Promise.all(projectId.map((id) => getTaskList(id)));
-      return result.map((res) => res.data);
+      return result.map((res) => res.data).flatMap((task) => task.data) ?? [];
     },
   });
 
