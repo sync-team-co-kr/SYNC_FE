@@ -10,7 +10,7 @@ const statusNumber: Record<number, WorkTags> = {
   1: 'subTask',
   2: 'quest',
 };
-export function useRenderTaskFilter(schedules: any[] | undefined, value: Date) {
+export function useRenderTaskFilter(schedules: any | undefined, value: Date) {
   const [filteredSchedules, setFilteredSchedules] = useState<any[]>([]);
   const { workState, situationState } = useTaskFilterState();
 

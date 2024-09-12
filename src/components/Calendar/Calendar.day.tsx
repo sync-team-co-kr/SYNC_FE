@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext } from 'react';
 
 import { TimeTable } from '@components/TimeTable';
 import { Typography } from '@components/common/Typography';
@@ -41,19 +41,16 @@ const DayContainer = styled.div`
  */
 
 export const CalendarDay = () => {
-  const [scheduleList, setScheduleList] = useState([]);
   const [openModal] = useModal();
 
-  const projects = useTaskWithProjectState();
-
-  console.log(projects);
+  const project = useTaskWithProjectState();
 
   const { setTaskId } = useTaskActions();
   const { projectIdsList } = useGetProjectIdList() ?? {};
 
   const { tasks } = useGetTasks(projectIdsList) ?? {};
 
-  const { task } = useGetTaskList(projects.projectId);
+  const { task } = useGetTaskList(project.projectId);
 
   const { value } = useContext(CalendarContext);
   const returnStatus = (status: number) => {
@@ -74,7 +71,10 @@ export const CalendarDay = () => {
     setTaskId(taskId);
   };
 
-  const filteredSchedules = useRenderTaskFilter(task, value);
+  const filteredSchedules = useRenderTaskFilter(
+    project.title !== '' ? task : tasks,
+    value,
+  );
 
   return (
     <DayContainer>
