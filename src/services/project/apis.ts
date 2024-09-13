@@ -45,7 +45,7 @@ export const getProjectList = async () => {
 
   const getProjectListResponse: AxiosResponse<AxiosResByData<Project[]>> =
     await requiredJwtTokeninstance.get(
-      `http://150.136.153.235:31585/project/api/v1?projectIds=${joinedProjectIds}`,
+      `node2/project/api/v1?projectIds=${joinedProjectIds}`,
     );
 
   return getProjectListResponse.data.data;
@@ -71,7 +71,7 @@ export const getProjectList = async () => {
 export const getProject = async (projectId: number) => {
   const getProjectResponse: AxiosResponse<AxiosResByData<Project[]>> =
     await requiredJwtTokeninstance.get(
-      `http://150.136.153.235:31585/project/api/v1?projectIds=${projectId}`,
+      `node2/project/api/v1?projectIds=${projectId}`,
     );
 
   return getProjectResponse.data.data[0];

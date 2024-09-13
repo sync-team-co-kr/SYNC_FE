@@ -3,7 +3,7 @@ import { CreateTaskPayload } from '@services/swagger/output/data-contracts';
 
 export const getTaskList = async (projectId: number) => {
   return requiredJwtTokeninstance.get(
-    `http://150.136.153.235:31585/api/task/v2?projectId=${projectId}`,
+    `https://150.136.153.235:30443/node2/api/task/v2?projectId=${projectId}`,
   );
 };
 

@@ -1,9 +1,5 @@
-import { Cookies } from 'react-cookie';
-
 import axios, { AxiosError, isAxiosError } from 'axios';
 import config from 'config/config';
-
-const cookies = new Cookies(null, { path: '/' });
 
 export const publicInstance = axios.create({
   baseURL: config.backendUrl,
@@ -12,9 +8,6 @@ export const publicInstance = axios.create({
 export const requiredJwtTokeninstance = axios.create({
   baseURL: config.backendUrl,
   withCredentials: true,
-  headers: {
-    Authorization: `Bearer ${cookies.get('JWT_TOKEN')}`,
-  },
 });
 
 requiredJwtTokeninstance.interceptors.response.use(

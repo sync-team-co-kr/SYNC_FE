@@ -65,6 +65,9 @@ export const loginAPI = async ({
       {},
       {
         withCredentials: true,
+        headers: {
+          'Access-Control-Allow-Origin': 'http://localhost:3000',
+        },
         params: {
           id: userId,
           password,
