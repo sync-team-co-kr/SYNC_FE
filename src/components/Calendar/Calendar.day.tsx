@@ -7,7 +7,7 @@ import useModal from '@hooks/useModal';
 import { useTaskWithProjectState } from '@libs/store/task/project';
 import { useTaskActions } from '@libs/store/task/task';
 import { useGetProjectIdList } from '@services/project/Project.hooks';
-import { useGetTaskList, useGetTasks } from '@services/task/Task.hooks';
+import { useGetTasks } from '@services/task/Task.hooks';
 // import { useGetProjectIdList } from '@services/project/Project.hooks';
 import styled from 'styled-components';
 
@@ -48,9 +48,9 @@ export const CalendarDay = () => {
   const { setTaskId } = useTaskActions();
   const { projectIdsList } = useGetProjectIdList() ?? {};
 
-  const { tasks } = useGetTasks(projectIdsList) ?? {};
-
-  const { task } = useGetTaskList(project.projectId);
+  const { tasks } =
+    useGetTasks(project.title !== '' ? project.projectId : projectIdsList) ??
+    {};
 
   const { value } = useContext(CalendarContext);
   const returnStatus = (status: number) => {
@@ -71,10 +71,7 @@ export const CalendarDay = () => {
     setTaskId(taskId);
   };
 
-  const filteredSchedules = useRenderTaskFilter(
-    project.title !== '' ? task : tasks,
-    value,
-  );
+  const filteredSchedules = useRenderTaskFilter(tasks, value);
 
   return (
     <DayContainer>

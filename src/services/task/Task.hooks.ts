@@ -5,12 +5,20 @@ import { createTask, getTaskChildren, getTaskList } from './apis';
 
 // 업무 리스트 가져오는 Hook
 
-export const useGetTasks = (projectId: number[]) => {
+export const useGetTasks = (projectId: number[] | number) => {
   const { data, isLoading, error } = useQuery({
-    queryKey: ['tasks', projectId],
+    queryKey: Array.isArray(projectId)
+      ? ['taskList', ...projectId]
+      : ['task', projectId],
     queryFn: async () => {
-      const result = await Promise.all(projectId.map((id) => getTaskList(id)));
-      return result.map((res) => res.data).flatMap((task) => task.data) ?? [];
+      if (Array.isArray(projectId)) {
+        const result = await Promise.all(
+          projectId.map((id) => getTaskList(id)),
+        );
+        return result.map((res) => res.data).flatMap((task) => task.data) ?? [];
+      }
+      const result = await getTaskList(projectId);
+      return result.data.data;
     },
   });
 
