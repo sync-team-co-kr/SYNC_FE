@@ -51,7 +51,7 @@ const useProject: useProjectType = (projectId) => {
   const getProject = async () => {
     const getProjectResponse: AxiosResponse<AxiosRes2<IProject[]>> =
       await requiredJwtTokeninstance.get(
-        `http://150.136.153.235:31585/project/api/v1?projectIds=${projectId}`,
+        `https://150.136.153.235:30443/node2/project/api/v1?projectIds=${projectId}`,
       );
     return getProjectResponse.data.value[0] || undefined;
   };

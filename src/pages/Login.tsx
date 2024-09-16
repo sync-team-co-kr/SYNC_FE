@@ -187,7 +187,6 @@ export default function Login() {
     try {
       const loginResponse = await loginAPI({ ...loginForm });
       if (loginResponse.result === 'OK') {
-
         localStorage.setItem('loggedUserId', loginForm.userId);
 
         window.alert('로그인 성공!');
@@ -209,12 +208,13 @@ export default function Login() {
 
   const naverLogin = async () => {
     const res = await axios.post(
-      'http://150.230.190.128:8090/oauth2/authorization/naver',
+      'https://150.230.190.128:8090/oauth2/authorization/naver',
       {},
       {
         withCredentials: true,
       },
     );
+    console.log(res);
   };
 
   return (
