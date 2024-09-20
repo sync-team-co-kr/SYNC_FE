@@ -43,7 +43,7 @@ const DayContainer = styled.div`
 export const CalendarDay = () => {
   const [openModal] = useModal();
 
-  const project = useTaskWithProjectState();
+  const { project } = useTaskWithProjectState();
 
   const { setTaskId } = useTaskActions();
   const { projectIdsList } = useGetProjectIdList() ?? {};

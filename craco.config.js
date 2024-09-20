@@ -5,6 +5,12 @@ require('dotenv').config({
 });
 
 module.exports = {
+  devServer: {
+    https: {
+      key: './*-key.pem',
+      cert: './*.pem',
+    },
+  },
   webpack: {
     alias: {
       '@config': path.resolve(__dirname, 'src/config'),

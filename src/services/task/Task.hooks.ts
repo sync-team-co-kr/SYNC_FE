@@ -25,15 +25,6 @@ export const useGetTasks = (projectId: number[] | number) => {
   return { tasks: data, isLoading, error };
 };
 
-export const useGetTaskList = (projectId: number) => {
-  const { data, isLoading, error } = useQuery({
-    queryKey: ['task'],
-    queryFn: () => getTaskList(projectId),
-  });
-
-  return { task: data, isLoading, error };
-};
-
 // 업무 생성 Hook
 export const useCreateTask = () => {
   const queryClient = useQueryClient();

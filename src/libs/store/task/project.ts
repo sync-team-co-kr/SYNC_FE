@@ -26,7 +26,7 @@ const useTaskWithProjectStore = create<TaskStore & TaskActions>((set) => ({
 
 // taskWithProjectState 반환
 export const useTaskWithProjectState = () =>
-  useTaskWithProjectStore((state) => state.project);
+  useTaskWithProjectStore((state) => state);
 
 // taskWithProjectActions 반환
 export const useTaskWithProjectActions = () =>

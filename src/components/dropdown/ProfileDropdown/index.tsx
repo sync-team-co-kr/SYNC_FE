@@ -178,7 +178,10 @@ export const ProfileDropdown = ({
               </EmojiListContainer>
             </TabPanel>
 
-            <TabPanel padding="20px 0"></TabPanel>
+            <TabPanel padding="20px 0">
+              {/* 아이콘 리스트  */}
+              
+            </TabPanel>
 
             <TabPanel padding="20px 0">
               <Button
