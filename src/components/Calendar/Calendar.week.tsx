@@ -21,6 +21,11 @@ const GridContainer = styled.div`
 
   & > div:nth-child(7n) {
     border-right: none;
+    color: ${vars.sementic.color.black20};
+  }
+
+  & > div:nth-child(1) {
+    color: ${vars.sementic.color.black20};
   }
 
   & > div:nth-child(1n) {

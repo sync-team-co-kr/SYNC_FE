@@ -69,7 +69,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "craco-dev": "set HTTPS=true&&set SSL_CRT_FILE=localhost.pem&&set SSL_KEY_FILE=localhost-key.pem&&cross-env NODE_ENV=development craco start",
+    "craco-dev": "set HTTPS=true&&set SSL_CRT_FILE=./localhost.pem&&set SSL_KEY_FILE=./localhost-key.pem&&cross-env NODE_ENV=development craco start",
     "craco-prod": "cross-env NODE_ENV=production craco start",
     "craco-dev:http": "cross-env NODE_ENV=development craco start",
     "craco-build": "craco build",
