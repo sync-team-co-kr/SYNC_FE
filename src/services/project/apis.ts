@@ -17,9 +17,9 @@ export const getProjectIdList = async () => {
     `/project/api/v2?userId=${loggedUserId}`,
   );
 
-  const { userId } = getProjectIdsRes.data.data;
+  const { projectIds } = getProjectIdsRes.data.data;
 
-  return userId;
+  return projectIds;
 };
 
 /**

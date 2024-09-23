@@ -26,7 +26,7 @@ export const useGetProjectList = () => {
 
 // ProjectList id list hooks
 export const useGetProjectIdList = () => {
-  const { data: projectIdsList } = useQuery({
+  const { data: projectIdsList = [] } = useQuery({
     queryKey: ['projectIds'],
     queryFn: getProjectIdList,
   });

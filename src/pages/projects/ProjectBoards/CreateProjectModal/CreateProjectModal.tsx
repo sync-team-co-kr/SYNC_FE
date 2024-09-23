@@ -66,7 +66,6 @@ function CreateProjectModal({ closeModal }: { closeModal?: setIsModalOpen }) {
   const handleCreateProject = async (e: React.MouseEvent<HTMLInputElement>) => {
     e.preventDefault();
 
-
     if (startDate && endDate && includeTime) {
       const projectStartDate = add(new Date(startDate), {
         hours: startTime.hour ? startTime.hour + 9 : 0,
