@@ -337,14 +337,14 @@ export const CreateTaskModal = () => {
               <InputWithTimePicker
                 value={startTime}
                 setValue={setStartTime}
-                placeholderText="프로젝트 시작 시간"
+                placeholderText="시작 시간"
                 isDisabled={!includeTime}
               />
               <StyleCreateProjectModal.CrossDash></StyleCreateProjectModal.CrossDash>
               <InputWithTimePicker
                 value={endTime}
                 setValue={setEndTime}
-                placeholderText="프로젝트 종료 시간"
+                placeholderText="종료 시간"
                 isDisabled={!includeTime}
               />
             </StyleCreateProjectModal.InputWithCalendarArea>

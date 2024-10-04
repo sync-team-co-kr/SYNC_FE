@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Cookies } from 'react-cookie';
-import { Navigate, Outlet } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 
 import { useLoggedInUserStore } from '@libs/store';
 import { getLoggedUserAPI } from '@services/api';
@@ -28,7 +28,8 @@ const PublicLayout = () => {
     getLoggedUser().then((profile) => setLoggedInUser(profile));
   }, []);
 
-  if (failedAuth) return <Navigate to="/login" />;
+  console.log(failedAuth);
+  // if (failedAuth) return <Navigate to="/login" />;
   return <Outlet />;
 };
 

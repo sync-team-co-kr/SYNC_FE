@@ -59,7 +59,7 @@ const useProjectList: useProjectListType = () => {
 
       const getProjectListResponse: AxiosResponse<AxiosRes2<IProject[]>> =
         await requiredJwtTokeninstance.get(
-          `https://150.136.153.235:30443/node2/project/api/v1?projectIds=${getProjectIdsResponse.data.data.join(',')}`,
+          `http://150.136.153.235:30080/node2/project/api/v1?projectIds=${getProjectIdsResponse.data.data.join(',')}`,
         );
 
       return getProjectListResponse.data.data || [];

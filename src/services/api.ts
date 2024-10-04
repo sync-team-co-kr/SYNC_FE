@@ -71,7 +71,8 @@ export const loginAPI = async ({
         },
       },
     );
-    const authHeaders: string | null = response.headers.authorization;
+    const authHeaders: string | null = response.headers.setCookie;
+
     if (authHeaders) {
       const token = authHeaders.split(' ')[1];
       const cookies = new Cookies(null, { path: '/' });

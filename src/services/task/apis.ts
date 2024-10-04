@@ -3,7 +3,7 @@ import { CreateTaskPayload } from '@services/swagger/output/data-contracts';
 
 export const getTaskList = async (projectId: number) => {
   return requiredJwtTokeninstance.get(
-    `https://150.136.153.235:30443/node2/api/task/v2?projectId=${projectId}`,
+    `http://150.136.153.235:30080/node2/api/task/v2?projectId=${projectId}`,
   );
 };
 
@@ -65,7 +65,7 @@ export const createTask = async ({ ...payload }: CreateTaskPayload) => {
       const extension = getExtensionFromMimeType(imageUrl);
 
       const newImageName = `${uuid}_${prevFileName}`;
-      const newImageUrl = `https://150.136.153.235:30443/api/task/image?filename=/mnt/oraclevdb/task/description/${newImageName}.${extension}`;
+      const newImageUrl = `http://150.136.153.235:30080/api/task/image?filename=/mnt/oraclevdb/task/description/${newImageName}.${extension}`;
       updatedDescription = updatedDescription?.replace(imageUrl, newImageUrl);
       try {
         const imgFile = convertBase64ToFile(imageUrl, newImageName);
