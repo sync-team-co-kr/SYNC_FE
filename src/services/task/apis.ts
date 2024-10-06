@@ -1,8 +1,8 @@
-import { requiredJwtTokeninstance } from '@libs/axios/axios';
+import { userApiInstance } from '@libs/axios/axios';
 import { CreateTaskPayload } from '@services/swagger/output/data-contracts';
 
 export const getTaskList = async (projectId: number) => {
-  return requiredJwtTokeninstance.get(
+  return userApiInstance.get(
     `https://150.136.153.235:30443/node2/api/task/v2?projectId=${projectId}`,
   );
 };
@@ -84,7 +84,7 @@ export const createTask = async ({ ...payload }: CreateTaskPayload) => {
 
   formData.append('data', JSON.stringify(formDataList));
 
-  return requiredJwtTokeninstance.post('/user/api/task/v1', formData, {
+  return userApiInstance.post('/user/api/task/v1', formData, {
     headers: {
       'Content-Type': 'multipart/form-data',
     },
@@ -92,5 +92,5 @@ export const createTask = async ({ ...payload }: CreateTaskPayload) => {
 };
 
 export const getTaskChildren = async (taskId: number) => {
-  return requiredJwtTokeninstance.get(`/api/task/v1/${taskId}`);
+  return userApiInstance.get(`/api/task/v1/${taskId}`);
 };
