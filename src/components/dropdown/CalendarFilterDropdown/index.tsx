@@ -68,7 +68,7 @@ const CalendarFilterDropdown = (
             {Object.keys(WORK_TAGS).map((work) => (
               <Button
                 isSelect={taskFilterState.workState.includes(work as WorkTags)}
-                variant="outline"
+                variant={work as WorkTags}
                 text={WORK_TAGS[work as WorkTags]}
                 onClick={() => setWorkState(work as WorkTags)}
                 size="small"

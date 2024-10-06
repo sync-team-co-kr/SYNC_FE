@@ -5,10 +5,10 @@ import { Typography } from '@components/common/Typography';
 import { EditTaskModal } from '@components/modal/EditTaskModal';
 import useModal from '@hooks/useModal';
 import { useTaskActions } from '@libs/store/task/task';
-import { useGetProjectIdList } from '@services/project/Project.hooks';
-import { useGetTasks } from '@services/task/Task.hooks';
+// import { useGetProjectIdList } from '@services/project/Project.hooks';
 import styled from 'styled-components';
 
+import { useRenderTaskFilter } from './Calendar.hooks';
 import { CalendarContext } from './Calendar.provider';
 import {
   GraphContainer,
@@ -43,11 +43,10 @@ export const CalendarDay = () => {
   const [openModal] = useModal();
 
   const { setTaskId } = useTaskActions();
-  const { projectIdsList } = useGetProjectIdList() ?? {};
+  // const { projectIdsList } = useGetProjectIdList() ?? {};
 
-  const { tasks } = useGetTasks(projectIdsList);
+  // const { tasks } = useGetTasks(projectIdsList);
 
-  console.log(tasks);
   const { value } = useContext(CalendarContext);
   const returnStatus = (status: number) => {
     switch (status) {
@@ -64,11 +63,11 @@ export const CalendarDay = () => {
 
   const EditModalOpenHandler = (taskId: number) => {
     openModal(EditTaskModal);
-
     setTaskId(taskId);
   };
 
   const schedulesTimeLine = getSchedulesForTimeSlot(dummySchedules, value);
+  const { filteredSchedules } = useRenderTaskFilter(schedulesTimeLine);
 
   return (
     <DayContainer>
@@ -77,7 +76,7 @@ export const CalendarDay = () => {
           종일
         </Typography>
         <GraphItemsContainer>
-          {schedulesTimeLine.map((schedule) => (
+          {filteredSchedules.map((schedule) => (
             <TimeTable
               key={schedule.id}
               onClick={() => EditModalOpenHandler(schedule.id)}
@@ -111,7 +110,7 @@ export const CalendarDay = () => {
         </TimeTableContainer>
 
         <TimeTableItem>
-          {schedulesTimeLine.map((schedule, i: number) => {
+          {filteredSchedules.map((schedule, i: number) => {
             const rowStart = getGridRowStart(schedule.startDate);
 
             if (rowStart > 78 || rowStart < 0) return null;
