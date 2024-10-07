@@ -1,21 +1,23 @@
 import more from '@assets/More.svg';
-import settings from '@assets/Settings.svg';
-import alrams from '@assets/bell-02.svg';
+import { ReactComponent as Bell } from '@assets/header/bell-icon.svg';
+import { ReactComponent as Setting } from '@assets/header/setting-icon.svg';
 import profileDefault from '@assets/man-438081_960_720.svg';
-import search from '@assets/search.svg';
 import { ConfigDropDown, MenuDropDown } from '@components/dropdown';
 import useDropdown from '@hooks/useDropdown';
 import { useLoggedInUserStore } from '@libs/store';
 import styled from 'styled-components';
+import { vars } from 'token';
 
 const HeaderWrap = styled.header`
-  width: calc(100% - 242px);
+  width: calc(100% - 80px);
   height: 68px;
   padding: 12px 34px;
-  border-bottom: 2px solid black;
+  z-index: 5;
+  border-bottom: 1px solid ${vars.sementic.color.black10};
   position: fixed;
-  left: 240px;
+  right: 0;
   top: 0;
+  background: ${vars.sementic.color.white};
 `;
 
 const Navigation = styled.nav`
@@ -29,35 +31,20 @@ const HeaderList = styled.ul`
   align-items: center;
 `;
 
-const SearchContainer = styled.li`
-  width: 388px;
-  height: 38px;
-  flex-shrink: 0;
-  position: relative;
-`;
+const IconContainer = styled.div`
+  padding: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
 
-const SearchBar = styled.input`
-  width: 388px;
-  height: 38px;
-  padding-left: 45px;
-  flex-shrink: 0;
-  border-radius: 19px;
-  border: 1px solid var(--main-black, #000);
-  background: #f5f6fa;
-  &::placeholder {
-    color: #202224;
-    font-family: 'Nunito Sans';
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
+  svg {
+    &:hover {
+      transition: all 0.3s;
+      cursor: pointer;
+      stroke: ${vars.sementic.color.primaryOrange};
+    }
   }
-`;
-
-const SearchSvg = styled.img`
-  position: absolute;
-  left: 16px;
-  top: 10px;
 `;
 
 const ToolContainer = styled.li`
@@ -138,15 +125,16 @@ export default function Header() {
     <HeaderWrap>
       <Navigation>
         <HeaderList>
-          <SearchContainer>
-            <SearchBar type="text" placeholder="Search" />
-            <SearchSvg src={search} />
-          </SearchContainer>
+          <div></div>
           <ToolContainer>
             <AlarmAndSetting>
-              <img src={alrams} alt="알림" />
+              <IconContainer>
+                <Bell stroke={vars.sementic.color.black20} />
+              </IconContainer>
               <Config ref={configDropdownRef}>
-                <img src={settings} alt="설정" onClick={toggleConfigDropdown} />
+                <IconContainer onClick={toggleConfigDropdown}>
+                  <Setting stroke={vars.sementic.color.black20} />
+                </IconContainer>
                 <ConfigDropDown isOpen={isOpenConfigDropdown} />
               </Config>
             </AlarmAndSetting>

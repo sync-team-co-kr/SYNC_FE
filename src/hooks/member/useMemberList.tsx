@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { requiredJwtTokeninstance } from '@libs/axios/axios';
+import { userApiInstance } from '@libs/axios/axios';
 import { useQuery } from '@tanstack/react-query';
 import { AxiosResponse } from 'axios';
 
@@ -66,7 +66,7 @@ const useMemberList: useMemberListType = (selectedProject) => {
       try {
         // 프로젝트에 속한 멤버의 아이디 불러오기
         const response: AxiosResponse<AxiosRes<getProjectMembersResponse[]>> =
-          await requiredJwtTokeninstance.get(`/user/api/member/v2`, {
+          await userApiInstance.get(`/user/api/member/v2`, {
             params: {
               projectIds: [selectedProject.projectId].toString(),
             },
@@ -76,7 +76,7 @@ const useMemberList: useMemberListType = (selectedProject) => {
         const { userIds } = response.data.value[0];
         const getMemberRoleRes: AxiosResponse<
           AxiosRes<getMemberRoleResponse[]>
-        > = await requiredJwtTokeninstance.get('/user/api/member/v1', {
+        > = await userApiInstance.get('/user/api/member/v1', {
           params: {
             userIds: userIds.join(','),
           },
@@ -94,7 +94,7 @@ const useMemberList: useMemberListType = (selectedProject) => {
         const getMembersData: IMember[] = await Promise.all(
           primaryKeyMemberList.map(async (value) => {
             const getMembersRes: AxiosResponse<AxiosRes<IUser[]>> =
-              await requiredJwtTokeninstance.get('/user/api/info/v2', {
+              await userApiInstance.get('/user/api/info/v2', {
                 params: {
                   userIds: value.userId.toString(),
                 },

@@ -1,6 +1,9 @@
 module.exports = {
   root: true,
   env: { browser: true, es2020: true },
+  globals: {
+    JSX: true,
+  },
   extends: [
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
@@ -12,6 +15,7 @@ module.exports = {
   parser: '@typescript-eslint/parser',
   plugins: ['react-refresh'],
   rules: {
+    'prefer-arrow-callback': 'warn',
     'import/prefer-default-export': 'off',
     'react-refresh/only-export-components': [
       'warn',
@@ -35,7 +39,8 @@ module.exports = {
         ignore: ['^@'], // '@' alias를 사용할 때 오류가 발생하지 않도록 설정합니다.
       },
     ],
-    'arrow-body-style': 'warn',
+
+    'arrow-body-style': ['warn', 'as-needed'],
     // `no-restricted-imports` 규칙을 사용하여 alias를 사용하지 않는 import에 대해 오류를 발생시킵니다.
     'no-restricted-imports': [
       'error',

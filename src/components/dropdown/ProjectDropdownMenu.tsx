@@ -1,8 +1,9 @@
 import settings from '@assets/Settings.svg';
 import trashcan from '@assets/trashcan.svg';
 import withdraw from '@assets/withdraw.svg';
-import { DeleteProjectModal, ModifyProjectModal } from '@components/modal';
 import useModal from '@hooks/useModal';
+import DeleteProjectModal from '@pages/projects/ProjectBoards/DeleteProjectModal/DeleteProjectModal';
+import ModifyProjectModal from '@pages/projects/ProjectBoards/ModifyProjectModal/ModifyProjectModal';
 import styled from 'styled-components';
 
 const Wrapper = styled.section<{ $isopen: boolean }>`

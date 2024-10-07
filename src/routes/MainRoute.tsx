@@ -5,6 +5,7 @@ import { Route, Routes } from 'react-router-dom';
 
 import { PublicLayout } from '@components/layout';
 import Layout from '@components/layout/Layout';
+import { Calendars } from '@pages/Calendars';
 import Home from '@pages/Home';
 import Login from '@pages/Login';
 import NotFound from '@pages/NotFound';
@@ -23,6 +24,7 @@ const MainRoutes = () => (
     <Route element={<Layout />}>
       <Route element={<PublicLayout />}>
         <Route path="/" element={<Home />} />
+        <Route path="/calendars" element={<Calendars />} />
         <Route path="/profile/*" element={<ProfileRoute />} />
         <Route path="/settings/*" element={<SettingsRoute />} />
         {/* 아래 user쪽 route는 추후 정리 필요해 보임 */}

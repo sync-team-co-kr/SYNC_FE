@@ -6,9 +6,9 @@ import RouteProjectDropdown from '@components/dropdown/RouteProjectDropdown';
 import InviteProjectMemberModal from '@components/modal/InviteProjectMemberModal';
 import { SettingsMemberItem } from '@components/settings';
 import useMemberList from '@hooks/member/useMemberList';
-import useProjectList from '@hooks/project/useProjectList';
 import useDropdown from '@hooks/useDropdown';
 import useModal from '@hooks/useModal';
+import { useGetProjectList } from '@services/project/Project.hooks';
 import styled from 'styled-components';
 
 const Header = styled.article`
@@ -292,14 +292,16 @@ const MembersSettings = () => {
     projectDropdownRef,
   ] = useDropdown();
 
-  const { projectList, isLoading } = useProjectList();
+  const { projectListData } = useGetProjectList();
   const [selectedProject, setSelectedProject] = useState<IProject | null>(
-    projectList ? projectList[0] : null,
+    projectListData ? projectListData[0] : null,
   );
 
   useEffect(
-    () => projectList && setSelectedProject(projectList[0]),
-    [isLoading],
+    () => projectListData && setSelectedProject(projectListData[0]),
+    [
+      /*isLoading*/
+    ],
   );
 
   const { memberList } = useMemberList(selectedProject);
@@ -321,7 +323,7 @@ const MembersSettings = () => {
           <RouteProjectDropdown
             isOpen={isOpenProjectListDropdown}
             toggleModal={toggleProjectListDropdown}
-            projectList={projectList}
+            projectList={projectListData}
             setSelectedProject={setSelectedProject}
           />
         </ProjectListDropdown>

@@ -1,3 +1,4 @@
 import Project from './Project';
+import EditProjectParams from './editProjectParams';
 
-export type { Project };
+export type { Project, EditProjectParams };
