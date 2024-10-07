@@ -292,16 +292,14 @@ const MembersSettings = () => {
     projectDropdownRef,
   ] = useDropdown();
 
-  const { projectListData } = useGetProjectList();
+  const { projectListData, isLoading } = useGetProjectList();
   const [selectedProject, setSelectedProject] = useState<IProject | null>(
     projectListData ? projectListData[0] : null,
   );
 
   useEffect(
     () => projectListData && setSelectedProject(projectListData[0]),
-    [
-      /*isLoading*/
-    ],
+    [isLoading],
   );
 
   const { memberList } = useMemberList(selectedProject);

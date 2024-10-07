@@ -78,22 +78,21 @@ function CreateProjectModal({ closeModal }: { closeModal?: setIsModalOpen }) {
           minutes: endTime.minute || 0,
         });
 
-        return ValidateProject({
+        ValidateProject({
           title,
           subTitle,
           description,
           startDate: projectStartDate.toISOString(),
           endDate: projectEndDate.toISOString(),
         });
-      }
-
-      return ValidateProject({
-        title,
-        subTitle,
-        description,
-        startDate: startDate?.toISOString(),
-        endDate: endDate?.toISOString(),
-      });
+      } else
+        ValidateProject({
+          title,
+          subTitle,
+          description,
+          startDate: startDate?.toISOString(),
+          endDate: endDate?.toISOString(),
+        });
     }
   };
 

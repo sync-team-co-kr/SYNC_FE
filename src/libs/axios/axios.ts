@@ -15,20 +15,6 @@ export const projectApiInstance = axios.create({
   withCredentials: true,
 });
 
-userApiInstance.interceptors.response.use(
-  (response) => response,
-  async (axiosError: AxiosError) => {
-    await catchJwtTokenError(axiosError);
-  },
-);
-
-projectApiInstance.interceptors.response.use(
-  (response) => response,
-  async (axiosError: AxiosError) => {
-    await catchJwtTokenError(axiosError);
-  },
-);
-
 const catchJwtTokenError = async (axiosError: AxiosError) => {
   const originalRequest = axiosError.config;
 
@@ -48,6 +34,20 @@ const catchJwtTokenError = async (axiosError: AxiosError) => {
   }
   return null;
 };
+
+userApiInstance.interceptors.response.use(
+  (response) => response,
+  async (axiosError: AxiosError) => {
+    await catchJwtTokenError(axiosError);
+  },
+);
+
+projectApiInstance.interceptors.response.use(
+  (response) => response,
+  async (axiosError: AxiosError) => {
+    await catchJwtTokenError(axiosError);
+  },
+);
 
 /*
   try {

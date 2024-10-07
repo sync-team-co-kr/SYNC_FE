@@ -13,12 +13,12 @@ import {
 
 // projectList hooks
 export const useGetProjectList = () => {
-  const { data: projectListData } = useQuery({
+  const { data: projectListData, isLoading } = useQuery({
     queryKey: ['projects'],
     queryFn: getProjectList,
   });
 
-  return { projectListData };
+  return { projectListData, isLoading };
 };
 
 // ProjectList id list hooks
