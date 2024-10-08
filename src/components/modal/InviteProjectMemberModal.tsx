@@ -1,7 +1,9 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 import CancelButton from '@assets/cancel-x.svg';
 import { Button } from '@components/common/Button';
+import { Project } from '@customTypes/project';
+import { userApiInstance } from '@libs/axios/axios';
 import { styled } from 'styled-components';
 
 const ModalHeader = styled.article`
@@ -75,11 +77,24 @@ const Submit = styled.div`
   gap: 12px;
 `;
 
-const InviteProjectMemberModal = () => {
+interface InviteProjectMemberModalProps {
+  project: Pick<Project, 'projectId' | 'title'>;
+}
+
+const InviteProjectMemberModal = ({
+  project: { projectId, title },
+}: InviteProjectMemberModalProps) => {
   const [invite, setInvite] = useState('');
 
-  const handleInviteProjectMember = () => {
-    console.log('hello');
+  const handleInviteProjectMember = async (
+    e: React.MouseEvent<HTMLButtonElement>,
+  ) => {
+    e.preventDefault();
+    await userApiInstance.post('/user/api/email', {
+      projectId,
+      title,
+      email: invite,
+    });
   };
 
   return (

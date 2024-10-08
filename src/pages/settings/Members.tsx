@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import fakeAvatar from '@assets/rectangle-50.png';
 import search from '@assets/search.svg';
@@ -368,7 +368,16 @@ const MembersSettings = () => {
               </SearchForm>
 
               <InviteEmailButton
-                onClick={() => openModal(InviteProjectMemberModal)}
+                onClick={() =>
+                  openModal(() =>
+                    InviteProjectMemberModal({
+                      project: {
+                        title: selectedProject?.title || '',
+                        projectId: selectedProject?.projectId || 0,
+                      },
+                    }),
+                  )
+                }
               >
                 초대하기
               </InviteEmailButton>
