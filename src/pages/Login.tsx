@@ -208,7 +208,7 @@ export default function Login() {
   };
 
   const naverLogin = async () => {
-    const res = await axios.post(
+    await axios.post(
       'http://150.230.190.128:8090/oauth2/authorization/naver',
       {},
       {
