@@ -23,6 +23,8 @@ export const returnDate = (
 };
 
 export const formatTimeIntl = (date: Date) => {
+  if (!date) return '';
+
   return new Intl.DateTimeFormat('ko-KR', {
     hour: '2-digit',
     minute: '2-digit',
@@ -58,11 +60,13 @@ export const generateTimeSlots = (): string[] => {
 // 일정을 정렬하는 함수
 export const sortSchedules = (schedules: TaskData[]) => {
   return schedules.sort((a, b) => {
+    const returnToDate = (date: Date) => new Date(date).getTime();
+
     if (a.status !== b.status) return a.status - b.status;
     if (a.endDate !== b.endDate)
-      return a.endDate.getTime() - b.endDate.getTime();
+      return returnToDate(a.endDate) - returnToDate(b.endDate);
     if (a.startDate !== b.startDate)
-      return a.startDate.getTime() - b.startDate.getTime();
+      return returnToDate(a.startDate) - returnToDate(b.startDate);
     return a.title.localeCompare(b.title);
   });
 };

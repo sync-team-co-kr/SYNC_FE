@@ -13,12 +13,12 @@ export const ProjectDropdownItem = ({
 }: ProjectDropdownItemProps) => {
   const { projectData } = useGetProject(projectId);
 
-  const { setProjects } = useTaskWithProjectActions();
+  const { setProject } = useTaskWithProjectActions();
 
   if (!projectData) return null;
 
   const handleProjectClick = () => {
-    setProjects([projectData]);
+    setProject(projectData);
   };
 
   return (

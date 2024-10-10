@@ -1,6 +1,26 @@
 import axios, { AxiosError, isAxiosError } from 'axios';
 import config from 'config/config';
 
+const catchJwtTokenError = async (axiosError: AxiosError) => {
+  const originalRequest = axiosError.config;
+
+  if (
+    isAxiosError<{ message: string }>(axiosError) &&
+    axiosError.response &&
+    originalRequest
+  ) {
+    const { data } = axiosError.response;
+
+    if (data.message.split(' ').slice(0, 2).join(' ') === 'JWT expired') {
+      localStorage.clear();
+      window.alert('토큰 유효기간 만료. 로그인 창으로 돌아갑니다.');
+      window.location.href = '/login';
+      return Promise.reject(axiosError);
+    }
+  }
+  return null;
+};
+
 export const publicInstance = axios.create({
   baseURL: config.backendUrl,
 });
@@ -28,26 +48,6 @@ projectApiInstance.interceptors.response.use(
     await catchJwtTokenError(axiosError);
   },
 );
-
-const catchJwtTokenError = async (axiosError: AxiosError) => {
-  const originalRequest = axiosError.config;
-
-  if (
-    isAxiosError<{ message: string }>(axiosError) &&
-    axiosError.response &&
-    originalRequest
-  ) {
-    const { data } = axiosError.response;
-
-    if (data.message.split(' ').slice(0, 2).join(' ') === 'JWT expired') {
-      localStorage.clear();
-      window.alert('토큰 유효기간 만료. 로그인 창으로 돌아갑니다.');
-      window.location.href = '/login';
-      return Promise.reject(axiosError);
-    }
-  }
-  return null;
-};
 
 /*
   try {

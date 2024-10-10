@@ -9,7 +9,8 @@ export const EmojiContainer = styled.div`
 
 export const EmojiListContainer = styled.div`
   display: flex;
-  flex-wrap: wrap;
+  overflow-y: auto;
+  max-height: 500px;
   flex-direction: column;
   gap: 18px;
   width: 100%;

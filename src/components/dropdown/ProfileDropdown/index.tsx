@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
 
 import {
   EMOJI_LIST,
@@ -15,6 +15,7 @@ import { Select } from '@components/common/Select/Select';
 import { SelectButton } from '@components/common/Select/Select.Button';
 import { SelectList } from '@components/common/Select/Select.list';
 import Textfield from '@components/common/Textfield';
+import * as RiIcons from '@remixicon/react';
 
 import {
   EmojiContainer,
@@ -77,13 +78,19 @@ export const ProfileDropdown = ({
     <Select
       value={
         <InputIconContainer>
-          <img
-            src={
-              selectIconValue && selectIconValue.startsWith('blob:')
-                ? selectIconValue
-                : EMOJI_LIST[selectIconValue as keyof typeof EMOJI_LIST]
-            }
-          />
+          {selectIconValue && selectIconValue.includes('Ri') ? (
+            React.createElement(
+              RiIcons[selectIconValue as keyof typeof RiIcons],
+            )
+          ) : (
+            <img
+              src={
+                selectIconValue && selectIconValue.startsWith('blob:')
+                  ? selectIconValue
+                  : EMOJI_LIST[selectIconValue as keyof typeof EMOJI_LIST]
+              }
+            />
+          )}
         </InputIconContainer>
       }
       type="select"
@@ -178,7 +185,25 @@ export const ProfileDropdown = ({
               </EmojiListContainer>
             </TabPanel>
 
-            <TabPanel padding="20px 0"></TabPanel>
+            <TabPanel padding="20px 0">
+              <EmojiListContainer>
+                <EmojiIconContainer>
+                  {Object.keys(RiIcons).map((icon) => {
+                    return (
+                      <EmojiImageContainer
+                        key={icon}
+                        onClick={() => selectIconOnClick(icon)}
+                      >
+                        {React.createElement(
+                          RiIcons[icon as keyof typeof RiIcons],
+                        )}
+                      </EmojiImageContainer>
+                    );
+                  })}
+                </EmojiIconContainer>
+              </EmojiListContainer>
+              {/* 아이콘 리스트  */}
+            </TabPanel>
 
             <TabPanel padding="20px 0">
               <Button

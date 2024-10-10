@@ -17,6 +17,7 @@ const ContentContainer = styled.div`
   border-radius: 12px;
   flex-direction: column;
   padding: 20px;
+  overflow-x: auto;
   background: white;
   height: 100%;
 `;

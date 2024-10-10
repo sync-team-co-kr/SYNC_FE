@@ -13,6 +13,7 @@ import {
   useCalendarActions,
   useCalendarState,
 } from '@libs/store/task/calendar';
+import { useTaskWithProjectState } from '@libs/store/task/project';
 import styled from 'styled-components';
 
 const CalenderContainer = styled.div`
@@ -40,6 +41,8 @@ export const Calendars = () => {
   const { currentDate } = useCalendarState();
   const { setCurrentDate } = useCalendarActions();
 
+  const { project } = useTaskWithProjectState();
+
   const projectListDropdownRef = useRef(null);
 
   return (
@@ -50,7 +53,7 @@ export const Calendars = () => {
           hasIcon={true}
           iconPosition="right"
           size="medium"
-          text="전체보기"
+          text={project.title !== '' ? project.title : '전체보기'}
           onClick={openProjectListDropdown}
           renderIcon={
             !isOpenProjectListDropdown ? (
