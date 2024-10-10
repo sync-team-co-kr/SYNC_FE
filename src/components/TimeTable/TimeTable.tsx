@@ -47,6 +47,7 @@ const TimeTable = ({
     <Container
       gridRowStart={gridRowStart}
       rowSpan={rowSpan}
+      onClick={onClick}
       percentage={100}
       variant={variant}
       status={status}
