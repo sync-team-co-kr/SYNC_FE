@@ -34,10 +34,10 @@ export type TaskFilterActions = {
 // task + project store
 
 export type TaskStore = {
-  projects: Project[];
+  project: Project;
 };
 export interface TaskActions {
   actions: {
-    setProjects: (projects: Project[]) => void;
+    setProject: (project: Project) => void;
   };
 }

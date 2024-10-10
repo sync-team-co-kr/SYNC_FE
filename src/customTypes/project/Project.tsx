@@ -5,5 +5,4 @@ export default interface Project {
   description: string;
   startDate: Date;
   endDate: Date;
-  memberIds: number[]; 
 }

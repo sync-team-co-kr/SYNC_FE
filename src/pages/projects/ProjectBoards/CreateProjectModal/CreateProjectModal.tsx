@@ -66,33 +66,23 @@ function CreateProjectModal({ closeModal }: { closeModal?: setIsModalOpen }) {
   const handleCreateProject = async (e: React.MouseEvent<HTMLInputElement>) => {
     e.preventDefault();
 
-    if (startDate && endDate) {
-      if (includeTime) {
-        const projectStartDate = add(new Date(startDate), {
-          hours: startTime.hour ? startTime.hour + 9 : 0,
-          minutes: startTime.minute || 0,
-        });
+    if (startDate && endDate && includeTime) {
+      const projectStartDate = add(new Date(startDate), {
+        hours: startTime.hour ? startTime.hour + 9 : 0,
+        minutes: startTime.minute || 0,
+      });
 
-        const projectEndDate = add(new Date(endDate), {
-          hours: endTime.hour ? endTime.hour + 9 : 0,
-          minutes: endTime.minute || 0,
-        });
+      const projectEndDate = add(new Date(endDate), {
+        hours: endTime.hour ? endTime.hour + 9 : 0,
+        minutes: endTime.minute || 0,
+      });
 
-        return ValidateProject({
-          title,
-          subTitle,
-          description,
-          startDate: projectStartDate.toISOString(),
-          endDate: projectEndDate.toISOString(),
-        });
-      }
-
-      return ValidateProject({
+      ValidateProject({
         title,
         subTitle,
         description,
-        startDate: startDate?.toISOString(),
-        endDate: endDate?.toISOString(),
+        startDate: projectStartDate.toISOString(),
+        endDate: projectEndDate.toISOString(),
       });
     }
   };

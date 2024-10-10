@@ -15,6 +15,8 @@ import {
 // projectList hooks
 export const useGetProjectList = () => {
   const { loggedInUser } = useLoggedInUserStore();
+
+  console.log('loggedInUser', loggedInUser);
   const { data: projectListData } = useQuery({
     queryKey: ['projects'],
     queryFn: getProjectList,
@@ -25,7 +27,7 @@ export const useGetProjectList = () => {
 
 // ProjectList id list hooks
 export const useGetProjectIdList = () => {
-  const { data: projectIdsList } = useQuery({
+  const { data: projectIdsList = [] } = useQuery({
     queryKey: ['projectIds'],
     queryFn: getProjectIdList,
   });
