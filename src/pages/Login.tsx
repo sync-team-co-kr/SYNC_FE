@@ -182,6 +182,7 @@ export default function Login() {
 
   // todo return 값이 통일 되야아함
   // eslint-disable-next-line consistent-return
+  // tanstack-query로 개선
   const handleLogin = async (e: React.MouseEvent<HTMLInputElement>) => {
     e.preventDefault();
     const isValidatePass = validateLoginForm();
@@ -196,7 +197,7 @@ export default function Login() {
         const inviteCode = cookies.get('invite-code');
 
         if (inviteCode) {
-          const inviteRes = await axios.post(
+          await axios.post(
             `${config.backendUrl}/user/api/invite`,
             { token: inviteCode },
             {
@@ -204,20 +205,24 @@ export default function Login() {
             },
           );
 
-          console.log(inviteRes);
+          cookies.remove('invite-code');
         }
 
         window.alert('로그인 성공!');
-        navigate('/');
+        return navigate('/');
       }
     } catch (error) {
-      if (error instanceof AxiosError && error.response) {
-        console.log(error);
-        if (error.response.data.message === '아이디가 잘못되었습니다.')
+      if (
+        error instanceof AxiosError<{ message: string; code: string }> &&
+        error.response
+      ) {
+        const axiosError: AxiosError<{ message: string; code: string }> = error;
+        if (axiosError.response?.data.message === '아이디가 잘못되었습니다.')
           return setErrorMessage({
             ...errorMessage,
             userId: '아이디 또는 비밀번호가 옳지 않습니다.',
           });
+        if (axiosError.response?.data.code === 'M001') return true;
       }
       console.error(error);
       return false;
