@@ -5,7 +5,9 @@ import passwordIcon from '@assets/lock-01.svg';
 import mail from '@assets/mail-01.svg';
 import { loginAPI } from '@services/api';
 import axios, { AxiosError } from 'axios';
+import config from 'config/config';
 import styled from 'styled-components';
+import Cookies from 'universal-cookie';
 
 const Main = styled.main`
   width: 100%;
@@ -189,6 +191,21 @@ export default function Login() {
       const loginResponse = await loginAPI({ ...loginForm });
       if (loginResponse.result === 'OK') {
         localStorage.setItem('loggedUserId', loginForm.userId);
+
+        const cookies = new Cookies(null, { path: '/' });
+        const inviteCode = cookies.get('invite-code');
+
+        if (inviteCode) {
+          const inviteRes = await axios.post(
+            `${config.backendUrl}/user/api/invite`,
+            { token: inviteCode },
+            {
+              withCredentials: true,
+            },
+          );
+
+          console.log(inviteRes);
+        }
 
         window.alert('로그인 성공!');
         navigate('/');
