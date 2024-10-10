@@ -209,8 +209,10 @@ export default function Login() {
         }
 
         window.alert('로그인 성공!');
-        return navigate('/');
+        navigate('/');
+        return true;
       }
+      return false;
     } catch (error) {
       if (
         error instanceof AxiosError<{ message: string; code: string }> &&
@@ -218,7 +220,7 @@ export default function Login() {
       ) {
         const axiosError: AxiosError<{ message: string; code: string }> = error;
         if (axiosError.response?.data.message === '아이디가 잘못되었습니다.')
-          return setErrorMessage({
+          setErrorMessage({
             ...errorMessage,
             userId: '아이디 또는 비밀번호가 옳지 않습니다.',
           });
