@@ -5,10 +5,13 @@ import search from '@assets/search.svg';
 import RouteProjectDropdown from '@components/dropdown/RouteProjectDropdown';
 import InviteProjectMemberModal from '@components/modal/InviteProjectMemberModal';
 import { SettingsMemberItem } from '@components/settings';
+import { AxiosResByData } from '@customTypes/common/AxiosRes';
 import useMemberList from '@hooks/member/useMemberList';
 import useDropdown from '@hooks/useDropdown';
 import useModal from '@hooks/useModal';
+import { userApiInstance } from '@libs/axios/axios';
 import { useGetProjectList } from '@services/project/Project.hooks';
+import { AxiosResponse } from 'axios';
 import styled from 'styled-components';
 
 const Header = styled.article`
@@ -296,15 +299,32 @@ const MembersSettings = () => {
   const [selectedProject, setSelectedProject] = useState<IProject | null>(
     projectListData ? projectListData[0] : null,
   );
+  const [inviteLink, setInviteLink] = useState('');
 
   useEffect(
     () => projectListData && setSelectedProject(projectListData[0]),
     [isLoading],
   );
 
+  useEffect(() => {
+    createInviteLink();
+  }, [selectedProject?.projectId]);
+
   const { memberList } = useMemberList(selectedProject);
 
   console.log(memberList);
+
+  const createInviteLink = async () => {
+    if (selectedProject?.projectId) {
+      const response: AxiosResponse<AxiosResByData<{ link: string }>> =
+        await userApiInstance.get('/user/api/link', {
+          params: {
+            projectId: selectedProject?.projectId,
+          },
+        });
+      setInviteLink(response.data.data.link);
+    }
+  };
 
   return (
     <>
@@ -338,12 +358,15 @@ const MembersSettings = () => {
             </ToogleInviteCode>
           </InviteLinkHeader>
           <InviteLinkForm>
-            <input
-              type="text"
-              value="https://dashlite.net/demo1/user-profile-regular.html"
-              readOnly
-            />
-            <button>링크 복사</button>
+            <input type="text" value={inviteLink} readOnly />
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                navigator.clipboard.writeText(inviteLink);
+              }}
+            >
+              링크 복사
+            </button>
           </InviteLinkForm>
         </InviteLinkContainer>
 
