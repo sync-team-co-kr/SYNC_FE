@@ -76,21 +76,21 @@ export const createTask = async ({ ...payload }: CreateTaskPayload) => {
     }
   });
 
-  const formDataList = {
+  const formDataList: CreateTaskPayload['data'] = {
     projectId: payload.data.projectId,
     title: payload.data.title,
     description: updatedDescription,
-    startDate: payload.data.startDate ? payload.data.startDate : null,
-    endDate: payload.data.endDate ? payload.data.endDate : null,
+    startDate: payload.data.startDate,
+    endDate: payload.data.endDate,
     parentTaskId: payload.data.parentTaskId,
     status: payload.data.status,
   };
 
-  formData.append('data', JSON.stringify(formDataList));
-
-  if (payload.data.thumbnailIcon && payload.data.thumbnailIcon !== '') {
-    formData.append('thumbnailIcon', payload.data.thumbnailIcon);
+  if (payload.data.thumbnailIcon) {
+    formDataList.thumbnailIcon = payload.data.thumbnailIcon;
   }
+
+  formData.append('data', JSON.stringify(formDataList));
 
   if (payload.thumbnailImage) {
     formData.append('thumbnailImage', payload.thumbnailImage);

@@ -55,8 +55,8 @@ const initialState: TaskState = {
   payload: {
     title: '',
     description: '',
-    startDate: new Date().toISOString(),
-    endDate: new Date().toISOString(),
+    startDate: '',
+    endDate: '',
     parentTaskId: 0,
     projectId: 0,
     status: 0,

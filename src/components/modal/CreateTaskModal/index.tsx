@@ -21,6 +21,7 @@ import { useTaskActions, useTaskState } from '@libs/store/task/task';
 import { ProjectPeriodTime } from '@pages/projects/ProjectBoards/CreateProjectModal/CreateProjectModal';
 import StyleCreateProjectModal from '@pages/projects/ProjectBoards/CreateProjectModal/CreateProjectModal.style';
 import { useGetProjectList } from '@services/project/Project.hooks';
+import { CreateTaskPayload } from '@services/swagger/output/data-contracts';
 import { useCreateTask } from '@services/task/Task.hooks';
 
 import { SELECT_STATUS } from './constants';
@@ -112,22 +113,28 @@ export const CreateTaskModal = () => {
       return;
     }
 
+    const taskData: CreateTaskPayload['data'] = {
+      projectId: payload.projectId,
+      title: payload.title,
+      description: payload.description,
+      parentTaskId: payload.parentTaskId,
+      thumbnailIcon: titleImage?.startsWith('blob') ? '' : titleImage,
+      status: payload.status,
+    };
+
+    if (payload.startDate && payload.endDate) {
+      taskData.startDate = includeTime
+        ? combineDateTime(payload.startDate!, startTime)
+        : new Date(payload.startDate!).toISOString().split('T')[0];
+
+      taskData.endDate = includeTime
+        ? combineDateTime(payload.endDate!, endTime)
+        : new Date(payload.endDate!).toISOString().split('T')[0];
+    }
+
     createTaskMutate({
       data: {
-        projectId: payload.projectId,
-        title: payload.title,
-        description: payload.description,
-        parentTaskId: payload.parentTaskId,
-        thumbnailIcon: titleImage?.startsWith('blob') ? '' : titleImage,
-        startDate: includeTime
-          ? combineDateTime(payload.startDate!, startTime)
-          : new Date(payload.startDate!).toISOString().split('T')[0],
-
-        endDate: includeTime
-          ? combineDateTime(payload.endDate!, endTime)
-          : new Date(payload.endDate!).toISOString().split('T')[0],
-
-        status: payload.status,
+        ...taskData,
       },
       images: [],
       thumbnailImage: titleImage?.startsWith('blob') ? titleImage : '',
