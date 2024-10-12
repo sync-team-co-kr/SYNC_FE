@@ -1,6 +1,7 @@
 import { AxiosResByData } from '@customTypes/common';
 import { EditProjectParams, Project } from '@customTypes/project';
 import { userApiInstance } from '@libs/axios/axios';
+import { IProject } from '@pages/projects';
 import { CreateProjectRequestDto } from '@services/swagger/output/data-contracts';
 import { AxiosResponse } from 'axios';
 
@@ -39,7 +40,7 @@ export const getProjectList = async () => {
   const joinedProjectIds = getProjectIdsRes.data.data.projectIds.join(',');
 
   const getProjectListResponse: AxiosResponse<
-    AxiosResByData<{ projectInfos: Project[] }>
+    AxiosResByData<{ projectInfos: IProject[] }>
   > = await userApiInstance.get(
     `node2/project/api/v1?projectIds=${joinedProjectIds}`,
   );

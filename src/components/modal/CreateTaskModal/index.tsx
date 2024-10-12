@@ -33,6 +33,20 @@ import {
   SectionContainer,
 } from './style';
 
+function combineDateTime(date: string, time: ProjectPeriodTime): string {
+  try {
+    const datePart = new Date(date).toISOString().split('T')[0];
+    const hour = String(time.hour).padStart(2, '0');
+    const minute = String(time.minute).padStart(2, '0');
+
+    const combined = new Date(`${datePart}T${hour}:${minute}:00Z`);
+
+    return combined.toISOString();
+  } catch (error) {
+    console.error(error);
+    throw new Error('날짜와 시간을 합치는데 실패했습니다.');
+  }
+}
 // 업무 생성 모달
 
 export const CreateTaskModal = () => {
@@ -53,6 +67,8 @@ export const CreateTaskModal = () => {
     setStartDate,
     setEndDate,
     setTitleImage,
+    resetPayload,
+    clearErrorList,
   } = useTaskActions();
 
   // projectData를 가져오는 hooks
@@ -75,48 +91,55 @@ export const CreateTaskModal = () => {
 
   const { createTaskMutate } = useCreateTask();
 
+  const handleCloseModal = () => {
+    closeModal();
+
+    resetPayload();
+    clearErrorList();
+  };
+
   const handleCreateTask = () => {
+    if (payload.title === '') {
+      errorList.push('title');
+    }
+
+    if (payload.projectId === 0) {
+      errorList.push('projectId');
+    }
+
     if (errorList.length > 0) {
       alert('필수 입력값을 입력해주세요');
       return;
     }
 
-    createTaskMutate(
-      {
-        data: {
-          projectId: payload.projectId,
-          title: payload.title,
-          description: payload.description,
-          parentTaskId:
-            payload.parentTaskId === 0 ? null : payload.parentTaskId,
-          startDate: payload.startDate,
-          endDate: payload.endDate,
-        },
-        images: [],
-        titleimage: titleImage,
-      },
-      {
-        onSuccess: () => {
-          console.log('success');
-        },
+    createTaskMutate({
+      data: {
+        projectId: payload.projectId,
+        title: payload.title,
+        description: payload.description,
+        parentTaskId: payload.parentTaskId,
+        thumbnailIcon: titleImage?.startsWith('blob') ? '' : titleImage,
+        startDate: includeTime
+          ? combineDateTime(payload.startDate!, startTime)
+          : new Date(payload.startDate!).toISOString().split('T')[0],
 
-        onError: (error) => {
-          alert(error);
-        },
+        endDate: includeTime
+          ? combineDateTime(payload.endDate!, endTime)
+          : new Date(payload.endDate!).toISOString().split('T')[0],
+
+        status: payload.status,
       },
-    );
+      images: [],
+      thumbnailImage: titleImage?.startsWith('blob') ? titleImage : '',
+    });
   };
   // date
-  const handleChangeDate = (
-    date: Date | undefined,
-    type: 'startDate' | 'endDate',
-  ) => {
-    if (!date) return;
+  const handleChangeDate = (date: Date, type: 'startDate' | 'endDate') => {
     if (type === 'startDate') {
-      setStartDate(date);
+      setStartDate(date.toISOString());
     }
     if (type === 'endDate') {
-      setEndDate(date);
+      setEndDate(date.toISOString());
     }
   };
 
@@ -125,6 +148,16 @@ export const CreateTaskModal = () => {
   const handleProjectSearch = (e: ChangeEvent<HTMLInputElement>) => {
     setProjectSearch(e.target.value);
     setProjectList(searchFilter(e.target.value, projectListData));
+  };
+
+  // validate
+
+  const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setTitle(e.target.value);
+
+    if (errorList.includes('title')) {
+      errorList.splice(errorList.indexOf('title'), 1);
+    }
   };
 
   useEffect(() => {
@@ -140,7 +173,7 @@ export const CreateTaskModal = () => {
         <Button
           hasIcon
           renderIcon={<CloseX width={24} height={24} />}
-          onClick={closeModal}
+          onClick={handleCloseModal}
           size="small"
           variant="text"
         />
@@ -297,7 +330,7 @@ export const CreateTaskModal = () => {
             variant="outlined"
             placeholder="업무명을 입력해주세요"
             value={payload.title}
-            onChange={(e) => setTitle(e.target.value)}
+            onChange={(e) => handleTitleChange(e)}
           />
         </SectionContainer>
         {/* icon & task end */}

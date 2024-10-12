@@ -65,6 +65,8 @@ export interface UpdateProjectRequestDto {
   description: string;
   title: string;
   subTitle: string;
+  /** 아이콘 */
+  icon?: string;
   /** @format date-time */
   startDate: string;
   /** @format date-time */
@@ -79,26 +81,33 @@ export interface CreateTaskRequestDto {
    * 업무 종료일
    * @format date-time
    */
-  endDate?: string | Date;
+  endDate?: string;
   /**
    * 업무 시작일
    * @format date-time
    */
-  startDate?: string | Date;
+  startDate?: string;
   /** 업무 이름 */
   title: string;
+  /** 아이콘 */
+  thumbnailIcon?: string;
   /**
    * 상위 업무 아이디, null == 프로젝트 최상위 업무
    * @format int64
    */
-  parentTaskId?: number | null;
+  parentTaskId?: number;
   /**
    * 생성할 업무의 프로젝트 아이디
    * @format int64
    */
   projectId: number;
-  /** 업무에 첨부할 이미지 파일들 */
-  images?: File[];
+  /**
+   * 업무 상태 ( 0: 진행중, 1: 완료, 2: 보류)
+   * @format int32
+   * @min 0
+   * @max 2
+   */
+  status: number;
 }
 
 /** 프로젝트를 생성하기 위한 DTO */
@@ -109,6 +118,8 @@ export interface CreateProjectRequestDto {
   title: string;
   /** 프로젝트 부제목 */
   subTitle: string;
+  /** 아이콘 */
+  icon?: string;
   /**
    * 프로젝트 시작일
    * @format date-time
@@ -124,7 +135,7 @@ export interface CreateProjectRequestDto {
 /** 프로젝트 멤버에 업무를 할당하기 위한 DTO */
 export interface MemberMappingToTaskRequestDto {
   /** 멤버 아이디, 멤버는 모두 같은 프로젝트 소속이어야 합니다. */
-  memberIds: number[];
+  userIds: number[];
   /**
    * 업무 아이디
    * @format int64
@@ -195,6 +206,12 @@ export interface DeleteTaskRequestDto {
   projectId: number;
 }
 
+export interface MemberRemoveRequestDto {
+  /** @format int64 */
+  taskId: number;
+  userId: string;
+}
+
 /** 프로젝트를 삭제하기 위한 DTO */
 export interface DeleteProjectRequestDto {
   /**
@@ -204,13 +221,35 @@ export interface DeleteProjectRequestDto {
   projectId: number;
 }
 
+export interface UpdateTaskPayload {
+  /** 업무를 수정하기 위한 DTO */
+  data: UpdateTaskRequestDto;
+  images?: File[];
+  deletedImages?: File[];
+  /** @format binary */
+  titleimage?: File;
+}
+
 export type UpdateTaskData = SuccessResponse;
 
 export type DeleteTaskData = SuccessResponse;
 
 export type ModifyPwdData = SuccessResponse;
 
+export interface UpdateProjectPayload {
+  data: UpdateProjectRequestDto;
+  /** @format binary */
+  thumbnailImage?: File;
+}
+
 export type UpdateProjectData = SuccessResponse;
+
+export interface CreateProjectPayload {
+  /** 프로젝트를 생성하기 위한 DTO */
+  data: CreateProjectRequestDto;
+  /** @format binary */
+  thumbnailImage?: File;
+}
 
 export type CreateProjectData = SuccessResponse;
 
@@ -220,10 +259,13 @@ export interface CreateTaskPayload {
   /** 업무를 생성하기 위한 DTO */
   data: CreateTaskRequestDto;
   images?: File[];
-  titleimage?: File[] | undefined | string;
+  /** @format binary */
+  thumbnailImage?: File | string;
 }
 
 export type CreateTaskData = SuccessResponse;
+
+export type DeleteUsersFromTaskData = SuccessResponse;
 
 export type MemberAddToTaskData = SuccessResponse;
 
@@ -245,14 +287,20 @@ export type GetUsersInfoData = SuccessResponse;
 
 export type GetCurrentUserInfoData = SuccessResponse;
 
-export type GetUsersFromTaskData = any;
+export type TestData = string;
 
 export type GetProjectsByUserLoginIdData = SuccessResponse;
 
 export type GetProjectsData = any;
 
-export type ReqAlarmListData = any;
+export type GetUsersFromTaskData = any;
+
+export type GetTaskData = any;
 
 export type GetTasksByProjectIdData = any;
 
 export type GetOnlyChildrenTasksData = any;
+
+export type GetImageData = any;
+
+export type ReqAlarmListData = any;

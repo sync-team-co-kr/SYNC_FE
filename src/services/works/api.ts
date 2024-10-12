@@ -23,7 +23,7 @@ import { AxiosResponse } from 'axios';
  */
 
 interface CreateTaskParams extends CreateTaskRequestDto {
-  status: number;
+  images: File[];
 }
 
 export const createTask = async (newTask: CreateTaskParams) => {
@@ -62,7 +62,7 @@ export const createTask = async (newTask: CreateTaskParams) => {
     }
 
     if (images && images.length > 0) {
-      images.forEach((image, index) => {
+      images.forEach((image: File, index: number) => {
         formData.append(`images[${index}]`, image);
       });
     }

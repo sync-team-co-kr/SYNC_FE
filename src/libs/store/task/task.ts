@@ -9,6 +9,7 @@ type TaskState = {
   errorList: string[];
   taskId: number;
   titleImage: string | undefined;
+  images: File[];
 };
 type TaskActions = {
   actions: {
@@ -16,8 +17,8 @@ type TaskActions = {
     // 업무 state 변경
     setTitle: (title: string) => void;
     setDescription: (description: string) => void;
-    setStartDate: (startDate: Date) => void;
-    setEndDate: (endDate: Date) => void;
+    setStartDate: (startDate: string) => void;
+    setEndDate: (endDate: string) => void;
     setParentTaskId: (parentTaskId: number) => void;
     setProjectId: (projectId: number) => void;
     setStatus: (status: number) => void;
@@ -49,15 +50,15 @@ type TaskActions = {
 
 const initialState: TaskState = {
   titleImage: undefined,
+  images: [],
   taskId: 0,
   payload: {
     title: '',
     description: '',
-    startDate: new Date(),
-    endDate: new Date(),
+    startDate: new Date().toISOString(),
+    endDate: new Date().toISOString(),
     parentTaskId: 0,
     projectId: 0,
-    images: [],
     status: 0,
   },
   project: {
@@ -147,7 +148,7 @@ const useTaskStore = create<TaskState & TaskActions>((set) => ({
       set((state) => ({
         payload: {
           ...state.payload,
-          images: Array.from(new Set([...(state.payload.images || []), image])),
+          images: Array.from(new Set([...(state.images || []), image])),
         },
       }));
     },

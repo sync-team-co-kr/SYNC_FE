@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
+
+import createworkBoardimg from '@assets/projects/createworkboard.png';
 import { Button } from '@components/common/Button';
 import { Typography } from '@components/common/Typography';
-import createworkBoardimg from '@assets/projects/createworkboard.png';
-import { createTask } from '@services/works/api'; 
-import { AxiosResByData } from '@customTypes/common'; // 실제 데이터 타입
+import { AxiosResByData } from '@customTypes/common';
+// 실제 데이터 타입
+import styled from 'styled-components';
 
 const ProjectWorkBoard = styled.li`
   background: none;
@@ -111,7 +112,10 @@ interface ProjectCreateTaskBoardProps {
   onTaskCreated: (newTask: AxiosResByData<any>) => void; // 타입을 맞춤
 }
 
-const CreateTaskBoard = ({ onClose, onTaskCreated }: ProjectCreateTaskBoardProps) => {
+const CreateTaskBoard = ({
+  onClose,
+  // onTaskCreated,
+}: ProjectCreateTaskBoardProps) => {
   const [workBoard, setWorkBoard] = useState({
     description: '',
     endDate: new Date().toISOString(),
@@ -128,26 +132,26 @@ const CreateTaskBoard = ({ onClose, onTaskCreated }: ProjectCreateTaskBoardProps
     }));
   };
 
-  const handleCreateTask = async () => {
-    try {
-      const response: AxiosResByData<any> = await createTask({
-        ...workBoard,
-        projectId: 1, // 실제 프로젝트 ID를 여기에 입력해야 합니다.
-      });
+  // const handleCreateTask = async () => {
+  //   try {
+  //     const response: AxiosResByData<any> = await createTask({
+  //       ...workBoard,
+  //       projectId: 1,
+  //     });
 
-      console.log('업무가 성공적으로 생성되었습니다:', response);
+  //     console.log('업무가 성공적으로 생성되었습니다:', response);
 
-      if (response && response.result) {
-        console.log('업무가 성공적으로 생성되었습니다.');
-        onTaskCreated(response); // 부모 컴포넌트에 새로운 워크보드 전달
-        onClose(); // 성공적으로 생성되면 창 닫기
-      } else {
-        console.error('업무 생성 실패:', response.message);
-      }
-    } catch (error) {
-      console.error('업무 생성 중 오류 발생:', error);
-    }
-  };
+  //     if (response && response.result) {
+  //       console.log('업무가 성공적으로 생성되었습니다.');
+  //       onTaskCreated(response); // 부모 컴포넌트에 새로운 워크보드 전달
+  //       onClose(); // 성공적으로 생성되면 창 닫기
+  //     } else {
+  //       console.error('업무 생성 실패:', response.message);
+  //     }
+  //   } catch (error) {
+  //     console.error('업무 생성 중 오류 발생:', error);
+  //   }
+  // };
 
   return (
     <ProjectWorkBoard>
@@ -199,7 +203,10 @@ const CreateTaskBoard = ({ onClose, onTaskCreated }: ProjectCreateTaskBoardProps
           variant="fill"
           hasIcon={false}
           isDisabled={false}
-          onClick={handleCreateTask}
+          onClick={() => {
+            console.log('업무 생성');
+          }}
+          // onClick={handleCreateTask}
           text="확인"
         />
       </ProjectFooter>
