@@ -101,14 +101,14 @@ function ModifyProjectModal({ projectId }: ModifyProjectModalProps) {
           <Button
             size="medium"
             variant="text"
-            hasIcon={false}
+            $hasIcon={false}
             onClick={() => closeModal(ModifyProjectModal)}
             text="취소"
           />
           <Button
             size="medium"
             variant="fill"
-            hasIcon={false}
+            $hasIcon={false}
             onClick={handleModifyProject}
             text="완료"
           />

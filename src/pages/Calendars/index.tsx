@@ -50,12 +50,12 @@ export const Calendars = () => {
       <ProjectListDropdownContainer>
         <Button
           variant="text"
-          hasIcon={true}
-          iconPosition="right"
+          $hasIcon={true}
+          $iconPosition="right"
           size="medium"
           text={project.title !== '' ? project.title : '전체보기'}
           onClick={openProjectListDropdown}
-          renderIcon={
+          $renderIcon={
             !isOpenProjectListDropdown ? (
               <ArrowBottom />
             ) : (

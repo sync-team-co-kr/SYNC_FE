@@ -207,7 +207,7 @@ export const ProfileDropdown = ({
 
             <TabPanel padding="20px 0">
               <Button
-                fullWidth
+                $fullWidth
                 size="medium"
                 variant="outline"
                 text={fileName || '파일 업로드'}

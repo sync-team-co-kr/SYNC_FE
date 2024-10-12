@@ -193,16 +193,16 @@ const CreateTaskBoard = ({
         <Button
           size="small"
           variant="text"
-          hasIcon={false}
-          isDisabled={false}
+          $hasIcon={false}
+          $isDisabled={false}
           onClick={onClose}
           text="취소"
         />
         <Button
           size="small"
           variant="fill"
-          hasIcon={false}
-          isDisabled={false}
+          $hasIcon={false}
+          $isDisabled={false}
           onClick={() => {
             console.log('업무 생성');
           }}

@@ -102,8 +102,8 @@ export const EditTaskModal = ({
           업무 수정
         </Typography>
         <Button
-          hasIcon
-          renderIcon={<CloseX width={24} height={24} />}
+          $hasIcon
+          $renderIcon={<CloseX width={24} height={24} />}
           onClick={closeModal}
           size="small"
           variant="text"
@@ -166,7 +166,7 @@ export const EditTaskModal = ({
           <ButtonGroup>
             <Button
               size="small"
-              isSelect={payload.parentTaskId === 0}
+              $isSelect={payload.parentTaskId === 0}
               variant="task"
               text="테스크"
               onClick={() => {
@@ -176,7 +176,7 @@ export const EditTaskModal = ({
             <Button
               size="small"
               variant="subTask"
-              isSelect={payload.parentTaskId === 1}
+              $isSelect={payload.parentTaskId === 1}
               text="서브 테스크"
               onClick={() => {
                 setParentTaskId(1);
@@ -185,7 +185,7 @@ export const EditTaskModal = ({
             <Button
               size="small"
               variant="quest"
-              isSelect={payload.parentTaskId === 2}
+              $isSelect={payload.parentTaskId === 2}
               text="퀘스트"
               onClick={() => {
                 setParentTaskId(2);

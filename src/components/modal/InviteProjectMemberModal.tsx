@@ -120,18 +120,18 @@ const InviteProjectMemberModal = ({
           <Button
             size="medium"
             variant="text"
-            hasIcon={false}
-            isDisabled={false}
-            iconPosition="left"
+            $hasIcon={false}
+            $isDisabled={false}
+            $iconPosition="left"
             onClick={() => console.log('')}
             text="취소"
           />
           <Button
             size="medium"
             variant="fill"
-            hasIcon={false}
-            isDisabled={false}
-            iconPosition="left"
+            $hasIcon={false}
+            $isDisabled={false}
+            $iconPosition="left"
             onClick={handleInviteProjectMember}
             text="완료"
           />

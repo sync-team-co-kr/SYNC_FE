@@ -57,14 +57,14 @@ const DeleteProjectModal = ({ projectId }: DeleteProjectModalProps) => {
           <Button
             size="medium"
             variant="text"
-            hasIcon={false}
+            $hasIcon={false}
             text="취소"
             onClick={() => console.log('취소')}
           />
           <Button
             size="medium"
             variant="fillRed"
-            hasIcon={false}
+            $hasIcon={false}
             text="삭제하기"
             onClick={handleDeleteProject}
           />
