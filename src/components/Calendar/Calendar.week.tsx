@@ -24,7 +24,7 @@ const GridContainer = styled.div`
     color: ${vars.sementic.color.black20};
   }
 
-  & > div:nth-child(1n) {
+  & > div:nth-child(1) {
     color: ${vars.sementic.color.black20};
   }
 
