@@ -5,6 +5,7 @@ import { Route, Routes } from 'react-router-dom';
 
 import { PublicLayout } from '@components/layout';
 import Layout from '@components/layout/Layout';
+import AfterInvite from '@pages/AfterInvite';
 import { Calendars } from '@pages/Calendars';
 import Home from '@pages/Home';
 import Login from '@pages/Login';
@@ -40,6 +41,7 @@ const MainRoutes = () => (
     <Route path="/signup" element={<SignUp />}></Route>
 
     {/* routes auth only */}
+    <Route path="/project/invite/:invitecode" element={<AfterInvite />}></Route>
 
     <Route path={'*'} element={<NotFound />}></Route>
   </Routes>

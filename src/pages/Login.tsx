@@ -5,7 +5,9 @@ import passwordIcon from '@assets/lock-01.svg';
 import mail from '@assets/mail-01.svg';
 import { loginAPI } from '@services/api';
 import axios, { AxiosError } from 'axios';
+import config from 'config/config';
 import styled from 'styled-components';
+import Cookies from 'universal-cookie';
 
 const Main = styled.main`
   width: 100%;
@@ -180,6 +182,7 @@ export default function Login() {
 
   // todo return 값이 통일 되야아함
   // eslint-disable-next-line consistent-return
+  // tanstack-query로 개선
   const handleLogin = async (e: React.MouseEvent<HTMLInputElement>) => {
     e.preventDefault();
     const isValidatePass = validateLoginForm();
@@ -190,17 +193,38 @@ export default function Login() {
       if (loginResponse.result === 'OK') {
         localStorage.setItem('loggedUserId', loginForm.userId);
 
+        const cookies = new Cookies(null, { path: '/' });
+        const inviteCode = cookies.get('invite-code');
+
+        if (inviteCode) {
+          await axios.post(
+            `${config.backendUrl}/user/api/invite`,
+            { token: inviteCode },
+            {
+              withCredentials: true,
+            },
+          );
+
+          cookies.remove('invite-code');
+        }
+
         window.alert('로그인 성공!');
         navigate('/');
+        return true;
       }
+      return false;
     } catch (error) {
-      if (error instanceof AxiosError && error.response) {
-        console.log(error);
-        if (error.response.data.message === '아이디가 잘못되었습니다.')
-          return setErrorMessage({
+      if (
+        error instanceof AxiosError<{ message: string; code: string }> &&
+        error.response
+      ) {
+        const axiosError: AxiosError<{ message: string; code: string }> = error;
+        if (axiosError.response?.data.message === '아이디가 잘못되었습니다.')
+          setErrorMessage({
             ...errorMessage,
             userId: '아이디 또는 비밀번호가 옳지 않습니다.',
           });
+        if (axiosError.response?.data.code === 'M001') return true;
       }
       console.error(error);
       return false;
