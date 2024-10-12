@@ -1,5 +1,6 @@
 import { AxiosResByData } from '@customTypes/common';
-import { EditProjectParams, Project } from '@customTypes/project';
+import { EditProjectParams } from '@customTypes/project';
+import IProject from '@customTypes/project/Project';
 import { userApiInstance } from '@libs/axios/axios';
 import { CreateProjectRequestDto } from '@services/swagger/output/data-contracts';
 import { AxiosResponse } from 'axios';
@@ -40,7 +41,7 @@ export const getProjectList = async () => {
   const joinedProjectIds = getProjectIdsRes.data.data.projectIds.join(',');
 
   const getProjectListResponse: AxiosResponse<
-    AxiosResByData<{ projectInfos: Project[] }>
+    AxiosResByData<{ projectInfos: IProject[] }>
   > = await userApiInstance.get(
     `node2/project/api/v1?projectIds=${joinedProjectIds}`,
   );
@@ -66,10 +67,11 @@ export const getProjectList = async () => {
  */
 
 export const getProject = async (projectId: number) => {
-  const getProjectResponse: AxiosResponse<AxiosResByData<Project[]>> =
-    await userApiInstance.get(`node2/project/api/v1?projectIds=${projectId}`);
+  const getProjectResponse: AxiosResponse<
+    AxiosResByData<{ projectInfos: IProject[] }>
+  > = await userApiInstance.get(`node2/project/api/v1?projectIds=${projectId}`);
 
-  return getProjectResponse.data.data[0];
+  return getProjectResponse.data.data.projectInfos[0];
 };
 
 /**
@@ -119,8 +121,16 @@ export const createProject = async (newProject: CreateProjectRequestDto) => {
  */
 
 export const editProject = async (project: EditProjectParams) => {
-  await userApiInstance.put('/user/api/project', {
-    ...project,
+  console.log(project);
+  const formData = new FormData();
+  const blobTypeProject = new Blob([JSON.stringify(project)], {
+    type: 'application/json',
+  });
+  formData.append('data', blobTypeProject);
+  await userApiInstance.put('/user/api/project', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
   });
 
   return project;

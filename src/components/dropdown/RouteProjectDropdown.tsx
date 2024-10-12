@@ -1,6 +1,7 @@
 import React from 'react';
 
 import fakeAvatar from '@assets/rectangle-50.png';
+import IProject from '@customTypes/project/Project';
 import { styled } from 'styled-components';
 
 const Wrapper = styled.section<{ $isopen: boolean }>`
@@ -32,16 +33,6 @@ const SProjectItem = styled.li`
   align-items: center;
   gap: 6px;
 `;
-
-export interface IProject {
-  projectId: number;
-  title: string;
-  subTitle: string;
-  description: string;
-  startDate: Date;
-  endDate: Date;
-  memberIds: number[];
-}
 
 interface RouteProjectDropdownProps {
   isOpen: boolean;

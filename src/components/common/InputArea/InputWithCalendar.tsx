@@ -8,8 +8,8 @@ import { format } from 'date-fns';
 import { CalendarSVG, SInputWithCalendar } from './InputArea.style';
 
 interface InputWithCalendarAreaProps {
-  value?: Date;
-  setValue: React.Dispatch<React.SetStateAction<Date | undefined>>;
+  value: Date | null;
+  setValue: React.Dispatch<React.SetStateAction<Date | null>>;
   labelText?: string;
   placeholderText: string;
 }

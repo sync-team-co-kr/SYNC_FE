@@ -33,12 +33,12 @@ export const useGetProjectIdList = () => {
 
 // project hooks
 export const useGetProject = (projectId: number) => {
-  const { data: projectData } = useQuery({
+  const { data: projectData, isLoading } = useQuery({
     queryKey: ['projects', projectId],
     queryFn: () => getProject(projectId),
   });
 
-  return { projectData };
+  return { projectData, isLoading };
 };
 
 // create project hooks

@@ -1,9 +1,8 @@
-export default interface Project {
+export default interface IProject {
   projectId: number;
   title: string;
   subTitle: string;
   description: string;
-  startDate: Date;
-  endDate: Date;
-  memberIds: number[]; 
+  startDate: string;
+  endDate: string;
 }
