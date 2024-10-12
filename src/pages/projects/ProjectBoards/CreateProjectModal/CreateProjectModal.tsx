@@ -67,32 +67,27 @@ function CreateProjectModal({ closeModal }: { closeModal?: setIsModalOpen }) {
     e.preventDefault();
 
     if (startDate && endDate) {
-      if (includeTime) {
-        const projectStartDate = add(new Date(startDate), {
-          hours: startTime.hour ? startTime.hour + 9 : 0,
-          minutes: startTime.minute || 0,
-        });
+      const projectStartDate = add(new Date(startDate), {
+        hours: startTime.hour ? startTime.hour + 9 : 0,
+        minutes: startTime.minute || 0,
+      });
 
-        const projectEndDate = add(new Date(endDate), {
-          hours: endTime.hour ? endTime.hour + 9 : 0,
-          minutes: endTime.minute || 0,
-        });
+      const projectEndDate = add(new Date(endDate), {
+        hours: endTime.hour ? endTime.hour + 9 : 0,
+        minutes: endTime.minute || 0,
+      });
 
-        ValidateProject({
-          title,
-          subTitle,
-          description,
-          startDate: projectStartDate.toISOString(),
-          endDate: projectEndDate.toISOString(),
-        });
-      } else
-        ValidateProject({
-          title,
-          subTitle,
-          description,
-          startDate: startDate?.toISOString(),
-          endDate: endDate?.toISOString(),
-        });
+      ValidateProject({
+        title,
+        subTitle,
+        description,
+        startDate: includeTime
+          ? projectStartDate.toISOString()
+          : startDate.toISOString(),
+        endDate: includeTime
+          ? projectEndDate.toISOString()
+          : endDate.toISOString(),
+      });
     }
   };
 

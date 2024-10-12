@@ -67,7 +67,6 @@ const initialState: TaskState = {
     description: '',
     startDate: new Date(),
     endDate: new Date(),
-    memberIds: [],
   },
 
   errorList: [],

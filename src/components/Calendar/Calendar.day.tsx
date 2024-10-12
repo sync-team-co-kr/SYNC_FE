@@ -4,7 +4,10 @@ import { TimeTable } from '@components/TimeTable';
 import { Typography } from '@components/common/Typography';
 import { EditTaskModal } from '@components/modal/EditTaskModal';
 import useModal from '@hooks/useModal';
+import { useTaskWithProjectState } from '@libs/store/task/project';
 import { useTaskActions } from '@libs/store/task/task';
+import { useGetProjectIdList } from '@services/project/Project.hooks';
+import { useGetTasks } from '@services/task/Task.hooks';
 // import { useGetProjectIdList } from '@services/project/Project.hooks';
 import styled from 'styled-components';
 
@@ -23,9 +26,7 @@ import {
   generateTimeSlots,
   getGridRowStart,
   getRowSpan,
-  getSchedulesForTimeSlot,
 } from './Calendar.utils';
-import { dummySchedules } from './constants';
 
 const DayContainer = styled.div`
   display: flex;
@@ -42,10 +43,15 @@ const DayContainer = styled.div`
 export const CalendarDay = () => {
   const [openModal] = useModal();
 
-  const { setTaskId } = useTaskActions();
-  // const { projectIdsList } = useGetProjectIdList() ?? {};
+  const { project } = useTaskWithProjectState();
 
-  // const { tasks } = useGetTasks(projectIdsList);
+  const { setTaskId } = useTaskActions();
+  const { projectIdsList } = useGetProjectIdList() ?? {};
+
+  console.log(projectIdsList);
+  const { tasks } =
+    useGetTasks(project.title !== '' ? project.projectId : projectIdsList) ??
+    {};
 
   const { value } = useContext(CalendarContext);
   const returnStatus = (status: number) => {
@@ -66,8 +72,7 @@ export const CalendarDay = () => {
     setTaskId(taskId);
   };
 
-  const schedulesTimeLine = getSchedulesForTimeSlot(dummySchedules, value);
-  const { filteredSchedules } = useRenderTaskFilter(schedulesTimeLine);
+  const filteredSchedules = useRenderTaskFilter(tasks, value);
 
   return (
     <DayContainer>
@@ -76,23 +81,28 @@ export const CalendarDay = () => {
           종일
         </Typography>
         <GraphItemsContainer>
-          {filteredSchedules.map((schedule) => (
-            <TimeTable
-              key={schedule.id}
-              onClick={() => EditModalOpenHandler(schedule.id)}
-              variant="graph"
-              status={returnStatus(schedule.status)}
-              startTime={formatTimeIntl(schedule.startDate)}
-              endTime={formatTimeIntl(schedule.endDate)}
-              description={schedule.description}
-              rowSpan={getRowSpan(schedule.startDate, schedule.endDate)}
-              gridRowStart={getGridRowStart(schedule.startDate)}
-              projectId={schedule.id}
-              parentTaskId={schedule.id}
-              images={'https://picsum.photos/200/300'}
-              title={schedule.title}
-            />
-          ))}
+          {filteredSchedules.map((schedule) => {
+            const startTime = new Date(schedule.startDate);
+            const endTime = new Date(schedule.endDate);
+
+            return (
+              <TimeTable
+                key={schedule.id}
+                onClick={() => EditModalOpenHandler(schedule.id)}
+                variant="graph"
+                status={returnStatus(schedule.status)}
+                startTime={formatTimeIntl(startTime)}
+                endTime={formatTimeIntl(endTime)}
+                description={schedule.description}
+                rowSpan={getRowSpan(startTime, endTime)}
+                gridRowStart={getGridRowStart(startTime)}
+                projectId={schedule.id}
+                parentTaskId={schedule.id}
+                images={'https://picsum.photos/200/300'}
+                title={schedule.title}
+              />
+            );
+          })}
         </GraphItemsContainer>
       </GraphContainer>
       <TimeContainer>
@@ -111,7 +121,10 @@ export const CalendarDay = () => {
 
         <TimeTableItem>
           {filteredSchedules.map((schedule, i: number) => {
-            const rowStart = getGridRowStart(schedule.startDate);
+            const startTime = new Date(schedule.startDate);
+            const endTime = new Date(schedule.endDate);
+
+            const rowStart = getGridRowStart(startTime);
 
             if (rowStart > 78 || rowStart < 0) return null;
             return (
@@ -120,11 +133,11 @@ export const CalendarDay = () => {
                 variant="timeTableMedium"
                 onClick={() => EditModalOpenHandler(schedule.id)}
                 status={returnStatus(schedule.status)}
-                startTime={formatTimeIntl(schedule.startDate)}
-                endTime={formatTimeIntl(schedule.endDate)}
+                startTime={formatTimeIntl(startTime)}
+                endTime={formatTimeIntl(endTime)}
                 description={schedule.description}
-                rowSpan={getRowSpan(schedule.startDate, schedule.endDate)}
-                gridRowStart={getGridRowStart(schedule.startDate)}
+                rowSpan={getRowSpan(startTime, endTime)}
+                gridRowStart={getGridRowStart(startTime)}
                 projectId={schedule.id}
                 parentTaskId={schedule.id}
                 images={'https://picsum.photos/200/300'}
