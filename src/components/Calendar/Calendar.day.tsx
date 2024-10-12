@@ -48,7 +48,6 @@ export const CalendarDay = () => {
   const { setTaskId } = useTaskActions();
   const { projectIdsList } = useGetProjectIdList() ?? {};
 
-  console.log(projectIdsList);
   const { tasks } =
     useGetTasks(project.title !== '' ? project.projectId : projectIdsList) ??
     {};

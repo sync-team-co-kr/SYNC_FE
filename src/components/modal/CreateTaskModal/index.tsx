@@ -267,27 +267,28 @@ export const CreateTaskModal = () => {
 
         {/* task */}
         {payload.parentTaskId !== 0 && (
-          <SectionContainer direction="row" gap={24}>
-            {payload.parentTaskId === 1 && (
-              <TaskContainer>
-                <LabelContainer>
-                  <Typography variant="small-text-b" color="negativeRed">
-                    *
-                  </Typography>
-                  <Typography variant="small-text-b" color="black35">
-                    테스크
-                  </Typography>
-                </LabelContainer>
-                <Select
-                  listLabel="테스크"
-                  isEssential
-                  value={payload.title}
-                  type="select"
-                >
-                  <SelectButton />
-                </Select>
-              </TaskContainer>
-            )}
+          <SectionContainer maxWidth="100%" direction="row" gap={24}>
+            {payload.parentTaskId === 1 ||
+              (payload.parentTaskId === 2 && (
+                <TaskContainer>
+                  <LabelContainer>
+                    <Typography variant="small-text-b" color="negativeRed">
+                      *
+                    </Typography>
+                    <Typography variant="small-text-b" color="black35">
+                      테스크
+                    </Typography>
+                  </LabelContainer>
+                  <Select
+                    listLabel="테스크"
+                    isEssential
+                    value={payload.title}
+                    type="select"
+                  >
+                    <SelectButton />
+                  </Select>
+                </TaskContainer>
+              ))}
 
             {payload.parentTaskId === 2 && (
               <TaskContainer>
