@@ -5,6 +5,7 @@ import { ReactComponent as CloseX } from '@assets/cancel-x.svg';
 import { Editor } from '@components/Editor';
 import { Button } from '@components/common/Button';
 import InputWithCalendarArea from '@components/common/InputArea/InputWithCalendar';
+import InputWithTimePicker from '@components/common/InputArea/InputWithTimePicker';
 import { Select } from '@components/common/Select/Select';
 import { SelectButton } from '@components/common/Select/Select.Button';
 import { SelectItem, SelectList } from '@components/common/Select/Select.list';
@@ -13,9 +14,12 @@ import { LabelContainer, TaskContainer } from '@components/common/Select/style';
 import { Tag } from '@components/common/Tag';
 import { SituationProperty } from '@components/common/Tag/types';
 import Textfield from '@components/common/Textfield';
+import Toggle from '@components/common/Toggle/Toggle';
 import { Typography } from '@components/common/Typography';
 import { modalStore } from '@libs/store';
 import { useTaskActions, useTaskState } from '@libs/store/task/task';
+import { ProjectPeriodTime } from '@pages/projects/ProjectBoards/CreateProjectModal/CreateProjectModal';
+import StyleCreateProjectModal from '@pages/projects/ProjectBoards/CreateProjectModal/CreateProjectModal.style';
 import { useGetProjectList } from '@services/project/Project.hooks';
 import { useCreateTask } from '@services/task/Task.hooks';
 
@@ -52,7 +56,17 @@ export const CreateTaskModal = () => {
   } = useTaskActions();
 
   // projectData를 가져오는 hooks
+
+  const [includeTime, setIncludeTime] = useState(false);
   const { projectListData } = useGetProjectList() ?? {};
+  const [startTime, setStartTime] = useState<ProjectPeriodTime>({
+    hour: null,
+    minute: null,
+  });
+  const [endTime, setEndTime] = useState<ProjectPeriodTime>({
+    hour: null,
+    minute: null,
+  });
 
   // 프로젝트 검색 state
   const [projectSearch, setProjectSearch] = useState('');
@@ -91,6 +105,19 @@ export const CreateTaskModal = () => {
         },
       },
     );
+  };
+  // date
+  const handleChangeDate = (
+    date: Date | undefined,
+    type: 'startDate' | 'endDate',
+  ) => {
+    if (!date) return;
+    if (type === 'startDate') {
+      setStartDate(date);
+    }
+    if (type === 'endDate') {
+      setEndDate(date);
+    }
   };
 
   // 프로젝트 검색
@@ -277,37 +304,51 @@ export const CreateTaskModal = () => {
 
         {/* date */}
         <SectionContainer>
-          <LabelContainer>
-            <Typography variant="small-text-b" color="black35">
-              일정
-            </Typography>
-          </LabelContainer>
-          <SectionContainer direction="row" gap={24}>
-            <InputWithCalendarArea
-              value={new Date(payload.startDate || new Date())}
-              setValue={(date) => setStartDate(date as Date)}
-              placeholderText="시작 날짜"
-            />
-            <InputWithCalendarArea
-              value={new Date(payload.endDate || new Date())}
-              setValue={(date) => setEndDate(date as Date)}
-              placeholderText="종료 날짜"
-            />
-          </SectionContainer>
-          <SectionContainer direction="row" gap={24}>
-            <Textfield
-              variant="outlined"
-              placeholder="시간"
-              value={''}
-              onChange={(e) => console.log(e.target.value)}
-            />
-            <Textfield
-              variant="outlined"
-              placeholder="시간"
-              value={''}
-              onChange={(e) => console.log(e.target.value)}
-            />
-          </SectionContainer>
+          <StyleCreateProjectModal.InputArea>
+            <StyleCreateProjectModal.ToggleArea>
+              <label>일정</label>
+              <div
+                style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
+              >
+                <span>시간 포함</span>
+                <Toggle
+                  isActive={includeTime}
+                  toggleSwtich={() => setIncludeTime((prevState) => !prevState)}
+                />
+              </div>
+            </StyleCreateProjectModal.ToggleArea>
+
+            <StyleCreateProjectModal.InputWithCalendarArea>
+              <InputWithCalendarArea
+                value={new Date(payload.startDate as string)}
+                setValue={(date) => handleChangeDate(date as Date, 'startDate')}
+                placeholderText="프로젝트 시작 날짜"
+              />
+
+              <StyleCreateProjectModal.CrossDash></StyleCreateProjectModal.CrossDash>
+              <InputWithCalendarArea
+                value={new Date(payload.endDate as string)}
+                setValue={(date) => handleChangeDate(date as Date, 'endDate')}
+                placeholderText="프로젝트 종료 날짜"
+              />
+            </StyleCreateProjectModal.InputWithCalendarArea>
+
+            <StyleCreateProjectModal.InputWithCalendarArea>
+              <InputWithTimePicker
+                value={startTime}
+                setValue={setStartTime}
+                placeholderText="프로젝트 시작 시간"
+                isDisabled={!includeTime}
+              />
+              <StyleCreateProjectModal.CrossDash></StyleCreateProjectModal.CrossDash>
+              <InputWithTimePicker
+                value={endTime}
+                setValue={setEndTime}
+                placeholderText="프로젝트 종료 시간"
+                isDisabled={!includeTime}
+              />
+            </StyleCreateProjectModal.InputWithCalendarArea>
+          </StyleCreateProjectModal.InputArea>
         </SectionContainer>
         {/* date end */}
 
