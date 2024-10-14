@@ -9,6 +9,7 @@ import {
   getProject,
   getProjectIdList,
   getProjectList,
+  getProjectListWithMember,
 } from './apis';
 
 // projectList hooks
@@ -19,6 +20,15 @@ export const useGetProjectList = () => {
   });
 
   return { projectListData, isLoading };
+};
+
+export const useGetProjects = () => {
+  const { data: projects } = useQuery({
+    queryKey: ['projects'],
+    queryFn: getProjectListWithMember,
+  });
+
+  return { projects };
 };
 
 // ProjectList id list hooks

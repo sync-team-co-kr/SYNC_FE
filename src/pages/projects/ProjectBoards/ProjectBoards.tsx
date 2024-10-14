@@ -4,7 +4,10 @@ import { useNavigate } from 'react-router-dom';
 
 import { Button } from '@components/common/Button';
 import { useModal } from '@hooks';
-import { useGetProjectList } from '@services/project/Project.hooks';
+import {
+  useGetProjectList,
+  useGetProjects,
+} from '@services/project/Project.hooks';
 import { styled } from 'styled-components';
 import { vars } from 'token';
 
@@ -50,11 +53,61 @@ const ProjectNavigatorDropdown = styled.ul<{ $isopen: boolean }>`
   }
 `;
 
+interface GetMemberIds {
+  userIds: number[];
+  projectId: number;
+}
+
+interface IMember {
+  userId: string;
+  username: string;
+  nickname: string;
+  position: string;
+}
+
 const ProjectBoards = () => {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
   const [openModal] = useModal();
   const { projectListData } = useGetProjectList();
+  const { projects } = useGetProjects();
+
+  console.log('프로젝트 목록', projects);
+  /*
+  const getMembers = async () => {
+    const joinedProjectIds = projectListData
+      ?.map((project) => project.projectId)
+      .join(',');
+    const response: AxiosResponse<
+      AxiosResByData<{ memberToUserId: GetMemberIds[] }>
+    > = await userApiInstance.get('user/api/member/v2', {
+      params: {
+        projectIds: joinedProjectIds,
+      },
+    });
+    const projectsMemberIds = response.data.data.memberToUserId;
+    const projectsMembers = await Promise.all(
+      projectsMemberIds.map(async (projectMemberIds) => {
+        const joinedMemberIds = projectMemberIds.userIds.join(',');
+        const getUserResponse: AxiosResponse<AxiosResByData<IMember>> =
+          await userApiInstance.get('/user/api/info/v2', {
+            params: {
+              userIds: joinedMemberIds,
+            },
+          });
+        return {
+          projectId: projectMemberIds.projectId,
+          ...getUserResponse.data.data,
+        };
+      }),
+    );
+    console.log(projectsMembers);
+  };
+
+  useEffect(() => {
+    getMembers();
+  }, [projectListData]);
+  */
 
   return (
     <StyleProjectBoards.Wrapper>

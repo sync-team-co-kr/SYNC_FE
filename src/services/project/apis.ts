@@ -40,13 +40,36 @@ export const getProjectList = async () => {
 
   const joinedProjectIds = getProjectIdsRes.data.data.projectIds.join(',');
 
-  const getProjectListResponse: AxiosResponse<
-    AxiosResByData<{ projectInfos: IProject[] }>
-  > = await userApiInstance.get(
-    `node2/project/api/v1?projectIds=${joinedProjectIds}`,
-  );
+  const getProjectListResponse: AxiosResponse<AxiosResByData<IProject[]>> =
+    await userApiInstance.get(
+      `node2/project/api/v1?projectIds=${joinedProjectIds}`,
+    );
 
-  return getProjectListResponse.data.data.projectInfos;
+  return getProjectListResponse.data.data;
+};
+
+export const getProjectListWithMember = async () => {
+  const loggedInUserId = localStorage.getItem('loggedUserId');
+
+  const getProjectIdsRes: AxiosResponse<
+    AxiosResByData<{ projectIds: number[] }>,
+    any
+  > = await userApiInstance.get(`/project/api/v2?userId=${loggedInUserId}`);
+
+  const projectList: IProject[] = await Promise.all(
+    getProjectIdsRes.data.data.projectIds.map(async (projectId) => {
+      // 프로젝트 가져오기
+      const getProjectResponse: AxiosResponse<AxiosResByData<IProject>> =
+        await userApiInstance.get('node2/project/api/v1', {
+          params: {
+            projectIds: projectId,
+          },
+        });
+
+      return getProjectResponse.data.data;
+    }),
+  );
+  return projectList;
 };
 
 /**
