@@ -73,8 +73,8 @@ export const UpdateTaskModal = () => {
           </Typography>
           <SideHeader>
             <Button
-              hasIcon
-              renderIcon={<CloseX width={24} height={24} />}
+              $hasIcon
+              $renderIcon={<CloseX width={24} height={24} />}
               onClick={closeModal}
               size="small"
               variant="text"

@@ -67,13 +67,13 @@ const CalendarFilterDropdown = (
           <FilterDetailButtonGroup>
             {Object.keys(WORK_TAGS).map((work) => (
               <Button
-                isSelect={taskFilterState.workState.includes(work as WorkTags)}
+                $isSelect={taskFilterState.workState.includes(work as WorkTags)}
                 variant={work as WorkTags}
                 text={WORK_TAGS[work as WorkTags]}
                 onClick={() => setWorkState(work as WorkTags)}
                 size="small"
                 key={work}
-                hasIcon={false}
+                $hasIcon={false}
               />
             ))}
           </FilterDetailButtonGroup>
@@ -85,7 +85,7 @@ const CalendarFilterDropdown = (
           <FilterDetailButtonGroup>
             {Object.keys(SITUATION_TAGS).map((situation) => (
               <Button
-                isSelect={taskFilterState.situationState.includes(
+                $isSelect={taskFilterState.situationState.includes(
                   situation as Situation,
                 )}
                 variant="outline"
@@ -93,7 +93,7 @@ const CalendarFilterDropdown = (
                 onClick={() => setSituationState(situation as Situation)}
                 size="small"
                 key={situation}
-                hasIcon={false}
+                $hasIcon={false}
               />
             ))}
           </FilterDetailButtonGroup>
