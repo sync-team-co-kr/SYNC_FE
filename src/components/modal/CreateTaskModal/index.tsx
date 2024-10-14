@@ -55,7 +55,6 @@ export const CreateTaskModal = () => {
   const { closeModal } = modalStore();
 
   // 업무 생성 모달 payload 값들을 가져오는 state
-  // const { resetPayload } = useTaskActions();
   const { payload, project, errorList, titleImage } = useTaskState();
 
   // 업무 생성 모달 payload 값들을 set 해주는 actions
@@ -70,6 +69,7 @@ export const CreateTaskModal = () => {
     setEndDate,
     setTitleImage,
     resetPayload,
+    removeErrorList,
     clearErrorList,
   } = useTaskActions();
 
@@ -101,6 +101,7 @@ export const CreateTaskModal = () => {
   };
 
   const handleCreateTask = () => {
+    // 필수 입력값 체크
     if (payload.title === '') {
       errorList.push('title');
     }
@@ -164,7 +165,7 @@ export const CreateTaskModal = () => {
     setTitle(e.target.value);
 
     if (errorList.includes('title')) {
-      errorList.splice(errorList.indexOf('title'), 1);
+      removeErrorList('title');
     }
   };
 
