@@ -74,6 +74,11 @@ export const Marker = styled.div<{
   }};
 `;
 
+/**
+ * 시간표 컴포넌트
+ * rowSpan과 gridRowStart를 받아서 해당 위치에 배치
+ */
+
 export const Container = styled.div<{
   percentage: number;
   variant: TimeTableVariants;

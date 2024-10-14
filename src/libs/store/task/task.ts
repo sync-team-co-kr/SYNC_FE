@@ -70,6 +70,8 @@ const initialState: TaskState = {
     endDate: new Date(),
   },
 
+  // validation errorList
+
   errorList: [],
 };
 
@@ -175,6 +177,8 @@ const useTaskStore = create<TaskState & TaskActions>((set) => ({
     },
 
     // errorList
+    // validation check 시에 errorList 추가
+
     setErrorList: (errorList) => {
       set((state) => {
         return {
@@ -185,6 +189,8 @@ const useTaskStore = create<TaskState & TaskActions>((set) => ({
     },
 
     // errorList 삭제
+    // error 가 해결되거나 다시 입력 시에 errorList 삭제
+
     removeErrorList: (errorList) => {
       set((state) => {
         return {
@@ -195,6 +201,7 @@ const useTaskStore = create<TaskState & TaskActions>((set) => ({
     },
 
     // errorList 초기화
+    // 생성 모달 닫을 시에 errorList 초기화
     clearErrorList: () => {
       set((state) => {
         return {
