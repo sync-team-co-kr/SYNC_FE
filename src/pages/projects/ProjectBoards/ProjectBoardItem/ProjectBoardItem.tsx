@@ -4,6 +4,7 @@ import projectCalendar from '@assets/calendar.svg';
 import meatballs from '@assets/meatballs.svg';
 import projectIcon from '@assets/project-icon.png';
 import { Typography } from '@components/common';
+import Avatar from '@components/member/Avatar';
 import { Project } from '@customTypes/project';
 import useDropdown from '@hooks/useDropdown';
 import ProjectSettingsDropdown from '@pages/projects/ProjectSettingsDropdown/ProjectSettingsDropdown';
@@ -50,6 +51,12 @@ const ProjectBoardItem = ({ project }: { project: Project }) => {
       </Typography>
 
       <StyleProjectBoard.Footer>
+        <StyleProjectBoard.Members>
+          {project.members.map((member) => (
+            <Avatar key={member.id} member={member} />
+          ))}
+        </StyleProjectBoard.Members>
+
         <StyleProjectBoard.Period>
           <img src={projectCalendar} alt="프로젝트 기간" />
           <p>

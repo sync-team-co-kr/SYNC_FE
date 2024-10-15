@@ -1,3 +1,5 @@
+import { IMember } from '@customTypes/member';
+
 export default interface IProject {
   projectId: number;
   title: string;
@@ -5,4 +7,5 @@ export default interface IProject {
   description: string;
   startDate: string;
   endDate: string;
+  members: IMember[];
 }

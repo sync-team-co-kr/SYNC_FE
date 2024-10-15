@@ -5,6 +5,18 @@ import { userApiInstance } from '@libs/axios/axios';
 import { CreateProjectRequestDto } from '@services/swagger/output/data-contracts';
 import { AxiosResponse } from 'axios';
 
+interface GetMemberIds {
+  userIds: number[];
+  projectId: number;
+}
+
+interface IMember {
+  userId: string;
+  username: string;
+  nickname: string;
+  position: string;
+}
+
 /**
  * 프로젝트 리스트의 id들만 가져오는 API
  */
@@ -56,20 +68,48 @@ export const getProjectListWithMember = async () => {
     any
   > = await userApiInstance.get(`/project/api/v2?userId=${loggedInUserId}`);
 
-  const projectList: IProject[] = await Promise.all(
-    getProjectIdsRes.data.data.projectIds.map(async (projectId) => {
-      // 프로젝트 가져오기
-      const getProjectResponse: AxiosResponse<AxiosResByData<IProject>> =
+  const projectsWithMemberIds = await Promise.all(
+    getProjectIdsRes.data.data.projectIds.flatMap(async (projectId) => {
+      const getProjectResponse: AxiosResponse<AxiosResByData<IProject[]>> =
         await userApiInstance.get('node2/project/api/v1', {
           params: {
             projectIds: projectId,
           },
         });
 
-      return getProjectResponse.data.data;
+      const getMemberIdsResponse: AxiosResponse<
+        AxiosResByData<{ memberToUserId: GetMemberIds[] }>
+      > = await userApiInstance.get('user/api/member/v2', {
+        params: {
+          projectIds: projectId,
+        },
+      });
+
+      const [project] = getProjectResponse.data.data;
+      const [memberIds] = getMemberIdsResponse.data.data.memberToUserId;
+
+      const members = await Promise.all(
+        memberIds.userIds.map(async (userId) => {
+          const getUserResponse: AxiosResponse<AxiosResByData<IMember[]>> =
+            await userApiInstance.get('/user/api/info/v2', {
+              params: {
+                userIds: userId,
+              },
+            });
+
+          const [member] = getUserResponse.data.data.map((memberData) => ({
+            ...memberData,
+            id: userId,
+          }));
+          return member;
+        }),
+      );
+
+      return { ...project, members };
     }),
   );
-  return projectList;
+
+  return projectsWithMemberIds;
 };
 
 /**
