@@ -56,8 +56,6 @@ const ProjectBoards = () => {
   const [openModal] = useModal();
   const { projects } = useGetProjects();
 
-  console.log(projects);
-
   return (
     <StyleProjectBoards.Wrapper>
       <StyleProjectBoards.HiddenTitle>
