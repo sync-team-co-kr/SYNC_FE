@@ -130,11 +130,12 @@ export const getProjectListWithMember = async () => {
  */
 
 export const getProject = async (projectId: number) => {
-  const getProjectResponse: AxiosResponse<
-    AxiosResByData<{ projectInfos: IProject[] }>
-  > = await userApiInstance.get(`node2/project/api/v1?projectIds=${projectId}`);
+  const getProjectResponse: AxiosResponse<AxiosResByData<IProject[]>> =
+    await userApiInstance.get(`node2/project/api/v1?projectIds=${projectId}`);
 
-  return getProjectResponse.data.data.projectInfos[0];
+  const [project] = getProjectResponse.data.data;
+
+  return project;
 };
 
 /**
