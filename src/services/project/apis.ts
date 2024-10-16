@@ -1,6 +1,6 @@
 import { AxiosResByData } from '@customTypes/common';
 import { EditProjectParams } from '@customTypes/project';
-import IProject from '@customTypes/project/Project';
+import RawProject from '@customTypes/project/RawProject';
 import { userApiInstance } from '@libs/axios/axios';
 import { CreateProjectRequestDto } from '@services/swagger/output/data-contracts';
 import { AxiosResponse } from 'axios';
@@ -52,7 +52,7 @@ export const getProjectList = async () => {
 
   const joinedProjectIds = getProjectIdsRes.data.data.projectIds.join(',');
 
-  const getProjectListResponse: AxiosResponse<AxiosResByData<IProject[]>> =
+  const getProjectListResponse: AxiosResponse<AxiosResByData<RawProject[]>> =
     await userApiInstance.get(
       `node2/project/api/v1?projectIds=${joinedProjectIds}`,
     );
@@ -70,7 +70,7 @@ export const getProjectListWithMember = async () => {
 
   const projectsWithMemberIds = await Promise.all(
     getProjectIdsRes.data.data.projectIds.flatMap(async (projectId) => {
-      const getProjectResponse: AxiosResponse<AxiosResByData<IProject[]>> =
+      const getProjectResponse: AxiosResponse<AxiosResByData<RawProject[]>> =
         await userApiInstance.get('node2/project/api/v1', {
           params: {
             projectIds: projectId,
@@ -130,7 +130,7 @@ export const getProjectListWithMember = async () => {
  */
 
 export const getProject = async (projectId: number) => {
-  const getProjectResponse: AxiosResponse<AxiosResByData<IProject[]>> =
+  const getProjectResponse: AxiosResponse<AxiosResByData<RawProject[]>> =
     await userApiInstance.get(`node2/project/api/v1?projectIds=${projectId}`);
 
   const [project] = getProjectResponse.data.data;

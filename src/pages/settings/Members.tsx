@@ -6,7 +6,7 @@ import RouteProjectDropdown from '@components/dropdown/RouteProjectDropdown';
 import InviteProjectMemberModal from '@components/modal/InviteProjectMemberModal';
 import { SettingsMemberItem } from '@components/settings';
 import { AxiosResByData } from '@customTypes/common/AxiosRes';
-import IProject from '@customTypes/project/Project';
+import RawProject from '@customTypes/project/RawProject';
 import useDropdown from '@hooks/useDropdown';
 import useModal from '@hooks/useModal';
 import { userApiInstance } from '@libs/axios/axios';
@@ -286,7 +286,7 @@ const MembersSettings = () => {
   ] = useDropdown();
 
   const { projectListData, isLoading } = useGetProjectList();
-  const [selectedProject, setSelectedProject] = useState<IProject | null>(
+  const [selectedProject, setSelectedProject] = useState<RawProject | null>(
     projectListData ? projectListData[0] : null,
   );
   const [inviteLink, setInviteLink] = useState('');

@@ -43,12 +43,17 @@ export const useGetProjectIdList = () => {
 
 // project hooks
 export const useGetProject = (projectId: number) => {
-  const { data: projectData, isLoading } = useQuery({
+  const {
+    status,
+    data: projectData,
+    isFetching,
+  } = useQuery({
     queryKey: ['projects', projectId],
     queryFn: () => getProject(projectId),
+    enabled: !!projectId,
   });
 
-  return { projectData, isLoading };
+  return { projectData, isFetching, status };
 };
 
 // create project hooks
@@ -71,8 +76,10 @@ export const useEditProject = () => {
 
   const editProjectMutation = useMutation({
     mutationFn: (project: EditProjectParams) => editProject(project),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['projects'] });
+    onSuccess: (editedProject) => {
+      queryClient.invalidateQueries({
+        queryKey: ['projects', editedProject.projectId],
+      });
     },
   });
 

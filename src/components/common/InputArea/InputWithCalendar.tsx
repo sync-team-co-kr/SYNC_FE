@@ -8,15 +8,15 @@ import { format } from 'date-fns';
 import { CalendarSVG, SInputWithCalendar } from './InputArea.style';
 
 interface InputWithCalendarAreaProps {
-  value: Date | null;
-  setValue: React.Dispatch<React.SetStateAction<Date | null>>;
+  value?: Date;
+  setDate: (date: Date) => void;
   labelText?: string;
   placeholderText: string;
 }
 
 const InputWithCalendarArea = ({
   value,
-  setValue,
+  setDate,
   placeholderText,
 }: InputWithCalendarAreaProps) => {
   const [isOpenCalendarDropdown, toggleCalendarDropdown, calendarDropdownRef] =
@@ -31,7 +31,7 @@ const InputWithCalendarArea = ({
       />
       <CalendarSVG ref={calendarDropdownRef}>
         <CalendarIcon width="18" height="18" onClick={toggleCalendarDropdown} />
-        <CalendarDropdown isOpen={isOpenCalendarDropdown} setDate={setValue} />
+        <CalendarDropdown isOpen={isOpenCalendarDropdown} setDate={setDate} />
       </CalendarSVG>
     </SInputWithCalendar>
   );

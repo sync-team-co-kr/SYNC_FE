@@ -1,7 +1,7 @@
 import React from 'react';
 
 import fakeAvatar from '@assets/rectangle-50.png';
-import IProject from '@customTypes/project/Project';
+import RawProject from '@customTypes/project/RawProject';
 import { styled } from 'styled-components';
 
 const Wrapper = styled.section<{ $isopen: boolean }>`
@@ -37,8 +37,8 @@ const SProjectItem = styled.li`
 interface RouteProjectDropdownProps {
   isOpen: boolean;
   toggleModal: () => void;
-  projectList?: IProject[];
-  setSelectedProject: React.Dispatch<React.SetStateAction<IProject | null>>;
+  projectList?: RawProject[];
+  setSelectedProject: React.Dispatch<React.SetStateAction<RawProject | null>>;
 }
 
 const RouteProjectDropdown = ({
@@ -47,7 +47,7 @@ const RouteProjectDropdown = ({
   projectList,
   setSelectedProject,
 }: RouteProjectDropdownProps) => {
-  const handleClickProjectItem = (project: IProject) => {
+  const handleClickProjectItem = (project: RawProject) => {
     setSelectedProject(project);
     toggleModal();
   };

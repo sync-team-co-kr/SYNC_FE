@@ -1,4 +1,4 @@
-import Project from './Project';
+import Project from './RawProject';
 import EditProjectParams from './editProjectParams';
 
 export type { Project, EditProjectParams };

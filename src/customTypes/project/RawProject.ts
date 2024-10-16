@@ -1,11 +1,11 @@
 import { IMember } from '@customTypes/member';
 
-export default interface IProject {
+export default interface RawProject {
   projectId: number;
   title: string;
   subTitle: string;
   description: string;
-  startDate: string;
-  endDate: string;
+  startDate?: string;
+  endDate?: string;
   members: IMember[];
 }

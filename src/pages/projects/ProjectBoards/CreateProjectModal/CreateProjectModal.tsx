@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import CancelButton from '@assets/cancel-x.svg';
 import InputArea from '@components/common/InputArea';
@@ -7,6 +7,10 @@ import InputWithIconArea from '@components/common/InputArea/InputWithIconArea';
 import InputWithTimePicker from '@components/common/InputArea/InputWithTimePicker';
 import Toggle from '@components/common/Toggle/Toggle';
 import { setIsModalOpen } from '@hooks/useModal';
+import {
+  useProjectActions,
+  useProjectState,
+} from '@libs/store/project/project';
 import { useCreateProject } from '@services/project/Project.hooks';
 import { CreateProjectRequestDto } from '@services/swagger/output/data-contracts';
 import { add, isBefore } from 'date-fns';
@@ -26,18 +30,17 @@ export interface ProjectPeriodTime {
 }
 
 function CreateProjectModal({ closeModal }: { closeModal?: setIsModalOpen }) {
-  /*
-    const [newProject, setNewProject] = useState<ICreateProjectRequest>({
-    title: '',
-    subTitle: '',
-    description: '',
-  });
-  */
-  const [title, setTitle] = useState('');
-  const [subTitle, setSubTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [startDate, setStartDate] = useState<Date | null>(null);
-  const [endDate, setEndDate] = useState<Date | null>(null);
+  const { title, subTitle, description, startDate, endDate } =
+    useProjectState();
+  const {
+    setTitle,
+    setSubTitle,
+    setDescription,
+    setStartDate,
+    setEndDate,
+    clearProject,
+  } = useProjectActions();
+
   const [startTime, setStartTime] = useState<ProjectPeriodTime>({
     hour: null,
     minute: null,
@@ -46,8 +49,13 @@ function CreateProjectModal({ closeModal }: { closeModal?: setIsModalOpen }) {
     hour: null,
     minute: null,
   });
+
   const [includeTime, setIncludeTime] = useState(false);
   const { createProjectMutate } = useCreateProject();
+
+  useEffect(() => {
+    clearProject();
+  }, []);
 
   const requestCreateProject = (newProject: CreateProjectRequestDto) =>
     createProjectMutate(newProject);
@@ -108,21 +116,21 @@ function CreateProjectModal({ closeModal }: { closeModal?: setIsModalOpen }) {
       <StyleCreateProjectModal.Form>
         <InputWithIconArea
           value={title}
-          setValue={setTitle}
+          onChange={(e) => setTitle(e.target.value)}
           labelText="커버 & 프로젝트 명"
           placeholderText="제목"
         />
 
         <InputArea
           value={subTitle}
-          setValue={setSubTitle}
+          onChange={(e) => setSubTitle(e.target.value)}
           labelText="부제목"
           placeholderText="부제목"
         />
 
         <InputArea
           value={description}
-          setValue={setDescription}
+          onChange={(e) => setDescription(e.target.value)}
           labelText="프로젝트 설명"
           placeholderText="프로젝트 설명"
         />
@@ -142,14 +150,14 @@ function CreateProjectModal({ closeModal }: { closeModal?: setIsModalOpen }) {
           <StyleCreateProjectModal.InputWithCalendarArea>
             <InputWithCalendarArea
               value={startDate}
-              setValue={setStartDate}
+              setDate={setStartDate}
               placeholderText="프로젝트 시작 날짜"
             />
 
             <StyleCreateProjectModal.CrossDash></StyleCreateProjectModal.CrossDash>
             <InputWithCalendarArea
               value={endDate}
-              setValue={setEndDate}
+              setDate={setEndDate}
               placeholderText="프로젝트 종료 날짜"
             />
           </StyleCreateProjectModal.InputWithCalendarArea>

@@ -81,8 +81,8 @@ const CalendarTaskDropdown = (
                 title={project.title}
                 subTitle={project.subTitle}
                 date={{
-                  start: new Date(project.startDate),
-                  end: new Date(project.endDate),
+                  start: new Date(project.startDate || 1),
+                  end: new Date(project.endDate || 1),
                 }}
               />
             ))}

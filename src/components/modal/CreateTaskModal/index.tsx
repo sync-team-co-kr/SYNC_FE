@@ -321,14 +321,14 @@ export const CreateTaskModal = () => {
             <StyleCreateProjectModal.InputWithCalendarArea>
               <InputWithCalendarArea
                 value={new Date(payload.startDate as string)}
-                setValue={(date) => handleChangeDate(date as Date, 'startDate')}
+                setDate={(date) => handleChangeDate(date as Date, 'startDate')}
                 placeholderText="프로젝트 시작 날짜"
               />
 
               <StyleCreateProjectModal.CrossDash></StyleCreateProjectModal.CrossDash>
               <InputWithCalendarArea
                 value={new Date(payload.endDate as string)}
-                setValue={(date) => handleChangeDate(date as Date, 'endDate')}
+                setDate={(date) => handleChangeDate(date as Date, 'endDate')}
                 placeholderText="프로젝트 종료 날짜"
               />
             </StyleCreateProjectModal.InputWithCalendarArea>

@@ -61,8 +61,8 @@ const ProjectBoardItem = ({ project }: { project: Project }) => {
           <img src={projectCalendar} alt="프로젝트 기간" />
           <p>
             {generateNormalDate(
-              new Date(project.startDate),
-              new Date(project.endDate),
+              new Date(project.startDate || 1),
+              new Date(project.endDate || 1),
             )}
           </p>
         </StyleProjectBoard.Period>

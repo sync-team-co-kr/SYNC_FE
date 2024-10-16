@@ -5,7 +5,7 @@ import { InputProps } from './indexArea.types';
 
 const InputArea = ({
   value,
-  setValue,
+  onChange,
   placeholderText,
   labelText,
   isDisabled = false,
@@ -16,7 +16,7 @@ const InputArea = ({
       <input
         type="text"
         value={value}
-        onChange={(e) => setValue && setValue(e.target.value)}
+        onChange={onChange}
         placeholder={placeholderText}
         disabled={isDisabled}
       />

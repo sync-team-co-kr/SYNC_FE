@@ -90,7 +90,7 @@ const CalendarDateItem = styled.li<{
 interface CalendarDropdownProps {
   isOpen: boolean;
   selectedDate?: Date;
-  setDate: React.Dispatch<React.SetStateAction<Date | null>>;
+  setDate: (date: Date) => void;
 }
 
 const DAY_LIST = ['일', '월', '화', '수', '목', '금', '토'];
