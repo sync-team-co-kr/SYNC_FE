@@ -1,4 +1,4 @@
-import { EditProjectParams } from '@customTypes/project';
+import { RawProject } from '@customTypes/project';
 import { CreateProjectRequestDto } from '@services/swagger/output/data-contracts';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
@@ -43,17 +43,13 @@ export const useGetProjectIdList = () => {
 
 // project hooks
 export const useGetProject = (projectId: number) => {
-  const {
-    status,
-    data: projectData,
-    isFetching,
-  } = useQuery({
+  const { isLoading, data: projectData } = useQuery({
     queryKey: ['projects', projectId],
     queryFn: () => getProject(projectId),
     enabled: !!projectId,
   });
 
-  return { projectData, isFetching, status };
+  return { isLoading, projectData };
 };
 
 // create project hooks
@@ -75,7 +71,7 @@ export const useEditProject = () => {
   const queryClient = useQueryClient();
 
   const editProjectMutation = useMutation({
-    mutationFn: (project: EditProjectParams) => editProject(project),
+    mutationFn: (project: Omit<RawProject, 'members'>) => editProject(project),
     onSuccess: (editedProject) => {
       queryClient.invalidateQueries({
         queryKey: ['projects', editedProject.projectId],

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import CancelButton from '@assets/cancel-x.svg';
 import { Button } from '@components/common/Button';
-import { Project } from '@customTypes/project';
+import { RawProject } from '@customTypes/project';
 import { userApiInstance } from '@libs/axios/axios';
 import { styled } from 'styled-components';
 
@@ -78,7 +78,7 @@ const Submit = styled.div`
 `;
 
 interface InviteProjectMemberModalProps {
-  project: Pick<Project, 'projectId' | 'title'>;
+  project: Pick<RawProject, 'projectId' | 'title'>;
 }
 
 const InviteProjectMemberModal = ({

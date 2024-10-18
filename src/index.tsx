@@ -40,13 +40,7 @@ body {
   }
 `;
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 1000 * 60,
-    },
-  },
-});
+const queryClient = new QueryClient();
 
 root.render(
   <React.StrictMode>

@@ -1,6 +1,5 @@
 import { AxiosResByData } from '@customTypes/common';
-import { EditProjectParams } from '@customTypes/project';
-import RawProject from '@customTypes/project/RawProject';
+import { RawProject } from '@customTypes/project';
 import { userApiInstance } from '@libs/axios/axios';
 import { CreateProjectRequestDto } from '@services/swagger/output/data-contracts';
 import { AxiosResponse } from 'axios';
@@ -184,7 +183,7 @@ export const createProject = async (newProject: CreateProjectRequestDto) => {
  * }
  */
 
-export const editProject = async (project: EditProjectParams) => {
+export const editProject = async (project: Omit<RawProject, 'members'>) => {
   console.log(project);
   const formData = new FormData();
   const blobTypeProject = new Blob([JSON.stringify(project)], {

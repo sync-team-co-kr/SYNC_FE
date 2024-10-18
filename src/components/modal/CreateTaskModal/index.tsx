@@ -18,7 +18,6 @@ import Toggle from '@components/common/Toggle/Toggle';
 import { Typography } from '@components/common/Typography';
 import { modalStore } from '@libs/store';
 import { useTaskActions, useTaskState } from '@libs/store/task/task';
-import { ProjectPeriodTime } from '@pages/projects/ProjectBoards/CreateProjectModal/CreateProjectModal';
 import StyleCreateProjectModal from '@pages/projects/ProjectBoards/CreateProjectModal/CreateProjectModal.style';
 import { useGetProjectList } from '@services/project/Project.hooks';
 import { useCreateTask } from '@services/task/Task.hooks';
@@ -59,14 +58,6 @@ export const CreateTaskModal = () => {
 
   const [includeTime, setIncludeTime] = useState(false);
   const { projectListData } = useGetProjectList() ?? {};
-  const [startTime, setStartTime] = useState<ProjectPeriodTime>({
-    hour: null,
-    minute: null,
-  });
-  const [endTime, setEndTime] = useState<ProjectPeriodTime>({
-    hour: null,
-    minute: null,
-  });
 
   // 프로젝트 검색 state
   const [projectSearch, setProjectSearch] = useState('');
@@ -335,15 +326,15 @@ export const CreateTaskModal = () => {
 
             <StyleCreateProjectModal.InputWithCalendarArea>
               <InputWithTimePicker
-                value={startTime}
-                setValue={setStartTime}
+                date={new Date(payload.startDate as string)}
+                setDate={setStartDate}
                 placeholderText="프로젝트 시작 시간"
                 isDisabled={!includeTime}
               />
               <StyleCreateProjectModal.CrossDash></StyleCreateProjectModal.CrossDash>
               <InputWithTimePicker
-                value={endTime}
-                setValue={setEndTime}
+                date={new Date(payload.endDate as string)}
+                setDate={setEndDate}
                 placeholderText="프로젝트 종료 시간"
                 isDisabled={!includeTime}
               />

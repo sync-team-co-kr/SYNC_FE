@@ -1,5 +1,4 @@
-import IProject from '@customTypes/project/Project';
-import RawProject from '@customTypes/project/RawProject';
+import { IProject, RawProject } from '@customTypes/project';
 import { create } from 'zustand';
 
 interface ProjectActions {

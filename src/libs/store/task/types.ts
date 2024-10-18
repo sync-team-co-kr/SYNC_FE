@@ -1,4 +1,4 @@
-import { Project } from '@customTypes/project';
+import { RawProject } from '@customTypes/project';
 
 // calendar store
 export type TaskCalendar = 'month' | 'week' | 'day';
@@ -34,10 +34,10 @@ export type TaskFilterActions = {
 // task + project store
 
 export type TaskStore = {
-  projects: Project[];
+  projects: RawProject[];
 };
 export interface TaskActions {
   actions: {
-    setProjects: (projects: Project[]) => void;
+    setProjects: (projects: RawProject[]) => void;
   };
 }

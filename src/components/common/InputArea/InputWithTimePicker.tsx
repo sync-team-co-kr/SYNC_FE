@@ -4,17 +4,9 @@ import { ReactComponent as TimePickerIcon } from '@assets/input/time.svg';
 import TimePickerDropdown from '@components/dropdown/TimePickerDropdown';
 import useDropdown from '@hooks/useDropdown';
 import useTimePicker from '@hooks/useTimePicker';
-import { ProjectPeriodTime } from '@pages/projects/ProjectBoards/CreateProjectModal/CreateProjectModal';
+import { setHours, setMinutes } from 'date-fns';
 import { styled } from 'styled-components';
 import { vars } from 'token';
-
-interface InputWithTimePickerProps {
-  value: ProjectPeriodTime;
-  setValue: React.Dispatch<React.SetStateAction<ProjectPeriodTime>>;
-  labelText?: string;
-  placeholderText: string;
-  isDisabled: boolean;
-}
 
 const SInputWithTimePicker = styled.div<{ $isdisabled: boolean }>`
   display: flex;
@@ -36,9 +28,17 @@ const TimePickerSvg = styled.div`
   right: 21px;
 `;
 
+interface InputWithTimePickerProps {
+  date?: Date;
+  setDate: (date: Date) => void;
+  labelText?: string;
+  placeholderText: string;
+  isDisabled: boolean;
+}
+
 const InputWithTimePicker = ({
-  value,
-  setValue,
+  date,
+  setDate,
   placeholderText,
   isDisabled,
 }: InputWithTimePickerProps) => {
@@ -51,10 +51,9 @@ const InputWithTimePicker = ({
 
   useEffect(() => {
     const { hour, minute } = pickedTime;
-    setValue({
-      hour,
-      minute,
-    });
+    if (date) {
+      setDate(setMinutes(setHours(date, hour), minute));
+    }
   }, [pickedTime.hour, pickedTime.minute]);
 
   return (
@@ -62,8 +61,8 @@ const InputWithTimePicker = ({
       <input
         type="text"
         value={
-          value.hour && value.minute
-            ? `${value.hour.toString().padStart(2, '0')} : ${value.minute.toString().padStart(2, '0')}`
+          date
+            ? `${date.getHours().toString().padStart(2, '0')} : ${date.getMinutes().toString().padStart(2, '0')}`
             : ''
         }
         placeholder={placeholderText}

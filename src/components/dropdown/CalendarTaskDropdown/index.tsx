@@ -6,7 +6,7 @@ import { TaskItem } from '@components/TaskItem';
 import { Button } from '@components/common/Button';
 import { Typography } from '@components/common/Typography';
 import { CreateTaskModal } from '@components/modal/CreateTaskModal';
-import { Project } from '@customTypes/project';
+import { RawProject } from '@customTypes/project';
 import useModal from '@hooks/useModal';
 import { useTaskActions } from '@libs/store/task/task';
 import { useGetProjectList } from '@services/project/Project.hooks';
@@ -31,7 +31,7 @@ const CalendarTaskDropdown = (
   const [openModal] = useModal();
 
   const { setProject } = useTaskActions();
-  const handleOpenCreateTaskModal = (project: Project) => {
+  const handleOpenCreateTaskModal = (project: RawProject) => {
     openModal(CreateTaskModal);
     setProject(project);
   };

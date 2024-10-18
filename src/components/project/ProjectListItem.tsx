@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Project } from '@customTypes/project';
+import { RawProject } from '@customTypes/project';
 import dayjs from 'dayjs';
 import styled from 'styled-components';
 
@@ -363,7 +363,7 @@ const EtcIconSvg = () => (
   </EtcIcon>
 );
 
-const ProjectListItem = ({ project }: { project: Project }) => {
+const ProjectListItem = ({ project }: { project: RawProject }) => {
   const startDate = dayjs(project.startDate).format('YYYY.MM.DD');
   const endDate = dayjs(project.endDate).format('YYYY.MM.DD');
   return (

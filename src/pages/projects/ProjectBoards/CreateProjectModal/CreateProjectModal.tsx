@@ -1,19 +1,20 @@
 import React, { useEffect, useState } from 'react';
 
 import CancelButton from '@assets/cancel-x.svg';
+import { Button } from '@components/common/Button';
 import InputArea from '@components/common/InputArea';
 import InputWithCalendarArea from '@components/common/InputArea/InputWithCalendar';
 import InputWithIconArea from '@components/common/InputArea/InputWithIconArea';
 import InputWithTimePicker from '@components/common/InputArea/InputWithTimePicker';
 import Toggle from '@components/common/Toggle/Toggle';
-import { setIsModalOpen } from '@hooks/useModal';
+import useModal from '@hooks/useModal';
 import {
   useProjectActions,
   useProjectState,
 } from '@libs/store/project/project';
 import { useCreateProject } from '@services/project/Project.hooks';
 import { CreateProjectRequestDto } from '@services/swagger/output/data-contracts';
-import { add, isBefore } from 'date-fns';
+import { isBefore, setHours, setMinutes } from 'date-fns';
 
 import StyleCreateProjectModal from './CreateProjectModal.style';
 
@@ -29,7 +30,9 @@ export interface ProjectPeriodTime {
   minute: number | null;
 }
 
-function CreateProjectModal({ closeModal }: { closeModal?: setIsModalOpen }) {
+function CreateProjectModal() {
+  const [closeModal] = useModal();
+
   const { title, subTitle, description, startDate, endDate } =
     useProjectState();
   const {
@@ -40,15 +43,6 @@ function CreateProjectModal({ closeModal }: { closeModal?: setIsModalOpen }) {
     setEndDate,
     clearProject,
   } = useProjectActions();
-
-  const [startTime, setStartTime] = useState<ProjectPeriodTime>({
-    hour: null,
-    minute: null,
-  });
-  const [endTime, setEndTime] = useState<ProjectPeriodTime>({
-    hour: null,
-    minute: null,
-  });
 
   const [includeTime, setIncludeTime] = useState(false);
   const { createProjectMutate } = useCreateProject();
@@ -71,37 +65,38 @@ function CreateProjectModal({ closeModal }: { closeModal?: setIsModalOpen }) {
     }
   };
 
-  const handleCreateProject = async (e: React.MouseEvent<HTMLInputElement>) => {
+  const handleCreateProject = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
     if (startDate && endDate) {
       if (includeTime) {
-        const projectStartDate = add(new Date(startDate), {
-          hours: startTime.hour ? startTime.hour + 9 : 0,
-          minutes: startTime.minute || 0,
-        });
-
-        const projectEndDate = add(new Date(endDate), {
-          hours: endTime.hour ? endTime.hour + 9 : 0,
-          minutes: endTime.minute || 0,
-        });
-
-        ValidateProject({
+        return ValidateProject({
           title,
           subTitle,
           description,
-          startDate: projectStartDate.toISOString(),
-          endDate: projectEndDate.toISOString(),
+          startDate: startDate.toISOString(),
+          endDate: endDate.toISOString(),
         });
-      } else
-        ValidateProject({
-          title,
-          subTitle,
-          description,
-          startDate: startDate?.toISOString(),
-          endDate: endDate?.toISOString(),
-        });
+      }
+      const startDateMidNight = setMinutes(setHours(startDate, 0), 0);
+      const endDateMidNight = setMinutes(setHours(endDate, 0), 0);
+      console.log(startDateMidNight);
+      return ValidateProject({
+        title,
+        subTitle,
+        description,
+        startDate: startDateMidNight.toISOString(),
+        endDate: endDateMidNight.toISOString(),
+      });
     }
+
+    return requestCreateProject({
+      title,
+      subTitle,
+      description,
+      startDate: '',
+      endDate: '',
+    });
   };
 
   return (
@@ -164,15 +159,15 @@ function CreateProjectModal({ closeModal }: { closeModal?: setIsModalOpen }) {
 
           <StyleCreateProjectModal.InputWithCalendarArea>
             <InputWithTimePicker
-              value={startTime}
-              setValue={setStartTime}
+              date={startDate}
+              setDate={setStartDate}
               placeholderText="프로젝트 시작 시간"
               isDisabled={!includeTime}
             />
             <StyleCreateProjectModal.CrossDash></StyleCreateProjectModal.CrossDash>
             <InputWithTimePicker
-              value={endTime}
-              setValue={setEndTime}
+              date={endDate}
+              setDate={setEndDate}
               placeholderText="프로젝트 시작 시간"
               isDisabled={!includeTime}
             />
@@ -180,8 +175,20 @@ function CreateProjectModal({ closeModal }: { closeModal?: setIsModalOpen }) {
         </StyleCreateProjectModal.InputArea>
 
         <StyleCreateProjectModal.Submit>
-          <button onClick={closeModal}>취소</button>
-          <input type="submit" value="추가하기" onClick={handleCreateProject} />
+          <Button
+            size="medium"
+            variant="text"
+            hasIcon={false}
+            onClick={() => closeModal(CreateProjectModal)}
+            text="취소"
+          />
+          <Button
+            size="medium"
+            variant="fill"
+            hasIcon={false}
+            onClick={handleCreateProject}
+            text="완료"
+          />
         </StyleCreateProjectModal.Submit>
       </StyleCreateProjectModal.Form>
     </>

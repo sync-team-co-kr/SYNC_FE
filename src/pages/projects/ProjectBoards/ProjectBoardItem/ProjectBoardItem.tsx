@@ -5,7 +5,7 @@ import meatballs from '@assets/meatballs.svg';
 import projectIcon from '@assets/project-icon.png';
 import { Typography } from '@components/common';
 import Avatar from '@components/member/Avatar';
-import { Project } from '@customTypes/project';
+import { RawProject } from '@customTypes/project';
 import useDropdown from '@hooks/useDropdown';
 import ProjectSettingsDropdown from '@pages/projects/ProjectSettingsDropdown/ProjectSettingsDropdown';
 import generateNormalDate from '@utils/generateNormalDate';
@@ -18,7 +18,7 @@ const MeatBalls = styled.div`
   position: relative;
 `;
 
-const ProjectBoardItem = ({ project }: { project: Project }) => {
+const ProjectBoardItem = ({ project }: { project: RawProject }) => {
   const [
     isOpenProjectDropdownMenu,
     toggleProjectDropdownMenu,
@@ -72,40 +72,3 @@ const ProjectBoardItem = ({ project }: { project: Project }) => {
 };
 
 export default ProjectBoardItem;
-
-/*
-  
-  interface Member {
-    profileImg: string;
-    userId: string;
-    username: string;
-  }
-
-  interface APIResponse {
-    value: Member;
-  }
-
-  const MemberProfile = ({ memberId }: { memberId: number }) => {
-  const [member, setMember] = useState<Member | null>(null);
-  const fetchMemberDetail = async (userId: number) => {
-    const response: AxiosResponse<APIResponse, any> =
-      await requiredJwtTokeninstance.get(`/api/user/info`, {
-        params: {
-          userId,
-        },
-      });
-    return response;
-  };
-
-  useEffect(() => {
-    fetchMemberDetail(memberId).then((res) => setMember(res.data.value));
-  }, []);
-
-  return <li>{member?.username.slice(-2)}</li>;
-};
-
-
-  project.memberIds.map((memberId) => (
-    <MemberProfile key={project.projectId} memberId={memberId} />
-  ))
-*/

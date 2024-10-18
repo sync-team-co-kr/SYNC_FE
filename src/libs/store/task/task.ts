@@ -1,11 +1,11 @@
-import { Project } from '@customTypes/project';
+import { RawProject } from '@customTypes/project';
 import { CreateTaskRequestDto } from '@services/swagger/output/data-contracts';
 import { create } from 'zustand';
 
 // 업무 생성 State
 type TaskState = {
   payload: CreateTaskRequestDto & { status: number };
-  project: Project;
+  project: RawProject;
   errorList: string[];
   taskId: number;
   titleImage: string | undefined;
@@ -33,7 +33,7 @@ type TaskActions = {
     setEditTask: (task: CreateTaskRequestDto) => void;
 
     // project
-    setProject: (project: Project) => void;
+    setProject: (project: RawProject) => void;
 
     // errorList
     setErrorList: (errorList: string) => void;
