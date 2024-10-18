@@ -9,6 +9,7 @@ type projectBoardStyleComponentList =
   | 'Title'
   | 'Description'
   | 'Footer'
+  | 'Members'
   | 'Period';
 
 const StyleProjectBoard: {
@@ -81,6 +82,11 @@ const StyleProjectBoard: {
     display: flex;
     justify-content: space-between;
     align-items: conter;
+  `,
+  Members: styled.ul`
+    display: flex;
+    flex-direction: row;
+    gap: -2px;
   `,
   Period: styled.div`
     padding: 4px 8px;

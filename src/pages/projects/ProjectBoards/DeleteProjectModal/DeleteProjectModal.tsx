@@ -48,7 +48,7 @@ const DeleteProjectModal = ({ projectId }: DeleteProjectModalProps) => {
 
         <InputArea
           value={retypeProjectTitle}
-          setValue={setRetypeProjectTitle}
+          onChange={(e) => setRetypeProjectTitle(e.target.value)}
           labelText="프로젝트 재입력"
           placeholderText="프로젝트 명을 그대로 입력해 주세요."
         />

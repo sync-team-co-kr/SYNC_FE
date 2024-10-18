@@ -29,16 +29,6 @@ const Container = styled.div`
   height: 100%;
 `;
 
-export interface IProject {
-  projectId: number;
-  title: string;
-  subTitle: string;
-  description: string;
-  startDate: Date;
-  endDate: Date;
-  memberIds: number[];
-}
-
 const Project = () => {
   const [currentTabMenu, setCurrentTabMenu] = useState('board');
   const navigate = useNavigate();
@@ -50,7 +40,6 @@ const Project = () => {
 
   return (
     <Container>
-      
       <TabMenu>
         <TabMenuItem
           onClick={() => handleClickTabMenu('board')}

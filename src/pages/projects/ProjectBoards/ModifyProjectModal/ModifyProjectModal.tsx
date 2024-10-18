@@ -1,12 +1,22 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import CancelButton from '@assets/cancel-x.svg';
 import { Button } from '@components/common/Button';
 import InputArea from '@components/common/InputArea';
 import InputWithCalendarArea from '@components/common/InputArea/InputWithCalendar';
 import InputWithIconArea from '@components/common/InputArea/InputWithIconArea';
+import InputWithTimePicker from '@components/common/InputArea/InputWithTimePicker';
+import Toggle from '@components/common/Toggle/Toggle';
+import { RawProject } from '@customTypes/project';
 import useModal from '@hooks/useModal';
-import { useEditProject } from '@services/project/Project.hooks';
+import {
+  useProjectActions,
+  useProjectStore,
+} from '@libs/store/project/project';
+import { useEditProject, useGetProject } from '@services/project/Project.hooks';
+import convertSharp from '@utils/date/convertSharp';
+import isStartDateExceedsEndDate from '@utils/project/validateProject';
+import { isBefore, setHours, setMinutes } from 'date-fns';
 
 import StyleModifyProjectModal from './ModifyProjectModal.style';
 
@@ -15,26 +25,68 @@ interface ModifyProjectModalProps {
 }
 
 function ModifyProjectModal({ projectId }: ModifyProjectModalProps) {
-  const [title, setTitle] = useState('');
-  const [subTitle, setSubTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [startDate, setStartDate] = useState<Date>();
-  const [endDate, setEndDate] = useState<Date>();
   const [closeModal] = useModal();
 
+  const { projectData, isLoading } = useGetProject(projectId);
   const { editProjectMutate } = useEditProject();
+  const [includeTime, setIncludeTime] = useState(false);
 
-  const handleModifyProject = () => {
-    editProjectMutate({
+  const { title, subTitle, description, startDate, endDate } =
+    useProjectStore();
+  const {
+    setProject,
+    setTitle,
+    setSubTitle,
+    setDescription,
+    setStartDate,
+    setEndDate,
+  } = useProjectActions();
+
+  useEffect(() => {
+    if (projectData && !isLoading) {
+      setProject({
+        ...projectData,
+      });
+    }
+  }, [isLoading]);
+
+  const requestModifyProject = (editedProject: Omit<RawProject, 'members'>) => {
+    editProjectMutate(editedProject);
+  };
+
+  const handleModifyProject = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    const editedProject = {
       projectId,
       title,
       subTitle,
       description,
-      startDate: startDate?.toISOString(),
-      endDate: endDate?.toISOString(),
-    });
+    };
+    if (
+      startDate &&
+      endDate &&
+      !isStartDateExceedsEndDate(startDate, endDate)
+    ) {
+      const projectStartDate = includeTime
+        ? startDate.toISOString()
+        : convertSharp(startDate).toISOString();
+      const projectEndDate = includeTime
+        ? endDate.toISOString()
+        : convertSharp(endDate).toISOString();
+
+      requestModifyProject({
+        ...editedProject,
+        startDate: projectStartDate,
+        endDate: projectEndDate,
+      });
+    }
+    /*
+    프로젝트 기간이 required인 이슈가 해결될 때
+    기간이 빠진 editedProject를 서버에 보내는 함수 작성 예정
+    */
   };
 
+  if (isLoading) return <></>;
   return (
     <>
       <StyleModifyProjectModal.Header>
@@ -47,21 +99,21 @@ function ModifyProjectModal({ projectId }: ModifyProjectModalProps) {
       <StyleModifyProjectModal.Form>
         <InputWithIconArea
           value={title}
-          setValue={setTitle}
+          onChange={(e) => setTitle(e.target.value)}
           labelText="커버 & 프로젝트 명"
           placeholderText="제목"
         />
 
         <InputArea
           value={subTitle}
-          setValue={setSubTitle}
+          onChange={(e) => setSubTitle(e.target.value)}
           labelText="부제목"
           placeholderText="부제목"
         />
 
         <InputArea
           value={description}
-          setValue={setDescription}
+          onChange={(e) => setDescription(e.target.value)}
           labelText="프로젝트 설명"
           placeholderText="프로젝트 설명"
         />
@@ -69,16 +121,19 @@ function ModifyProjectModal({ projectId }: ModifyProjectModalProps) {
         <StyleModifyProjectModal.InputArea>
           <StyleModifyProjectModal.ToggleArea>
             <label>일정</label>
-            <div>
-              <span></span>
-              <div>토글</div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <span>시간 포함</span>
+              <Toggle
+                isActive={includeTime}
+                toggleSwtich={() => setIncludeTime((prevState) => !prevState)}
+              />
             </div>
           </StyleModifyProjectModal.ToggleArea>
 
           <StyleModifyProjectModal.CalendarArea>
             <InputWithCalendarArea
               value={startDate}
-              setValue={setStartDate}
+              setDate={setStartDate}
               placeholderText="프로젝트 시작 날짜"
             />
 
@@ -91,8 +146,23 @@ function ModifyProjectModal({ projectId }: ModifyProjectModalProps) {
             ></div>
             <InputWithCalendarArea
               value={endDate}
-              setValue={setEndDate}
+              setDate={setEndDate}
               placeholderText="프로젝트 종료 날짜"
+            />
+          </StyleModifyProjectModal.CalendarArea>
+          <StyleModifyProjectModal.CalendarArea>
+            <InputWithTimePicker
+              date={startDate}
+              setDate={setStartDate}
+              placeholderText="프로젝트 시작 시간"
+              isDisabled={!includeTime}
+            />
+
+            <InputWithTimePicker
+              date={endDate}
+              setDate={setEndDate}
+              placeholderText="프로젝트 종료 시간"
+              isDisabled={!includeTime}
             />
           </StyleModifyProjectModal.CalendarArea>
         </StyleModifyProjectModal.InputArea>

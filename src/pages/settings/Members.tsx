@@ -6,7 +6,7 @@ import RouteProjectDropdown from '@components/dropdown/RouteProjectDropdown';
 import InviteProjectMemberModal from '@components/modal/InviteProjectMemberModal';
 import { SettingsMemberItem } from '@components/settings';
 import { AxiosResByData } from '@customTypes/common/AxiosRes';
-import useMemberList from '@hooks/member/useMemberList';
+import RawProject from '@customTypes/project/RawProject';
 import useDropdown from '@hooks/useDropdown';
 import useModal from '@hooks/useModal';
 import { userApiInstance } from '@libs/axios/axios';
@@ -277,16 +277,6 @@ const fakeMemberList = [
   },
 ];
 
-export interface IProject {
-  projectId: number;
-  title: string;
-  subTitle: string;
-  description: string;
-  startDate: Date;
-  endDate: Date;
-  memberIds: number[];
-}
-
 const MembersSettings = () => {
   const [openModal] = useModal();
   const [
@@ -296,7 +286,7 @@ const MembersSettings = () => {
   ] = useDropdown();
 
   const { projectListData, isLoading } = useGetProjectList();
-  const [selectedProject, setSelectedProject] = useState<IProject | null>(
+  const [selectedProject, setSelectedProject] = useState<RawProject | null>(
     projectListData ? projectListData[0] : null,
   );
   const [inviteLink, setInviteLink] = useState('');
@@ -305,14 +295,6 @@ const MembersSettings = () => {
     () => projectListData && setSelectedProject(projectListData[0]),
     [isLoading],
   );
-
-  useEffect(() => {
-    createInviteLink();
-  }, [selectedProject?.projectId]);
-
-  const { memberList } = useMemberList(selectedProject);
-
-  console.log(memberList);
 
   const createInviteLink = async () => {
     if (selectedProject?.projectId) {
@@ -325,6 +307,10 @@ const MembersSettings = () => {
       setInviteLink(response.data.data.link);
     }
   };
+
+  useEffect(() => {
+    createInviteLink();
+  }, [selectedProject?.projectId]);
 
   return (
     <>

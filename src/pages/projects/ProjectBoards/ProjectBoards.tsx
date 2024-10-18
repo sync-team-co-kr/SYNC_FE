@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { Button } from '@components/common/Button';
 import { useModal } from '@hooks';
-import { useGetProjectList } from '@services/project/Project.hooks';
+import { useGetProjects } from '@services/project/Project.hooks';
 import { styled } from 'styled-components';
 import { vars } from 'token';
 
@@ -54,7 +54,7 @@ const ProjectBoards = () => {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
   const [openModal] = useModal();
-  const { projectListData } = useGetProjectList();
+  const { projects } = useGetProjects();
 
   return (
     <StyleProjectBoards.Wrapper>
@@ -65,7 +65,7 @@ const ProjectBoards = () => {
         <ProjectNavigator>
           <h5 onClick={() => setIsOpen((prevState) => !prevState)}>전체보기</h5>
           <ProjectNavigatorDropdown $isopen={isOpen}>
-            {projectListData?.map((project) => (
+            {projects?.map((project) => (
               <li
                 key={project.projectId}
                 onClick={() => navigate(`/projects/${project.projectId}`)}
@@ -88,7 +88,7 @@ const ProjectBoards = () => {
       </StyleProjectBoards.Header>
 
       <StyleProjectBoards.BoardList>
-        {projectListData?.map((project) => (
+        {projects?.map((project) => (
           <ProjectBoardItem key={project.projectId} project={project} />
         ))}
       </StyleProjectBoards.BoardList>

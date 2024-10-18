@@ -1,8 +1,20 @@
 import { AxiosResByData } from '@customTypes/common';
-import { EditProjectParams, Project } from '@customTypes/project';
+import { RawProject } from '@customTypes/project';
 import { userApiInstance } from '@libs/axios/axios';
 import { CreateProjectRequestDto } from '@services/swagger/output/data-contracts';
 import { AxiosResponse } from 'axios';
+
+interface GetMemberIds {
+  userIds: number[];
+  projectId: number;
+}
+
+interface IMember {
+  userId: string;
+  username: string;
+  nickname: string;
+  position: string;
+}
 
 /**
  * 프로젝트 리스트의 id들만 가져오는 API
@@ -39,13 +51,64 @@ export const getProjectList = async () => {
 
   const joinedProjectIds = getProjectIdsRes.data.data.projectIds.join(',');
 
-  const getProjectListResponse: AxiosResponse<
-    AxiosResByData<{ projectInfos: Project[] }>
-  > = await userApiInstance.get(
-    `node2/project/api/v1?projectIds=${joinedProjectIds}`,
+  const getProjectListResponse: AxiosResponse<AxiosResByData<RawProject[]>> =
+    await userApiInstance.get(
+      `node2/project/api/v1?projectIds=${joinedProjectIds}`,
+    );
+
+  return getProjectListResponse.data.data;
+};
+
+export const getProjectListWithMember = async () => {
+  const loggedInUserId = localStorage.getItem('loggedUserId');
+
+  const getProjectIdsRes: AxiosResponse<
+    AxiosResByData<{ projectIds: number[] }>,
+    any
+  > = await userApiInstance.get(`/project/api/v2?userId=${loggedInUserId}`);
+
+  const projectsWithMemberIds = await Promise.all(
+    getProjectIdsRes.data.data.projectIds.flatMap(async (projectId) => {
+      const getProjectResponse: AxiosResponse<AxiosResByData<RawProject[]>> =
+        await userApiInstance.get('node2/project/api/v1', {
+          params: {
+            projectIds: projectId,
+          },
+        });
+
+      const getMemberIdsResponse: AxiosResponse<
+        AxiosResByData<{ memberToUserId: GetMemberIds[] }>
+      > = await userApiInstance.get('user/api/member/v2', {
+        params: {
+          projectIds: projectId,
+        },
+      });
+
+      const [project] = getProjectResponse.data.data;
+      const [memberIds] = getMemberIdsResponse.data.data.memberToUserId;
+
+      const members = await Promise.all(
+        memberIds.userIds.map(async (userId) => {
+          const getUserResponse: AxiosResponse<AxiosResByData<IMember[]>> =
+            await userApiInstance.get('/user/api/info/v2', {
+              params: {
+                userIds: userId,
+              },
+            });
+
+          const [member] = getUserResponse.data.data.map((memberData) => ({
+            ...memberData,
+            id: userId,
+          }));
+          return member;
+        }),
+      );
+
+      return { ...project, members };
+    }),
   );
 
-  return getProjectListResponse.data.data.projectInfos;
+  return projectsWithMemberIds;
 };
 
 /**
@@ -66,10 +129,12 @@ export const getProjectList = async () => {
  */
 
 export const getProject = async (projectId: number) => {
-  const getProjectResponse: AxiosResponse<AxiosResByData<Project[]>> =
+  const getProjectResponse: AxiosResponse<AxiosResByData<RawProject[]>> =
     await userApiInstance.get(`node2/project/api/v1?projectIds=${projectId}`);
 
-  return getProjectResponse.data.data[0];
+  const [project] = getProjectResponse.data.data;
+
+  return project;
 };
 
 /**
@@ -118,9 +183,17 @@ export const createProject = async (newProject: CreateProjectRequestDto) => {
  * }
  */
 
-export const editProject = async (project: EditProjectParams) => {
-  await userApiInstance.put('/user/api/project', {
-    ...project,
+export const editProject = async (project: Omit<RawProject, 'members'>) => {
+  console.log(project);
+  const formData = new FormData();
+  const blobTypeProject = new Blob([JSON.stringify(project)], {
+    type: 'application/json',
+  });
+  formData.append('data', blobTypeProject);
+  await userApiInstance.put('/user/api/project', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
   });
 
   return project;

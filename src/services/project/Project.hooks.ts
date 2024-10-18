@@ -1,4 +1,4 @@
-import { EditProjectParams } from '@customTypes/project';
+import { RawProject } from '@customTypes/project';
 import { CreateProjectRequestDto } from '@services/swagger/output/data-contracts';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
@@ -9,6 +9,7 @@ import {
   getProject,
   getProjectIdList,
   getProjectList,
+  getProjectListWithMember,
 } from './apis';
 
 // projectList hooks
@@ -19,6 +20,15 @@ export const useGetProjectList = () => {
   });
 
   return { projectListData, isLoading };
+};
+
+export const useGetProjects = () => {
+  const { data: projects } = useQuery({
+    queryKey: ['projects'],
+    queryFn: getProjectListWithMember,
+  });
+
+  return { projects };
 };
 
 // ProjectList id list hooks
@@ -33,12 +43,13 @@ export const useGetProjectIdList = () => {
 
 // project hooks
 export const useGetProject = (projectId: number) => {
-  const { data: projectData } = useQuery({
+  const { isLoading, data: projectData } = useQuery({
     queryKey: ['projects', projectId],
     queryFn: () => getProject(projectId),
+    enabled: !!projectId,
   });
 
-  return { projectData };
+  return { isLoading, projectData };
 };
 
 // create project hooks
@@ -60,9 +71,11 @@ export const useEditProject = () => {
   const queryClient = useQueryClient();
 
   const editProjectMutation = useMutation({
-    mutationFn: (project: EditProjectParams) => editProject(project),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['projects'] });
+    mutationFn: (project: Omit<RawProject, 'members'>) => editProject(project),
+    onSuccess: (editedProject) => {
+      queryClient.invalidateQueries({
+        queryKey: ['projects', editedProject.projectId],
+      });
     },
   });
 

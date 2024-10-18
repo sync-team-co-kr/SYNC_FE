@@ -7,8 +7,8 @@ import {
 import setTimePickList from '@components/dropdown/TimePickerDropdown/util';
 
 export interface IPickedTime {
-  hour: number | null;
-  minute: number | null;
+  hour: number;
+  minute: number;
 }
 
 interface UseTimePickerReturnType {
@@ -26,8 +26,8 @@ type useTimePickerType = () => UseTimePickerReturnType;
 
 const useTimePicker: useTimePickerType = () => {
   const [pickedTime, setPickedTime] = useState<IPickedTime>({
-    hour: null,
-    minute: null,
+    hour: 0,
+    minute: 0,
   });
   const [hourPickList, setHourPickList] = useState([1, 2, 3]);
   const [minutePickList, setMinutePickList] = useState([1, 2, 3]);

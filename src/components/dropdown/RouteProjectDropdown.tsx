@@ -1,6 +1,7 @@
 import React from 'react';
 
 import fakeAvatar from '@assets/rectangle-50.png';
+import RawProject from '@customTypes/project/RawProject';
 import { styled } from 'styled-components';
 
 const Wrapper = styled.section<{ $isopen: boolean }>`
@@ -33,21 +34,11 @@ const SProjectItem = styled.li`
   gap: 6px;
 `;
 
-export interface IProject {
-  projectId: number;
-  title: string;
-  subTitle: string;
-  description: string;
-  startDate: Date;
-  endDate: Date;
-  memberIds: number[];
-}
-
 interface RouteProjectDropdownProps {
   isOpen: boolean;
   toggleModal: () => void;
-  projectList?: IProject[];
-  setSelectedProject: React.Dispatch<React.SetStateAction<IProject | null>>;
+  projectList?: RawProject[];
+  setSelectedProject: React.Dispatch<React.SetStateAction<RawProject | null>>;
 }
 
 const RouteProjectDropdown = ({
@@ -56,7 +47,7 @@ const RouteProjectDropdown = ({
   projectList,
   setSelectedProject,
 }: RouteProjectDropdownProps) => {
-  const handleClickProjectItem = (project: IProject) => {
+  const handleClickProjectItem = (project: RawProject) => {
     setSelectedProject(project);
     toggleModal();
   };
