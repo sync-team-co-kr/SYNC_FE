@@ -14,6 +14,8 @@ import {
   useProjectStore,
 } from '@libs/store/project/project';
 import { useEditProject, useGetProject } from '@services/project/Project.hooks';
+import convertSharp from '@utils/date/convertSharp';
+import isStartDateExceedsEndDate from '@utils/project/validateProject';
 import { isBefore, setHours, setMinutes } from 'date-fns';
 
 import StyleModifyProjectModal from './ModifyProjectModal.style';
@@ -52,45 +54,36 @@ function ModifyProjectModal({ projectId }: ModifyProjectModalProps) {
     editProjectMutate(editedProject);
   };
 
-  const ValidateProject = (editedProject: Omit<RawProject, 'members'>) => {
-    const { startDate: projectStartDate, endDate: projectEndDate } =
-      editedProject;
-    if (
-      projectStartDate &&
-      projectEndDate &&
-      isBefore(projectStartDate, projectEndDate)
-    ) {
-      requestModifyProject(editedProject);
-    }
-  };
-
   const handleModifyProject = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
+    const editedProject = {
+      projectId,
+      title,
+      subTitle,
+      description,
+    };
+    if (
+      startDate &&
+      endDate &&
+      !isStartDateExceedsEndDate(startDate, endDate)
+    ) {
+      const projectStartDate = includeTime
+        ? startDate.toISOString()
+        : convertSharp(startDate).toISOString();
+      const projectEndDate = includeTime
+        ? endDate.toISOString()
+        : convertSharp(endDate).toISOString();
 
-    if (startDate && endDate) {
-      if (includeTime) {
-        ValidateProject({
-          projectId,
-          title,
-          subTitle,
-          description,
-          startDate: startDate.toISOString(),
-          endDate: endDate.toISOString(),
-        });
-      } else {
-        const startDateMidNight = setMinutes(setHours(startDate, 0), 0);
-        const endDateMidNight = setMinutes(setHours(endDate, 0), 0);
-        console.log(startDateMidNight);
-        ValidateProject({
-          projectId,
-          title,
-          subTitle,
-          description,
-          startDate: startDateMidNight.toISOString(),
-          endDate: endDateMidNight.toISOString(),
-        });
-      }
+      requestModifyProject({
+        ...editedProject,
+        startDate: projectStartDate,
+        endDate: projectEndDate,
+      });
     }
+    /*
+    프로젝트 기간이 required인 이슈가 해결될 때
+    기간이 빠진 editedProject를 서버에 보내는 함수 작성 예정
+    */
   };
 
   if (isLoading) return <></>;

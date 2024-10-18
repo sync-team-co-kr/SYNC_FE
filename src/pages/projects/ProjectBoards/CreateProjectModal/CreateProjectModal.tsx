@@ -14,6 +14,8 @@ import {
 } from '@libs/store/project/project';
 import { useCreateProject } from '@services/project/Project.hooks';
 import { CreateProjectRequestDto } from '@services/swagger/output/data-contracts';
+import convertSharp from '@utils/date/convertSharp';
+import isStartDateExceedsEndDate from '@utils/project/validateProject';
 import { isBefore, setHours, setMinutes } from 'date-fns';
 
 import StyleCreateProjectModal from './CreateProjectModal.style';
@@ -54,49 +56,35 @@ function CreateProjectModal() {
   const requestCreateProject = (newProject: CreateProjectRequestDto) =>
     createProjectMutate(newProject);
 
-  const ValidateProject = (newProject: CreateProjectRequestDto) => {
-    const { startDate: projectStartDate, endDate: projectEndDate } = newProject;
-    if (
-      projectStartDate &&
-      projectEndDate &&
-      isBefore(projectStartDate, projectEndDate)
-    ) {
-      requestCreateProject(newProject);
-    }
-  };
-
   const handleCreateProject = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-
-    if (startDate && endDate) {
-      if (includeTime) {
-        return ValidateProject({
-          title,
-          subTitle,
-          description,
-          startDate: startDate.toISOString(),
-          endDate: endDate.toISOString(),
-        });
-      }
-      const startDateMidNight = setMinutes(setHours(startDate, 0), 0);
-      const endDateMidNight = setMinutes(setHours(endDate, 0), 0);
-      console.log(startDateMidNight);
-      return ValidateProject({
-        title,
-        subTitle,
-        description,
-        startDate: startDateMidNight.toISOString(),
-        endDate: endDateMidNight.toISOString(),
-      });
-    }
-
-    return requestCreateProject({
+    const newProject = {
       title,
       subTitle,
       description,
-      startDate: '',
-      endDate: '',
-    });
+    };
+    if (
+      startDate &&
+      endDate &&
+      !isStartDateExceedsEndDate(startDate, endDate)
+    ) {
+      const projectStartDate = includeTime
+        ? startDate.toISOString()
+        : convertSharp(startDate).toISOString();
+      const projectEndDate = includeTime
+        ? endDate.toISOString()
+        : convertSharp(endDate).toISOString();
+
+      requestCreateProject({
+        ...newProject,
+        startDate: projectStartDate,
+        endDate: projectEndDate,
+      });
+    }
+    /*
+    프로젝트 기간이 required인 이슈가 해결될 때
+    기간이 빠진 new Project 서버에 보내는 함수 작성 예정
+    */
   };
 
   return (
