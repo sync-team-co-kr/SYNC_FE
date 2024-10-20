@@ -166,14 +166,14 @@ function CreateProjectModal() {
           <Button
             size="medium"
             variant="text"
-            hasIcon={false}
+            $hasIcon={false}
             onClick={() => closeModal(CreateProjectModal)}
             text="취소"
           />
           <Button
             size="medium"
             variant="fill"
-            hasIcon={false}
+            $hasIcon={false}
             onClick={handleCreateProject}
             text="완료"
           />

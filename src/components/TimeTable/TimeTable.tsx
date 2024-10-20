@@ -5,6 +5,13 @@ import { Typography } from '@components/common/Typography';
 import { Container, ImageWrapper, Marker } from './TimeTable.style';
 import { TimeTableProps } from './TimeTable.types';
 
+/**
+ * 시간표 컴포넌트
+ * 일정을 시간대별로 보여주는 컴포넌트
+ * @param {TimeTableProps} props
+ * @returns {JSX.Element}
+ */
+
 const TimeTable = ({
   title,
   description,

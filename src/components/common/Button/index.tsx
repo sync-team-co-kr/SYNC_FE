@@ -17,26 +17,26 @@ import { ButtonProps } from './Button.types';
 export const Button = ({
   size = 'medium',
   variant,
-  hasIcon = true,
-  isDisabled = false,
-  iconPosition = 'left',
+  $hasIcon = true,
+  $isDisabled = false,
+  $iconPosition = 'left',
   onClick,
-  renderIcon,
+  $renderIcon,
   text,
-  isSelect,
-  fullWidth,
+  $isSelect,
+  $fullWidth,
 }: ButtonProps) => (
   <CommonButton
-    fullWidth={fullWidth}
-    hasText={!!text}
+    $fullWidth={$fullWidth}
+    $hasText={!!text}
     size={size}
     variant={variant}
-    disabled={isDisabled}
+    disabled={$isDisabled}
     onClick={onClick}
-    isSelect={isSelect}
+    $isSelect={$isSelect}
   >
-    {hasIcon && iconPosition === 'left' && renderIcon}
+    {$hasIcon && $iconPosition === 'left' && $renderIcon}
     {text}
-    {hasIcon && iconPosition === 'right' && renderIcon}
+    {$hasIcon && $iconPosition === 'right' && $renderIcon}
   </CommonButton>
 );

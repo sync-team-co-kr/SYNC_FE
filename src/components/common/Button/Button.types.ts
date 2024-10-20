@@ -11,12 +11,12 @@ export interface ButtonProps {
     | 'task'
     | 'subTask'
     | 'quest';
-  hasIcon?: boolean;
-  isDisabled?: boolean;
-  iconPosition?: 'left' | 'right';
+  $hasIcon?: boolean;
+  $isDisabled?: boolean;
+  $iconPosition?: 'left' | 'right';
   onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
   text?: string;
-  renderIcon?: React.ReactNode;
-  isSelect?: boolean;
-  fullWidth?: boolean;
+  $renderIcon?: React.ReactNode;
+  $isSelect?: boolean;
+  $fullWidth?: boolean;
 }

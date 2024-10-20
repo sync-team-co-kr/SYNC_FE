@@ -12,13 +12,14 @@
 import {
   AcceInviteData,
   CreateProjectData,
-  CreateProjectRequestDto,
+  CreateProjectPayload,
   CreateTaskData,
   CreateTaskPayload,
   DeleteProjectData,
   DeleteProjectRequestDto,
   DeleteTaskData,
   DeleteTaskRequestDto,
+  DeleteUsersFromTaskData,
   GetCurrentUserInfoData,
   GetLinkData,
   GetMembersByUserIdsData,
@@ -28,15 +29,16 @@ import {
   MemberAddToTaskData,
   MemberMappingToProjectRequestDto,
   MemberMappingToTaskRequestDto,
+  MemberRemoveRequestDto,
   ModifyPwdData,
   ModifyPwdRequestDto,
   ProjectInviteRequestDto,
   SendEmailLinkData,
   SendLinkRequestDto,
   UpdateProjectData,
-  UpdateProjectRequestDto,
+  UpdateProjectPayload,
   UpdateTaskData,
-  UpdateTaskRequestDto,
+  UpdateTaskPayload,
 } from './data-contracts';
 import { ContentType, HttpClient, RequestParams } from './http-client';
 
@@ -44,7 +46,7 @@ export class User<
   SecurityDataType = unknown,
 > extends HttpClient<SecurityDataType> {
   /**
-   * @description HOST = 150.136.153.235:30080
+   * @description HOST = 150.136.153.235:30443 <br>Validation : 로그인 필요함, 해당 프로젝트에 속해있지 않은 유저는 업무 수정 불가 <br>DTOValidation : UpdateTaskRequestDto
    *
    * @tags task-controller
    * @name UpdateTask
@@ -52,16 +54,16 @@ export class User<
    * @request PUT:/user/api/task
    * @response `200` `UpdateTaskData` OK
    */
-  updateTask = (data: UpdateTaskRequestDto, params: RequestParams = {}) =>
+  updateTask = (data: UpdateTaskPayload, params: RequestParams = {}) =>
     this.request<UpdateTaskData, any>({
       path: `/user/api/task`,
       method: 'PUT',
       body: data,
-      type: ContentType.Json,
+      type: ContentType.FormData,
       ...params,
     });
   /**
-   * @description HOST = 150.136.153.235:30080 <br>ValidationDetails : DeleteTaskRequestDto
+   * @description HOST = 150.136.153.235:30443 <br>ValidationDetails : DeleteTaskRequestDto
    *
    * @tags task-controller
    * @name DeleteTask
@@ -102,16 +104,16 @@ export class User<
    * @request PUT:/user/api/project
    * @response `200` `UpdateProjectData` OK
    */
-  updateProject = (data: UpdateProjectRequestDto, params: RequestParams = {}) =>
+  updateProject = (data: UpdateProjectPayload, params: RequestParams = {}) =>
     this.request<UpdateProjectData, any>({
       path: `/user/api/project`,
       method: 'PUT',
       body: data,
-      type: ContentType.Json,
+      type: ContentType.FormData,
       ...params,
     });
   /**
-   * @description HOST = 150.136.153.235:30080 <br>ValidationDetails : CreateProjectRequestDto
+   * @description HOST = 150.136.153.235:30443 <br>ValidationDetails : CreateProjectRequestDto
    *
    * @tags project-controller
    * @name CreateProject
@@ -119,16 +121,16 @@ export class User<
    * @request POST:/user/api/project
    * @response `200` `CreateProjectData` OK
    */
-  createProject = (data: CreateProjectRequestDto, params: RequestParams = {}) =>
+  createProject = (data: CreateProjectPayload, params: RequestParams = {}) =>
     this.request<CreateProjectData, any>({
       path: `/user/api/project`,
       method: 'POST',
       body: data,
-      type: ContentType.Json,
+      type: ContentType.FormData,
       ...params,
     });
   /**
-   * @description HOST = 150.136.153.235:30080 <br>ValidationDetails : DeleteProjectRequestDto
+   * @description HOST = 150.136.153.235:30443 <br>ValidationDetails : DeleteProjectRequestDto
    *
    * @tags project-controller
    * @name DeleteProject
@@ -145,7 +147,7 @@ export class User<
       ...params,
     });
   /**
-   * @description HOST = 150.136.153.235:30080 <br>ValidationDetails : CreateTaskRequestDto <br>depth는 parentTask의 depth에 따라 결정 되며, 최상위 업무는 0, 그 하위 업무는 1, 그 하위 업무는 2로 결정됩니다. parentTask의 depth가 2일 경우, 생성되지 않습니다.
+   * @description HOST = 150.136.153.235:30443 <br>Validation : 로그인 필요함, 해당 프로젝트에 속해있지 않은 유저는 업무 생성 불가, filename의 uuid 검사 <br>DTOValidationDetails : CreateTaskRequestDto <br>depth는 parentTask의 depth에 따라 결정 되며, 최상위 업무는 0, 그 하위 업무는 1, 그 하위 업무는 2로 결정됩니다. parentTask의 depth가 2일 경우, 생성되지 않습니다. <br>
    *
    * @tags task-controller
    * @name CreateTask
@@ -158,11 +160,31 @@ export class User<
       path: `/user/api/task/v1`,
       method: 'POST',
       body: data,
+      type: ContentType.FormData,
+      ...params,
+    });
+  /**
+   * @description HOST = 150.136.153.235:30443
+   *
+   * @tags member-controller
+   * @name DeleteUsersFromTask
+   * @summary 업무의 담당자들을 삭제하기 위한 API
+   * @request DELETE:/user/api/task/v1
+   * @response `200` `DeleteUsersFromTaskData` OK
+   */
+  deleteUsersFromTask = (
+    data: MemberRemoveRequestDto,
+    params: RequestParams = {},
+  ) =>
+    this.request<DeleteUsersFromTaskData, any>({
+      path: `/user/api/task/v1`,
+      method: 'DELETE',
+      body: data,
       type: ContentType.Json,
       ...params,
     });
   /**
-   * @description HOST = 150.136.153.235:30080 <br>ValidationDetails : MemberMappingToTaskRequestDto
+   * @description HOST = 150.136.153.235:30443 <br>ValidationDetails : MemberMappingToTaskRequestDto
    *
    * @tags member-controller
    * @name MemberAddToTask
@@ -182,7 +204,7 @@ export class User<
       ...params,
     });
   /**
-   * @description HOST = 150.136.153.235:30080 <br>ValidationDetails : MemberMappingToProjectRequestDto
+   * @description HOST = 150.136.153.235:30443 <br>ValidationDetails : MemberMappingToProjectRequestDto
    *
    * @tags member-controller
    * @name MemberAddToProject
@@ -236,7 +258,7 @@ export class User<
       ...params,
     });
   /**
-   * @description HOST = 150.136.153.235:30080
+   * @description HOST = 150.136.153.235:30443
    *
    * @tags member-controller
    * @name GetUsersFromProject
@@ -257,7 +279,7 @@ export class User<
       ...params,
     });
   /**
-   * @description HOST = 150.136.153.235:30080
+   * @description HOST = 150.136.153.235:30443
    *
    * @tags member-controller
    * @name GetMembersByUserIds
@@ -303,7 +325,7 @@ export class User<
       ...params,
     });
   /**
-   * @description HOST = 150.136.153.235:30080
+   * @description HOST = 150.136.153.235:30443
    *
    * @tags user-controller
    * @name GetUsersInfo
@@ -325,7 +347,7 @@ export class User<
       ...params,
     });
   /**
-   * @description HOST = 150.136.153.235:30080
+   * @description HOST = 150.136.153.235:30443
    *
    * @tags user-controller
    * @name GetCurrentUserInfo

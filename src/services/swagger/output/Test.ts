@@ -9,24 +9,23 @@
  * ---------------------------------------------------------------
  */
 
-import { ReqAlarmListData } from './data-contracts';
+import { TestData } from './data-contracts';
 import { HttpClient, RequestParams } from './http-client';
 
-export class Api<
+export class Test<
   SecurityDataType = unknown,
 > extends HttpClient<SecurityDataType> {
   /**
-   * @description 데이터베이스에 저장 된 알림 정보를 불러옵니다.
+   * No description
    *
-   * @tags alarm-controller
-   * @name ReqAlarmList
-   * @summary 과거 알림 불러오기
-   * @request GET:/api/user/alarm/list
-   * @response `200` `ReqAlarmListData` OK
+   * @tags test-2-controller
+   * @name Test
+   * @request GET:/test
+   * @response `200` `TestData` OK
    */
-  reqAlarmList = (params: RequestParams = {}) =>
-    this.request<ReqAlarmListData, any>({
-      path: `/api/user/alarm/list`,
+  test = (params: RequestParams = {}) =>
+    this.request<TestData, any>({
+      path: `/test`,
       method: 'GET',
       ...params,
     });

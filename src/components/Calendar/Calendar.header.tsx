@@ -66,15 +66,15 @@ export const CalendarHeader = () => {
         </Typography>
         <Button
           variant="outline"
-          hasIcon
-          renderIcon={<ArrowLeft />}
+          $hasIcon
+          $renderIcon={<ArrowLeft />}
           size="medium"
           onClick={handlePrevClick}
         />
         <Button
-          renderIcon={<ArrowRight />}
+          $renderIcon={<ArrowRight />}
           variant="outline"
-          hasIcon
+          $hasIcon
           size="medium"
           onClick={handleNextClick}
         />
@@ -83,13 +83,13 @@ export const CalendarHeader = () => {
           variant="outline"
           size="medium"
           text="필터"
-          hasIcon
-          isSelect={isOpenFilter}
-          renderIcon={<Search />}
+          $hasIcon
+          $isSelect={isOpenFilter}
+          $renderIcon={<Search />}
         />
         <Button
-          hasIcon
-          renderIcon={
+          $hasIcon
+          $renderIcon={
             <ProjectIcon
               width={18}
               height={18}
@@ -101,7 +101,7 @@ export const CalendarHeader = () => {
           size="medium"
           text="일정 등록"
           onClick={openTask}
-          isSelect={isOpenTask}
+          $isSelect={isOpenTask}
         />
       </Section>
       <Portal container={calendarHeaderRef?.current}>

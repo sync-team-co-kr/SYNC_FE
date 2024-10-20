@@ -31,10 +31,10 @@ export const EmptyList = () => {
         size="medium"
         variant="fill"
         text="프로젝트 추가"
-        hasIcon
+        $hasIcon
         onClick={() => openModal(CreateProjectModal)}
-        isDisabled={false}
-        iconPosition="left"
+        $isDisabled={false}
+        $iconPosition="left"
       />
     </EmptyListContainer>
   );

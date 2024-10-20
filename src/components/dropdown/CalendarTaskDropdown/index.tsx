@@ -64,8 +64,8 @@ const CalendarTaskDropdown = (
           <Button
             size="small"
             variant="text"
-            hasIcon
-            renderIcon={<Close width={24} height={24} />}
+            $hasIcon
+            $renderIcon={<Close width={24} height={24} />}
             onClick={setClose}
           />
         </CalendarTaskDropdownHeader>

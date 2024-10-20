@@ -20,6 +20,7 @@ import { modalStore } from '@libs/store';
 import { useTaskActions, useTaskState } from '@libs/store/task/task';
 import StyleCreateProjectModal from '@pages/projects/ProjectBoards/CreateProjectModal/CreateProjectModal.style';
 import { useGetProjectList } from '@services/project/Project.hooks';
+import { CreateTaskPayload } from '@services/swagger/output/data-contracts';
 import { useCreateTask } from '@services/task/Task.hooks';
 
 import { SELECT_STATUS } from './constants';
@@ -32,13 +33,27 @@ import {
   SectionContainer,
 } from './style';
 
+// 시간 포함 여부에 따라 날짜와 시간을 합치는 함수
+function combineDateTime(date: string): string {
+  try {
+    const datePart = new Date(date).toISOString().split('T')[0];
+    const hour = String(new Date(date).getHours()).padStart(2, '0');
+    const minute = String(new Date(date).getMinutes()).padStart(2, '0');
+
+    const combined = new Date(`${datePart}T${hour}:${minute}:00Z`);
+
+    return combined.toISOString();
+  } catch (error) {
+    console.error(error);
+    throw new Error('날짜와 시간을 합치는데 실패했습니다.');
+  }
+}
 // 업무 생성 모달
 
 export const CreateTaskModal = () => {
   const { closeModal } = modalStore();
 
   // 업무 생성 모달 payload 값들을 가져오는 state
-  // const { resetPayload } = useTaskActions();
   const { payload, project, errorList, titleImage } = useTaskState();
 
   // 업무 생성 모달 payload 값들을 set 해주는 actions
@@ -52,6 +67,9 @@ export const CreateTaskModal = () => {
     setStartDate,
     setEndDate,
     setTitleImage,
+    resetPayload,
+    removeErrorList,
+    clearErrorList,
   } = useTaskActions();
 
   // projectData를 가져오는 hooks
@@ -66,43 +84,57 @@ export const CreateTaskModal = () => {
 
   const { createTaskMutate } = useCreateTask();
 
+  const handleCloseModal = () => {
+    closeModal();
+
+    resetPayload();
+    clearErrorList();
+  };
+
   const handleCreateTask = () => {
+    // 필수 입력값 체크
+    if (payload.title === '') {
+      errorList.push('title');
+    }
+
+    if (payload.projectId === 0) {
+      errorList.push('projectId');
+    }
+
     if (errorList.length > 0) {
       alert('필수 입력값을 입력해주세요');
       return;
     }
 
-    createTaskMutate(
-      {
-        data: {
-          projectId: payload.projectId,
-          title: payload.title,
-          description: payload.description,
-          parentTaskId:
-            payload.parentTaskId === 0 ? null : payload.parentTaskId,
-          startDate: payload.startDate,
-          endDate: payload.endDate,
-        },
-        images: [],
-        titleimage: titleImage,
-      },
-      {
-        onSuccess: () => {
-          console.log('success');
-        },
+    const taskData: CreateTaskPayload['data'] = {
+      projectId: payload.projectId,
+      title: payload.title,
+      description: payload.description,
+      parentTaskId: payload.parentTaskId,
+      thumbnailIcon: titleImage?.startsWith('blob') ? '' : titleImage,
+      status: payload.status,
+    };
 
-        onError: (error) => {
-          alert(error);
-        },
+    if (payload.startDate && payload.endDate) {
+      taskData.startDate = includeTime
+        ? combineDateTime(payload.startDate!)
+        : new Date(payload.startDate!).toISOString().split('T')[0];
+
+      taskData.endDate = includeTime
+        ? combineDateTime(payload.endDate!)
+        : new Date(payload.endDate!).toISOString().split('T')[0];
+    }
+
+    createTaskMutate({
+      data: {
+        ...taskData,
       },
-    );
+      images: [],
+      thumbnailImage: titleImage?.startsWith('blob') ? titleImage : '',
+    });
   };
   // date
-  const handleChangeDate = (
-    date: Date | undefined,
-    type: 'startDate' | 'endDate',
-  ) => {
-    if (!date) return;
+  const handleChangeDate = (date: Date, type: 'startDate' | 'endDate') => {
     if (type === 'startDate') {
       setStartDate(date);
     }
@@ -118,6 +150,16 @@ export const CreateTaskModal = () => {
     setProjectList(searchFilter(e.target.value, projectListData));
   };
 
+  // validate
+
+  const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setTitle(e.target.value);
+
+    if (errorList.includes('title')) {
+      removeErrorList('title');
+    }
+  };
+
   useEffect(() => {
     setProjectList(projectListData);
   }, [projectListData]);
@@ -129,9 +171,9 @@ export const CreateTaskModal = () => {
           업무 생성
         </Typography>
         <Button
-          hasIcon
-          renderIcon={<CloseX width={24} height={24} />}
-          onClick={closeModal}
+          $hasIcon
+          $renderIcon={<CloseX width={24} height={24} />}
+          onClick={handleCloseModal}
           size="small"
           variant="text"
         />
@@ -194,7 +236,7 @@ export const CreateTaskModal = () => {
           <ButtonGroup>
             <Button
               size="small"
-              isSelect={payload.parentTaskId === 0}
+              $isSelect={payload.parentTaskId === 0}
               variant="task"
               text="테스크"
               onClick={() => {
@@ -204,7 +246,7 @@ export const CreateTaskModal = () => {
             <Button
               size="small"
               variant="subTask"
-              isSelect={payload.parentTaskId === 1}
+              $isSelect={payload.parentTaskId === 1}
               text="서브 테스크"
               onClick={() => {
                 setParentTaskId(1);
@@ -213,7 +255,7 @@ export const CreateTaskModal = () => {
             <Button
               size="small"
               variant="quest"
-              isSelect={payload.parentTaskId === 2}
+              $isSelect={payload.parentTaskId === 2}
               text="퀘스트"
               onClick={() => {
                 setParentTaskId(2);
@@ -225,27 +267,28 @@ export const CreateTaskModal = () => {
 
         {/* task */}
         {payload.parentTaskId !== 0 && (
-          <SectionContainer direction="row" gap={24}>
-            {payload.parentTaskId === 1 && (
-              <TaskContainer>
-                <LabelContainer>
-                  <Typography variant="small-text-b" color="negativeRed">
-                    *
-                  </Typography>
-                  <Typography variant="small-text-b" color="black35">
-                    테스크
-                  </Typography>
-                </LabelContainer>
-                <Select
-                  listLabel="테스크"
-                  isEssential
-                  value={payload.title}
-                  type="select"
-                >
-                  <SelectButton />
-                </Select>
-              </TaskContainer>
-            )}
+          <SectionContainer maxWidth="100%" direction="row" gap={24}>
+            {payload.parentTaskId === 1 ||
+              (payload.parentTaskId === 2 && (
+                <TaskContainer>
+                  <LabelContainer>
+                    <Typography variant="small-text-b" color="negativeRed">
+                      *
+                    </Typography>
+                    <Typography variant="small-text-b" color="black35">
+                      테스크
+                    </Typography>
+                  </LabelContainer>
+                  <Select
+                    listLabel="테스크"
+                    isEssential
+                    value={payload.title}
+                    type="select"
+                  >
+                    <SelectButton />
+                  </Select>
+                </TaskContainer>
+              ))}
 
             {payload.parentTaskId === 2 && (
               <TaskContainer>
@@ -288,7 +331,7 @@ export const CreateTaskModal = () => {
             variant="outlined"
             placeholder="업무명을 입력해주세요"
             value={payload.title}
-            onChange={(e) => setTitle(e.target.value)}
+            onChange={(e) => handleTitleChange(e)}
           />
         </SectionContainer>
         {/* icon & task end */}

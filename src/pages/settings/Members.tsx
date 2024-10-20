@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import fakeAvatar from '@assets/rectangle-50.png';
 import search from '@assets/search.svg';
@@ -291,11 +291,6 @@ const MembersSettings = () => {
   );
   const [inviteLink, setInviteLink] = useState('');
 
-  useEffect(
-    () => projectListData && setSelectedProject(projectListData[0]),
-    [isLoading],
-  );
-
   const createInviteLink = async () => {
     if (selectedProject?.projectId) {
       const response: AxiosResponse<AxiosResByData<{ link: string }>> =
@@ -307,6 +302,11 @@ const MembersSettings = () => {
       setInviteLink(response.data.data.link);
     }
   };
+
+  useEffect(
+    () => projectListData && setSelectedProject(projectListData[0]),
+    [isLoading],
+  );
 
   useEffect(() => {
     createInviteLink();

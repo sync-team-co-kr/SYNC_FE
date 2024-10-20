@@ -11,12 +11,11 @@ import { RawProject } from '@customTypes/project';
 import useModal from '@hooks/useModal';
 import {
   useProjectActions,
-  useProjectStore,
+  useProjectState,
 } from '@libs/store/project/project';
 import { useEditProject, useGetProject } from '@services/project/Project.hooks';
 import convertSharp from '@utils/date/convertSharp';
 import isStartDateExceedsEndDate from '@utils/project/validateProject';
-import { isBefore, setHours, setMinutes } from 'date-fns';
 
 import StyleModifyProjectModal from './ModifyProjectModal.style';
 
@@ -32,7 +31,7 @@ function ModifyProjectModal({ projectId }: ModifyProjectModalProps) {
   const [includeTime, setIncludeTime] = useState(false);
 
   const { title, subTitle, description, startDate, endDate } =
-    useProjectStore();
+    useProjectState();
   const {
     setProject,
     setTitle,
@@ -171,14 +170,14 @@ function ModifyProjectModal({ projectId }: ModifyProjectModalProps) {
           <Button
             size="medium"
             variant="text"
-            hasIcon={false}
+            $hasIcon={false}
             onClick={() => closeModal(ModifyProjectModal)}
             text="취소"
           />
           <Button
             size="medium"
             variant="fill"
-            hasIcon={false}
+            $hasIcon={false}
             onClick={handleModifyProject}
             text="완료"
           />

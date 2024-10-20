@@ -27,9 +27,8 @@ export const getProjectIdList = async () => {
     any
   > = await userApiInstance.get(`/project/api/v2?userId=${loggedUserId}`);
 
-  const { userId } = getProjectIdsRes.data.data;
-
-  return userId;
+  const { projectIds } = getProjectIdsRes.data.data;
+  return projectIds;
 };
 
 /**

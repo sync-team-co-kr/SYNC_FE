@@ -76,7 +76,7 @@
     "craco-build": "craco build",
     "craco-test": "craco test",
     "craco-eject": "react-scripts eject",
-    "swagger-typescript-api": "npx swagger-typescript-api -p http://150.136.153.235:30080/v3/api-docs -r -o ./src/services/swagger/output --modular -d --extract-request-body --extract-response-body --extract-response-error --axios"
+    "swagger-typescript-api": "npx swagger-typescript-api -p https://user.sync-team.co.kr:30443/v3/api-docs -r -o ./src/services/swagger/output --modular -d --extract-request-body --extract-response-body --extract-response-error --axios"
   },
   "eslintConfig": {
     "extends": [

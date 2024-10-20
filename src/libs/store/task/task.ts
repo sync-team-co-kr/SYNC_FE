@@ -1,14 +1,15 @@
-import { RawProject } from '@customTypes/project';
+import { IProject, RawProject } from '@customTypes/project';
 import { CreateTaskRequestDto } from '@services/swagger/output/data-contracts';
 import { create } from 'zustand';
 
 // 업무 생성 State
 type TaskState = {
   payload: CreateTaskRequestDto & { status: number };
-  project: RawProject;
+  project: IProject;
   errorList: string[];
   taskId: number;
   titleImage: string | undefined;
+  images: File[];
 };
 type TaskActions = {
   actions: {
@@ -49,15 +50,15 @@ type TaskActions = {
 
 const initialState: TaskState = {
   titleImage: undefined,
+  images: [],
   taskId: 0,
   payload: {
     title: '',
     description: '',
-    startDate: new Date(),
-    endDate: new Date(),
+    startDate: '',
+    endDate: '',
     parentTaskId: 0,
     projectId: 0,
-    images: [],
     status: 0,
   },
   project: {
@@ -65,10 +66,12 @@ const initialState: TaskState = {
     title: '',
     subTitle: '',
     description: '',
-    startDate: '',
-    endDate: '',
+    startDate: undefined,
+    endDate: undefined,
     members: [],
   },
+
+  // validation errorList
 
   errorList: [],
 };
@@ -108,7 +111,7 @@ const useTaskStore = create<TaskState & TaskActions>((set) => ({
       set((state) => ({
         payload: {
           ...state.payload,
-          startDate,
+          startDate: startDate.toISOString(),
         },
       }));
     },
@@ -116,7 +119,7 @@ const useTaskStore = create<TaskState & TaskActions>((set) => ({
       set((state) => ({
         payload: {
           ...state.payload,
-          endDate,
+          endDate: endDate.toISOString(),
         },
       }));
     },
@@ -148,7 +151,7 @@ const useTaskStore = create<TaskState & TaskActions>((set) => ({
       set((state) => ({
         payload: {
           ...state.payload,
-          images: Array.from(new Set([...(state.payload.images || []), image])),
+          images: Array.from(new Set([...(state.images || []), image])),
         },
       }));
     },
@@ -169,12 +172,21 @@ const useTaskStore = create<TaskState & TaskActions>((set) => ({
 
     // project
     setProject: (project) => {
-      set(() => ({
-        project,
+      set((state) => ({
+        ...state,
+        project: {
+          ...state.project,
+          startDate: project.startDate
+            ? new Date(project.startDate)
+            : undefined,
+          endDate: project.endDate ? new Date(project.endDate) : undefined,
+        },
       }));
     },
 
     // errorList
+    // validation check 시에 errorList 추가
+
     setErrorList: (errorList) => {
       set((state) => {
         return {
@@ -185,6 +197,8 @@ const useTaskStore = create<TaskState & TaskActions>((set) => ({
     },
 
     // errorList 삭제
+    // error 가 해결되거나 다시 입력 시에 errorList 삭제
+
     removeErrorList: (errorList) => {
       set((state) => {
         return {
@@ -195,6 +209,7 @@ const useTaskStore = create<TaskState & TaskActions>((set) => ({
     },
 
     // errorList 초기화
+    // 생성 모달 닫을 시에 errorList 초기화
     clearErrorList: () => {
       set((state) => {
         return {
@@ -213,3 +228,5 @@ export const useTaskState = () => useTaskStore((state) => state);
 // 업무 생성 Actions 반환
 
 export const useTaskActions = () => useTaskStore().actions;
+
+export default useTaskStore;

@@ -23,7 +23,7 @@ const initialState: IProject = {
   members: [],
 };
 
-export const useProjectStore = create<IProject & ProjectActions>((set) => ({
+const useProjectStore = create<IProject & ProjectActions>((set) => ({
   ...initialState,
   actions: {
     setProject: (project) => {
@@ -72,3 +72,5 @@ export const useProjectStore = create<IProject & ProjectActions>((set) => ({
 export const useProjectState = () => useProjectStore((state) => state);
 
 export const useProjectActions = () => useProjectStore().actions;
+
+export default useProjectStore;

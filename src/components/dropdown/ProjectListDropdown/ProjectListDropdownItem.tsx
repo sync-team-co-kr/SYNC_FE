@@ -1,5 +1,5 @@
 import { Typography } from '@components/common';
-import { useTaskWithProjectActions } from '@libs/store/task/project';
+import { useTaskActions } from '@libs/store/task/task';
 import { useGetProject } from '@services/project/Project.hooks';
 
 import { DropdownItem, DropdownItemText, ImageWrapper } from './style';
@@ -13,12 +13,12 @@ export const ProjectDropdownItem = ({
 }: ProjectDropdownItemProps) => {
   const { projectData } = useGetProject(projectId);
 
-  const { setProjects } = useTaskWithProjectActions();
+  const { setProject } = useTaskActions();
 
   if (!projectData) return null;
 
   const handleProjectClick = () => {
-    setProjects([projectData]);
+    setProject(projectData);
   };
 
   return (

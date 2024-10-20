@@ -79,9 +79,9 @@ const ProjectBoards = () => {
         <Button
           size="medium"
           variant="fill"
-          hasIcon={true}
-          isDisabled={false}
-          iconPosition="left"
+          $hasIcon={true}
+          $isDisabled={false}
+          $iconPosition="left"
           onClick={() => openModal(CreateProjectModal)}
           text="프로젝트 추가"
         />

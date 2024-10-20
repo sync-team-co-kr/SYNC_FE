@@ -13,6 +13,7 @@ import {
   useCalendarActions,
   useCalendarState,
 } from '@libs/store/task/calendar';
+import { useTaskState } from '@libs/store/task/task';
 import styled from 'styled-components';
 
 const CalenderContainer = styled.div`
@@ -40,6 +41,8 @@ export const Calendars = () => {
   const { currentDate } = useCalendarState();
   const { setCurrentDate } = useCalendarActions();
 
+  const { project } = useTaskState();
+
   const projectListDropdownRef = useRef(null);
 
   return (
@@ -47,12 +50,12 @@ export const Calendars = () => {
       <ProjectListDropdownContainer>
         <Button
           variant="text"
-          hasIcon={true}
-          iconPosition="right"
+          $hasIcon={true}
+          $iconPosition="right"
           size="medium"
-          text="전체보기"
+          text={project.title !== '' ? project.title : '전체보기'}
           onClick={openProjectListDropdown}
-          renderIcon={
+          $renderIcon={
             !isOpenProjectListDropdown ? (
               <ArrowBottom />
             ) : (
