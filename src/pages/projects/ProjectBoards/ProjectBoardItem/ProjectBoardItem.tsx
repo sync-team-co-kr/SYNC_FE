@@ -52,9 +52,10 @@ const ProjectBoardItem = ({ project }: { project: RawProject }) => {
 
       <StyleProjectBoard.Footer>
         <StyleProjectBoard.Members>
-          {project.members.map((member) => (
-            <Avatar key={member.id} member={member} />
-          ))}
+          {project.members &&
+            project.members.map((member) => (
+              <Avatar key={member.id} member={member} />
+            ))}
         </StyleProjectBoard.Members>
 
         <StyleProjectBoard.Period>

@@ -2,7 +2,7 @@ import { HTMLInputTypeAttribute, Ref, forwardRef } from 'react';
 
 import { ReactComponent as ProfileProject } from '@assets/Profile_Project.svg';
 import { ReactComponent as Search } from '@assets/searchSM.svg';
-import { ProfileDropdown } from '@components/dropdown/ProfileDropdown';
+import ProfileDropdown from '@components/dropdown/ProfileDropdown';
 import styled from 'styled-components';
 
 import {
