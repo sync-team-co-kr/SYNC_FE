@@ -16,8 +16,9 @@ const useDropdown: useDropdownType = () => {
     const handleDetectDropdownContent = (
       e: React.BaseSyntheticEvent | MouseEvent,
     ) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target))
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
         setIsOpen(false);
+      }
     };
     document.addEventListener('click', handleDetectDropdownContent);
     return () => {

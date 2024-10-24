@@ -1,4 +1,3 @@
-import { RawProject } from '@customTypes/project';
 import { isBefore } from 'date-fns';
 
 const isStartDateExceedsEndDate = (startDate?: Date, endDate?: Date) => {

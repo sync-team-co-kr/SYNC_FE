@@ -64,6 +64,7 @@ const initialState: TaskState = {
   project: {
     projectId: 0,
     title: '',
+    thumbnail: '',
     subTitle: '',
     description: '',
     startDate: undefined,

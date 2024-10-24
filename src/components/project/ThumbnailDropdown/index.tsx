@@ -3,6 +3,8 @@ import { useState } from 'react';
 import { styled } from 'styled-components';
 import { vars } from 'token';
 
+import ThumbnailEmojiPicker from './Thumbnail.emoji';
+
 const Container = styled.section<{ $isactive: boolean }>`
   height: 400px;
   padding: 12px;
@@ -13,6 +15,11 @@ const Container = styled.section<{ $isactive: boolean }>`
   flex-direction: column;
   gap: 18px;
   position: absolute;
+  z-index: 50;
+  section {
+    width: 400px;
+    height: 450px;
+  }
 `;
 
 const TabMenuList = styled.ul`
@@ -42,12 +49,17 @@ const TabMenuItem = styled.li<{
 
 interface ThumbnailDropdownProps {
   isOpen: boolean;
+  closeDropdown: () => void;
 }
 
-const ThumbnailDropdown = ({ isOpen }: ThumbnailDropdownProps) => {
+const ThumbnailDropdown = ({
+  isOpen,
+  closeDropdown,
+}: ThumbnailDropdownProps) => {
   const [currentTabMenu, setCurrentTabMenu] = useState<
     'emoji' | 'icon' | 'custom'
   >('emoji');
+
   return (
     <Container $isactive={isOpen}>
       <TabMenuList>
@@ -73,6 +85,11 @@ const ThumbnailDropdown = ({ isOpen }: ThumbnailDropdownProps) => {
           사용자 지정
         </TabMenuItem>
       </TabMenuList>
+      <section>
+        {currentTabMenu === 'emoji' && (
+          <ThumbnailEmojiPicker close={closeDropdown} />
+        )}
+      </section>
     </Container>
   );
 };

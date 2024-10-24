@@ -16,7 +16,6 @@ import { useCreateProject } from '@services/project/Project.hooks';
 import { CreateProjectRequestDto } from '@services/swagger/output/data-contracts';
 import convertSharp from '@utils/date/convertSharp';
 import isStartDateExceedsEndDate from '@utils/project/validateProject';
-import { isBefore, setHours, setMinutes } from 'date-fns';
 
 import StyleCreateProjectModal from './CreateProjectModal.style';
 
@@ -35,7 +34,7 @@ export interface ProjectPeriodTime {
 function CreateProjectModal() {
   const [closeModal] = useModal();
 
-  const { title, subTitle, description, startDate, endDate } =
+  const { title, thumbnail, subTitle, description, startDate, endDate } =
     useProjectState();
   const {
     setTitle,
@@ -60,6 +59,7 @@ function CreateProjectModal() {
     e.preventDefault();
     const newProject = {
       title,
+      icon: thumbnail,
       subTitle,
       description,
     };

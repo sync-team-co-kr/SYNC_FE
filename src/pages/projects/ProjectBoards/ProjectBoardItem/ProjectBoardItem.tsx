@@ -18,6 +18,15 @@ const MeatBalls = styled.div`
   position: relative;
 `;
 
+const Thumbnail = styled.div`
+  width: 28px;
+  height: 28px;
+  font-size: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
 const ProjectBoardItem = ({ project }: { project: RawProject }) => {
   const [
     isOpenProjectDropdownMenu,
@@ -28,7 +37,11 @@ const ProjectBoardItem = ({ project }: { project: RawProject }) => {
   return (
     <StyleProjectBoard.BoardArea key={project.projectId}>
       <StyleProjectBoard.Header>
-        <img src={projectIcon} alt="프로젝트 대표 아이콘" />
+        {project.thumbnail ? (
+          <Thumbnail>{project.thumbnail}</Thumbnail>
+        ) : (
+          <img src={projectIcon} alt="프로젝트 대표 아이콘" />
+        )}
         <StyleProjectBoard.Title>
           <h5>{project.subTitle}</h5>
           <h2>{project.title}</h2>
