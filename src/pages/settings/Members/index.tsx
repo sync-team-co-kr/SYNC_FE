@@ -12,6 +12,7 @@ import RawProject from '@customTypes/project/RawProject';
 import useDropdown from '@hooks/useDropdown';
 import useModal from '@hooks/useModal';
 import { userApiInstance } from '@libs/axios/axios';
+import { useGetProjectMembers } from '@services/member/Member.hooks';
 import { useGetProjectList } from '@services/project/Project.hooks';
 import { AxiosResponse } from 'axios';
 
@@ -73,6 +74,9 @@ const MembersSettings = () => {
   const [selectedProject, setSelectedProject] = useState<RawProject | null>(
     projectListData ? projectListData[0] : null,
   );
+
+  const { members } = useGetProjectMembers(selectedProject?.projectId || 0);
+
   const [inviteLink, setInviteLink] = useState('');
 
   const createInviteLink = async () => {
@@ -91,6 +95,8 @@ const MembersSettings = () => {
     () => projectListData && setSelectedProject(projectListData[0]),
     [isLoading],
   );
+
+  console.log(members);
 
   useEffect(() => {
     createInviteLink();
