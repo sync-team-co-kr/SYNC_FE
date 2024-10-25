@@ -30,7 +30,7 @@ function ModifyProjectModal({ projectId }: ModifyProjectModalProps) {
   const { editProjectMutate } = useEditProject();
   const [includeTime, setIncludeTime] = useState(false);
 
-  const { title, subTitle, description, startDate, endDate } =
+  const { title, thumbnail, subTitle, description, startDate, endDate } =
     useProjectState();
   const {
     setProject,
@@ -58,6 +58,7 @@ function ModifyProjectModal({ projectId }: ModifyProjectModalProps) {
     const editedProject = {
       projectId,
       title,
+      icon: thumbnail,
       subTitle,
       description,
     };
