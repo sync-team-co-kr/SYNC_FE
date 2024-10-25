@@ -8,7 +8,7 @@ import { vars } from 'token';
 
 const BackGround = styled.div`
   height: 100%;
-  min-height: calc(100vh - 100px);
+  min-height: 840px;
   padding: 32px 40px;
   background-color: ${vars.sementic.color.primaryLightOrange};
   border: 1px solid #d2dbe2;
@@ -18,6 +18,7 @@ const BackGround = styled.div`
 
 const SettingsContainer = styled.section`
   width: 100%;
+  min-height: calc(100vh - 164px);
   background-color: ${vars.sementic.color.white};
   border: 1px solid #d2dbe2;
   display: flex;
@@ -59,11 +60,12 @@ const SettingsMenuItem = styled.li<{ $matchpathname: boolean }>`
   }
 `;
 
-const SettingsContentWrapper = styled.section`
+const SettingsContentContainer = styled.section`
   width: calc(100% - 237px);
-  padding: 30px;
+  padding: 40px;
   display: flex;
   flex-direction: column;
+  gap: 32px;
 `;
 
 export default function Settings() {
@@ -96,9 +98,9 @@ export default function Settings() {
             </Link>
           </SettingsMenuItem>
         </SettingsMenu>
-        <SettingsContentWrapper>
+        <SettingsContentContainer>
           <Outlet />
-        </SettingsContentWrapper>
+        </SettingsContentContainer>
       </SettingsContainer>
     </BackGround>
   );

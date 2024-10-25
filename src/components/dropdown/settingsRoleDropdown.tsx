@@ -9,8 +9,7 @@ const Wrapper = styled.ul<{ $isOpen: boolean }>`
   display: ${(props) => (props.$isOpen ? 'flex' : 'none')};
   flex-direction: column;
   position: absolute;
-  left: -240px;
-  bottom: -230px;
+  bottom: calc(-44px + -160px + -14px);
   z-index: 50;
 `;
 

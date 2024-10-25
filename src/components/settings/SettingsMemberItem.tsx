@@ -1,88 +1,81 @@
+import { ReactComponent as ArrowBottom } from '@assets/common/arrow/arrow-bottom.svg';
+import { ReactComponent as MeatballMenu } from '@assets/meatballs.svg';
 import SettingsMember from '@components/dropdown/SettingsMemberDropdown';
 import SettingsRole from '@components/dropdown/settingsRoleDropdown';
 import useDropdown from '@hooks/useDropdown';
 import styled from 'styled-components';
+import { vars } from 'token';
 
 const MemberItem = styled.li`
   width: 900px;
-  border-bottom: 1px solid black;
-  color: var(--main-black, #000);
-  font-family: Inter;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: 150%; /* 21px */
-  letter-spacing: -0.266px;
+  border-bottom: 1px solid ${vars.sementic.color.black70};
   display: flex;
-  p {
-    width: 154px;
-    padding: 8px;
+  & > * {
+    padding: 12px 16px;
     display: flex;
     align-items: center;
+    position: relative;
   }
 `;
 
-const UserName = styled.div`
-  width: 430px;
-  padding: 8px;
+const Profile = styled.div`
+  width: 60%;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
 `;
 
 const Avatar = styled.div`
-  width: 40px;
-  height: 40px;
-  background: #d9d9d9;
-  border-radius: 100px;
+  width: 32px;
+  height: 32px;
+  background: ${vars.sementic.color
+    .black35}; // 유저의 프로필 or 기본 프로필로 변경
+  border: 2px solid ${vars.sementic.color.white};
+  border-radius: 100%;
 `;
 
 const UserInfo = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 2px;
+  span:first-child {
+    font-size: ${vars.sementic.typography['heading-4']};
+    font-weight: 700;
+    color: ${vars.sementic.color.black};
+  }
+  span:last-child {
+    font-size: ${vars.sementic.typography['small-text-b']};
+    font-weight: 700;
+    color: ${vars.sementic.color.black35};
+  }
 `;
 
 const Role = styled.div`
-  width: 154px;
-  padding: 8px;
-  display: flex;
-  align-items: center;
-  position: relative;
+  width: calc(100% - 60% - 44px);
+  gap: 8px;
   button {
     padding: 15px 0;
     background-color: transparent;
     border: none;
     outline: none;
-    color: var(--main-black, #000);
-    font-family: Inter;
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: 150%; /* 21px */
-    letter-spacing: -0.266px;
+    font-size: ${vars.sementic.typography.paragraph};
+    font-weight: 500;
+    color: ${vars.sementic.color.black};
     cursor: pointer;
   }
 `;
 
 const More = styled.div`
-  width: 100px;
-  padding: 8px;
-  display: flex;
-  align-items: center;
-  position: relative;
+  width: 44px;
+  padding: 12px 16px;
   button {
     padding: 15px 0;
     background-color: transparent;
     border: none;
     outline: none;
-    color: var(--main-black, #000);
-    font-family: Inter;
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: 150%; /* 21px */
-    letter-spacing: -0.266px;
+    font-size: ${vars.sementic.typography.paragraph};
+    font-weight: 500;
+    color: ${vars.sementic.color.black};
     cursor: pointer;
   }
 `;
@@ -90,11 +83,10 @@ const More = styled.div`
 interface Member {
   name: string;
   email: string;
-  job: string;
   role: string;
 }
 
-export default function SettingsMemberItem({ name, email, job, role }: Member) {
+export default function SettingsMemberItem({ name, email, role }: Member) {
   const [
     isOpenSelectRoleDropdown,
     toggleSelectRoleDropdown,
@@ -105,20 +97,22 @@ export default function SettingsMemberItem({ name, email, job, role }: Member) {
 
   return (
     <MemberItem>
-      <UserName>
+      <Profile>
         <Avatar></Avatar>
         <UserInfo>
           <span>{name}</span>
           <span>{email}</span>
         </UserInfo>
-      </UserName>
-      <p>{job}</p>
+      </Profile>
       <Role ref={selectRoleDropdownRef}>
         <button onClick={toggleSelectRoleDropdown}>{role}</button>
+        <ArrowBottom />
         <SettingsRole isOpen={isOpenSelectRoleDropdown} />
       </Role>
       <More ref={memberDropdownRef}>
-        <button onClick={toggleMemberDropdown}>더보기</button>
+        <button onClick={toggleMemberDropdown}>
+          <MeatballMenu />
+        </button>
         <SettingsMember isOpen={isOpenMemberDropdown} />
       </More>
     </MemberItem>

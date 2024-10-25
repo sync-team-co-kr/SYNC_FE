@@ -1,32 +1,26 @@
 import { styled } from 'styled-components';
+import { vars } from 'token';
 
 export const Header = styled.article`
-  margin-bottom: 60px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 4px;
   h1 {
-    color: var(--main-black, #000);
-    font-family: Pretendard;
-    font-size: 40px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: normal;
+    font-size: ${vars.sementic.typography['heading-3']};
+    font-weight: 700;
+    color: ${vars.sementic.color.black};
   }
   p {
-    color: var(--main-black, #000);
-    font-family: Pretendard;
-    font-size: 15px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: normal;
+    font-size: ${vars.sementic.typography.paragraph};
+    font-weight: 500;
+    color: ${vars.sementic.color.black70};
   }
 `;
 
 export const Content = styled.section`
   display: flex;
   flex-direction: column;
-  gap: 45px;
+  gap: 24px;
 `;
 
 export const ProjectListDropdown = styled.div`
@@ -43,6 +37,21 @@ export const SelectedProject = styled.div`
   align-items: center;
   gap: 12px;
   position: relative;
+  article {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    h5 {
+      font-size: 14px;
+      font-weight: 700;
+      color: ${vars.sementic.color.black};
+    }
+    span {
+      font-size: 12px;
+      font-weight: 700;
+      color: ${vars.sementic.color.black70};
+    }
+  }
   img {
     width: 32px;
     height: 32px;
@@ -53,34 +62,36 @@ export const SelectedProject = styled.div`
 export const InviteLinkContainer = styled.section`
   display: flex;
   flex-direction: column;
+  gap: 4px;
   h5 {
-    margin-bottom: 8px;
-    color: var(--main-black, #000);
-    font-family: Inter;
-    font-size: 14px;
-    font-style: normal;
+    font-size: ${vars.sementic.typography.paragraph};
     font-weight: 700;
-    line-height: 150%; /* 21px */
-    letter-spacing: -0.266px;
+    color: ${vars.sementic.color.black};
   }
 `;
 
 export const InviteLinkHeader = styled.div`
-  margin-bottom: 20px;
+  margin-bottom: 8px;
   display: flex;
   justify-content: space-between;
+`;
+
+export const InviteLinkDescription = styled.article`
+  display: flex;
+  gap: 12px;
   p {
-    color: var(--main-black, #000);
-    font-family: Inter;
-    font-size: 12px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: 150%;
-    letter-spacing: -0.228px;
+    font-size: ${vars.sementic.typography['small-text']};
+    color: ${vars.sementic.color.black70};
+  }
+  a {
+    font-size: ${vars.sementic.typography['small-text']};
+    color: ${vars.sementic.color.positiveBlue};
+    text-decoration: underline;
+    cursor: pointer;
   }
 `;
 
-export const ToogleInviteCode = styled.div`
+export const ToggleInviteCode = styled.div`
   width: 56px;
   padding: 4px;
   border-radius: 100px;
@@ -104,32 +115,25 @@ export const InviteLinkForm = styled.form`
   justify-content: space-between;
   input[type='text'] {
     width: 60%;
-    padding: 4px 8px;
-    border: 1px solid var(--New-group-Gray, #d2dbe2);
+    padding: 8px 24px;
+    border: 1px solid ${vars.sementic.color.black10};
+    border-radius: 8px;
     outline: none;
-    color: var(--New-group-Gray, #d2dbe2);
-    font-family: Inter;
-    font-size: 14px;
-    font-style: normal;
+    font-size: ${vars.sementic.typography.paragraph};
+    color: ${vars.sementic.color.black70};
     font-weight: 700;
-    line-height: 150%; /* 21px */
-    letter-spacing: -0.266px;
     display: flex;
     align-items: center;
   }
   button {
-    width: 100px;
-    padding: 4px 8px;
-    background: #fff;
-    border: 1px solid var(--main-black, #000);
-    border-radius: 4px;
-    color: var(--main-black, #000);
-    font-family: Inter;
-    font-size: 14px;
-    font-style: normal;
+    padding: 8px 24px;
+    background-color: ${vars.sementic.color.white};
+    border: 1px solid ${vars.sementic.color.black10};
+    border-radius: 8px;
+    font-size: ${vars.sementic.typography.paragraph};
     font-weight: 700;
-    line-height: 150%; /* 21px */
-    letter-spacing: -0.266px;
+    color: ${vars.sementic.color.black70};
+
     display: flex;
     justify-content: center;
     align-items: center;
@@ -139,31 +143,35 @@ export const InviteLinkForm = styled.form`
 export const MembersContainer = styled.section`
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 12px;
 `;
 
 export const MembersHeader = styled.div`
-  height: 38px;
-  margin-bottom: 20px;
+  height: 52px;
+  border-bottom: 1px solid ${vars.sementic.color.black10};
   display: flex;
   justify-content: space-between;
+  align-items: flex-end;
 `;
 
 export const TabMenuList = styled.ul`
   width: 236px;
   display: flex;
-  gap: 8px;
+  gap: 12px;
 `;
 
 export const TabMenuItem = styled.li`
-  padding: 4px 8px;
+  padding: 8px 24px;
   display: flex;
-  justify-content: center;
-  align-items: center;
   gap: 8px;
+  border-bottom: ${false
+    ? vars.sementic.color.primaryOrange
+    : vars.sementic.color.black10};
 `;
 
 export const HeaderTail = styled.div`
+  height: 100%;
+  padding: 8px 0;
   display: flex;
   align-items: center;
 `;
@@ -176,9 +184,9 @@ export const SearchForm = styled.form`
 `;
 
 export const SearchBar = styled.input`
-  width: 288px;
-  height: 30px;
-  padding: 4px 0 4px 45px;
+  width: 222px;
+  height: 100%;
+  padding: 8px 12px;
   background: #fff;
   border: 1px solid var(--New-group-Gray, #d2dbe2);
   display: flex;
@@ -187,27 +195,24 @@ export const SearchBar = styled.input`
 
 export const SearchIcon = styled.img`
   position: absolute;
-  left: 15px;
+  right: 15px;
 `;
 
 export const InviteEmailButton = styled.button`
-  padding: 4px 8px;
-  background: #fff;
-  border: 1px solid var(--main-black, #000);
-  border-radius: 4px;
-  color: var(--main-black, #000);
-  font-family: Inter;
-  font-size: 14px;
-  font-style: normal;
+  height: 100%;
+  padding: 8px 24px;
+  background: ${vars.sementic.color.primaryOrange};
+  border: none;
+  border-radius: 8px;
+  font-size: ${vars.sementic.typography.paragraph};
   font-weight: 700;
-  line-height: 150%; /* 21px */
-  letter-spacing: -0.266px;
+  color: ${vars.sementic.color.black};
   display: flex;
-  justify-content: center;
-  align-items: center;
+  gap: 12px;
 `;
 
 export const MemberList = styled.ul`
+  padding: 20px;
   display: flex;
   flex-direction: column;
 `;
@@ -215,23 +220,22 @@ export const MemberList = styled.ul`
 export const MemberItemHeader = styled.li`
   width: 900px;
   display: flex;
-  border-bottom: 1px solid black;
-  h5 {
-    width: 430px;
-    padding: 8px;
+  border-bottom: 1px solid ${vars.sementic.color.black10};
+  & > * {
+    padding: 12px 16px;
+    font-size: ${vars.sementic.typography['heading-5']};
+    font-weight: 700;
+    color: ${vars.sementic.color.black20};
     display: flex;
     align-items: center;
+  }
+  h5 {
+    width: 60%;
   }
   p {
-    width: 154px;
-    padding: 8px;
-    display: flex;
-    align-items: center;
+    width: calc(100% - 60% - 44px);
   }
   div {
-    width: 100px;
-    padding: 8px;
-    display: flex;
-    align-items: center;
+    width: 44px;
   }
 `;

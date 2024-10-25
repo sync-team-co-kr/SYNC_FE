@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
 
+import { ReactComponent as ArrowBottom } from '@assets/common/arrow/arrow-bottom.svg';
 import fakeAvatar from '@assets/rectangle-50.png';
 import search from '@assets/search.svg';
+import { ReactComponent as InviteSVG } from '@assets/settings/invite.svg';
 import RouteProjectDropdown from '@components/dropdown/RouteProjectDropdown';
 import InviteProjectMemberModal from '@components/modal/InviteProjectMemberModal';
 import { SettingsMemberItem } from '@components/settings';
@@ -19,6 +21,7 @@ import {
   HeaderTail,
   InviteEmailButton,
   InviteLinkContainer,
+  InviteLinkDescription,
   InviteLinkForm,
   InviteLinkHeader,
   MemberItemHeader,
@@ -32,32 +35,28 @@ import {
   SelectedProject,
   TabMenuItem,
   TabMenuList,
-  ToogleInviteCode,
+  ToggleInviteCode,
 } from './styles';
 
 const fakeMemberList = [
   {
     name: '김지용',
     email: 'Kimjiyong2523@gmail.com',
-    job: '디자이너',
     role: '프로젝트 생성자',
   },
   {
     name: '최홍혁',
     email: 'Kimjiyong2523@gmail.com',
-    job: '디자이너',
     role: '관리자',
   },
   {
     name: '이소정',
     email: 'Kimjiyong2523@gmail.com',
-    job: '기획자',
     role: '팀원',
   },
   {
     name: '박승주',
     email: 'Kimjiyong2523@gmail.com',
-    job: '개발자',
     role: '팀원',
   },
 ];
@@ -100,14 +99,18 @@ const MembersSettings = () => {
   return (
     <>
       <Header>
-        <h1>주소록</h1>
+        <h1>사용자 관리</h1>
         <p>해당 프로젝트의 멤버를 확인 및 역할을 수정할 수 있습니다.</p>
       </Header>
       <Content>
         <ProjectListDropdown ref={projectDropdownRef}>
           <SelectedProject onClick={toggleProjectListDropdown}>
             <img src={fakeAvatar} alt="프로젝트 이미지" />
-            <span>{selectedProject?.title}</span>
+            <article>
+              <h5>{selectedProject?.title}</h5>
+              <span>{selectedProject?.subTitle}</span>
+            </article>
+            <ArrowBottom />
           </SelectedProject>
           <RouteProjectDropdown
             isOpen={isOpenProjectListDropdown}
@@ -120,13 +123,15 @@ const MembersSettings = () => {
         <InviteLinkContainer>
           <h5>초대링크</h5>
           <InviteLinkHeader>
-            <p>
-              워크 스페이스 소유자와 멤버십 관리자가 새 멤버를 초대할 수 있도록
-              비밀 링크를 활성화 하세요. <br /> 새로 링크를 생성할 수 있습니다.
-            </p>
-            <ToogleInviteCode>
+            <InviteLinkDescription>
+              <p>
+                초대 코드를 통해서 프로젝트에 새로운 인원을 초대할 수 있습니다.
+              </p>
+              <a>링크 초기화</a>
+            </InviteLinkDescription>
+            <ToggleInviteCode>
               <div></div>
-            </ToogleInviteCode>
+            </ToggleInviteCode>
           </InviteLinkHeader>
           <InviteLinkForm>
             <input type="text" value={inviteLink} readOnly />
@@ -156,7 +161,7 @@ const MembersSettings = () => {
 
             <HeaderTail>
               <SearchForm>
-                <SearchBar type="text" placeholder="Search" />
+                <SearchBar type="text" placeholder="검색" />
                 <SearchIcon src={search} />
                 <input type="submit" hidden />
               </SearchForm>
@@ -173,7 +178,8 @@ const MembersSettings = () => {
                   )
                 }
               >
-                초대하기
+                <InviteSVG />
+                <span>초대하기</span>
               </InviteEmailButton>
             </HeaderTail>
           </MembersHeader>
@@ -181,9 +187,8 @@ const MembersSettings = () => {
           <MemberList>
             <MemberItemHeader>
               <h5>사용자</h5>
-              <p>직무</p>
               <p>권한</p>
-              <div>-</div>
+              <div></div>
             </MemberItemHeader>
 
             {fakeMemberList.map((member) => (
