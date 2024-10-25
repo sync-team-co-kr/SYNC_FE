@@ -13,7 +13,6 @@ const BackGround = styled.div`
   background-color: ${vars.sementic.color.primaryLightOrange};
   border: 1px solid #d2dbe2;
   display: flex;
-  z-index: 5;
 `;
 
 const SettingsContainer = styled.section`
