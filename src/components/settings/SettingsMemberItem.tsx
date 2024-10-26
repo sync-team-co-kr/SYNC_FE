@@ -1,7 +1,10 @@
+import { useEffect, useState } from 'react';
+
 import { ReactComponent as ArrowBottom } from '@assets/common/arrow/arrow-bottom.svg';
 import { ReactComponent as MeatballMenu } from '@assets/meatballs.svg';
 import SettingsMember from '@components/dropdown/SettingsMemberDropdown';
 import SettingsRole from '@components/dropdown/settingsRoleDropdown';
+import { IMember } from '@customTypes/member';
 import useDropdown from '@hooks/useDropdown';
 import styled from 'styled-components';
 import { vars } from 'token';
@@ -80,13 +83,11 @@ const More = styled.div`
   }
 `;
 
-interface Member {
-  name: string;
-  email: string;
-  role: string;
-}
-
-export default function SettingsMemberItem({ name, email, role }: Member) {
+export default function SettingsMemberItem({
+  username,
+  userId,
+  isManager,
+}: IMember) {
   const [
     isOpenSelectRoleDropdown,
     toggleSelectRoleDropdown,
@@ -94,18 +95,25 @@ export default function SettingsMemberItem({ name, email, role }: Member) {
   ] = useDropdown();
   const [isOpenMemberDropdown, toggleMemberDropdown, memberDropdownRef] =
     useDropdown();
+  const [authority, setAuthority] = useState('팀원');
+
+  useEffect(() => {
+    if (isManager === 2) setAuthority('프로젝트 생성자');
+    else if (isManager === 1) setAuthority('관리자');
+    else setAuthority('팀원');
+  }, []);
 
   return (
     <MemberItem>
       <Profile>
         <Avatar></Avatar>
         <UserInfo>
-          <span>{name}</span>
-          <span>{email}</span>
+          <span>{username}</span>
+          <span>{userId}</span>
         </UserInfo>
       </Profile>
       <Role ref={selectRoleDropdownRef}>
-        <button onClick={toggleSelectRoleDropdown}>{role}</button>
+        <button onClick={toggleSelectRoleDropdown}>{authority}</button>
         <ArrowBottom />
         <SettingsRole isOpen={isOpenSelectRoleDropdown} />
       </Role>

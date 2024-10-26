@@ -39,29 +39,6 @@ import {
   ToggleInviteCode,
 } from './styles';
 
-const fakeMemberList = [
-  {
-    name: '김지용',
-    email: 'Kimjiyong2523@gmail.com',
-    role: '프로젝트 생성자',
-  },
-  {
-    name: '최홍혁',
-    email: 'Kimjiyong2523@gmail.com',
-    role: '관리자',
-  },
-  {
-    name: '이소정',
-    email: 'Kimjiyong2523@gmail.com',
-    role: '팀원',
-  },
-  {
-    name: '박승주',
-    email: 'Kimjiyong2523@gmail.com',
-    role: '팀원',
-  },
-];
-
 const MembersSettings = () => {
   const [openModal] = useModal();
   const [
@@ -75,7 +52,9 @@ const MembersSettings = () => {
     projectListData ? projectListData[0] : null,
   );
 
-  const { members } = useGetProjectMembers(selectedProject?.projectId || 0);
+  const { getMembersData } = useGetProjectMembers(
+    selectedProject?.projectId || 0,
+  );
 
   const [inviteLink, setInviteLink] = useState('');
 
@@ -95,8 +74,6 @@ const MembersSettings = () => {
     () => projectListData && setSelectedProject(projectListData[0]),
     [isLoading],
   );
-
-  console.log(members);
 
   useEffect(() => {
     createInviteLink();
@@ -197,8 +174,8 @@ const MembersSettings = () => {
               <div></div>
             </MemberItemHeader>
 
-            {fakeMemberList.map((member) => (
-              <SettingsMemberItem key={member.name} {...member} />
+            {getMembersData?.map((member) => (
+              <SettingsMemberItem key={member.id} {...member} />
             ))}
           </MemberList>
         </MembersContainer>

@@ -1,3 +1,4 @@
+import { IMember } from '@customTypes/member';
 import { IProject, RawProject } from '@customTypes/project';
 import { create } from 'zustand';
 
@@ -10,6 +11,7 @@ interface ProjectActions {
     setDescription: (description: string) => void;
     setStartDate: (date: Date) => void;
     setEndDate: (date: Date) => void;
+    setMembers: (members: IMember[]) => void;
     clearProject: () => void;
   };
 }
@@ -69,6 +71,12 @@ const useProjectStore = create<IProject & ProjectActions>((set) => ({
       set((state) => ({
         ...state,
         endDate: date,
+      }));
+    },
+    setMembers: (members) => {
+      set((state) => ({
+        ...state,
+        members: [...members],
       }));
     },
     clearProject: () => {
