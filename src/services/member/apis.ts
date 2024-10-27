@@ -27,7 +27,6 @@ export const getProjectMembers = async (projectId: number) => {
   const [memberIdList] = getMemberIdsResponse.data.data.memberToUserId;
 
   const joinedMemberIdList = memberIdList.userIds.join(',');
-  console.log(joinedMemberIdList);
 
   // 단일 프로젝트의 멤버들의 권한 가져오기
   const getMemberAuthorityResponse: AxiosResponse<

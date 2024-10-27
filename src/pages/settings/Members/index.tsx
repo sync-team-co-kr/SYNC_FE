@@ -57,6 +57,7 @@ const MembersSettings = () => {
   );
 
   const [inviteLink, setInviteLink] = useState('');
+  const [myAuthority, setMyAuthority] = useState(0);
 
   const createInviteLink = async () => {
     if (selectedProject?.projectId) {
@@ -78,6 +79,16 @@ const MembersSettings = () => {
   useEffect(() => {
     createInviteLink();
   }, [selectedProject?.projectId]);
+
+  useEffect(() => {
+    const loggedInUser = localStorage.getItem('loggedUserId') as string;
+    const myMemberInfo = getMembersData?.filter(
+      (member) => member.userId === loggedInUser,
+    );
+    if (myMemberInfo) {
+      setMyAuthority(myMemberInfo[0].isManager);
+    }
+  }, [getMembersData]);
 
   return (
     <>
@@ -175,7 +186,11 @@ const MembersSettings = () => {
             </MemberItemHeader>
 
             {getMembersData?.map((member) => (
-              <SettingsMemberItem key={member.id} {...member} />
+              <SettingsMemberItem
+                key={member.id}
+                {...member}
+                myAuthority={myAuthority}
+              />
             ))}
           </MemberList>
         </MembersContainer>

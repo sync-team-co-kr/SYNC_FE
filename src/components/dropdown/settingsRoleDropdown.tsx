@@ -42,20 +42,32 @@ const SettingsItem = styled.li`
   }
 `;
 
-export default function SettingsRole({ isOpen }: { isOpen: boolean }) {
+interface SettingsRoleProps {
+  isOpen: boolean;
+  myAuthority: number;
+}
+
+export default function SettingsRole({
+  isOpen,
+  myAuthority,
+}: SettingsRoleProps) {
   return (
     <Wrapper $isOpen={isOpen}>
-      <SettingsItem>
-        <p>프로젝트 소유자</p>
-        <p>프로젝트 소유자로 임명합니다.</p>
-      </SettingsItem>
-      <SettingsItem>
-        <p>관리자</p>
-        <p>
-          관리자는 새로운 멤버를 초대할 수 있습니다. <br />
-          프로젝트의 관리 권한이 부여됩니다.
-        </p>
-      </SettingsItem>
+      {myAuthority >= 2 && (
+        <SettingsItem>
+          <p>프로젝트 소유자</p>
+          <p>프로젝트 소유자로 임명합니다.</p>
+        </SettingsItem>
+      )}
+      {myAuthority >= 1 && (
+        <SettingsItem>
+          <p>관리자</p>
+          <p>
+            관리자는 새로운 멤버를 초대할 수 있습니다. <br />
+            프로젝트의 관리 권한이 부여됩니다.
+          </p>
+        </SettingsItem>
+      )}
       <SettingsItem>
         <p>팀원</p>
         <p>멤버는 새로운 멤버를 추가 할 수 없습니다.</p>
