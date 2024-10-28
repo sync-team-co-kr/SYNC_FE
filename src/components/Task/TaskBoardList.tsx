@@ -1,8 +1,8 @@
 // import Add from '@assets/add.svg';
 import styled from 'styled-components';
-import TaskBoardItem from '@components/project/Task/TaskBoardItem';
 import { vars } from 'token';
 
+import TaskBoardItem from './TaskBoardItem';
 
 const Section = styled.section`
   display: flex;
@@ -46,8 +46,6 @@ const ProjectWorkList = styled.ul`
 //   }
 // `;
 
-
-
 export interface Project {
   projectId: number;
   title: string;
@@ -62,7 +60,6 @@ const TaskBoardList = () => {
   // const [isOpen, openModal, modalRef, CreateProjectModalWrapper, closeModal] =
   //   useModal();
 
-
   return (
     <Section>
       <Title>
@@ -75,27 +72,27 @@ const TaskBoardList = () => {
         </ProjectAddButton> */}
       </ProjectBoardHeader>
       <ProjectWorkList>
-      <TaskBoardItem
-      title="해야할 일" 
-      count={0} 
-      titleColor="negativeRed" 
-      borderColor={vars.sementic.color.black10} 
-      backgroundColor={vars.sementic.color.lightRed} 
-      />
-       <TaskBoardItem 
-      title="하는 중" 
-      count={0} 
-      titleColor="positiveBlue" 
-      borderColor={vars.sementic.color.black10} 
-      backgroundColor={vars.sementic.color.lightBlue} 
-      />
-      <TaskBoardItem 
-      title="완료" 
-      count={0} 
-      titleColor="black35" 
-      borderColor={vars.sementic.color.black10} 
-      backgroundColor={vars.sementic.color.black10} 
-      />
+        <TaskBoardItem
+          title="해야할 일"
+          count={0}
+          titleColor="negativeRed"
+          borderColor={vars.sementic.color.black10}
+          backgroundColor={vars.sementic.color.lightRed}
+        />
+        <TaskBoardItem
+          title="하는 중"
+          count={0}
+          titleColor="positiveBlue"
+          borderColor={vars.sementic.color.black10}
+          backgroundColor={vars.sementic.color.lightBlue}
+        />
+        <TaskBoardItem
+          title="완료"
+          count={0}
+          titleColor="black35"
+          borderColor={vars.sementic.color.black10}
+          backgroundColor={vars.sementic.color.black10}
+        />
       </ProjectWorkList>
     </Section>
   );

@@ -5,11 +5,12 @@ import workboardimg from '@assets/projects/workboard-image.png';
 import { ReactComponent as WorkboxIcon } from '@assets/projects/workbox.svg';
 import { Typography } from '@components/common/Typography';
 import WorkBoardDropdownMenu from '@components/dropdown/WorkBoardDropdownMenu';
-import { UpdateTaskModal } from '@components/project/Task/UpdateTaskModal';
 import { useModal } from '@hooks';
 import useDropdown from '@hooks/useDropdown';
 import styled from 'styled-components';
 import { vars } from 'token';
+
+import { UpdateTaskModal } from './UpdateTaskModal';
 
 const ProjectBoard = styled.li`
   padding: 12px;

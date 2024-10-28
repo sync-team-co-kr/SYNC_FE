@@ -3,7 +3,7 @@ import { Route, Routes } from 'react-router-dom';
 import Project from '@pages/projects';
 import ProjectBoards from '@pages/projects/ProjectBoards/ProjectBoards';
 import ProjectList from '@pages/projects/ProjectList';
-import ProjectWorkBoards from '@pages/projects/works/ProjectWorkBoards';
+import ProjectWorkBoards from '@pages/tasks/ProjectWorkBoards';
 
 const ProjectRoute = () => (
   <Routes>
