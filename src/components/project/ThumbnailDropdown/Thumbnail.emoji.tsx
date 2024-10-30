@@ -13,9 +13,11 @@ const EmojiListContent = styled.aside`
   display: grid;
   grid-template-columns: repeat(8, auto);
   row-gap: 12px;
+  justify-items: center;
   button {
     width: 24px;
     height: 24px;
+    padding: 0;
     background-color: transparent;
     border: none;
     display: flex;

@@ -4,6 +4,7 @@ import { styled } from 'styled-components';
 import { vars } from 'token';
 
 import ThumbnailEmojiPicker from './Thumbnail.emoji';
+import ThumbnailIconPicker from './Thumbnail.icon';
 
 const Container = styled.section<{ $isactive: boolean }>`
   height: 400px;
@@ -25,6 +26,7 @@ const Container = styled.section<{ $isactive: boolean }>`
 const TabMenuList = styled.ul`
   display: flex;
   flex-direction: row;
+  justify-content: center;
 `;
 
 const TabMenuItem = styled.li<{
@@ -88,6 +90,9 @@ const ThumbnailDropdown = ({
       <section>
         {currentTabMenu === 'emoji' && (
           <ThumbnailEmojiPicker close={closeDropdown} />
+        )}
+        {currentTabMenu === 'icon' && (
+          <ThumbnailIconPicker close={closeDropdown} />
         )}
       </section>
     </Container>
