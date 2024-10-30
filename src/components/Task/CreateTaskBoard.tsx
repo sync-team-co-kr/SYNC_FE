@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
+import { useParams } from 'react-router-dom';
 
 import createworkBoardimg from '@assets/projects/createworkboard.png';
 import { Button } from '@components/common/Button';
 import { Typography } from '@components/common/Typography';
 import { AxiosResByData } from '@customTypes/common';
+import { useCreateTask } from '@services/task/Task.hooks';
 // 실제 데이터 타입
 import styled from 'styled-components';
 
@@ -116,12 +118,15 @@ const CreateTaskBoard = ({
   onClose,
   // onTaskCreated,
 }: ProjectCreateTaskBoardProps) => {
+  const { createTaskMutate } = useCreateTask();
+  const { id } = useParams();
+
   const [workBoard, setWorkBoard] = useState({
     description: '',
-    endDate: new Date().toISOString(),
-    startDate: new Date().toISOString(),
     status: 2,
     title: '',
+    startDate: new Date(),
+    endDate: new Date(Date.now() + 1000),
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -132,26 +137,18 @@ const CreateTaskBoard = ({
     }));
   };
 
-  // const handleCreateTask = async () => {
-  //   try {
-  //     const response: AxiosResByData<any> = await createTask({
-  //       ...workBoard,
-  //       projectId: 1,
-  //     });
-
-  //     console.log('업무가 성공적으로 생성되었습니다:', response);
-
-  //     if (response && response.result) {
-  //       console.log('업무가 성공적으로 생성되었습니다.');
-  //       onTaskCreated(response); // 부모 컴포넌트에 새로운 워크보드 전달
-  //       onClose(); // 성공적으로 생성되면 창 닫기
-  //     } else {
-  //       console.error('업무 생성 실패:', response.message);
-  //     }
-  //   } catch (error) {
-  //     console.error('업무 생성 중 오류 발생:', error);
-  //   }
-  // };
+  const handleCreateTask = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    if (!id) return;
+    createTaskMutate({
+      data: {
+        ...workBoard,
+        projectId: Number(id),
+        startDate: workBoard.startDate.toISOString(),
+        endDate: workBoard.endDate.toISOString(),
+      },
+    });
+  };
 
   return (
     <ProjectWorkBoard>
@@ -203,9 +200,7 @@ const CreateTaskBoard = ({
           variant="fill"
           $hasIcon={false}
           $isDisabled={false}
-          onClick={() => {
-            console.log('업무 생성');
-          }}
+          onClick={handleCreateTask}
           // onClick={handleCreateTask}
           text="확인"
         />

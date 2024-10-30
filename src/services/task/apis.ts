@@ -2,7 +2,13 @@ import { userApiInstance } from '@libs/axios/axios';
 import { CreateTaskPayload } from '@services/swagger/output/data-contracts';
 
 export const getTaskList = async (projectId: number) => {
-  return userApiInstance.get(`/node2/api/task/v2?projectId=${projectId}`);
+  const response = await userApiInstance.get(`/node2/api/task/v2`, {
+    params: {
+      projectId,
+    },
+  });
+  console.log(response);
+  return response;
 };
 
 const randomUuid = () => {
@@ -86,11 +92,15 @@ export const createTask = async ({ ...payload }: CreateTaskPayload) => {
     status: payload.data.status,
   };
 
+  const newTask = new Blob([JSON.stringify(formDataList)], {
+    type: 'application/json',
+  });
+
   if (payload.data.thumbnailIcon) {
     formDataList.thumbnailIcon = payload.data.thumbnailIcon;
   }
 
-  formData.append('data', JSON.stringify(formDataList));
+  formData.append('data', newTask);
 
   if (payload.thumbnailImage) {
     formData.append('thumbnailImage', payload.thumbnailImage);
