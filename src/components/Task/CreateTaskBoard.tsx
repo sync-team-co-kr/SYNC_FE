@@ -110,11 +110,13 @@ const ProjectFooter = styled.div`
 `;
 
 interface ProjectCreateTaskBoardProps {
+  statusTitle: '해야할 일' | '하는 중' | '완료';
   onClose: () => void;
   onTaskCreated: (newTask: AxiosResByData<any>) => void; // 타입을 맞춤
 }
 
 const CreateTaskBoard = ({
+  statusTitle,
   onClose,
   // onTaskCreated,
 }: ProjectCreateTaskBoardProps) => {
@@ -140,12 +142,17 @@ const CreateTaskBoard = ({
   const handleCreateTask = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     if (!id) return;
+    let status = 2;
+    if (statusTitle === '해야할 일') status = 2;
+    if (statusTitle === '하는 중') status = 1;
+    if (statusTitle === '완료') status = 0;
     createTaskMutate({
       data: {
         ...workBoard,
         projectId: Number(id),
         startDate: workBoard.startDate.toISOString(),
         endDate: workBoard.endDate.toISOString(),
+        status,
       },
     });
   };

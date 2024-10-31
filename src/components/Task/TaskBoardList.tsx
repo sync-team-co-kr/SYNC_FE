@@ -1,4 +1,7 @@
 // import Add from '@assets/add.svg';
+import { useParams } from 'react-router-dom';
+
+import { useGetTasks } from '@services/task';
 import styled from 'styled-components';
 import { vars } from 'token';
 
@@ -60,6 +63,10 @@ const TaskBoardList = () => {
   // const [isOpen, openModal, modalRef, CreateProjectModalWrapper, closeModal] =
   //   useModal();
 
+  const { id } = useParams();
+
+  const { tasks } = useGetTasks(Number(id));
+
   return (
     <Section>
       <Title>
@@ -74,23 +81,23 @@ const TaskBoardList = () => {
       <ProjectWorkList>
         <TaskBoardItem
           title="해야할 일"
-          count={0}
           titleColor="negativeRed"
           borderColor={vars.sementic.color.black10}
           backgroundColor={vars.sementic.color.lightRed}
+          tasks={tasks?.filter((task) => task.status === 2)}
         />
         <TaskBoardItem
           title="하는 중"
-          count={0}
           titleColor="positiveBlue"
           borderColor={vars.sementic.color.black10}
           backgroundColor={vars.sementic.color.lightBlue}
+          tasks={tasks?.filter((task) => task.status === 1)}
         />
         <TaskBoardItem
           title="완료"
-          count={0}
           titleColor="black35"
           borderColor={vars.sementic.color.black10}
+          tasks={tasks?.filter((task) => task.status === 0)}
           backgroundColor={vars.sementic.color.black10}
         />
       </ProjectWorkList>

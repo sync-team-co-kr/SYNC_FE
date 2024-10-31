@@ -1,11 +1,8 @@
 // import Add from '@assets/add.svg';
-import { useParams } from 'react-router-dom';
-
 import TaskBoardList from '@components/Task/TaskBoardList';
 import { Button } from '@components/common/Button';
 import { useModal } from '@hooks';
 import CreateProjectModal from '@pages/projects/ProjectBoards/CreateProjectModal/CreateProjectModal';
-import { useGetTasks } from '@services/task';
 import styled from 'styled-components';
 
 const Section = styled.section`
@@ -60,15 +57,7 @@ export interface Project {
 }
 
 const ProjectWorkBoards = () => {
-  // const [isOpen, openModal, modalRef, CreateProjectModalWrapper, closeModal] =
-  //   useModal();
-
   const [openModal] = useModal();
-
-  const { id } = useParams();
-
-  const { tasks } = useGetTasks(Number(id));
-  console.log(tasks);
 
   return (
     <Section>

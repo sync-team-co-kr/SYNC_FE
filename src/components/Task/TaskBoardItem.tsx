@@ -1,11 +1,13 @@
-import styled from 'styled-components';
-import { Typography } from '@components/common/Typography';
-import { ReactComponent as WorkboxIcon } from '@assets/projects/workbox.svg';
-import { ReactComponent as CreateIcon } from '@assets/projects/create.svg';
 import { useState } from 'react';
+
+import { ReactComponent as CreateIcon } from '@assets/projects/create.svg';
+import { ReactComponent as WorkboxIcon } from '@assets/projects/workbox.svg';
+import { Typography } from '@components/common/Typography';
+import styled from 'styled-components';
 import { vars } from 'token';
+
 import CreateTaskBoard from './CreateTaskBoard';
-import WorkBoard from './TaskBoard';
+import TaskBoard from './TaskBoard';
 
 // Props 타입 정의
 interface TaskBoardContainerProps {
@@ -13,17 +15,31 @@ interface TaskBoardContainerProps {
   backgroundColor?: string;
 }
 
-type TypographyColor = "negativeRed" | "primaryLightOrange" | "primaryOrange" | "black" | 
-  "black70" | "black35" | "black20" | "black10" | "white" | "lightBlue" | "positiveBlue" | 
-  "lightRed" | "alertLightOrange" | "lightPurple" | "purple";
-
+type TypographyColor =
+  | 'negativeRed'
+  | 'primaryLightOrange'
+  | 'primaryOrange'
+  | 'black'
+  | 'black70'
+  | 'black35'
+  | 'black20'
+  | 'black10'
+  | 'white'
+  | 'lightBlue'
+  | 'positiveBlue'
+  | 'lightRed'
+  | 'alertLightOrange'
+  | 'lightPurple'
+  | 'purple';
 
 const ProjectWorkBoardContainer = styled.li<TaskBoardContainerProps>`
   width: 414px;
   min-height: 100px;
   border-radius: 12px;
-  border: 1px solid ${(props) => props.borderColor || vars.sementic.color.black10};
-  background: ${(props) => props.backgroundColor || vars.sementic.color.lightRed};
+  border: 1px solid
+    ${(props) => props.borderColor || vars.sementic.color.black10};
+  background: ${(props) =>
+    props.backgroundColor || vars.sementic.color.lightRed};
   display: flex;
   flex-direction: column;
 `;
@@ -67,21 +83,32 @@ const Icon = styled.div`
   margin: 0 8px 0 8px;
 `;
 
+interface TempTask {
+  taskId: number;
+  title: string;
+  description: string;
+  startDate: string;
+  endDate: string;
+  depth: number;
+  progress: number;
+  status: number;
+}
+
 interface TaskBoardItemProps {
-  title?: string;
-  count?: number;
-  titleColor?: TypographyColor;  // 타입을 제한된 색상으로 지정
+  title: '해야할 일' | '하는 중' | '완료';
+  titleColor?: TypographyColor; // 타입을 제한된 색상으로 지정
   borderColor?: string;
   backgroundColor?: string;
   workBoardVisible?: boolean;
+  tasks?: TempTask[];
 }
 
 const TaskBoardItem = ({
-  title = 'Title',
-  count = 0,
+  title,
   titleColor = 'negativeRed',
   borderColor,
   backgroundColor,
+  tasks,
   // workBoardVisible = true,
 }: TaskBoardItemProps) => {
   const [isClicked, setIsClick] = useState(false);
@@ -97,28 +124,42 @@ const TaskBoardItem = ({
   };
 
   return (
-    <ProjectWorkBoardContainer borderColor={borderColor} backgroundColor={backgroundColor}>
+    <ProjectWorkBoardContainer
+      borderColor={borderColor}
+      backgroundColor={backgroundColor}
+    >
       <ProjectWorkBoardHeader>
         <ProjectWorkBoardTitle>
-          <Typography variant="heading-5" color={titleColor}>{title}</Typography>
+          <Typography variant="heading-5" color={titleColor}>
+            {title}
+          </Typography>
           <TitleDetail>
             <WorkboxIcon stroke={vars.sementic.color[titleColor]} />
-            <Typography variant="heading-4" color={titleColor}>{count + workBoards.length}</Typography>
+            <Typography variant="heading-4" color={titleColor}>
+              {tasks?.length}
+            </Typography>
           </TitleDetail>
         </ProjectWorkBoardTitle>
       </ProjectWorkBoardHeader>
-      <WorkBoard/>
-      {/* {workBoardVisible && workBoards.map((board, index) => (
-        <WorkBoard key={index} {...board} />
-      ))} */}
+      {tasks?.map((task) => (
+        <div key={task.taskId}>
+          <TaskBoard task={task} />
+        </div>
+      ))}
       {isClicked ? (
-        <CreateTaskBoard onClose={() => handleClick(false)} onTaskCreated={handleTaskCreated} />
+        <CreateTaskBoard
+          statusTitle={title}
+          onClose={() => handleClick(false)}
+          onTaskCreated={handleTaskCreated}
+        />
       ) : (
         <ProjectCreatWork onClick={() => handleClick(true)}>
           <Icon>
             <CreateIcon stroke={vars.sementic.color.black70} />
           </Icon>
-          <Typography variant="heading-5" color="black70">업무 생성</Typography>
+          <Typography variant="heading-5" color="black70">
+            업무 생성
+          </Typography>
         </ProjectCreatWork>
       )}
     </ProjectWorkBoardContainer>

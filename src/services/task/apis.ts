@@ -1,13 +1,26 @@
+import { AxiosResByData } from '@customTypes/common';
 import { userApiInstance } from '@libs/axios/axios';
 import { CreateTaskPayload } from '@services/swagger/output/data-contracts';
+import { AxiosResponse } from 'axios';
+
+interface TempTask {
+  taskId: number;
+  title: string;
+  description: string;
+  startDate: string;
+  endDate: string;
+  depth: number;
+  progress: number;
+  status: number;
+}
 
 export const getTaskList = async (projectId: number) => {
-  const response = await userApiInstance.get(`/node2/api/task/v2`, {
-    params: {
-      projectId,
-    },
-  });
-  console.log(response);
+  const response: AxiosResponse<AxiosResByData<TempTask[]>> =
+    await userApiInstance.get(`/node2/api/task/v2`, {
+      params: {
+        projectId,
+      },
+    });
   return response;
 };
 

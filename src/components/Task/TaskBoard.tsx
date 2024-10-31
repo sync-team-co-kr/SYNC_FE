@@ -111,7 +111,18 @@ const Icon = styled.div`
   margin: 0 8px 0 8px;
 `;
 
-const TaskBoard = () => {
+interface TempTask {
+  taskId: number;
+  title: string;
+  description: string;
+  startDate: string;
+  endDate: string;
+  depth: number;
+  progress: number;
+  status: number;
+}
+
+const TaskBoard = ({ task }: { task: TempTask }) => {
   const [
     isOpenProjectDropdownMenu,
     toggleProjectDropdownMenu,
@@ -127,7 +138,7 @@ const TaskBoard = () => {
           <Header>
             <img src={workboardimg} alt="작업 보드" />
             <Typography variant="heading-4" color="black">
-              업무제목
+              {task.title}
             </Typography>
           </Header>
           <MeatBalls ref={projectDropdownMenuRef}>
@@ -146,7 +157,7 @@ const TaskBoard = () => {
         >
           <ProjectBoardDescription>
             <Typography variant="paragraph" color="black">
-              요약내용
+              {task.description}
             </Typography>
           </ProjectBoardDescription>
           <BarGraph>
