@@ -100,6 +100,7 @@ interface TaskBoardItemProps {
   borderColor?: string;
   backgroundColor?: string;
   workBoardVisible?: boolean;
+  projectId: number;
   tasks?: TempTask[];
 }
 
@@ -108,6 +109,7 @@ const TaskBoardItem = ({
   titleColor = 'negativeRed',
   borderColor,
   backgroundColor,
+  projectId,
   tasks,
   // workBoardVisible = true,
 }: TaskBoardItemProps) => {
@@ -143,7 +145,7 @@ const TaskBoardItem = ({
       </ProjectWorkBoardHeader>
       {tasks?.map((task) => (
         <div key={task.taskId}>
-          <TaskBoard task={task} />
+          <TaskBoard projectId={projectId} task={task} />
         </div>
       ))}
       {isClicked ? (

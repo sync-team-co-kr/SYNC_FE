@@ -1,7 +1,7 @@
 import { CreateTaskPayload } from '@services/swagger/output/data-contracts';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
-import { createTask, getTaskChildren, getTaskList } from './apis';
+import { createTask, deleteTask, getTaskChildren, getTaskList } from './apis';
 
 // 업무 리스트 가져오는 Hook
 
@@ -61,4 +61,17 @@ export const useGetTaskChildren = (taskId: number) => {
   });
 
   return { taskChildren: data, isLoading, error };
+};
+
+// 업무 삭제 hook
+export const useDeleteTask = (projectId: number, taskId: number) => {
+  const queryClient = useQueryClient();
+  const deleteTaskMutation = useMutation({
+    mutationFn: () => deleteTask(projectId, taskId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['tasks'] });
+    },
+  });
+
+  return { deleteTaskMutate: deleteTaskMutation.mutate };
 };

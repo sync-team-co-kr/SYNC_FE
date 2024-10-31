@@ -130,3 +130,13 @@ export const createTask = async ({ ...payload }: CreateTaskPayload) => {
 export const getTaskChildren = async (taskId: number) => {
   return userApiInstance.get(`/api/task/v1/${taskId}`);
 };
+
+export const deleteTask = async (projectId: number, taskId: number) => {
+  await userApiInstance.delete('user/api/task', {
+    data: {
+      projectId,
+      taskId,
+    },
+  });
+  return taskId;
+};

@@ -84,6 +84,7 @@ const TaskBoardList = () => {
           titleColor="negativeRed"
           borderColor={vars.sementic.color.black10}
           backgroundColor={vars.sementic.color.lightRed}
+          projectId={Number(id)}
           tasks={tasks?.filter((task) => task.status === 2)}
         />
         <TaskBoardItem
@@ -91,12 +92,14 @@ const TaskBoardList = () => {
           titleColor="positiveBlue"
           borderColor={vars.sementic.color.black10}
           backgroundColor={vars.sementic.color.lightBlue}
+          projectId={Number(id)}
           tasks={tasks?.filter((task) => task.status === 1)}
         />
         <TaskBoardItem
           title="완료"
           titleColor="black35"
           borderColor={vars.sementic.color.black10}
+          projectId={Number(id)}
           tasks={tasks?.filter((task) => task.status === 0)}
           backgroundColor={vars.sementic.color.black10}
         />

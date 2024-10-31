@@ -1,3 +1,3 @@
-import { useGetTasks } from './Task.hooks';
+import { useDeleteTask, useGetTasks } from './Task.hooks';
 
-export { useGetTasks };
+export { useGetTasks, useDeleteTask };

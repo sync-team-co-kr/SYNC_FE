@@ -122,7 +122,13 @@ interface TempTask {
   status: number;
 }
 
-const TaskBoard = ({ task }: { task: TempTask }) => {
+const TaskBoard = ({
+  projectId,
+  task,
+}: {
+  projectId: number;
+  task: TempTask;
+}) => {
   const [
     isOpenProjectDropdownMenu,
     toggleProjectDropdownMenu,
@@ -147,7 +153,11 @@ const TaskBoard = ({ task }: { task: TempTask }) => {
               alt="보드 더보기"
               onClick={toggleProjectDropdownMenu}
             />
-            <WorkBoardDropdownMenu isOpen={isOpenProjectDropdownMenu} />
+            <WorkBoardDropdownMenu
+              isOpen={isOpenProjectDropdownMenu}
+              projectId={projectId}
+              taskId={task.taskId}
+            />
           </MeatBalls>
         </ProjectBoardHeader>
         <ProjectBoardContent

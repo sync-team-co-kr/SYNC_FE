@@ -1,5 +1,8 @@
+import React from 'react';
+
 import arrow from '@assets/projects/arrow-down.svg';
 import trashcan from '@assets/trashcan.svg';
+import { useDeleteTask } from '@services/task';
 import styled from 'styled-components';
 
 const Wrapper = styled.section<{ $isopen: boolean }>`
@@ -44,17 +47,26 @@ const ProjectDropdownMenuList = styled.ul`
 
 interface WorkDropdownMenuPRops {
   isOpen: boolean;
+  projectId: number;
+  taskId: number;
 }
 
 const WorkBoardDropdownMenu = ({
   isOpen,
+  projectId,
+  taskId,
 }: WorkDropdownMenuPRops) => {
+  const { deleteTaskMutate } = useDeleteTask(projectId, taskId);
 
+  const handleDeleteTask = async (e: React.MouseEvent<HTMLLIElement>) => {
+    e.preventDefault();
+    deleteTaskMutate();
+  };
 
   return (
     <Wrapper $isopen={isOpen}>
       <ProjectDropdownMenuList>
-        <li>
+        <li onClick={handleDeleteTask}>
           <img src={trashcan} alt="업무 삭제" />
           <span>업무 삭제</span>
         </li>
