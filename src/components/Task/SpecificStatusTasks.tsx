@@ -32,9 +32,10 @@ type TypographyColor =
   | 'lightPurple'
   | 'purple';
 
-const ProjectWorkBoardContainer = styled.li<TaskBoardContainerProps>`
+const SpecificStatusTasksContainer = styled.li<TaskBoardContainerProps>`
   width: 414px;
   min-height: 100px;
+  padding: 8px;
   border-radius: 12px;
   border: 1px solid
     ${(props) => props.borderColor || vars.sementic.color.black10};
@@ -42,30 +43,31 @@ const ProjectWorkBoardContainer = styled.li<TaskBoardContainerProps>`
     props.backgroundColor || vars.sementic.color.lightRed};
   display: flex;
   flex-direction: column;
+  gap: 8px;
 `;
 
-const ProjectWorkBoardHeader = styled.section`
+const Header = styled.div`
   display: flex;
   align-items: center;
   height: 50px;
   padding: 8px;
 `;
 
-const ProjectWorkBoardTitle = styled.div`
+const StatusTitle = styled.div`
   display: flex;
   align-items: center;
   margin-left: 8px;
   gap: 8px;
 `;
 
-const TitleDetail = styled.div`
+const TaskList = styled.ul`
   display: flex;
   justify-content: baseline;
   align-items: center;
   gap: 4px;
 `;
 
-const ProjectCreatWork = styled.button`
+const AddTaskButton = styled.button`
   display: flex;
   justify-content: baseline;
   align-items: center;
@@ -104,7 +106,7 @@ interface TaskBoardItemProps {
   tasks?: TempTask[];
 }
 
-const TaskBoardItem = ({
+const SpecificStatusTasks = ({
   title,
   titleColor = 'negativeRed',
   borderColor,
@@ -126,23 +128,23 @@ const TaskBoardItem = ({
   };
 
   return (
-    <ProjectWorkBoardContainer
+    <SpecificStatusTasksContainer
       borderColor={borderColor}
       backgroundColor={backgroundColor}
     >
-      <ProjectWorkBoardHeader>
-        <ProjectWorkBoardTitle>
+      <Header>
+        <StatusTitle>
           <Typography variant="heading-5" color={titleColor}>
             {title}
           </Typography>
-          <TitleDetail>
+          <TaskList>
             <WorkboxIcon stroke={vars.sementic.color[titleColor]} />
             <Typography variant="heading-4" color={titleColor}>
               {tasks?.length}
             </Typography>
-          </TitleDetail>
-        </ProjectWorkBoardTitle>
-      </ProjectWorkBoardHeader>
+          </TaskList>
+        </StatusTitle>
+      </Header>
       {tasks?.map((task) => (
         <div key={task.taskId}>
           <TaskBoard projectId={projectId} task={task} />
@@ -155,17 +157,17 @@ const TaskBoardItem = ({
           onTaskCreated={handleTaskCreated}
         />
       ) : (
-        <ProjectCreatWork onClick={() => handleClick(true)}>
+        <AddTaskButton onClick={() => handleClick(true)}>
           <Icon>
             <CreateIcon stroke={vars.sementic.color.black70} />
           </Icon>
           <Typography variant="heading-5" color="black70">
             업무 생성
           </Typography>
-        </ProjectCreatWork>
+        </AddTaskButton>
       )}
-    </ProjectWorkBoardContainer>
+    </SpecificStatusTasksContainer>
   );
 };
 
-export default TaskBoardItem;
+export default SpecificStatusTasks;
