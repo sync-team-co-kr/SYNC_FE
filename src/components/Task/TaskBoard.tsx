@@ -58,7 +58,7 @@ const TaskBoardContent = styled.div`
   gap: 4px;
 `;
 
-const Description = styled.p`
+const Description = styled.div`
   height: auto;
   p {
     white-space: nowrap;

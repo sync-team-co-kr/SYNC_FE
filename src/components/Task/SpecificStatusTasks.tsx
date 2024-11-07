@@ -13,8 +13,8 @@ import TaskBoard from './TaskBoard';
 
 // Props 타입 정의
 interface TaskBoardContainerProps {
-  borderColor?: string;
-  backgroundColor?: string;
+  $bordercolor?: string;
+  $backgroundcolor?: string;
 }
 
 type TypographyColor =
@@ -40,9 +40,9 @@ const SpecificStatusTasksContainer = styled.li<TaskBoardContainerProps>`
   padding: 8px;
   border-radius: 12px;
   border: 1px solid
-    ${(props) => props.borderColor || vars.sementic.color.black10};
+    ${(props) => props.$bordercolor || vars.sementic.color.black10};
   background: ${(props) =>
-    props.backgroundColor || vars.sementic.color.lightRed};
+    props.$backgroundcolor || vars.sementic.color.lightRed};
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -149,8 +149,8 @@ const SpecificStatusTasks = ({
   return (
     <SpecificStatusTasksContainer
       ref={drop}
-      borderColor={borderColor}
-      backgroundColor={backgroundColor}
+      $bordercolor={borderColor}
+      $backgroundcolor={backgroundColor}
     >
       <Header>
         <StatusTitle>

@@ -12,7 +12,6 @@ import {
 // 업무 리스트 가져오는 Hook
 
 export const useGetTasks = (projectId?: number[] | number) => {
-  console.log(projectId);
   const { data, isLoading, error } = useQuery({
     queryKey: Array.isArray(projectId)
       ? ['taskList', ...projectId]
