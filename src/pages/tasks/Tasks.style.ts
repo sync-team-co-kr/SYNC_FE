@@ -12,11 +12,6 @@ export const TaskBoardHeader = styled.section`
   margin-bottom: 20px;
 `;
 
-export const Content = styled.section`
-  display: flex;
-  gap: 20px;
-`;
-
 // ------------------- Tasks.Board.tsx ------------------------------------
 
 export const StyledTaskBoardList = styled.ul`

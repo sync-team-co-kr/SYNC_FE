@@ -1,3 +1,5 @@
+import { useDrag } from 'react-dnd';
+
 import meatballs from '@assets/meatballs.svg';
 import Dday from '@assets/projects/d-day-img.png';
 import workboardimg from '@assets/projects/workboard-image.png';
@@ -28,7 +30,7 @@ const MeatBalls = styled.div`
   display: none;
 `;
 
-const TaskBoardHeader = styled.section`
+const TaskBoardHeader = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -38,7 +40,7 @@ const TaskBoardHeader = styled.section`
   }
 `;
 
-const Header = styled.section`
+const Header = styled.article`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -155,9 +157,14 @@ const TaskBoard = ({
 
   const [openModal] = useModal();
 
+  const [, drag] = useDrag(() => ({
+    type: 'TaskBoard',
+    item: { id: task.taskId, status: task.status },
+  }));
+
   return (
     <>
-      <StyledTaskBoard>
+      <StyledTaskBoard ref={drag}>
         <TaskBoardHeader>
           <Header>
             <img src={workboardimg} alt="작업 보드" />

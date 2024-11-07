@@ -1,10 +1,13 @@
 // import Add from '@assets/add.svg';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+
 import { Button } from '@components/common/Button';
 import { useModal } from '@hooks';
 import CreateProjectModal from '@pages/projects/ProjectBoards/CreateProjectModal/CreateProjectModal';
 
 import TaskBoardList from './Tasks.Board';
-import { Content, TaskBoardContainer, TaskBoardHeader } from './Tasks.style';
+import { TaskBoardContainer, TaskBoardHeader } from './Tasks.style';
 
 export interface Project {
   projectId: number;
@@ -37,9 +40,9 @@ const ProjectWorkBoards = () => {
           <span>프로젝트 추가</span>
         </ProjectAddButton> */}
       </TaskBoardHeader>
-      <Content>
+      <DndProvider backend={HTML5Backend}>
         <TaskBoardList />
-      </Content>
+      </DndProvider>
     </TaskBoardContainer>
   );
 };

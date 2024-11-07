@@ -1,8 +1,10 @@
 import { useState } from 'react';
+import { useDrop } from 'react-dnd';
 
 import { ReactComponent as CreateIcon } from '@assets/projects/create.svg';
 import { ReactComponent as WorkboxIcon } from '@assets/projects/workbox.svg';
 import { Typography } from '@components/common/Typography';
+import { useUpdateTaskStatus } from '@services/task';
 import styled from 'styled-components';
 import { vars } from 'token';
 
@@ -117,6 +119,23 @@ const SpecificStatusTasks = ({
 }: TaskBoardItemProps) => {
   const [isClicked, setIsClick] = useState(false);
   const [workBoards, setWorkBoards] = useState<any[]>([]); // 워크보드 상태
+  const { updateTaskStatusMutate } = useUpdateTaskStatus();
+
+  const [, drop] = useDrop({
+    accept: 'TaskBoard',
+    drop(item: { id: number; status: number }, monitor) {
+      if (!monitor.isOver()) return;
+      let taskBoardStatus = 2;
+      if (title === '하는 중') taskBoardStatus = 1;
+      if (title === '완료') taskBoardStatus = 0;
+
+      updateTaskStatusMutate({
+        projectId,
+        taskId: item.id,
+        editedStatus: taskBoardStatus,
+      });
+    },
+  });
 
   const handleClick = (value: boolean | ((prevState: boolean) => boolean)) => {
     setIsClick(value);
@@ -129,6 +148,7 @@ const SpecificStatusTasks = ({
 
   return (
     <SpecificStatusTasksContainer
+      ref={drop}
       borderColor={borderColor}
       backgroundColor={backgroundColor}
     >
