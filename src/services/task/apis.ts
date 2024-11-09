@@ -1,8 +1,27 @@
+import { AxiosResByData } from '@customTypes/common';
 import { userApiInstance } from '@libs/axios/axios';
 import { CreateTaskPayload } from '@services/swagger/output/data-contracts';
+import { AxiosResponse } from 'axios';
+
+interface TempTask {
+  taskId: number;
+  title: string;
+  description: string;
+  startDate: string;
+  endDate: string;
+  depth: number;
+  progress: number;
+  status: number;
+}
 
 export const getTaskList = async (projectId: number) => {
-  return userApiInstance.get(`/node2/api/task/v2?projectId=${projectId}`);
+  const response: AxiosResponse<AxiosResByData<TempTask[]>> =
+    await userApiInstance.get(`/node2/api/task/v2`, {
+      params: {
+        projectId,
+      },
+    });
+  return response;
 };
 
 const randomUuid = () => {
@@ -51,7 +70,6 @@ const convertBase64ToFile = (base64String: string, fileName: string): File => {
 };
 
 export const createTask = async ({ ...payload }: CreateTaskPayload) => {
-  console.log(payload);
   const formData = new FormData();
   const imageUrls = extractImageUrls(payload.data.description);
 
@@ -86,11 +104,15 @@ export const createTask = async ({ ...payload }: CreateTaskPayload) => {
     status: payload.data.status,
   };
 
+  const newTask = new Blob([JSON.stringify(formDataList)], {
+    type: 'application/json',
+  });
+
   if (payload.data.thumbnailIcon) {
     formDataList.thumbnailIcon = payload.data.thumbnailIcon;
   }
 
-  formData.append('data', JSON.stringify(formDataList));
+  formData.append('data', newTask);
 
   if (payload.thumbnailImage) {
     formData.append('thumbnailImage', payload.thumbnailImage);
@@ -106,4 +128,58 @@ export const createTask = async ({ ...payload }: CreateTaskPayload) => {
 
 export const getTaskChildren = async (taskId: number) => {
   return userApiInstance.get(`/api/task/v1/${taskId}`);
+};
+
+export const updateTaskStatus = async (willUpdateTaskParams: {
+  projectId: number;
+  taskId: number;
+  editedStatus: number;
+}) => {
+  const { taskId, projectId, editedStatus } = willUpdateTaskParams;
+
+  // taskId를 통해 상태를 변경할 단일 task 데이터 가져오기
+  const task: AxiosResponse<AxiosResByData<TempTask>> =
+    await userApiInstance.get('/node2/api/task/v3', {
+      params: {
+        taskId,
+      },
+    });
+
+  const formData = new FormData();
+
+  const editedTask = {
+    title: task.data.data.title,
+    description: task.data.data.description,
+    startDate: task.data.data.startDate,
+    endDate: task.data.data.endDate,
+    status: editedStatus,
+    taskId,
+    projectId,
+  };
+
+  const willUpdateTask = new Blob([JSON.stringify(editedTask)], {
+    type: 'application/json',
+  });
+
+  formData.append('data', willUpdateTask);
+
+  const response: AxiosResponse<
+    AxiosResByData<Omit<TempTask, 'progress' | 'depth'>>
+  > = await userApiInstance.put('/user/api/task', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+
+  return response.data.data;
+};
+
+export const deleteTask = async (projectId: number, taskId: number) => {
+  await userApiInstance.delete('user/api/task', {
+    data: {
+      projectId,
+      taskId,
+    },
+  });
+  return taskId;
 };

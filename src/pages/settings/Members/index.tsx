@@ -4,7 +4,7 @@ import { ReactComponent as ArrowBottom } from '@assets/common/arrow/arrow-bottom
 import fakeAvatar from '@assets/rectangle-50.png';
 import search from '@assets/search.svg';
 import { ReactComponent as InviteSVG } from '@assets/settings/invite.svg';
-import RouteProjectDropdown from '@components/dropdown/RouteProjectDropdown';
+import ProjectNavigation from '@components/dropdown/ProjectNavigationDropdown';
 import InviteProjectMemberModal from '@components/modal/InviteProjectMemberModal';
 import { SettingsMemberItem } from '@components/settings';
 import { AxiosResByData } from '@customTypes/common/AxiosRes';
@@ -64,7 +64,7 @@ const fakeMemberList = [
 const MembersSettings = () => {
   const [openModal] = useModal();
   const [
-    isOpenProjectListDropdown,
+    isOpenProjectNavigation,
     toggleProjectListDropdown,
     projectDropdownRef,
   ] = useDropdown();
@@ -96,6 +96,11 @@ const MembersSettings = () => {
     createInviteLink();
   }, [selectedProject?.projectId]);
 
+  const handleSelectProjectNavigationItem = (project: RawProject) => {
+    setSelectedProject(project);
+    toggleProjectListDropdown();
+  };
+
   return (
     <>
       <Header>
@@ -112,11 +117,10 @@ const MembersSettings = () => {
             </article>
             <ArrowBottom />
           </SelectedProject>
-          <RouteProjectDropdown
-            isOpen={isOpenProjectListDropdown}
-            toggleModal={toggleProjectListDropdown}
-            projectList={projectListData}
-            setSelectedProject={setSelectedProject}
+          <ProjectNavigation
+            isOpen={isOpenProjectNavigation}
+            projects={projectListData}
+            handleSelectNavigationItem={handleSelectProjectNavigationItem}
           />
         </ProjectListDropdown>
 

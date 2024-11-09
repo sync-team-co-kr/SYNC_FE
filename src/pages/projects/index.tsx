@@ -7,6 +7,9 @@ import { vars } from 'token';
 const Container = styled.div`
   width: 100%;
   height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 `;
 
 const TabMenu = styled.ul`

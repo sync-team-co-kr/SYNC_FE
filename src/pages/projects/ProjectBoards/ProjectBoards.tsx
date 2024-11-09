@@ -2,7 +2,10 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { ReactComponent as ArrowBottom } from '@assets/common/arrow/arrow-bottom.svg';
 import { Button } from '@components/common/Button';
+import ProjectNavigation from '@components/dropdown/ProjectNavigationDropdown';
+import { RawProject } from '@customTypes/project';
 import { useModal } from '@hooks';
 import { useGetProjects } from '@services/project/Project.hooks';
 import { styled } from 'styled-components';
@@ -13,6 +16,7 @@ import ProjectBoardItem from './ProjectBoardItem/ProjectBoardItem';
 import StyleProjectBoards from './ProjectBoards.style';
 
 const ProjectNavigator = styled.section`
+  width: 160px;
   height: 48px;
   padding: 8px 12px;
   display: flex;
@@ -20,41 +24,29 @@ const ProjectNavigator = styled.section`
   justify-content: center;
   gap: 8px;
   position: relative;
-  h5 {
-    color: ${vars.sementic.color.black};
-    font-size: ${vars.sementic.typography['heading-4'].fontSize};
-    font-weight: ${vars.sementic.typography['heading-4'].fontWeight};
-    cursor: pointer;
-  }
-`;
-
-const ProjectNavigatorDropdown = styled.ul<{ $isopen: boolean }>`
-  width: 300px;
-  padding: 12px 0;
-  background-color: ${vars.sementic.color.white};
-  box-shadow: 0px 0px 25px 0px rgba(0, 0, 0, 0.05);
-
-  display: ${(props) => (props.$isopen ? 'flex' : 'none')};
-  flex-direction: column;
-  justify-content: center;
-  gap: 8px;
-  position: absolute;
-  bottom: -100px;
-  z-index: 50;
-  li {
-    padding: 12px 8px;
-    cursor: pointer;
-    &:hover {
-      background-color: ${vars.sementic.color.black20};
+  & > div {
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    h5 {
+      color: ${vars.sementic.color.black};
+      font-size: ${vars.sementic.typography['heading-4'].fontSize};
+      font-weight: ${vars.sementic.typography['heading-4'].fontWeight};
+      cursor: pointer;
     }
   }
 `;
 
 const ProjectBoards = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const navigate = useNavigate();
   const [openModal] = useModal();
+  const navigate = useNavigate();
   const { projects } = useGetProjects();
+
+  const handleSelectProjectNavigationItem = (project: RawProject) => {
+    navigate(`/projects/${project.projectId}`);
+  };
 
   return (
     <StyleProjectBoards.Wrapper>
@@ -63,17 +55,15 @@ const ProjectBoards = () => {
       </StyleProjectBoards.HiddenTitle>
       <StyleProjectBoards.Header>
         <ProjectNavigator>
-          <h5 onClick={() => setIsOpen((prevState) => !prevState)}>전체보기</h5>
-          <ProjectNavigatorDropdown $isopen={isOpen}>
-            {projects?.map((project) => (
-              <li
-                key={project.projectId}
-                onClick={() => navigate(`/projects/${project.projectId}`)}
-              >
-                {project.title}
-              </li>
-            ))}
-          </ProjectNavigatorDropdown>
+          <div onClick={() => setIsOpen((prevState) => !prevState)}>
+            <h5>전체보기</h5>
+            <ArrowBottom />
+          </div>
+          <ProjectNavigation
+            isOpen={isOpen}
+            projects={projects}
+            handleSelectNavigationItem={handleSelectProjectNavigationItem}
+          />
         </ProjectNavigator>
 
         <Button

@@ -1,5 +1,6 @@
+import { useDrag } from 'react-dnd';
+
 import meatballs from '@assets/meatballs.svg';
-import bargraph from '@assets/projects/BarGrahph-img.png';
 import Dday from '@assets/projects/d-day-img.png';
 import workboardimg from '@assets/projects/workboard-image.png';
 import { ReactComponent as WorkboxIcon } from '@assets/projects/workbox.svg';
@@ -12,15 +13,14 @@ import { vars } from 'token';
 
 import { UpdateTaskModal } from './UpdateTaskModal';
 
-const ProjectBoard = styled.li`
+const StyledTaskBoard = styled.section`
   padding: 12px;
   border-radius: 12px;
   border: 1px solid var(--Black-White-Black-10, #f4f4f4);
   background: var(--Black-White-White, #fff);
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  margin: 8px;
+  gap: 12px;
   cursor: pointer; // 클릭 시 커서 변경
 `;
 
@@ -30,7 +30,7 @@ const MeatBalls = styled.div`
   display: none;
 `;
 
-const ProjectBoardHeader = styled.section`
+const TaskBoardHeader = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -40,7 +40,7 @@ const ProjectBoardHeader = styled.section`
   }
 `;
 
-const Header = styled.section`
+const Header = styled.article`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -51,26 +51,46 @@ const Header = styled.section`
   }
 `;
 
-const ProjectBoardContent = styled.div`
+const TaskBoardContent = styled.div`
   height: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 `;
 
-const ProjectBoardDescription = styled.p`
+const Description = styled.div`
   height: auto;
+  p {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 `;
 
 const BarGraph = styled.div`
-  height: auto;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  & span:first-child {
+    font-size: ${vars.sementic.typography['small-text-b']};
+    font-weight: 700;
+    color: ${vars.sementic.color.black20};
+  }
+  & span:last-child {
+    font-size: ${vars.sementic.typography['small-text-b']};
+    font-weight: 700;
+    color: ${vars.sementic.color.black};
+  }
 `;
 
-const ProjectBoardFooter = styled.section`
+const TaskBoardFooter = styled.section`
   padding: 0 1px;
   display: flex;
   justify-content: space-between;
   align-items: center;
 `;
 
-const ProjectBoardMemberList = styled.ul`
+const TaskBoardMemberList = styled.ul`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -89,7 +109,7 @@ const ProjectBoardMemberList = styled.ul`
   }
 `;
 
-const ProjectBoardPeriod = styled.div`
+const TaskBoardPeriod = styled.div`
   background-color: ${vars.sementic.color.black10};
   border-radius: 4px;
   display: flex;
@@ -111,7 +131,24 @@ const Icon = styled.div`
   margin: 0 8px 0 8px;
 `;
 
-const TaskBoard = () => {
+interface TempTask {
+  taskId: number;
+  title: string;
+  description: string;
+  startDate: string;
+  endDate: string;
+  depth: number;
+  progress: number;
+  status: number;
+}
+
+const TaskBoard = ({
+  projectId,
+  task,
+}: {
+  projectId: number;
+  task: TempTask;
+}) => {
   const [
     isOpenProjectDropdownMenu,
     toggleProjectDropdownMenu,
@@ -120,14 +157,19 @@ const TaskBoard = () => {
 
   const [openModal] = useModal();
 
+  const [, drag] = useDrag(() => ({
+    type: 'TaskBoard',
+    item: { id: task.taskId, status: task.status },
+  }));
+
   return (
     <>
-      <ProjectBoard>
-        <ProjectBoardHeader>
+      <StyledTaskBoard ref={drag}>
+        <TaskBoardHeader>
           <Header>
             <img src={workboardimg} alt="작업 보드" />
             <Typography variant="heading-4" color="black">
-              업무제목
+              {task.title}
             </Typography>
           </Header>
           <MeatBalls ref={projectDropdownMenuRef}>
@@ -136,29 +178,34 @@ const TaskBoard = () => {
               alt="보드 더보기"
               onClick={toggleProjectDropdownMenu}
             />
-            <WorkBoardDropdownMenu isOpen={isOpenProjectDropdownMenu} />
+            <WorkBoardDropdownMenu
+              isOpen={isOpenProjectDropdownMenu}
+              projectId={projectId}
+              taskId={task.taskId}
+            />
           </MeatBalls>
-        </ProjectBoardHeader>
-        <ProjectBoardContent
+        </TaskBoardHeader>
+        <TaskBoardContent
           onClick={() => {
             openModal(UpdateTaskModal);
           }}
         >
-          <ProjectBoardDescription>
+          <Description>
             <Typography variant="paragraph" color="black">
-              요약내용
+              {task.description}
             </Typography>
-          </ProjectBoardDescription>
+          </Description>
           <BarGraph>
-            <img src={bargraph} alt="막대 그래프" />
+            <span>12/24</span>
+            <span>50%</span>
           </BarGraph>
-        </ProjectBoardContent>
-        <ProjectBoardFooter>
-          <ProjectBoardMemberList></ProjectBoardMemberList>
-          <ProjectBoardPeriod>
+        </TaskBoardContent>
+        <TaskBoardFooter>
+          <TaskBoardMemberList></TaskBoardMemberList>
+          <TaskBoardPeriod>
             <img src={Dday} alt="D-Day" />
-          </ProjectBoardPeriod>
-        </ProjectBoardFooter>
+          </TaskBoardPeriod>
+        </TaskBoardFooter>
         <SubTask>
           <Icon>
             <WorkboxIcon stroke={vars.sementic.color.black70} />
@@ -167,7 +214,7 @@ const TaskBoard = () => {
             하위업무
           </Typography>
         </SubTask>
-      </ProjectBoard>
+      </StyledTaskBoard>
     </>
   );
 };
