@@ -29,6 +29,7 @@ export const ProjectListDropdown = styled.div`
   border-radius: 8px;
   display: flex;
   flex-direction: column;
+  position: relative;
 `;
 
 export const SelectedProject = styled.div`
@@ -36,7 +37,6 @@ export const SelectedProject = styled.div`
   display: flex;
   align-items: center;
   gap: 12px;
-  position: relative;
   article {
     display: flex;
     flex-direction: column;
