@@ -10,7 +10,7 @@ import {
 } from '@styles/project';
 import styled from 'styled-components';
 
-import { EmptyList } from './EmptyList';
+import { EmptyList } from './list/EmptyList';
 
 const TitleHeader = styled(ProjectListHeader)`
   width: 300px;
