@@ -31,7 +31,7 @@ export const InputWithCoverIcon = styled.div`
   input {
     flex-grow: 1;
   }
-  div {
+  & > div {
     width: 32px;
     height: 32px;
     position: relative;

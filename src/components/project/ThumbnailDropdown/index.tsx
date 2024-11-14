@@ -5,6 +5,7 @@ import { vars } from 'token';
 
 import ThumbnailEmojiPicker from './Thumbnail.emoji';
 import ThumbnailIconPicker from './Thumbnail.icon';
+import ThumbnailImagePicker from './Thumbnail.image';
 
 const Container = styled.section<{ $isactive: boolean }>`
   height: 400px;
@@ -94,6 +95,7 @@ const ThumbnailDropdown = ({
         {currentTabMenu === 'icon' && (
           <ThumbnailIconPicker close={closeDropdown} />
         )}
+        {currentTabMenu === 'custom' && <ThumbnailImagePicker />}
       </section>
     </Container>
   );

@@ -36,7 +36,7 @@ const ThumbnailIconPicker = ({ close }: { close: () => void }) => {
     iconName: string,
   ) => {
     e.preventDefault();
-    setThumbnail(iconName);
+    setThumbnail('I', iconName);
     close();
   };
   return (

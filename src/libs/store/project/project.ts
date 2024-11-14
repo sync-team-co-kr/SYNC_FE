@@ -5,7 +5,7 @@ interface ProjectActions {
   actions: {
     setProject: (project: RawProject) => void;
     setTitle: (title: string) => void;
-    setThumbnail: (thumbnail: string) => void;
+    setThumbnail: (thumbnailType: 'E' | 'C' | 'I', thumbnail: string) => void;
     setSubTitle: (subTitle: string) => void;
     setDescription: (description: string) => void;
     setStartDate: (date: Date) => void;
@@ -17,7 +17,10 @@ interface ProjectActions {
 const initialState: IProject = {
   projectId: 0,
   title: '',
-  thumbnail: '',
+  thumbnail: {
+    type: 'N',
+    value: '',
+  },
   subTitle: '',
   description: '',
   startDate: undefined,
@@ -33,6 +36,15 @@ const useProjectStore = create<IProject & ProjectActions>((set) => ({
         ...project,
         startDate: project.startDate ? new Date(project.startDate) : undefined,
         endDate: project.endDate ? new Date(project.endDate) : undefined,
+        thumbnail: project.thumbnail
+          ? {
+              type: 'E',
+              value: project.thumbnail,
+            }
+          : {
+              type: 'N',
+              value: '',
+            },
       }));
     },
     setTitle: (title) => {
@@ -41,10 +53,13 @@ const useProjectStore = create<IProject & ProjectActions>((set) => ({
         title,
       }));
     },
-    setThumbnail: (thumbnail) => {
+    setThumbnail: (thumbnailType, thumbnail) => {
       set((state) => ({
         ...state,
-        thumbnail,
+        thumbnail: {
+          type: thumbnailType,
+          value: thumbnail,
+        },
       }));
     },
     setSubTitle: (subTitle) => {

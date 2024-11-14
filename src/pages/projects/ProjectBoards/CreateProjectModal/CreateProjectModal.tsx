@@ -59,7 +59,7 @@ function CreateProjectModal() {
     e.preventDefault();
     const newProject = {
       title,
-      icon: thumbnail,
+      thumbnail,
       subTitle,
       description,
     };
@@ -79,6 +79,8 @@ function CreateProjectModal() {
         ...newProject,
         startDate: projectStartDate,
         endDate: projectEndDate,
+        thumbnail: thumbnail.value,
+        thumbnailType: thumbnail.type,
       });
     }
     /*

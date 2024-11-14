@@ -54,7 +54,7 @@ const ThumbnailEmojiPicker = ({ close }: { close: () => void }) => {
     emoji: string,
   ) => {
     e.preventDefault();
-    setThumbnail(emoji);
+    setThumbnail('E', emoji);
     close();
   };
 

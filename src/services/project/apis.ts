@@ -2,6 +2,9 @@ import { AxiosResByData } from '@customTypes/common';
 import { RawProject } from '@customTypes/project';
 import { userApiInstance } from '@libs/axios/axios';
 import { CreateProjectRequestDto } from '@services/swagger/output/data-contracts';
+import convertBase64ToFile from '@utils/file/convertBase64ToFile';
+import getExtensionFromMimeType from '@utils/file/getExtensionFromMimeType';
+import randomUuid from '@utils/file/getRandomUuid';
 import { AxiosResponse } from 'axios';
 
 interface GetMemberIds {
@@ -153,10 +156,40 @@ export const getProject = async (projectId: number) => {
 
 export const createProject = async (newProject: CreateProjectRequestDto) => {
   const formData = new FormData();
-  const project = new Blob([JSON.stringify(newProject)], {
-    type: 'application/json',
-  });
-  formData.append('data', project);
+
+  if (newProject.thumbnail && newProject.thumbnailType === 'I') {
+    const uuid = randomUuid();
+    const prevFileName = 'thumbnail-image';
+    const extension = getExtensionFromMimeType(newProject.thumbnail);
+
+    const newImageName = `${uuid}_${prevFileName}`;
+    const newImageUrl = `https://user.sync-team.co.kr:30443/node2/api/task/image?filename=/mnt/oraclevdb/project/title/${newImageName}.${extension}`;
+
+    const imgFile = convertBase64ToFile(newProject.thumbnail, newImageName);
+
+    const newProjectWithCustomImage = {
+      ...newProject,
+      thumbnail: newImageUrl,
+    };
+
+    const projectWithCustomImageBlobType = new Blob(
+      [JSON.stringify(newProjectWithCustomImage)],
+      {
+        type: 'application/json',
+      },
+    );
+
+    formData.append('data', projectWithCustomImageBlobType);
+
+    formData.append('thumbnailImage', imgFile);
+  } else {
+    const project = new Blob([JSON.stringify(newProject)], {
+      type: 'application/json',
+    });
+
+    formData.append('data', project);
+  }
+
   await userApiInstance.post('/user/api/project', formData, {
     headers: {
       'Content-Type': 'multipart/form-data',
@@ -183,7 +216,6 @@ export const createProject = async (newProject: CreateProjectRequestDto) => {
  */
 
 export const editProject = async (project: Omit<RawProject, 'members'>) => {
-  console.log(project);
   const formData = new FormData();
   const blobTypeProject = new Blob([JSON.stringify(project)], {
     type: 'application/json',
