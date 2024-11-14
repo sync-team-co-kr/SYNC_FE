@@ -1,4 +1,5 @@
 import React from 'react';
+import * as FaIconList from 'react-icons/fa';
 
 import projectCalendar from '@assets/calendar.svg';
 import meatballs from '@assets/meatballs.svg';
@@ -18,7 +19,7 @@ const MeatBalls = styled.div`
   position: relative;
 `;
 
-const Thumbnail = styled.div`
+const ThumbnailWrapper = styled.div`
   width: 28px;
   height: 28px;
   font-size: 20px;
@@ -26,6 +27,37 @@ const Thumbnail = styled.div`
   justify-content: center;
   align-items: center;
 `;
+
+const ProjectThumbnail = ({
+  thumbnail,
+  thumbnailType,
+}: Pick<RawProject, 'thumbnail' | 'thumbnailType'>) => {
+  switch (thumbnailType) {
+    case 'E': // 이모지
+      return <ThumbnailWrapper>{thumbnail}</ThumbnailWrapper>;
+    case 'C': // 아이콘
+      return (
+        <ThumbnailWrapper>
+          {Object.entries(FaIconList)
+            .filter(([iconName]) => iconName === thumbnail)
+            .map(([iconName, Icon]) => (
+              <div key={iconName}>
+                <Icon size="24" />
+              </div>
+            ))}
+        </ThumbnailWrapper>
+      );
+    case 'I': // 이미지
+      return (
+        <img
+          src={`https://user.sync-team.co.kr:30443/node2/api/task/image?filename=/mnt/oraclevdb/project/title/${thumbnail}`}
+          alt="커스텀 이미지"
+        />
+      );
+    default:
+      return <img src={projectIcon} alt="프로젝트 대표 아이콘" />;
+  }
+};
 
 const ProjectBoardItem = ({ project }: { project: RawProject }) => {
   const [
@@ -37,11 +69,10 @@ const ProjectBoardItem = ({ project }: { project: RawProject }) => {
   return (
     <StyleProjectBoard.BoardArea key={project.projectId}>
       <StyleProjectBoard.Header>
-        {project.thumbnail ? (
-          <Thumbnail>{project.thumbnail}</Thumbnail>
-        ) : (
-          <img src={projectIcon} alt="프로젝트 대표 아이콘" />
-        )}
+        <ProjectThumbnail
+          thumbnail={project.thumbnail}
+          thumbnailType={project.thumbnailType}
+        />
         <StyleProjectBoard.Title>
           <h5>{project.subTitle}</h5>
           <h2>{project.title}</h2>

@@ -157,6 +157,8 @@ export const getProject = async (projectId: number) => {
 export const createProject = async (newProject: CreateProjectRequestDto) => {
   const formData = new FormData();
 
+  console.log(newProject);
+
   if (newProject.thumbnail && newProject.thumbnailType === 'I') {
     const uuid = randomUuid();
     const prevFileName = 'thumbnail-image';
