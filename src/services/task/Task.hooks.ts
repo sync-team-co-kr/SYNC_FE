@@ -1,4 +1,3 @@
-import { CreateTaskPayload } from '@services/swagger/output/data-contracts';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import {
@@ -9,8 +8,22 @@ import {
   updateTaskStatus,
 } from './apis';
 
-// 업무 리스트 가져오는 Hook
+interface CreateTaskParams {
+  thumbnailImage?: string;
+  images?: string[];
+  data: {
+    description?: string;
+    endDate?: string;
+    startDate?: string;
+    title: string;
+    thumbnailIcon?: string;
+    parentTaskId?: number;
+    projectId: number;
+    status: number;
+  };
+}
 
+// 업무 리스트 가져오는 Hook
 export const useGetTasks = (projectId?: number[] | number) => {
   const { data, isLoading, error } = useQuery({
     queryKey: Array.isArray(projectId)
@@ -40,7 +53,7 @@ export const useCreateTask = () => {
   const queryClient = useQueryClient();
 
   const createTaskMutation = useMutation({
-    mutationFn: (newTask: CreateTaskPayload) =>
+    mutationFn: (newTask: CreateTaskParams) =>
       createTask({
         data: newTask.data,
         images: newTask.images,

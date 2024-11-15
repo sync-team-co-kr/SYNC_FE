@@ -14,6 +14,21 @@ interface TempTask {
   status: number;
 }
 
+interface CreateTaskParams {
+  thumbnailImage?: string;
+  images?: string[];
+  data: {
+    description?: string;
+    endDate?: string;
+    startDate?: string;
+    title: string;
+    thumbnailIcon?: string;
+    parentTaskId?: number;
+    projectId: number;
+    status: number;
+  };
+}
+
 export const getTaskList = async (projectId: number) => {
   const response: AxiosResponse<AxiosResByData<TempTask[]>> =
     await userApiInstance.get(`/node2/api/task/v2`, {
@@ -69,7 +84,7 @@ const convertBase64ToFile = (base64String: string, fileName: string): File => {
   return new File([byteArray], `${fileName}.${extension}`, { type: mimeType });
 };
 
-export const createTask = async ({ ...payload }: CreateTaskPayload) => {
+export const createTask = async ({ ...payload }: CreateTaskParams) => {
   const formData = new FormData();
   const imageUrls = extractImageUrls(payload.data.description);
 

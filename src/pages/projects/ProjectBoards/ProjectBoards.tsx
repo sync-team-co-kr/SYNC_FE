@@ -48,6 +48,8 @@ const ProjectBoards = () => {
     navigate(`/projects/${project.projectId}`);
   };
 
+  console.log(projects);
+
   return (
     <StyleProjectBoards.Wrapper>
       <StyleProjectBoards.HiddenTitle>
