@@ -14,6 +14,12 @@ interface GetMemberAuthorities {
   isManager: number;
 }
 
+interface UpdateMemberRoleParams {
+  userId: string;
+  projectId: number;
+  isManager: number;
+}
+
 export const getProjectMembers = async (projectId: number) => {
   // 단일 프로젝트 멤버 ID 목록 가져오기
   const getMemberIdsResponse: AxiosResponse<
@@ -58,4 +64,20 @@ export const getProjectMembers = async (projectId: number) => {
   );
 
   return memberListWithAuthority;
+};
+
+export const updateMemberRole = async ({
+  userId,
+  projectId,
+  isManager,
+}: UpdateMemberRoleParams) => {
+  const response = await userApiInstance.put('/user/api/member', {
+    userId,
+    projectId,
+    isManager,
+  });
+
+  console.log(response);
+
+  return response;
 };

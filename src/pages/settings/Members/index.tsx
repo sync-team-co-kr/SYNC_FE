@@ -57,7 +57,7 @@ const MembersSettings = () => {
   );
 
   const [inviteLink, setInviteLink] = useState('');
-  const [myAuthority, setMyAuthority] = useState(0);
+  const [myRole, setMyRole] = useState(0);
 
   const createInviteLink = async () => {
     if (selectedProject?.projectId) {
@@ -86,7 +86,7 @@ const MembersSettings = () => {
       (member) => member.userId === loggedInUser,
     );
     if (myMemberInfo) {
-      setMyAuthority(myMemberInfo[0].isManager);
+      setMyRole(myMemberInfo[0].isManager);
     }
   }, [getMembersData]);
 
@@ -189,7 +189,8 @@ const MembersSettings = () => {
               <SettingsMemberItem
                 key={member.id}
                 {...member}
-                myAuthority={myAuthority}
+                projectId={selectedProject?.projectId}
+                myRole={myRole}
               />
             ))}
           </MemberList>

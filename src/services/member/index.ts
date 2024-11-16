@@ -1,3 +1,3 @@
-import { getProjectMembers } from './apis';
+import { getProjectMembers, updateMemberRole } from './apis';
 
-export { getProjectMembers };
+export { getProjectMembers, updateMemberRole };

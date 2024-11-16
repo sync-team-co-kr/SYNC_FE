@@ -84,14 +84,16 @@ const More = styled.div`
 `;
 
 interface SettingsMemberItemProps {
-  myAuthority: number;
+  myRole: number;
+  projectId?: number;
 }
 
 export default function SettingsMemberItem({
   username,
   userId,
   isManager,
-  myAuthority,
+  myRole,
+  projectId,
 }: IMember & SettingsMemberItemProps) {
   const [
     isOpenSelectRoleDropdown,
@@ -120,10 +122,12 @@ export default function SettingsMemberItem({
       <Role ref={selectRoleDropdownRef}>
         <button onClick={toggleSelectRoleDropdown}>{authority}</button>
         <ArrowBottom />
-        {myAuthority >= 1 && (
+        {myRole >= 1 && (
           <SettingsRole
             isOpen={isOpenSelectRoleDropdown}
-            myAuthority={myAuthority}
+            myRole={myRole}
+            projectId={projectId}
+            userId={userId}
           />
         )}
       </Role>
@@ -131,7 +135,7 @@ export default function SettingsMemberItem({
         <button onClick={toggleMemberDropdown}>
           <MeatballMenu />
         </button>
-        {myAuthority >= 1 && <SettingsMember isOpen={isOpenMemberDropdown} />}
+        {myRole >= 1 && <SettingsMember isOpen={isOpenMemberDropdown} />}
       </More>
     </MemberItem>
   );
