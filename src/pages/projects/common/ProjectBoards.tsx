@@ -11,11 +11,14 @@ const ProjectBoards = () => {
   const [openModal] = useModal();
   const { projects } = useGetProjects();
 
+  console.log('projects===>', projects);
+
   return (
     <StyleProjectBoards.Wrapper>
       <StyleProjectBoards.HiddenTitle>
         <h1 hidden>프로젝트 보드</h1>
       </StyleProjectBoards.HiddenTitle>
+
       <StyleProjectBoards.Header>
         <Button
           size="medium"

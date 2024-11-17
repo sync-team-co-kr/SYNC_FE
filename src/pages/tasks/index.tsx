@@ -4,7 +4,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 
 import { Button } from '@components/common/Button';
 import { useModal } from '@hooks';
-import CreateProjectModal from '@pages/projects/board/ProjectBoards/CreateProjectModal/CreateProjectModal';
+import CreateProjectModal from '@pages/projects/common/CreateProjectModal/CreateProjectModal';
 
 import TaskBoardList from './Tasks.Board';
 import { TaskBoardContainer, TaskBoardHeader } from './Tasks.style';
