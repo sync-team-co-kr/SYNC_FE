@@ -10,7 +10,7 @@ function useDataHandler() {
     setSearchQuery(query);
   };
 
-  const filteredProjects = (projectListData ?? []).filter(
+  const filteredProjects = projectListData?.filter(
     (project) =>
       project.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       project.subTitle.toLowerCase().includes(searchQuery.toLowerCase()) ||
