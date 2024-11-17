@@ -10,7 +10,7 @@ import {
 } from '@styles/project';
 import styled from 'styled-components';
 
-import { EmptyList } from './list/EmptyList';
+import { EmptyList } from '@pages/projects/common/EmptyList';
 
 const TitleHeader = styled(ProjectListHeader)`
   width: 300px;
@@ -49,12 +49,12 @@ const ProjectList = () => {
 
   const { projectListData } = useGetProjectList() ?? {};
 
-  if (!projectListData) {
-    return <EmptyList />;
-  }
-
   return (
     <>
+    {(!projectListData || projectListData.length===0)
+     ? <EmptyList />
+     
+     : <>
       <div>검색, 프로젝트추가, 필터 들어가야함</div>
       <ProjectListFrame>
         <ProjectListHeaderFrame>
@@ -81,6 +81,7 @@ const ProjectList = () => {
           ))}
         </main>
       </ProjectListFrame>
+      </>} 
     </>
   );
 };

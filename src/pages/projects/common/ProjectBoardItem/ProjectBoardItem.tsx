@@ -5,8 +5,7 @@ import projectCalendar from '@assets/calendar.svg';
 import meatballs from '@assets/meatballs.svg';
 import projectIcon from '@assets/project-icon.png';
 import { Typography } from '@components/common';
-import Avatar from '@components/member/Avatar';
-import { RawProject } from '@customTypes/project';
+import {  RawProject } from '@customTypes/project';
 import useDropdown from '@hooks/useDropdown';
 import ProjectSettingsDropdown from '@pages/projects/ProjectSettingsDropdown/ProjectSettingsDropdown';
 import generateNormalDate from '@utils/generateNormalDate';
@@ -60,6 +59,7 @@ const ProjectThumbnail = ({
 };
 
 const ProjectBoardItem = ({ project }: { project: RawProject }) => {
+  
   const [
     isOpenProjectDropdownMenu,
     toggleProjectDropdownMenu,
@@ -95,21 +95,12 @@ const ProjectBoardItem = ({ project }: { project: RawProject }) => {
       </Typography>
 
       <StyleProjectBoard.Footer>
-        <StyleProjectBoard.Members>
-          {project.members &&
-            project.members.map((member) => (
-              <Avatar key={member.id} member={member} />
-            ))}
-        </StyleProjectBoard.Members>
-
         <StyleProjectBoard.Period>
           <img src={projectCalendar} alt="프로젝트 기간" />
-          <p>
-            {generateNormalDate(
+          <p>{generateNormalDate(
               new Date(project.startDate || 1),
               new Date(project.endDate || 1),
-            )}
-          </p>
+            )}</p>
         </StyleProjectBoard.Period>
       </StyleProjectBoard.Footer>
     </StyleProjectBoard.BoardArea>
@@ -117,3 +108,40 @@ const ProjectBoardItem = ({ project }: { project: RawProject }) => {
 };
 
 export default ProjectBoardItem;
+
+/*
+  
+  interface Member {
+    profileImg: string;
+    userId: string;
+    username: string;
+  }
+
+  interface APIResponse {
+    value: Member;
+  }
+
+  const MemberProfile = ({ memberId }: { memberId: number }) => {
+  const [member, setMember] = useState<Member | null>(null);
+  const fetchMemberDetail = async (userId: number) => {
+    const response: AxiosResponse<APIResponse, any> =
+      await requiredJwtTokeninstance.get(`/api/user/info`, {
+        params: {
+          userId,
+        },
+      });
+    return response;
+  };
+
+  useEffect(() => {
+    fetchMemberDetail(memberId).then((res) => setMember(res.data.value));
+  }, []);
+
+  return <li>{member?.username.slice(-2)}</li>;
+};
+
+
+  project.memberIds.map((memberId) => (
+    <MemberProfile key={project.projectId} memberId={memberId} />
+  ))
+*/
