@@ -1,7 +1,7 @@
 import { ReactComponent as Add } from '@assets/add.svg';
 import { Button } from '@components/common/Button';
 import useModal from '@hooks/useModal';
-import CreateProjectModal from '@pages/projects/common/CreateProjectModal/CreateProjectModal';
+import CreateProjectModal from '@pages/projects/components/CreateProjectModal/CreateProjectModal';
 import styled from 'styled-components';
 
 const Container = styled.div`

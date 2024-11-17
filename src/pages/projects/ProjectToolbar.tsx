@@ -1,9 +1,9 @@
 import { useGetProjectList } from '@services/project/Project.hooks';
 import { styled } from 'styled-components';
 
-import ProjectAddButton from './common/ProjectAddButton';
-import ProjectFilterButton from './common/ProjectFilterButton';
-import ProjectSearchInput from './common/ProjectSearchInput';
+import ProjectAddButton from './components/ProjectAddButton';
+import ProjectFilterButton from './components/ProjectFilterButton';
+import ProjectSearchInput from './components/ProjectSearchInput';
 
 const Container = styled.section`
   width: 100%;

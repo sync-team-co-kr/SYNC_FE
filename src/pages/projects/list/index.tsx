@@ -2,7 +2,7 @@ import { useOutletContext } from 'react-router-dom';
 
 import { ProjectListItem } from '@components/project';
 import { RawProject } from '@customTypes/project';
-import { EmptyList } from '@pages/projects/common/EmptyList';
+import { EmptyList } from '@pages/projects/components/EmptyList';
 
 import StyleProjectList, {
   DescriptionHeader,
