@@ -59,7 +59,7 @@ function CreateProjectModal() {
     e.preventDefault();
     const newProject = {
       title,
-      thumbnail,
+      icone: thumbnail,
       subTitle,
       description,
     };
