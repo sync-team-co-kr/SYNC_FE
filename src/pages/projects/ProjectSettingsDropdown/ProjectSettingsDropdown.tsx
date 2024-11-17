@@ -1,11 +1,14 @@
 import { ReactComponent as Settings } from '@assets/Settings.svg';
 import { ReactComponent as TrashCan } from '@assets/trashcan.svg';
 import { ReactComponent as Withdraw } from '@assets/withdraw.svg';
-import { DropdownItemList, DropdownWrapper } from '@components/dropdown/Dropdown.style';
+import {
+  DropdownItemList,
+  DropdownWrapper,
+} from '@components/dropdown/Dropdown.style';
 import DropdownItem from '@components/dropdown/DropdownItem';
 import useModal from '@hooks/useModal';
-import DeleteProjectModal from '@pages/projects/ProjectBoards/DeleteProjectModal/DeleteProjectModal';
-import ModifyProjectModal from '@pages/projects/ProjectBoards/ModifyProjectModal/ModifyProjectModal';
+import DeleteProjectModal from '@pages/projects/board/ProjectBoards/DeleteProjectModal/DeleteProjectModal';
+import ModifyProjectModal from '@pages/projects/board/ProjectBoards/ModifyProjectModal/ModifyProjectModal';
 
 interface ProjectSettingsDropdownProps {
   isOpen: boolean;

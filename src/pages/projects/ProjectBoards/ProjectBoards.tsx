@@ -7,13 +7,12 @@ import { Button } from '@components/common/Button';
 import ProjectNavigation from '@components/dropdown/ProjectNavigationDropdown';
 import { RawProject } from '@customTypes/project';
 import { useModal } from '@hooks';
+import CreateProjectModal from '@pages/projects/board/ProjectBoards/CreateProjectModal/CreateProjectModal';
+import ProjectBoardItem from '@pages/projects/board/ProjectBoards/ProjectBoardItem/ProjectBoardItem';
+import StyleProjectBoards from '@pages/projects/board/ProjectBoards/ProjectBoards.style';
 import { useGetProjects } from '@services/project/Project.hooks';
 import { styled } from 'styled-components';
 import { vars } from 'token';
-
-import CreateProjectModal from './CreateProjectModal/CreateProjectModal';
-import ProjectBoardItem from './ProjectBoardItem/ProjectBoardItem';
-import StyleProjectBoards from './ProjectBoards.style';
 
 const ProjectNavigator = styled.section`
   width: 160px;
