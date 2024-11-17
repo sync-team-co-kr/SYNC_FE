@@ -5,6 +5,8 @@ import styled from 'styled-components';
 
 import NavBar from './NavBar';
 import ProjectDropdown from './ProjectDropdown';
+import ProjectToolbar from './ProjectToolbar';
+import useDataHandler from './hook/useDataHandler';
 
 const Container = styled.div`
   width: 100%;
@@ -17,6 +19,7 @@ const Container = styled.div`
 const Project = () => {
   const [currentTabMenu, setCurrentTabMenu] = useState('board');
   const navigate = useNavigate();
+  const { searchQuery, updateSearchQuery, filteredProjects } = useDataHandler();
 
   const handleClickTabMenu = (path: string) => {
     setCurrentTabMenu(path);
@@ -30,7 +33,11 @@ const Project = () => {
         currentTabMenu={currentTabMenu}
         handleClickTabMenu={handleClickTabMenu}
       />
-      <Outlet />
+      <ProjectToolbar
+        searchQuery={searchQuery}
+        updateSearchQuery={updateSearchQuery}
+      />
+      <Outlet context={{ filteredProjects }} />
     </Container>
   );
 };

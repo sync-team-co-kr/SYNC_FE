@@ -7,7 +7,7 @@ import projectIcon from '@assets/project-icon.png';
 import { Typography } from '@components/common';
 import {  RawProject } from '@customTypes/project';
 import useDropdown from '@hooks/useDropdown';
-import ProjectSettingsDropdown from '@pages/projects/ProjectSettingsDropdown/ProjectSettingsDropdown';
+import ProjectSettingsDropdown from '@pages/projects/common/ProjectSettingsDropdown/ProjectSettingsDropdown';
 import generateNormalDate from '@utils/generateNormalDate';
 import styled from 'styled-components';
 
