@@ -32,9 +32,13 @@ import {
   MemberRemoveRequestDto,
   ModifyPwdData,
   ModifyPwdRequestDto,
+  ModifyUserInfoData,
+  ModifyUserInfoRequestDto,
   ProjectInviteRequestDto,
   SendEmailLinkData,
   SendLinkRequestDto,
+  UpdateMemberData,
+  UpdateMemberRequestDto,
   UpdateProjectData,
   UpdateProjectPayload,
   UpdateTaskData,
@@ -80,10 +84,11 @@ export class User<
       ...params,
     });
   /**
-   * No description
+   * @description HOST = 150.136.153.235:30443
    *
    * @tags user-controller
    * @name ModifyPwd
+   * @summary 유저의 비밀번호를 변경하는 API
    * @request PUT:/user/api/pwd
    * @response `200` `ModifyPwdData` OK
    */
@@ -142,6 +147,43 @@ export class User<
     this.request<DeleteProjectData, any>({
       path: `/user/api/project`,
       method: 'DELETE',
+      body: data,
+      type: ContentType.Json,
+      ...params,
+    });
+  /**
+   * @description HOST = 150.136.153.235:30443 <br>ValidationDetails : UpdateMemberRequestDto
+   *
+   * @tags member-controller
+   * @name UpdateMember
+   * @summary 멤버 권한을 수정하기 위한 API
+   * @request PUT:/user/api/member
+   * @response `200` `UpdateMemberData` OK
+   */
+  updateMember = (data: UpdateMemberRequestDto, params: RequestParams = {}) =>
+    this.request<UpdateMemberData, any>({
+      path: `/user/api/member`,
+      method: 'PUT',
+      body: data,
+      type: ContentType.Json,
+      ...params,
+    });
+  /**
+   * @description HOST = 150.136.153.235:30443 <br>ValidationDetails : ModifyUserInfoRequestDto
+   *
+   * @tags user-controller
+   * @name ModifyUserInfo
+   * @summary 유저의 정보를 변경하는 API
+   * @request PUT:/user/api/info
+   * @response `200` `ModifyUserInfoData` OK
+   */
+  modifyUserInfo = (
+    data: ModifyUserInfoRequestDto,
+    params: RequestParams = {},
+  ) =>
+    this.request<ModifyUserInfoData, any>({
+      path: `/user/api/info`,
+      method: 'PUT',
       body: data,
       type: ContentType.Json,
       ...params,

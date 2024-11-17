@@ -67,10 +67,40 @@ export interface UpdateProjectRequestDto {
   subTitle: string;
   /** 아이콘 */
   icon?: string;
-  /** @format date-time */
-  startDate: string;
-  /** @format date-time */
-  endDate: string;
+  /**
+   * 프로젝트 시작일
+   * @format date-time
+   */
+  startDate?: string;
+  /**
+   * 프로젝트 종료일
+   * @format date-time
+   */
+  endDate?: string;
+}
+
+export interface UpdateMemberRequestDto {
+  /** 유저 로그인 아이디 */
+  userId: string;
+  /**
+   * 프로젝트 아이디
+   * @format int64
+   */
+  projectId: number;
+  /**
+   * 멤버 권한
+   * @format int32
+   * @min 0
+   * @max 2
+   */
+  isManager: number;
+}
+
+export interface ModifyUserInfoRequestDto {
+  username?: string;
+  nickname?: string;
+  position?: string;
+  introduction?: string;
 }
 
 /** 업무를 생성하기 위한 DTO */
@@ -118,18 +148,20 @@ export interface CreateProjectRequestDto {
   title: string;
   /** 프로젝트 부제목 */
   subTitle: string;
-  /** 아이콘 */
-  icon?: string;
+  /** 썸네일 */
+  thumbnail?: string;
+  /** 썸네일 형식,  'I' : 이미지, 'C' : 아이콘, 'E' : 이모지, 'N' : 없음 */
+  thumbnailType?: string;
   /**
    * 프로젝트 시작일
    * @format date-time
    */
-  startDate: string;
+  startDate?: string;
   /**
    * 프로젝트 종료일
    * @format date-time
    */
-  endDate: string;
+  endDate?: string;
 }
 
 /** 프로젝트 멤버에 업무를 할당하기 위한 DTO */
@@ -255,6 +287,10 @@ export type CreateProjectData = SuccessResponse;
 
 export type DeleteProjectData = SuccessResponse;
 
+export type UpdateMemberData = SuccessResponse;
+
+export type ModifyUserInfoData = SuccessResponse;
+
 export interface CreateTaskPayload {
   /** 업무를 생성하기 위한 DTO */
   data: CreateTaskRequestDto;
@@ -303,4 +339,4 @@ export type GetOnlyChildrenTasksData = any;
 
 export type GetImageData = any;
 
-export type ReqAlarmListData = any;
+export type DeleteAlarmData = SuccessResponse;
