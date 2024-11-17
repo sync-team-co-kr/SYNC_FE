@@ -1,3 +1,4 @@
+import { ReactComponent as Add } from '@assets/add.svg';
 import EmptyImage from '@assets/projects/empty-image.png';
 import { Button } from '@components/common/Button';
 import { Typography } from '@components/common/Typography';
@@ -35,6 +36,7 @@ export const EmptyList = () => {
         onClick={() => openModal(CreateProjectModal)}
         $isDisabled={false}
         $iconPosition="left"
+        $renderIcon={<Add />}
       />
     </EmptyListContainer>
   );
