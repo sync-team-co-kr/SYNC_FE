@@ -12,6 +12,7 @@ import RawProject from '@customTypes/project/RawProject';
 import useDropdown from '@hooks/useDropdown';
 import useModal from '@hooks/useModal';
 import { userApiInstance } from '@libs/axios/axios';
+import { useGetProjectMembers } from '@services/member/Member.hooks';
 import { useGetProjectList } from '@services/project/Project.hooks';
 import { AxiosResponse } from 'axios';
 
@@ -38,29 +39,6 @@ import {
   ToggleInviteCode,
 } from './styles';
 
-const fakeMemberList = [
-  {
-    name: '김지용',
-    email: 'Kimjiyong2523@gmail.com',
-    role: '프로젝트 생성자',
-  },
-  {
-    name: '최홍혁',
-    email: 'Kimjiyong2523@gmail.com',
-    role: '관리자',
-  },
-  {
-    name: '이소정',
-    email: 'Kimjiyong2523@gmail.com',
-    role: '팀원',
-  },
-  {
-    name: '박승주',
-    email: 'Kimjiyong2523@gmail.com',
-    role: '팀원',
-  },
-];
-
 const MembersSettings = () => {
   const [openModal] = useModal();
   const [
@@ -73,7 +51,13 @@ const MembersSettings = () => {
   const [selectedProject, setSelectedProject] = useState<RawProject | null>(
     projectListData ? projectListData[0] : null,
   );
+
+  const { getMembersData } = useGetProjectMembers(
+    selectedProject?.projectId || 0,
+  );
+
   const [inviteLink, setInviteLink] = useState('');
+  const [myRole, setMyRole] = useState(0);
 
   const createInviteLink = async () => {
     if (selectedProject?.projectId) {
@@ -100,6 +84,15 @@ const MembersSettings = () => {
     setSelectedProject(project);
     toggleProjectListDropdown();
   };
+  useEffect(() => {
+    const loggedInUser = localStorage.getItem('loggedUserId') as string;
+    const myMemberInfo = getMembersData?.filter(
+      (member) => member.userId === loggedInUser,
+    );
+    if (myMemberInfo) {
+      setMyRole(myMemberInfo[0].isManager);
+    }
+  }, [getMembersData]);
 
   return (
     <>
@@ -195,8 +188,13 @@ const MembersSettings = () => {
               <div></div>
             </MemberItemHeader>
 
-            {fakeMemberList.map((member) => (
-              <SettingsMemberItem key={member.name} {...member} />
+            {getMembersData?.map((member) => (
+              <SettingsMemberItem
+                key={member.id}
+                {...member}
+                projectId={selectedProject?.projectId}
+                myRole={myRole}
+              />
             ))}
           </MemberList>
         </MembersContainer>

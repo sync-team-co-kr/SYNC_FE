@@ -46,6 +46,7 @@ export const getProjectList = async () => {
 
   const loggedInUserId = localStorage.getItem('loggedUserId');
 
+  // 로그인 중인 회원의 프로젝트 ID 목록 가져오기
   const getProjectIdsRes: AxiosResponse<
     AxiosResByData<{ projectIds: number[] }>,
     any
@@ -53,6 +54,7 @@ export const getProjectList = async () => {
 
   const joinedProjectIds = getProjectIdsRes.data.data.projectIds.join(',');
 
+  // 프로젝트 목록 가져오기
   const getProjectListResponse: AxiosResponse<AxiosResByData<RawProject[]>> =
     await userApiInstance.get(
       `node2/project/api/v1?projectIds=${joinedProjectIds}`,
@@ -64,6 +66,7 @@ export const getProjectList = async () => {
 export const getProjectListWithMember = async () => {
   const loggedInUserId = localStorage.getItem('loggedUserId');
 
+  // 로그인 중인 회원의 프로젝트 ID 목록 가져오기
   const getProjectIdsRes: AxiosResponse<
     AxiosResByData<{ projectIds: number[] }>,
     any
@@ -71,6 +74,7 @@ export const getProjectListWithMember = async () => {
 
   const projectsWithMemberIds = await Promise.all(
     getProjectIdsRes.data.data.projectIds.flatMap(async (projectId) => {
+      // 프로젝트 목록 가져오기
       const getProjectResponse: AxiosResponse<AxiosResByData<RawProject[]>> =
         await userApiInstance.get('node2/project/api/v1', {
           params: {
@@ -78,6 +82,7 @@ export const getProjectListWithMember = async () => {
           },
         });
 
+      // 각 프로젝트의 멤버 ID 목록 가져오기
       const getMemberIdsResponse: AxiosResponse<
         AxiosResByData<{ memberToUserId: GetMemberIds[] }>
       > = await userApiInstance.get('user/api/member/v2', {
@@ -91,6 +96,7 @@ export const getProjectListWithMember = async () => {
 
       const members = await Promise.all(
         memberIds.userIds.map(async (userId) => {
+          // 멤버 ID를 통해 팀원들의 회원정보 가져오기
           const getUserResponse: AxiosResponse<AxiosResByData<IMember[]>> =
             await userApiInstance.get('/user/api/info/v2', {
               params: {

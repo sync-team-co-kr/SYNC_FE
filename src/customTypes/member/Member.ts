@@ -4,4 +4,5 @@ export default interface IMember {
   username: string;
   nickname: string;
   position: string;
+  isManager?: number;
 }
