@@ -7,17 +7,17 @@ import ProjectBoardItem from '@pages/projects/components/ProjectBoardItem/Projec
 import StyleProjectBoards from './ProjectBoards.style';
 
 const ProjectBoards = () => {
-  const { filteredProjects } = useOutletContext<{
-    filteredProjects: RawProject[];
+  const { projectData } = useOutletContext<{
+    projectData: RawProject[];
   }>();
 
   return (
     <StyleProjectBoards.Wrapper>
-      {!filteredProjects || filteredProjects.length === 0 ? (
+      {!projectData || projectData.length === 0 ? (
         <EmptyList />
       ) : (
         <StyleProjectBoards.BoardList>
-          {filteredProjects?.map((project) => (
+          {projectData?.map((project) => (
             <ProjectBoardItem key={project.projectId} project={project} />
           ))}
         </StyleProjectBoards.BoardList>

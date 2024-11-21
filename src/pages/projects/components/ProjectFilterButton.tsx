@@ -34,7 +34,13 @@ const FilterListItem = styled.li`
   }
 `;
 
-const ProjectFilterButton = () => {
+type ProjectFilterButtonType = {
+  getUpcomingProjects: () => void;
+};
+
+const ProjectFilterButton = ({
+  getUpcomingProjects,
+}: ProjectFilterButtonType) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLTableSectionElement>(null);
 
@@ -58,14 +64,19 @@ const ProjectFilterButton = () => {
         isOpen={isOpen}
         dropdownRef={dropdownRef}
         left="-150px"
-        bottom="-35px"
+        bottom="-125px"
       >
         <FilterList onClick={toggleDropdown}>
           <FilterListItem>
             <User />
             <span>내가 속한 프로젝트</span>
           </FilterListItem>
-          <FilterListItem>
+
+          <FilterListItem
+            onClick={() => {
+              getUpcomingProjects();
+            }}
+          >
             <Calender />
             <span>마감이 임박한 프로젝트</span>
           </FilterListItem>

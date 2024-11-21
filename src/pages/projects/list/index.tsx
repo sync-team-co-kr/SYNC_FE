@@ -14,13 +14,13 @@ import StyleProjectList, {
 } from './ProjectList.style';
 
 const ProjectList = () => {
-  const { filteredProjects } = useOutletContext<{
-    filteredProjects: RawProject[];
+  const { projectData } = useOutletContext<{
+    projectData: RawProject[];
   }>();
 
   return (
     <StyleProjectList.Wrapper>
-      {!filteredProjects || filteredProjects.length === 0 ? (
+      {!projectData || projectData.length === 0 ? (
         <EmptyList />
       ) : (
         <StyleProjectList.List>
@@ -57,7 +57,7 @@ const ProjectList = () => {
             <EtcHeader />
           </StyleProjectList.ProjectListHeader>
 
-          {filteredProjects?.map((project) => (
+          {projectData?.map((project) => (
             <ProjectListItem key={project.projectId} project={project} />
           ))}
         </StyleProjectList.List>
