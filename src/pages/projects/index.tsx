@@ -1,6 +1,8 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 
+import { RawProject } from '@customTypes/project';
+import { useGetProjectList } from '@services/project/Project.hooks';
 import styled from 'styled-components';
 
 import NavBar from './NavBar';
@@ -18,13 +20,24 @@ const Container = styled.div`
 
 const Project = () => {
   const [currentTabMenu, setCurrentTabMenu] = useState('board');
+  const { projectListData } = useGetProjectList();
+  const [projectData, setProjectData] = useState<RawProject[]>([]);
   const navigate = useNavigate();
-  const { searchQuery, updateSearchQuery, filteredProjects } = useDataHandler();
+  const { searchQuery, searchFilteredProjects, getUpcomingProjects } =
+    useDataHandler({
+      setProjectData,
+    });
 
   const handleClickTabMenu = (path: string) => {
     setCurrentTabMenu(path);
     navigate(`/projects/${path}`);
   };
+
+  useEffect(() => {
+    if (projectListData) {
+      setProjectData(projectListData);
+    }
+  }, [projectListData]);
 
   return (
     <Container>
@@ -34,10 +47,12 @@ const Project = () => {
         handleClickTabMenu={handleClickTabMenu}
       />
       <ProjectToolbar
+        projectData={projectData}
         searchQuery={searchQuery}
-        updateSearchQuery={updateSearchQuery}
+        searchFilteredProjects={searchFilteredProjects}
+        getUpcomingProjects={getUpcomingProjects}
       />
-      <Outlet context={{ filteredProjects }} />
+      <Outlet context={{ projectData }} />
     </Container>
   );
 };

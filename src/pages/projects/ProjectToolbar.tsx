@@ -1,4 +1,4 @@
-import { useGetProjectList } from '@services/project/Project.hooks';
+import { RawProject } from '@customTypes/project';
 import { styled } from 'styled-components';
 
 import ProjectAddButton from './components/ProjectAddButton';
@@ -20,30 +20,30 @@ const ButtonContainer = styled.section`
 `;
 
 type UseDataHandlerType = {
+  projectData: RawProject[];
   searchQuery: string;
-  updateSearchQuery: (query: string) => void;
+  searchFilteredProjects: (query: string) => void;
+  getUpcomingProjects: () => void;
 };
 
 const ProjectToolbar = ({
+  projectData,
   searchQuery,
-  updateSearchQuery,
-}: UseDataHandlerType) => {
-  const { projectListData } = useGetProjectList();
+  searchFilteredProjects,
+  getUpcomingProjects,
+}: UseDataHandlerType) => (
+  <Container>
+    <ProjectSearchInput
+      searchQuery={searchQuery}
+      projectData={projectData}
+      searchFilteredProjects={searchFilteredProjects}
+    />
 
-  return (
-    <Container>
-      <ProjectSearchInput
-        projectListData={projectListData || []}
-        searchQuery={searchQuery}
-        updateSearchQuery={updateSearchQuery}
-      />
-
-      <ButtonContainer>
-        <ProjectAddButton />
-        <ProjectFilterButton />
-      </ButtonContainer>
-    </Container>
-  );
-};
+    <ButtonContainer>
+      <ProjectAddButton />
+      <ProjectFilterButton getUpcomingProjects={getUpcomingProjects} />
+    </ButtonContainer>
+  </Container>
+);
 
 export default ProjectToolbar;
