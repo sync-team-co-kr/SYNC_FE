@@ -21,23 +21,27 @@ const TabMenuItem = styled.li<{ $iscurrenttabmenu: boolean }>`
   color: ${(props) => (props.$iscurrenttabmenu ? '#202020' : '#8f8f8f')};
 `;
 
-const NavBar = ({ handleClickTabMenu, currentTabMenu }: any) => {
-  return (
-    <TabMenu>
-      <TabMenuItem
-        onClick={() => handleClickTabMenu('board')}
-        $iscurrenttabmenu={currentTabMenu === 'board'}
-      >
-        <span>보드</span>
-      </TabMenuItem>
-      <TabMenuItem
-        onClick={() => handleClickTabMenu('list')}
-        $iscurrenttabmenu={currentTabMenu === 'list'}
-      >
-        <span>리스트</span>
-      </TabMenuItem>
-    </TabMenu>
-  );
+type TabMenuItemType = {
+  handleClickTabMenu: (path: string) => void;
+  currentTabMenu: string;
 };
+
+const NavBar = ({ handleClickTabMenu, currentTabMenu }: TabMenuItemType) => (
+  <TabMenu>
+    <TabMenuItem
+      onClick={() => handleClickTabMenu('board')}
+      $iscurrenttabmenu={currentTabMenu === 'board'}
+    >
+      <span>보드</span>
+    </TabMenuItem>
+
+    <TabMenuItem
+      onClick={() => handleClickTabMenu('list')}
+      $iscurrenttabmenu={currentTabMenu === 'list'}
+    >
+      <span>리스트</span>
+    </TabMenuItem>
+  </TabMenu>
+);
 
 export default NavBar;

@@ -18,7 +18,7 @@ import Toggle from '@components/common/Toggle/Toggle';
 import { Typography } from '@components/common/Typography';
 import { modalStore } from '@libs/store';
 import { useTaskActions, useTaskState } from '@libs/store/task/task';
-import StyleCreateProjectModal from '@pages/projects/common/CreateProjectModal/CreateProjectModal.style';
+import StyleCreateProjectModal from '@pages/projects/components/CreateProjectModal/CreateProjectModal.style';
 import { useGetProjectList } from '@services/project/Project.hooks';
 import { CreateTaskPayload } from '@services/swagger/output/data-contracts';
 import { useCreateTask } from '@services/task/Task.hooks';

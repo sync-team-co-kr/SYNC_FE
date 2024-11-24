@@ -16,6 +16,6 @@ export default interface RawProject {
   subTitle: string;
   description: string;
   startDate?: string;
-  endDate?: string;
+  endDate: string;
   members: IMember[];
 }

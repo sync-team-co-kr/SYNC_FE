@@ -50,7 +50,7 @@ const ProjectDropdown = () => {
       </div>
 
       <ProjectNavigation
-        isOpen={isOpen}
+        isOpen={projects?.length !== 0 ? isOpen : false}
         projects={projects}
         handleSelectNavigationItem={handleSelectProjectNavigationItem}
       />
