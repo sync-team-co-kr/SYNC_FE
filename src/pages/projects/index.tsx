@@ -1,10 +1,14 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 
+import { RawProject } from '@customTypes/project';
+import { useGetProjectList } from '@services/project/Project.hooks';
 import styled from 'styled-components';
 
 import NavBar from './NavBar';
 import ProjectDropdown from './ProjectDropdown';
+import ProjectToolbar from './ProjectToolbar';
+import useDataHandler from './hook/useDataHandler';
 
 const Container = styled.div`
   width: 100%;
@@ -16,12 +20,24 @@ const Container = styled.div`
 
 const Project = () => {
   const [currentTabMenu, setCurrentTabMenu] = useState('board');
+  const { projectListData } = useGetProjectList();
+  const [projectData, setProjectData] = useState<RawProject[]>([]);
   const navigate = useNavigate();
+  const { searchQuery, searchFilteredProjects, getUpcomingProjects } =
+    useDataHandler({
+      setProjectData,
+    });
 
   const handleClickTabMenu = (path: string) => {
     setCurrentTabMenu(path);
     navigate(`/projects/${path}`);
   };
+
+  useEffect(() => {
+    if (projectListData) {
+      setProjectData(projectListData);
+    }
+  }, [projectListData]);
 
   return (
     <Container>
@@ -30,7 +46,13 @@ const Project = () => {
         currentTabMenu={currentTabMenu}
         handleClickTabMenu={handleClickTabMenu}
       />
-      <Outlet />
+      <ProjectToolbar
+        projectData={projectData}
+        searchQuery={searchQuery}
+        searchFilteredProjects={searchFilteredProjects}
+        getUpcomingProjects={getUpcomingProjects}
+      />
+      <Outlet context={{ projectData }} />
     </Container>
   );
 };
