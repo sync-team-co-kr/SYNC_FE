@@ -38,8 +38,6 @@ const ProjectDropdown = () => {
   const { projects } = useGetProjects();
   const navigate = useNavigate();
 
-  console.log(projects);
-
   const handleSelectProjectNavigationItem = (project: RawProject) => {
     navigate(`/projects/${project.projectId}`);
   };

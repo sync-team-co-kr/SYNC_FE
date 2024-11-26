@@ -80,8 +80,6 @@ const ProjectBoardItem = ({ project }: { project: RawProject }) => {
     projectDropdownMenuRef,
   ] = useDropdown();
 
-  console.log(project);
-
   return (
     <StyleProjectBoard.BoardArea key={project.projectId}>
       <StyleProjectBoard.Header>
