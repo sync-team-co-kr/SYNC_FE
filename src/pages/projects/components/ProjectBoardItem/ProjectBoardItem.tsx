@@ -10,6 +10,7 @@ import useDropdown from '@hooks/useDropdown';
 import ProjectSettingsDropdown from '@pages/projects/components/ProjectSettingsDropdown/ProjectSettingsDropdown';
 import generateNormalDate from '@utils/generateNormalDate';
 import styled from 'styled-components';
+import { vars } from 'token';
 
 import StyleProjectBoard from './ProjectBoardItem.style';
 
@@ -22,6 +23,20 @@ const ThumbnailWrapper = styled.div`
   width: 28px;
   height: 28px;
   font-size: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const MemberItem = styled.li`
+  width: 28px;
+  height: 28px;
+  padding: 5px 1px;
+  background: ${vars.sementic.color.lightBlue};
+  border-radius: 100%;
+  font-size: 12px;
+  font-weight: 700;
+  color: ${vars.sementic.color.positiveBlue};
   display: flex;
   justify-content: center;
   align-items: center;
@@ -65,6 +80,8 @@ const ProjectBoardItem = ({ project }: { project: RawProject }) => {
     projectDropdownMenuRef,
   ] = useDropdown();
 
+  console.log(project);
+
   return (
     <StyleProjectBoard.BoardArea key={project.projectId}>
       <StyleProjectBoard.Header>
@@ -94,6 +111,13 @@ const ProjectBoardItem = ({ project }: { project: RawProject }) => {
       </Typography>
 
       <StyleProjectBoard.Footer>
+        <StyleProjectBoard.Members>
+          {project.members.map((member) => (
+            <MemberItem key={member.id}>
+              {member.username.substring(1)}
+            </MemberItem>
+          ))}
+        </StyleProjectBoard.Members>
         <StyleProjectBoard.Period>
           <img src={projectCalendar} alt="프로젝트 기간" />
           <p>
