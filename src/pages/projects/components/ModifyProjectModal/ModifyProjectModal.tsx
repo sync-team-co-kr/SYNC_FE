@@ -58,7 +58,7 @@ function ModifyProjectModal({ projectId }: ModifyProjectModalProps) {
     const editedProject = {
       projectId,
       title,
-      icon: thumbnail,
+      thumbnail,
       subTitle,
       description,
     };
@@ -78,6 +78,8 @@ function ModifyProjectModal({ projectId }: ModifyProjectModalProps) {
         ...editedProject,
         startDate: projectStartDate,
         endDate: projectEndDate,
+        thumbnail: thumbnail.value,
+        thumbnailType: thumbnail.type,
       });
     }
     /*
