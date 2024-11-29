@@ -24,7 +24,7 @@ import {
 } from '@components/modal/CreateTaskModal/style';
 import { modalStore } from '@libs/store';
 import { useTaskActions, useTaskState } from '@libs/store/task/task';
-import { useGetProjectList } from '@services/project/Project.hooks';
+import { useGetProjects } from '@services/project/Project.hooks';
 import { useCreateTask } from '@services/task/Task.hooks';
 
 import { EditTaskModalProps } from './types';
@@ -52,7 +52,7 @@ export const EditTaskModal = ({
 
   console.log(editType);
   // projectData를 가져오는 hooks
-  const { projectListData } = useGetProjectList() ?? {};
+  const { projects } = useGetProjects();
 
   // project 자식 업무를 가져오는 hooks
   // const { taskChildren } = useGetTaskChildren(taskId);
@@ -60,7 +60,7 @@ export const EditTaskModal = ({
   // 프로젝트 검색 state
   const [projectSearch, setProjectSearch] = useState('');
   // 검색 필터링된 프로젝트 리스트
-  const [projectList, setProjectList] = useState(projectListData);
+  const [projectList, setProjectList] = useState(projects);
 
   const { createTaskMutate } = useCreateTask();
   const handleCreateTask = () => {
@@ -88,12 +88,12 @@ export const EditTaskModal = ({
 
   const handleProjectSearch = (e: ChangeEvent<HTMLInputElement>) => {
     setProjectSearch(e.target.value);
-    setProjectList(searchFilter(e.target.value, projectListData));
+    setProjectList(searchFilter(e.target.value, projects));
   };
 
   useEffect(() => {
-    setProjectList(projectListData);
-  }, [projectListData]);
+    setProjectList(projects);
+  }, [projects]);
 
   return (
     <Container>

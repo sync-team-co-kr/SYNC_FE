@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 
 import { RawProject } from '@customTypes/project';
-import { useGetProjectList } from '@services/project/Project.hooks';
+import { useGetProjects } from '@services/project/Project.hooks';
 import styled from 'styled-components';
 
 import NavBar from './NavBar';
@@ -20,7 +20,7 @@ const Container = styled.div`
 
 const Project = () => {
   const [currentTabMenu, setCurrentTabMenu] = useState('board');
-  const { projectListData } = useGetProjectList();
+  const { projects } = useGetProjects();
   const [projectData, setProjectData] = useState<RawProject[]>([]);
   const navigate = useNavigate();
   const { searchQuery, searchFilteredProjects, getUpcomingProjects } =
@@ -34,10 +34,10 @@ const Project = () => {
   };
 
   useEffect(() => {
-    if (projectListData) {
-      setProjectData(projectListData);
+    if (projects) {
+      setProjectData(projects);
     }
-  }, [projectListData]);
+  }, [projects]);
 
   return (
     <Container>

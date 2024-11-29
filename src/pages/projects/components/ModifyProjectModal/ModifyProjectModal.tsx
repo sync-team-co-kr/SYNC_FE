@@ -26,7 +26,7 @@ interface ModifyProjectModalProps {
 function ModifyProjectModal({ projectId }: ModifyProjectModalProps) {
   const [closeModal] = useModal();
 
-  const { projectData, isLoading } = useGetProject(projectId);
+  const { project, isLoading } = useGetProject(projectId);
   const { editProjectMutate } = useEditProject();
   const [includeTime, setIncludeTime] = useState(false);
 
@@ -42,9 +42,9 @@ function ModifyProjectModal({ projectId }: ModifyProjectModalProps) {
   } = useProjectActions();
 
   useEffect(() => {
-    if (projectData && !isLoading) {
+    if (project && !isLoading) {
       setProject({
-        ...projectData,
+        ...project,
       });
     }
   }, [isLoading]);

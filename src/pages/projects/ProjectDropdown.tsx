@@ -36,6 +36,7 @@ const ProjectNavigator = styled.section`
 const ProjectDropdown = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { projects } = useGetProjects();
+
   const navigate = useNavigate();
 
   const handleSelectProjectNavigationItem = (project: RawProject) => {

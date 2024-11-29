@@ -13,7 +13,7 @@ import useDropdown from '@hooks/useDropdown';
 import useModal from '@hooks/useModal';
 import { userApiInstance } from '@libs/axios/axios';
 import { useGetProjectMembers } from '@services/member/Member.hooks';
-import { useGetProjectList } from '@services/project/Project.hooks';
+import { useGetProjects } from '@services/project/Project.hooks';
 import { AxiosResponse } from 'axios';
 
 import {
@@ -47,9 +47,9 @@ const MembersSettings = () => {
     projectDropdownRef,
   ] = useDropdown();
 
-  const { projectListData, isLoading } = useGetProjectList();
+  const { projects, isLoading } = useGetProjects();
   const [selectedProject, setSelectedProject] = useState<RawProject | null>(
-    projectListData ? projectListData[0] : null,
+    projects ? projects[0] : null,
   );
 
   const { getMembersData } = useGetProjectMembers(
@@ -71,10 +71,7 @@ const MembersSettings = () => {
     }
   };
 
-  useEffect(
-    () => projectListData && setSelectedProject(projectListData[0]),
-    [isLoading],
-  );
+  useEffect(() => projects && setSelectedProject(projects[0]), [isLoading]);
 
   useEffect(() => {
     createInviteLink();
@@ -112,7 +109,7 @@ const MembersSettings = () => {
           </SelectedProject>
           <ProjectNavigation
             isOpen={isOpenProjectNavigation}
-            projects={projectListData}
+            projects={projects}
             handleSelectNavigationItem={handleSelectProjectNavigationItem}
           />
         </ProjectListDropdown>

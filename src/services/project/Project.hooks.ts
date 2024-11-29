@@ -1,4 +1,5 @@
 import { RawProject } from '@customTypes/project';
+import { getProjectMemberIds, getUser } from '@services/member/apis';
 import { CreateProjectRequestDto } from '@services/swagger/output/data-contracts';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
@@ -6,50 +7,62 @@ import {
   createProject,
   deleteProject,
   editProject,
-  getProject,
   getProjectIdList,
-  getProjectList,
-  getProjectListWithMember,
+  getProjectIds,
+  getTempProject,
 } from './apis';
 
-// projectList hooks
-export const useGetProjectList = () => {
-  const { data: projectListData, isLoading } = useQuery({
-    queryKey: ['projects'],
-    queryFn: getProjectList,
-  });
-
-  return { projectListData, isLoading };
-};
-
 export const useGetProjects = () => {
-  const { data: projects } = useQuery({
+  const { data: projects, isLoading } = useQuery({
     queryKey: ['projects'],
-    queryFn: getProjectListWithMember,
+    queryFn: async () => {
+      const projectIds = await getProjectIds();
+
+      const projectsWithMembers = await Promise.all(
+        projectIds.flatMap(async (projectId) => {
+          const project = await getTempProject(projectId);
+          const [memberIds] = await getProjectMemberIds(projectId);
+
+          const members = await Promise.all(
+            memberIds.userIds.flatMap(async (userId) => {
+              const userInfo = await getUser(userId);
+              return { ...userInfo, id: userId };
+            }),
+          );
+
+          return { ...project, members };
+        }),
+      );
+
+      return projectsWithMembers;
+    },
   });
 
-  return { projects };
+  return { projects, isLoading };
 };
 
-// ProjectList id list hooks
-export const useGetProjectIdList = () => {
-  const { data: projectIdsList = [] } = useQuery({
-    queryKey: ['projectIds'],
-    queryFn: getProjectIdList,
-  });
-
-  return { projectIdsList };
-};
-
-// project hooks
 export const useGetProject = (projectId: number) => {
-  const { isLoading, data: projectData } = useQuery({
+  const { data: project, isLoading } = useQuery({
     queryKey: ['projects', projectId],
-    queryFn: () => getProject(projectId),
+    queryFn: async () => {
+      const getProjectData = await getTempProject(projectId);
+      return getProjectData;
+    },
     enabled: !!projectId,
   });
+  return { project, isLoading };
+};
 
-  return { isLoading, projectData };
+export const useGetProjectIds = () => {
+  const { data: projectIds } = useQuery({
+    queryKey: ['projects'],
+    queryFn: async () => {
+      const projectIdList = await getProjectIdList();
+      return projectIdList;
+    },
+  });
+
+  return { projectIds };
 };
 
 // create project hooks

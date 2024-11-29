@@ -1,7 +1,7 @@
 import { RefObject, forwardRef } from 'react';
 
 import { useHandleOutsideHooks } from '@hooks/useHandleOutsideHooks';
-import { useGetProjectList } from '@services/project/Project.hooks';
+import { useGetProjects } from '@services/project/Project.hooks';
 
 import { ProjectDropdownItem } from './ProjectListDropdownItem';
 import { DropdownContainer } from './style';
@@ -12,11 +12,11 @@ export const ProjectListDropdown = forwardRef<
   ProjectListDropdownProps
 >(({ isOpen, setClose }, ref) => {
   useHandleOutsideHooks(ref as RefObject<HTMLDivElement>, setClose);
-  const { projectListData } = useGetProjectList();
+  const { projects } = useGetProjects();
   return (
     <DropdownContainer isOpen={isOpen} ref={ref}>
-      {!!projectListData &&
-        projectListData?.map((project) => (
+      {!!projects &&
+        projects?.map((project) => (
           <ProjectDropdownItem
             key={project.projectId}
             projectId={project.projectId}

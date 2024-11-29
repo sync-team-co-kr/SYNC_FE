@@ -9,7 +9,7 @@ import { CreateTaskModal } from '@components/modal/CreateTaskModal';
 import { RawProject } from '@customTypes/project';
 import useModal from '@hooks/useModal';
 import { useTaskActions } from '@libs/store/task/task';
-import { useGetProjectList } from '@services/project/Project.hooks';
+import { useGetProjects } from '@services/project/Project.hooks';
 
 import {
   CalendarTaskDropdownContainer,
@@ -27,7 +27,7 @@ const CalendarTaskDropdown = (
   }: CalendarTaskDropdownProps,
   ref: ForwardedRef<HTMLDivElement>,
 ) => {
-  const { projectListData } = useGetProjectList();
+  const { projects } = useGetProjects();
   const [openModal] = useModal();
 
   const { setProject } = useTaskActions();
@@ -72,7 +72,7 @@ const CalendarTaskDropdown = (
 
         <CalendarTaskDropdownContent>
           <TaskSelectItemList>
-            {projectListData?.map((project) => (
+            {projects?.map((project) => (
               <TaskItem
                 situations={[]}
                 onClick={() => handleOpenCreateTaskModal(project)}

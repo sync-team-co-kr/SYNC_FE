@@ -11,14 +11,14 @@ interface ProjectDropdownItemProps {
 export const ProjectDropdownItem = ({
   projectId,
 }: ProjectDropdownItemProps) => {
-  const { projectData } = useGetProject(projectId);
+  const { project } = useGetProject(projectId);
 
   const { setProject } = useTaskActions();
 
-  if (!projectData) return null;
+  if (!project) return null;
 
   const handleProjectClick = () => {
-    setProject(projectData);
+    setProject(project);
   };
 
   return (
@@ -26,10 +26,10 @@ export const ProjectDropdownItem = ({
       <ImageWrapper></ImageWrapper>
       <DropdownItemText>
         <Typography variant="heading-4" color="black">
-          {projectData.title}
+          {project.title}
         </Typography>
         <Typography variant="small-text-b" color="black35">
-          {projectData.subTitle}
+          {project.subTitle}
         </Typography>
       </DropdownItemText>
     </DropdownItem>

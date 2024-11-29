@@ -15,14 +15,14 @@ interface DeleteProjectModalProps {
 
 const DeleteProjectModal = ({ projectId }: DeleteProjectModalProps) => {
   const [retypeProjectTitle, setRetypeProjectTitle] = useState('');
-  const { projectData } = useGetProject(projectId);
+  const { project } = useGetProject(projectId);
   const { deleteProjectMutate } = useDeleteProject();
 
   const handleDeleteProject = async (
     e: React.MouseEvent<HTMLButtonElement>,
   ) => {
     e.preventDefault();
-    if (retypeProjectTitle === projectData?.title) {
+    if (retypeProjectTitle === project?.title) {
       deleteProjectMutate(projectId);
     }
   };
@@ -40,7 +40,7 @@ const DeleteProjectModal = ({ projectId }: DeleteProjectModalProps) => {
 
       <StyleDeleteProjectModal.Form>
         <InputArea
-          value={projectData?.title || ''}
+          value={project?.title || ''}
           isDisabled={true}
           labelText="프로젝트 명"
           placeholderText="프로젝트 명"

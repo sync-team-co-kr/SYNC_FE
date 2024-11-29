@@ -19,7 +19,7 @@ import { Typography } from '@components/common/Typography';
 import { modalStore } from '@libs/store';
 import { useTaskActions, useTaskState } from '@libs/store/task/task';
 import StyleCreateProjectModal from '@pages/projects/components/CreateProjectModal/CreateProjectModal.style';
-import { useGetProjectList } from '@services/project/Project.hooks';
+import { useGetProjects } from '@services/project/Project.hooks';
 import { CreateTaskPayload } from '@services/swagger/output/data-contracts';
 import { useCreateTask } from '@services/task/Task.hooks';
 
@@ -75,12 +75,12 @@ export const CreateTaskModal = () => {
   // projectData를 가져오는 hooks
 
   const [includeTime, setIncludeTime] = useState(false);
-  const { projectListData } = useGetProjectList() ?? {};
+  const { projects } = useGetProjects();
 
   // 프로젝트 검색 state
   const [projectSearch, setProjectSearch] = useState('');
   // 검색 필터링된 프로젝트 리스트
-  const [projectList, setProjectList] = useState(projectListData);
+  const [projectList, setProjectList] = useState(projects);
 
   const { createTaskMutate } = useCreateTask();
 
@@ -147,7 +147,7 @@ export const CreateTaskModal = () => {
 
   const handleProjectSearch = (e: ChangeEvent<HTMLInputElement>) => {
     setProjectSearch(e.target.value);
-    setProjectList(searchFilter(e.target.value, projectListData));
+    setProjectList(searchFilter(e.target.value, projects));
   };
 
   // validate
@@ -161,8 +161,8 @@ export const CreateTaskModal = () => {
   };
 
   useEffect(() => {
-    setProjectList(projectListData);
-  }, [projectListData]);
+    setProjectList(projects);
+  }, [projects]);
 
   return (
     <Container>

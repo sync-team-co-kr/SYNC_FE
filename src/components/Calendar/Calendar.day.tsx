@@ -5,9 +5,8 @@ import { Typography } from '@components/common/Typography';
 import { EditTaskModal } from '@components/modal/EditTaskModal';
 import useModal from '@hooks/useModal';
 import { useTaskActions, useTaskState } from '@libs/store/task/task';
-import { useGetProjectIdList } from '@services/project/Project.hooks';
+import { useGetProjectIds } from '@services/project/Project.hooks';
 import { useGetTasks } from '@services/task/Task.hooks';
-// import { useGetProjectIdList } from '@services/project/Project.hooks';
 import styled from 'styled-components';
 
 import { useRenderTaskFilter } from './Calendar.hooks';
@@ -44,11 +43,10 @@ export const CalendarDay = () => {
 
   const { project } = useTaskState();
   const { setTaskId } = useTaskActions();
-  const { projectIdsList } = useGetProjectIdList() ?? {};
+  const { projectIds } = useGetProjectIds();
 
   const { tasks } =
-    useGetTasks(project.title !== '' ? project.projectId : projectIdsList) ??
-    {};
+    useGetTasks(project.title !== '' ? project.projectId : projectIds) ?? {};
 
   const { value } = useContext(CalendarContext);
   const returnStatus = (status: number) => {

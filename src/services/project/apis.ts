@@ -20,9 +20,42 @@ interface IMember {
 }
 
 /**
- * 프로젝트 리스트의 id들만 가져오는 API
+ * 프로젝트 목록을 가져오는 API
+ * @param projectIds: number[];
+ * @returns {
+ *  projectId: number;
+ *  title: string;
+ *  subTitle: string;
+ *  description: string;
+ *  startDate: Date;
+ *  endDate: Date;
+ *  progress: number;
+ *  thumbnail: string;
+ *  thumbnailType: "N" | "E" | "C" | "I";
+ * }
  */
-export const getProjectIdList = async () => {
+
+export const getProjects = async (projectIds: number[]) => {
+  const joinedProjectIds = projectIds.join(',');
+
+  const getProjectListResponse: AxiosResponse<AxiosResByData<RawProject[]>> =
+    await userApiInstance.get(
+      `node2/project/api/v1?projectIds=${joinedProjectIds}`,
+    );
+
+  console.log(getProjectListResponse);
+  return getProjectListResponse.data.data;
+};
+
+/**
+ * 프로젝트 목록을 가져오는 API
+ * @param
+ * @returns {
+ *  projectIds: number[];
+ * }
+ */
+
+export const getProjectIds = async (): Promise<number[]> => {
   const { loggedUserId } = window.localStorage;
 
   const getProjectIdsRes: AxiosResponse<
@@ -34,33 +67,27 @@ export const getProjectIdList = async () => {
   return projectIds;
 };
 
+export const getTempProject = async (projectId: number) => {
+  const getProjectResponse: AxiosResponse<AxiosResByData<RawProject[]>> =
+    await userApiInstance.get(`node2/project/api/v1?projectIds=${projectId}`);
+
+  const [project] = getProjectResponse.data.data;
+  return project;
+};
+
 /**
- * 프로젝트 리스트를 가져오는 API
+ * 프로젝트 리스트의 id들만 가져오는 API
  */
+export const getProjectIdList = async () => {
+  const { loggedUserId } = window.localStorage;
 
-export const getProjectList = async () => {
-  /**
-   *  /api/user/info/v1 반환값으로 userId가 추가될 때
-   * /project/api/v2 userId의 params 값으로 사용
-   */
-
-  const loggedInUserId = localStorage.getItem('loggedUserId');
-
-  // 로그인 중인 회원의 프로젝트 ID 목록 가져오기
   const getProjectIdsRes: AxiosResponse<
     AxiosResByData<{ projectIds: number[] }>,
     any
-  > = await userApiInstance.get(`/project/api/v2?userId=${loggedInUserId}`);
+  > = await userApiInstance.get(`/project/api/v2?userId=${loggedUserId}`);
 
-  const joinedProjectIds = getProjectIdsRes.data.data.projectIds.join(',');
-
-  // 프로젝트 목록 가져오기
-  const getProjectListResponse: AxiosResponse<AxiosResByData<RawProject[]>> =
-    await userApiInstance.get(
-      `node2/project/api/v1?projectIds=${joinedProjectIds}`,
-    );
-
-  return getProjectListResponse.data.data;
+  const { projectIds } = getProjectIdsRes.data.data;
+  return projectIds;
 };
 
 export const getProjectListWithMember = async () => {
@@ -117,32 +144,6 @@ export const getProjectListWithMember = async () => {
   );
 
   return projectsWithMemberIds;
-};
-
-/**
- * 프로젝트를 가져오는 API
- * @param projectId: number
- * @returns {
- *  result: boolean;
- *  message: string;
- *  value: {
- *  projectId: number;
- *  title: string;
- *  description: string;
- *  startDate: Date;
- *  endDate: Date;
- *  progress: number;
- *  }
- * }
- */
-
-export const getProject = async (projectId: number) => {
-  const getProjectResponse: AxiosResponse<AxiosResByData<RawProject[]>> =
-    await userApiInstance.get(`node2/project/api/v1?projectIds=${projectId}`);
-
-  const [project] = getProjectResponse.data.data;
-
-  return project;
 };
 
 /**
