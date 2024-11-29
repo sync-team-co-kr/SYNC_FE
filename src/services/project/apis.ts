@@ -32,6 +32,13 @@ interface IMember {
  *  progress: number;
  *  thumbnail: string;
  *  thumbnailType: "N" | "E" | "C" | "I";
+ *  members: {
+ *    id: number;
+ *    userId: string;
+ *    username: string;
+ *    nickname?: string;
+ *    position?: string;
+ *  }[];
  * }
  */
 
@@ -163,8 +170,6 @@ export const getProjectListWithMember = async () => {
 
 export const createProject = async (newProject: CreateProjectRequestDto) => {
   const formData = new FormData();
-
-  console.log(newProject);
 
   if (newProject.thumbnail && newProject.thumbnailType === 'I') {
     const uuid = randomUuid();

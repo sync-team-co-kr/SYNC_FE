@@ -25,7 +25,7 @@ interface AxiosRes<ResponseType> {
 }
 
 interface GetUserInfoData {
-  userId: string;
+  userId: number;
   username: string;
 }
 
