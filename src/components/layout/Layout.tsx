@@ -2,6 +2,7 @@ import React from 'react';
 import { Outlet } from 'react-router-dom';
 
 import { ModalWrapper } from '@components/common';
+import Toast from '@components/common/Toast';
 import { modalStore } from '@libs/store';
 import styled from 'styled-components';
 import { vars } from 'token';
@@ -24,6 +25,7 @@ export default function Layout() {
 
   return (
     <>
+      <Toast />
       <Header />
 
       <SideBar />
