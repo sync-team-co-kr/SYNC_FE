@@ -60,10 +60,15 @@ const ToastFillAutoCloseProcessBarAnimation = keyframes`
   }
 `;
 
-export const ToastAutoCloseProcessBar = styled.div`
+export const ToastAutoCloseProcessBar = styled.div<{
+  $messagetype: 'success' | 'error';
+}>`
   width: 100%;
   height: 7px;
-  background-color: ${vars.sementic.color.green};
+  background-color: ${(props) =>
+    props.$messagetype === 'success'
+      ? vars.sementic.color.green
+      : vars.sementic.color.positiveBlue};
   border-radius: 0 0 4px 4px;
   animation: ${ToastFillAutoCloseProcessBarAnimation} 3s linear;
 `;

@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 
 import { ReactComponent as CloseButton } from '@assets/cancel-x.svg';
+import { ReactComponent as ErrorSign } from '@assets/common/toast/alert-triangle.svg';
 import { ReactComponent as SuccessSign } from '@assets/common/toast/check-circle.svg';
 import { useToastActions, useToastState } from '@libs/store/toast/toast';
 
@@ -12,13 +13,19 @@ import {
   ToastWrapper,
 } from './Toast.styles';
 
+const ToastSign = () => {
+  const { messageType } = useToastState();
+  if (messageType === 'success') return <SuccessSign width={24} height={24} />;
+  return <ErrorSign width={24} height={24} />;
+};
+
 const Toast = () => {
-  const { isOpen } = useToastState();
-  const { closeToast } = useToastActions();
+  const { isOpen, message, messageType } = useToastState();
+  const { clearToastMessage } = useToastActions();
 
   useEffect(() => {
     if (!isOpen) return undefined;
-    const autoCloseToast = setTimeout(() => closeToast(), 3000);
+    const autoCloseToast = setTimeout(() => clearToastMessage(), 3000);
     return () => clearTimeout(autoCloseToast);
   }, [isOpen]);
 
@@ -26,14 +33,16 @@ const Toast = () => {
     <ToastWrapper $isopen={isOpen}>
       <ToastBody>
         <ToastMessageBox>
-          <SuccessSign width={24} height={24} />
-          <span>성공적으로 완료되었습니다!</span>
+          <ToastSign />
+          <span>{message}</span>
         </ToastMessageBox>
-        <ToastCloseButton onClick={closeToast}>
+        <ToastCloseButton onClick={clearToastMessage}>
           <CloseButton width={24} height={24} />
         </ToastCloseButton>
       </ToastBody>
-      <ToastAutoCloseProcessBar></ToastAutoCloseProcessBar>
+      <ToastAutoCloseProcessBar
+        $messagetype={messageType}
+      ></ToastAutoCloseProcessBar>
     </ToastWrapper>
   );
 };

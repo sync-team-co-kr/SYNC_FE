@@ -1,4 +1,5 @@
 import { RawProject } from '@customTypes/project';
+import { useToastActions } from '@libs/store/toast/toast';
 import { getLoggedUserAPI } from '@services/api';
 import { getProjectMemberIds, getUser } from '@services/member/apis';
 import { CreateProjectRequestDto } from '@services/swagger/output/data-contracts';
@@ -69,6 +70,7 @@ export const useGetProjectIds = () => {
 // create project hooks
 export const useCreateProject = () => {
   const queryClient = useQueryClient();
+  const { setToastMessage } = useToastActions();
 
   const createProjectMutation = useMutation({
     mutationFn: (newProject: CreateProjectRequestDto) =>
@@ -110,8 +112,9 @@ export const useCreateProject = () => {
 
       return oldProjects;
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
       // 프로젝트 생성 반환 값이 추가되면 서버 데이터를 이용해 캐시 작업 진행 예정
+      setToastMessage(`${data.title} 프로젝트가 생성되었습니다.`, 'success');
     },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ['projects'] });
@@ -123,6 +126,7 @@ export const useCreateProject = () => {
 // edit project hooks
 export const useEditProject = () => {
   const queryClient = useQueryClient();
+  const { setToastMessage } = useToastActions();
 
   const editProjectMutation = useMutation({
     mutationFn: (project: Omit<RawProject, 'members'>) => editProject(project),
@@ -143,6 +147,9 @@ export const useEditProject = () => {
         ),
       );
     },
+    onSuccess: (data) => {
+      setToastMessage(` ${data.title} 프로젝트를 수정했습니다.`, 'error');
+    },
     onSettled: (editedProject) => {
       queryClient.invalidateQueries({
         queryKey: ['projects', editedProject?.projectId],
@@ -156,6 +163,7 @@ export const useEditProject = () => {
 // delete project hooks
 export const useDeleteProject = () => {
   const queryClient = useQueryClient();
+  const { setToastMessage } = useToastActions();
 
   const deleteProjectMutation = useMutation({
     mutationFn: (projectId: number) => deleteProject(projectId),
@@ -174,8 +182,8 @@ export const useDeleteProject = () => {
         ),
       );
     },
-    onSuccess: (data) => {
-      console.log(data);
+    onSuccess: () => {
+      setToastMessage('프로젝트가 삭제되었습니다.', 'success');
     },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ['projects'] });
