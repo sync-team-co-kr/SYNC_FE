@@ -1,7 +1,12 @@
 // import Add from '@assets/add.svg';
+import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
 import TaskBoardItem from '@components/Task/SpecificStatusTasks';
+import {
+  useDraggingTempTaskActions,
+  useDraggingTempTaskState,
+} from '@libs/store/task/draggingTempTask';
 import { useGetTasks } from '@services/task';
 import { vars } from 'token';
 
@@ -23,8 +28,46 @@ const TaskBoardList = () => {
 
   const { id } = useParams();
 
-  const { tasks } = useGetTasks(Number(id));
+  const { tasks, isLoading } = useGetTasks(Number(id));
+  const { draggingTempTasks } = useDraggingTempTaskState();
+  const { setOriginalTasks } = useDraggingTempTaskActions();
 
+  useEffect(() => {
+    if (tasks) {
+      setOriginalTasks(tasks);
+    }
+  }, [id, isLoading]);
+
+  if (!tasks) return <div>Task가 없을 때의 페이지</div>;
+  if (draggingTempTasks)
+    return (
+      <StyledTaskBoardList>
+        <TaskBoardItem
+          title="해야할 일"
+          titleColor="negativeRed"
+          borderColor={vars.sementic.color.black10}
+          backgroundColor={vars.sementic.color.lightRed}
+          projectId={Number(id)}
+          tasks={draggingTempTasks.filter((task) => task.status === 2)}
+        />
+        <TaskBoardItem
+          title="하는 중"
+          titleColor="positiveBlue"
+          borderColor={vars.sementic.color.black10}
+          backgroundColor={vars.sementic.color.lightBlue}
+          projectId={Number(id)}
+          tasks={draggingTempTasks.filter((task) => task.status === 1)}
+        />
+        <TaskBoardItem
+          title="완료"
+          titleColor="black35"
+          borderColor={vars.sementic.color.black10}
+          projectId={Number(id)}
+          tasks={draggingTempTasks.filter((task) => task.status === 0)}
+          backgroundColor={vars.sementic.color.black10}
+        />
+      </StyledTaskBoardList>
+    );
   return (
     <StyledTaskBoardList>
       <TaskBoardItem
@@ -33,7 +76,7 @@ const TaskBoardList = () => {
         borderColor={vars.sementic.color.black10}
         backgroundColor={vars.sementic.color.lightRed}
         projectId={Number(id)}
-        tasks={tasks?.filter((task) => task.status === 2)}
+        tasks={tasks.filter((task) => task.status === 2)}
       />
       <TaskBoardItem
         title="하는 중"
@@ -41,14 +84,14 @@ const TaskBoardList = () => {
         borderColor={vars.sementic.color.black10}
         backgroundColor={vars.sementic.color.lightBlue}
         projectId={Number(id)}
-        tasks={tasks?.filter((task) => task.status === 1)}
+        tasks={tasks.filter((task) => task.status === 1)}
       />
       <TaskBoardItem
         title="완료"
         titleColor="black35"
         borderColor={vars.sementic.color.black10}
         projectId={Number(id)}
-        tasks={tasks?.filter((task) => task.status === 0)}
+        tasks={tasks.filter((task) => task.status === 0)}
         backgroundColor={vars.sementic.color.black10}
       />
     </StyledTaskBoardList>
