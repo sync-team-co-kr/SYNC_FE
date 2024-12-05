@@ -1,5 +1,5 @@
 // 업무 생성 모달 내 form
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 
 import { ReactComponent as CloseX } from '@assets/cancel-x.svg';
 import { Editor } from '@components/Editor';
@@ -9,8 +9,7 @@ import InputWithTimePicker from '@components/common/InputArea/InputWithTimePicke
 import { Select } from '@components/common/Select/Select';
 import { SelectButton } from '@components/common/Select/Select.Button';
 import { SelectItem, SelectList } from '@components/common/Select/Select.list';
-import { searchFilter } from '@components/common/Select/Select.utils';
-import { LabelContainer, TaskContainer } from '@components/common/Select/style';
+import { LabelContainer } from '@components/common/Select/style';
 import { Tag } from '@components/common/Tag';
 import { SituationProperty } from '@components/common/Tag/types';
 import Textfield from '@components/common/Textfield';
@@ -19,13 +18,14 @@ import { Typography } from '@components/common/Typography';
 import { modalStore } from '@libs/store';
 import { useTaskActions, useTaskState } from '@libs/store/task/task';
 import StyleCreateProjectModal from '@pages/projects/components/CreateProjectModal/CreateProjectModal.style';
-import { useGetProjects } from '@services/project/Project.hooks';
 import { CreateTaskPayload } from '@services/swagger/output/data-contracts';
 import { useCreateTask } from '@services/task/Task.hooks';
 
+import ParentTaskSelectDropdown from './ParentTaskSelectDropdown';
+import ProjectSelectDropdown from './ProjectSelectDropdown';
+import TaskParentIdSetButtonGroup from './TaskParentIdSetButtonGroup';
 import { SELECT_STATUS } from './constants';
 import {
-  ButtonGroup,
   Container,
   ContainerContent,
   ContainerFooter,
@@ -48,22 +48,19 @@ function combineDateTime(date: string): string {
     throw new Error('날짜와 시간을 합치는데 실패했습니다.');
   }
 }
-// 업무 생성 모달
 
+// 업무 생성 모달
 export const CreateTaskModal = () => {
   const { closeModal } = modalStore();
 
   // 업무 생성 모달 payload 값들을 가져오는 state
-  const { payload, project, errorList, titleImage } = useTaskState();
+  const { payload, errorList, titleImage } = useTaskState();
 
   // 업무 생성 모달 payload 값들을 set 해주는 actions
   const {
-    setProject,
     setTitle,
     setStatus,
     setDescription,
-    setParentTaskId,
-    setProjectId,
     setStartDate,
     setEndDate,
     setTitleImage,
@@ -72,15 +69,7 @@ export const CreateTaskModal = () => {
     clearErrorList,
   } = useTaskActions();
 
-  // projectData를 가져오는 hooks
-
   const [includeTime, setIncludeTime] = useState(false);
-  const { projects } = useGetProjects();
-
-  // 프로젝트 검색 state
-  const [projectSearch, setProjectSearch] = useState('');
-  // 검색 필터링된 프로젝트 리스트
-  const [projectList, setProjectList] = useState(projects);
 
   const { createTaskMutate } = useCreateTask();
 
@@ -143,13 +132,6 @@ export const CreateTaskModal = () => {
     }
   };
 
-  // 프로젝트 검색
-
-  const handleProjectSearch = (e: ChangeEvent<HTMLInputElement>) => {
-    setProjectSearch(e.target.value);
-    setProjectList(searchFilter(e.target.value, projects));
-  };
-
   // validate
 
   const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -159,10 +141,6 @@ export const CreateTaskModal = () => {
       removeErrorList('title');
     }
   };
-
-  useEffect(() => {
-    setProjectList(projects);
-  }, [projects]);
 
   return (
     <Container>
@@ -181,87 +159,12 @@ export const CreateTaskModal = () => {
       <ContainerContent>
         {/* project name */}
         <SectionContainer>
-          <LabelContainer>
-            <Typography variant="small-text-b" color="negativeRed">
-              *
-            </Typography>
-            <Typography variant="small-text-b" color="black35">
-              프로젝트 명
-            </Typography>
-          </LabelContainer>
-          <Select
-            listLabel="프로젝트"
-            isEssential
-            value={
-              project.title !== '' ? project.title : '프로젝트를 선택해 주세요'
-            }
-            type="select"
-          >
-            <SelectButton />
-            <SelectList>
-              <Textfield
-                variant="search"
-                type="search"
-                placeholder="검색"
-                value={projectSearch}
-                onChange={handleProjectSearch}
-              />
-              {projectList?.map((projectData) => (
-                <SelectItem
-                  onClick={() => {
-                    setProject(projectData);
-                    setProjectId(projectData.projectId);
-                  }}
-                  key={projectData.projectId}
-                >
-                  <Typography variant="paragraph" color="black70">
-                    {projectData.title}
-                  </Typography>
-                </SelectItem>
-              ))}
-            </SelectList>
-          </Select>
+          <ProjectSelectDropdown />
           {/* project name end */}
         </SectionContainer>
         {/* task state */}
         <SectionContainer>
-          <LabelContainer>
-            <Typography variant="small-text-b" color="negativeRed">
-              *
-            </Typography>
-            <Typography variant="small-text-b" color="black35">
-              업무 속성
-            </Typography>
-          </LabelContainer>
-          <ButtonGroup>
-            <Button
-              size="small"
-              $isSelect={payload.parentTaskId === 0}
-              variant="task"
-              text="테스크"
-              onClick={() => {
-                setParentTaskId(0);
-              }}
-            />
-            <Button
-              size="small"
-              variant="subTask"
-              $isSelect={payload.parentTaskId === 1}
-              text="서브 테스크"
-              onClick={() => {
-                setParentTaskId(1);
-              }}
-            />
-            <Button
-              size="small"
-              variant="quest"
-              $isSelect={payload.parentTaskId === 2}
-              text="퀘스트"
-              onClick={() => {
-                setParentTaskId(2);
-              }}
-            />
-          </ButtonGroup>
+          <TaskParentIdSetButtonGroup />
         </SectionContainer>
         {/* task state end */}
 
@@ -270,45 +173,11 @@ export const CreateTaskModal = () => {
           <SectionContainer maxWidth="100%" direction="row" gap={24}>
             {payload.parentTaskId === 1 ||
               (payload.parentTaskId === 2 && (
-                <TaskContainer>
-                  <LabelContainer>
-                    <Typography variant="small-text-b" color="negativeRed">
-                      *
-                    </Typography>
-                    <Typography variant="small-text-b" color="black35">
-                      테스크
-                    </Typography>
-                  </LabelContainer>
-                  <Select
-                    listLabel="테스크"
-                    isEssential
-                    value={payload.title}
-                    type="select"
-                  >
-                    <SelectButton />
-                  </Select>
-                </TaskContainer>
+                <ParentTaskSelectDropdown parentTaskName="테스크" />
               ))}
 
             {payload.parentTaskId === 2 && (
-              <TaskContainer>
-                <LabelContainer>
-                  <Typography variant="small-text-b" color="negativeRed">
-                    *
-                  </Typography>
-                  <Typography variant="small-text-b" color="black35">
-                    서브 테스크
-                  </Typography>
-                </LabelContainer>
-                <Select
-                  listLabel="테스크"
-                  isEssential
-                  value={payload.title}
-                  type="select"
-                >
-                  <SelectButton />
-                </Select>
-              </TaskContainer>
+              <ParentTaskSelectDropdown parentTaskName="서브 테스크" />
             )}
           </SectionContainer>
         )}
