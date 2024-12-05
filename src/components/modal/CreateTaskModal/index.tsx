@@ -34,7 +34,7 @@ import {
 } from './style';
 
 // 시간 포함 여부에 따라 날짜와 시간을 합치는 함수
-function combineDateTime(date: string): string {
+function combineDateTime(date: Date): string {
   try {
     const datePart = new Date(date).toISOString().split('T')[0];
     const hour = String(new Date(date).getHours()).padStart(2, '0');
@@ -223,14 +223,14 @@ export const CreateTaskModal = () => {
 
             <StyleCreateProjectModal.InputWithCalendarArea>
               <InputWithCalendarArea
-                value={new Date(payload.startDate as string)}
+                value={payload.startDate}
                 setDate={(date) => handleChangeDate(date as Date, 'startDate')}
                 placeholderText="프로젝트 시작 날짜"
               />
 
               <StyleCreateProjectModal.CrossDash></StyleCreateProjectModal.CrossDash>
               <InputWithCalendarArea
-                value={new Date(payload.endDate as string)}
+                value={payload.endDate}
                 setDate={(date) => handleChangeDate(date as Date, 'endDate')}
                 placeholderText="프로젝트 종료 날짜"
               />
@@ -238,14 +238,14 @@ export const CreateTaskModal = () => {
 
             <StyleCreateProjectModal.InputWithCalendarArea>
               <InputWithTimePicker
-                date={new Date(payload.startDate as string)}
+                date={payload.startDate}
                 setDate={setStartDate}
                 placeholderText="프로젝트 시작 시간"
                 isDisabled={!includeTime}
               />
               <StyleCreateProjectModal.CrossDash></StyleCreateProjectModal.CrossDash>
               <InputWithTimePicker
-                date={new Date(payload.endDate as string)}
+                date={payload.endDate}
                 setDate={setEndDate}
                 placeholderText="프로젝트 종료 시간"
                 isDisabled={!includeTime}

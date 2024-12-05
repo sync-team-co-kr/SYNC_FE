@@ -70,7 +70,11 @@ export const EditTaskModal = ({
     }
     createTaskMutate(
       {
-        data: payload,
+        data: {
+          ...payload,
+          startDate: payload.startDate?.toISOString(),
+          endDate: payload.endDate?.toISOString(),
+        },
       },
       {
         onSuccess: () => {

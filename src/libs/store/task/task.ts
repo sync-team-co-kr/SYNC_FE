@@ -1,10 +1,29 @@
 import { IProject, RawProject } from '@customTypes/project';
-import { CreateTaskRequestDto } from '@services/swagger/output/data-contracts';
 import { create } from 'zustand';
+
+interface ITask {
+  description?: string;
+  endDate?: Date;
+  startDate?: Date;
+  title: string;
+  thumbnailIcon?: string;
+  /**
+   * 상위 업무 아이디
+   * null == 프로젝트 최상위 업무
+   * 1 : 서브 테스크
+   * 2: 퀘스트
+   */
+  parentTaskId?: number;
+  projectId: number;
+  /**
+   * 업무 상태 ( 0: 진행중, 1: 완료, 2: 보류)
+   */
+  status: number;
+}
 
 // 업무 생성 State
 type TaskState = {
-  payload: CreateTaskRequestDto & { status: number };
+  payload: ITask;
   project: IProject;
   errorList: string[];
   taskId: number;
@@ -17,8 +36,8 @@ type TaskActions = {
     // 업무 state 변경
     setTitle: (title: string) => void;
     setDescription: (description: string) => void;
-    setStartDate: (startDate: Date) => void;
-    setEndDate: (endDate: Date) => void;
+    setStartDate: (date: Date) => void;
+    setEndDate: (date: Date) => void;
     setParentTaskId: (parentTaskId: number) => void;
     setProjectId: (projectId: number) => void;
     setStatus: (status: number) => void;
@@ -31,7 +50,7 @@ type TaskActions = {
     resetPayload: () => void;
 
     // edit
-    setEditTask: (task: CreateTaskRequestDto) => void;
+    setEditTask: (task: ITask) => void;
 
     // project
     setProject: (project: RawProject) => void;
@@ -55,8 +74,8 @@ const initialState: TaskState = {
   payload: {
     title: '',
     description: '',
-    startDate: '',
-    endDate: '',
+    startDate: undefined,
+    endDate: undefined,
     parentTaskId: 0,
     projectId: 0,
     status: 0,
@@ -115,7 +134,7 @@ const useTaskStore = create<TaskState & TaskActions>((set) => ({
       set((state) => ({
         payload: {
           ...state.payload,
-          startDate: startDate.toISOString(),
+          startDate,
         },
       }));
     },
@@ -123,7 +142,7 @@ const useTaskStore = create<TaskState & TaskActions>((set) => ({
       set((state) => ({
         payload: {
           ...state.payload,
-          endDate: endDate.toISOString(),
+          endDate,
         },
       }));
     },
