@@ -198,11 +198,15 @@ const useTaskStore = create<TaskState & TaskActions>((set) => ({
       set((state) => ({
         ...state,
         project: {
-          ...state.project,
+          ...project,
           startDate: project.startDate
             ? new Date(project.startDate)
             : undefined,
           endDate: project.endDate ? new Date(project.endDate) : undefined,
+          thumbnail: {
+            type: project.thumbnailType || 'N',
+            value: project.thumbnail || '',
+          },
         },
       }));
     },

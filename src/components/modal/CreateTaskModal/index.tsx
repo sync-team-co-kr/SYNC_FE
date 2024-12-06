@@ -171,10 +171,9 @@ export const CreateTaskModal = () => {
         {/* task */}
         {payload.parentTaskId !== 0 && (
           <SectionContainer maxWidth="100%" direction="row" gap={24}>
-            {payload.parentTaskId === 1 ||
-              (payload.parentTaskId === 2 && (
-                <ParentTaskSelectDropdown parentTaskName="테스크" />
-              ))}
+            {(payload.parentTaskId === 1 || payload.parentTaskId === 2) && (
+              <ParentTaskSelectDropdown parentTaskName="테스크" />
+            )}
 
             {payload.parentTaskId === 2 && (
               <ParentTaskSelectDropdown parentTaskName="서브 테스크" />
@@ -206,7 +205,7 @@ export const CreateTaskModal = () => {
         {/* icon & task end */}
 
         {/* date */}
-        <SectionContainer>
+        <SectionContainer maxWidth="500px">
           <StyleCreateProjectModal.InputArea>
             <StyleCreateProjectModal.ToggleArea>
               <label>일정</label>
