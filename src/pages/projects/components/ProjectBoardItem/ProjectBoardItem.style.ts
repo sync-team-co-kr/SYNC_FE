@@ -28,6 +28,7 @@ const StyleProjectBoard: {
     background: var(--Black-White-White, #fff);
     display: flex;
     flex-direction: column;
+    justify-content: space-around;
     gap: 16px;
   `,
   Header: styled.section`

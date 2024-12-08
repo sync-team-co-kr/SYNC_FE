@@ -4,10 +4,12 @@ import * as FaIconList from 'react-icons/fa';
 import projectCalendar from '@assets/calendar.svg';
 import meatballs from '@assets/meatballs.svg';
 import projectIcon from '@assets/project-icon.png';
+import { ReactComponent as CheckBox } from '@assets/projects/checkBox.svg';
 import { Typography } from '@components/common';
 import { RawProject } from '@customTypes/project';
 import useDropdown from '@hooks/useDropdown';
 import ProjectSettingsDropdown from '@pages/projects/components/ProjectSettingsDropdown/ProjectSettingsDropdown';
+// import { useGetTasks } from '@services/task';
 import generateNormalDate from '@utils/generateNormalDate';
 import styled from 'styled-components';
 import { vars } from 'token';
@@ -40,6 +42,85 @@ const MemberItem = styled.li`
   display: flex;
   justify-content: center;
   align-items: center;
+`;
+
+const ProgressFrame = styled.div`
+  display: flex;
+  height: 64px;
+  width: 100%;
+  /* padding: 12px 16px; */
+  align-items: center;
+  gap: 8px;
+  /* border-bottom: 1px solid var(--Black-White-Black-10, #f4f4f4); */
+  background: #fff;
+  /* width: 311px; */
+`;
+
+const BarGraph = styled.div`
+  display: flex;
+  width: 100%;
+  /* width: 279px; */
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+`;
+
+const BarGraphFrame1 = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  align-self: stretch;
+`;
+
+const IndexFrame = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+`;
+
+const CheckIcon = styled.svg`
+  width: 12px;
+  height: 12px;
+`;
+
+const CheckText = styled.div`
+  color: var(--Black-White-Black-20, #bfbfbf);
+  text-align: center;
+
+  /* Small Text_B */
+  font-family: Pretendard;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 14px; /* 116.667% */
+`;
+
+const PercentText = styled.div`
+  color: var(--Black-White-Black-100, #202020);
+  text-align: center;
+
+  /* Small Text_B */
+  font-family: Pretendard;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 14px; /* 116.667% */
+`;
+
+const BarGraphFrame2 = styled.div`
+  display: flex;
+  height: 12px;
+  width: 100%;
+  border-radius: 2px;
+  background: var(--Black-White-Black-10, #f4f4f4);
+`;
+
+const ProgressGraph = styled.div<{ width: number }>`
+  width: ${(props) => props.width}%;
+  align-self: stretch;
+  border-radius: 2px;
+  background: var(--Primary-Orange-Yellow-Orange, #ffd880);
 `;
 
 const ProjectThumbnail = ({
@@ -80,6 +161,10 @@ const ProjectBoardItem = ({ project }: { project: RawProject }) => {
     projectDropdownMenuRef,
   ] = useDropdown();
 
+  const progressValue = project.progress
+    ? Math.abs(Number(project?.progress) * 100)
+    : 0;
+
   return (
     <StyleProjectBoard.BoardArea key={project.projectId}>
       <StyleProjectBoard.Header>
@@ -107,6 +192,24 @@ const ProjectBoardItem = ({ project }: { project: RawProject }) => {
       <Typography variant="paragraph" color="black">
         {project.description}
       </Typography>
+
+      <ProgressFrame>
+        <BarGraph>
+          <BarGraphFrame1>
+            <IndexFrame>
+              <CheckIcon>
+                <CheckBox />
+              </CheckIcon>
+              {/* {!tasks ? <CheckText>0/0</CheckText> : <CheckText>완료된 프로젝트 / 전체 프로젝트</CheckText>} */}
+              <CheckText>0/0</CheckText>
+            </IndexFrame>
+            <PercentText>{progressValue} %</PercentText>
+          </BarGraphFrame1>
+          <BarGraphFrame2>
+            <ProgressGraph width={progressValue} />
+          </BarGraphFrame2>
+        </BarGraph>
+      </ProgressFrame>
 
       <StyleProjectBoard.Footer>
         <StyleProjectBoard.Members>

@@ -9,6 +9,7 @@ import { IMember } from '@customTypes/member';
  */
 
 export default interface RawProject {
+  progress?: number;
   projectId: number;
   title: string;
   thumbnail?: string;

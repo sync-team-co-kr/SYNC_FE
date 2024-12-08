@@ -1,20 +1,16 @@
 import Textfield from '@components/common/Textfield';
-import { RawProject } from '@customTypes/project';
 
 type ProjectSearchInputType = {
   searchQuery: string;
-  projectData: RawProject[];
   searchFilteredProjects: (query: string) => void;
 };
 
 const ProjectSearchInput = ({
   searchQuery,
-  projectData,
   searchFilteredProjects,
 }: ProjectSearchInputType) => (
   <>
     <Textfield
-      disabled={projectData.length === 0 || !projectData}
       variant="search"
       helperText="검색어를 입력하세요"
       placeholder="검색"

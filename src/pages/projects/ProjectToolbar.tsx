@@ -1,4 +1,3 @@
-import { RawProject } from '@customTypes/project';
 import { styled } from 'styled-components';
 
 import ProjectAddButton from './components/ProjectAddButton';
@@ -20,28 +19,30 @@ const ButtonContainer = styled.section`
 `;
 
 type UseDataHandlerType = {
-  projectData: RawProject[];
   searchQuery: string;
   searchFilteredProjects: (query: string) => void;
   getUpcomingProjects: () => void;
+  getMyProjects: () => void;
 };
 
 const ProjectToolbar = ({
-  projectData,
   searchQuery,
   searchFilteredProjects,
   getUpcomingProjects,
+  getMyProjects,
 }: UseDataHandlerType) => (
   <Container>
     <ProjectSearchInput
       searchQuery={searchQuery}
-      projectData={projectData}
       searchFilteredProjects={searchFilteredProjects}
     />
 
     <ButtonContainer>
       <ProjectAddButton />
-      <ProjectFilterButton getUpcomingProjects={getUpcomingProjects} />
+      <ProjectFilterButton
+        getUpcomingProjects={getUpcomingProjects}
+        getMyProjects={getMyProjects}
+      />
     </ButtonContainer>
   </Container>
 );

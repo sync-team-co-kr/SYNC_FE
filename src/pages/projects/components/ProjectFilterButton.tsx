@@ -1,8 +1,8 @@
 import { useRef, useState } from 'react';
 
-import { ReactComponent as Calender } from '@assets/calendarSM.svg';
-import { ReactComponent as Search } from '@assets/filter.svg';
-import { ReactComponent as User } from '@assets/user.svg';
+import { ReactComponent as Calender } from '@assets/projects/calendarSM.svg';
+import { ReactComponent as User } from '@assets/projects/user.svg';
+import { ReactComponent as Search } from '@assets/search.svg';
 import { Dropdown } from '@components/common';
 import { Button } from '@components/common/Button';
 import styled from 'styled-components';
@@ -36,10 +36,12 @@ const FilterListItem = styled.li`
 
 type ProjectFilterButtonType = {
   getUpcomingProjects: () => void;
+  getMyProjects: () => void;
 };
 
 const ProjectFilterButton = ({
   getUpcomingProjects,
+  getMyProjects,
 }: ProjectFilterButtonType) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLTableSectionElement>(null);
@@ -67,16 +69,12 @@ const ProjectFilterButton = ({
         bottom="-125px"
       >
         <FilterList onClick={toggleDropdown}>
-          <FilterListItem>
+          <FilterListItem onClick={getMyProjects}>
             <User />
             <span>내가 속한 프로젝트</span>
           </FilterListItem>
 
-          <FilterListItem
-            onClick={() => {
-              getUpcomingProjects();
-            }}
-          >
+          <FilterListItem onClick={getUpcomingProjects}>
             <Calender />
             <span>마감이 임박한 프로젝트</span>
           </FilterListItem>
