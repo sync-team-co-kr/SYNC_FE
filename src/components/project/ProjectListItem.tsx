@@ -380,7 +380,7 @@ const ProjectListItem = ({ project }: { project: RawProject }) => {
       <DescriptionFrame>
         <DescriptionText>{project.description}</DescriptionText>
       </DescriptionFrame>
-      <ProgressFrame>
+      {/* <ProgressFrame>
         <BarGraph>
           <BarGraphFrame1>
             <IndexFrame>
@@ -395,7 +395,7 @@ const ProjectListItem = ({ project }: { project: RawProject }) => {
             <ProgressGraph></ProgressGraph>
           </BarGraphFrame2>
         </BarGraph>
-      </ProgressFrame>
+      </ProgressFrame> */}
       <ManagerFrame>
         <ManagerIconFrame>
           <ManagerIcon $iconColor="--Alert-Color-Light-Blue, #e7f1ff">

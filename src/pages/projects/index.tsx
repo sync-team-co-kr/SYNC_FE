@@ -23,10 +23,12 @@ const Project = () => {
   const { projects } = useGetProjects();
   const [projectData, setProjectData] = useState<RawProject[]>([]);
   const navigate = useNavigate();
-  const { searchQuery, searchFilteredProjects, getUpcomingProjects } =
-    useDataHandler({
-      setProjectData,
-    });
+  const {
+    searchQuery,
+    searchFilteredProjects,
+    getUpcomingProjects,
+    getMyProjects,
+  } = useDataHandler({ setProjectData });
 
   const handleClickTabMenu = (path: string) => {
     setCurrentTabMenu(path);
@@ -47,10 +49,10 @@ const Project = () => {
         handleClickTabMenu={handleClickTabMenu}
       />
       <ProjectToolbar
-        projectData={projectData}
         searchQuery={searchQuery}
         searchFilteredProjects={searchFilteredProjects}
         getUpcomingProjects={getUpcomingProjects}
+        getMyProjects={getMyProjects}
       />
       <Outlet context={{ projectData }} />
     </Container>
