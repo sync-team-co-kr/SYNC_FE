@@ -23,6 +23,7 @@ import { useCreateTask } from '@services/task/Task.hooks';
 
 import ParentTaskSelectDropdown from './ParentTaskSelectDropdown';
 import ProjectSelectDropdown from './ProjectSelectDropdown';
+import TaskManagerSelectDropdown from './TaskManagerSelectDropdown';
 import TaskParentIdSetButtonGroup from './TaskParentIdSetButtonGroup';
 import { SELECT_STATUS } from './constants';
 import {
@@ -305,16 +306,7 @@ export const CreateTaskModal = () => {
 
         {/* owner */}
         <SectionContainer>
-          <LabelContainer>
-            <Typography variant="small-text-b" color="black35">
-              담당자
-            </Typography>
-          </LabelContainer>
-          {/* owner 추가되어야 함 */}
-          <Select listLabel="담당자" value={'담당자'} type="select">
-            <SelectButton />
-            {/* @TODO owner 추가시 list 뿌려주기 */}
-          </Select>
+          <TaskManagerSelectDropdown />
         </SectionContainer>
       </ContainerContent>
       <ContainerFooter>
