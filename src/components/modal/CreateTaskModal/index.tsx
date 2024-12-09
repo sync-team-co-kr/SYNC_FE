@@ -22,6 +22,7 @@ import { CreateTaskPayload } from '@services/swagger/output/data-contracts';
 import { useCreateTask } from '@services/task/Task.hooks';
 
 import ParentTaskSelectDropdown from './ParentTaskSelectDropdown';
+import ParentTaskSelectList from './ParentTaskSelectList';
 import ProjectSelectDropdown from './ProjectSelectDropdown';
 import TaskManagerSelectDropdown from './TaskManagerSelectDropdown';
 import TaskParentIdSetButtonGroup from './TaskParentIdSetButtonGroup';
@@ -171,17 +172,7 @@ export const CreateTaskModal = () => {
         {/* task state end */}
 
         {/* task */}
-        {payload.parentTaskId !== 0 && (
-          <SectionContainer maxWidth="100%" direction="row" gap={24}>
-            {(payload.parentTaskId === 1 || payload.parentTaskId === 2) && (
-              <ParentTaskSelectDropdown parentTaskName="테스크" />
-            )}
-
-            {payload.parentTaskId === 2 && (
-              <ParentTaskSelectDropdown parentTaskName="서브 테스크" />
-            )}
-          </SectionContainer>
-        )}
+        <ParentTaskSelectList parentTaskId={payload.parentTaskId} />
         {/* task end */}
 
         {/* icon & task name */}
