@@ -13,7 +13,7 @@ import { useGetProjects } from '@services/project/Project.hooks';
 const ProjectSelectDropdown = () => {
   const { projects } = useGetProjects();
   const { project } = useTaskState();
-  const { setProject } = useTaskActions();
+  const { setProject, setProjectId } = useTaskActions();
 
   // 프로젝트 검색 state
   const [projectSearch, setProjectSearch] = useState('');
@@ -58,8 +58,8 @@ const ProjectSelectDropdown = () => {
           {projectList?.map((projectData) => (
             <SelectItem
               onClick={() => {
-                console.log(projectData);
                 setProject(projectData);
+                setProjectId(projectData.projectId);
               }}
               key={projectData.projectId}
             >

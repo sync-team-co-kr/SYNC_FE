@@ -87,10 +87,11 @@ export const CreateTaskModal = () => {
       errorList.push('title');
     }
 
+    console.log(payload.projectId);
     if (payload.projectId === 0) {
       errorList.push('projectId');
     }
-
+    console.log(errorList);
     if (errorList.length > 0) {
       alert('필수 입력값을 입력해주세요');
       return;
@@ -290,14 +291,16 @@ export const CreateTaskModal = () => {
             type="select"
           >
             <SelectList>
-              {Object.values(SELECT_STATUS).map((status) => (
-                <SelectItem
-                  key={status.value}
-                  onClick={() => setStatus(status.id)}
-                >
-                  <Tag type="situation" property={status.value} />
-                </SelectItem>
-              ))}
+              {Object.values(SELECT_STATUS)
+                .reverse()
+                .map((status) => (
+                  <SelectItem
+                    key={status.value}
+                    onClick={() => setStatus(status.id)}
+                  >
+                    <Tag type="situation" property={status.value} />
+                  </SelectItem>
+                ))}
             </SelectList>
             <SelectButton />
           </Select>

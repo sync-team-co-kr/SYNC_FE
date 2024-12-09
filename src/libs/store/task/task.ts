@@ -78,7 +78,7 @@ const initialState: TaskState = {
     endDate: undefined,
     parentTaskId: 0,
     projectId: 0,
-    status: 0,
+    status: 2,
   },
   project: {
     projectId: 0,
