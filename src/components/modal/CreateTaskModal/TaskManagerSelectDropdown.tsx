@@ -1,9 +1,14 @@
 import React, { useEffect, useState } from 'react';
 
+import { ReactComponent as CheckIcon } from '@assets/checkbox/check.svg';
 import { Typography } from '@components/common';
 import { Select } from '@components/common/Select/Select';
 import { SelectButton } from '@components/common/Select/Select.Button';
-import { SelectItem, SelectList } from '@components/common/Select/Select.list';
+import {
+  SelectItem,
+  SelectItemWrapper,
+  SelectList,
+} from '@components/common/Select/Select.list';
 import { searchFilter } from '@components/common/Select/Select.utils';
 import { LabelContainer } from '@components/common/Select/style';
 import Textfield from '@components/common/Textfield';
@@ -43,7 +48,10 @@ const TaskManagerSelectDropdown = () => {
           />
 
           {taskManagerSearchResults?.map((member) => (
-            <SelectItem key={member.id}>{member.username}</SelectItem>
+            <SelectItemWrapper>
+              <SelectItem key={member.id}>{member.username}</SelectItem>
+              <CheckIcon />
+            </SelectItemWrapper>
           ))}
         </SelectList>
       </Select>

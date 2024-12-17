@@ -6,12 +6,7 @@ import { Editor } from '@components/Editor';
 import { Button } from '@components/common/Button';
 import InputWithCalendarArea from '@components/common/InputArea/InputWithCalendar';
 import InputWithTimePicker from '@components/common/InputArea/InputWithTimePicker';
-import { Select } from '@components/common/Select/Select';
-import { SelectButton } from '@components/common/Select/Select.Button';
-import { SelectItem, SelectList } from '@components/common/Select/Select.list';
 import { LabelContainer } from '@components/common/Select/style';
-import { Tag } from '@components/common/Tag';
-import { SituationProperty } from '@components/common/Tag/types';
 import Textfield from '@components/common/Textfield';
 import Toggle from '@components/common/Toggle/Toggle';
 import { Typography } from '@components/common/Typography';
@@ -21,12 +16,11 @@ import StyleCreateProjectModal from '@pages/projects/components/CreateProjectMod
 import { CreateTaskPayload } from '@services/swagger/output/data-contracts';
 import { useCreateTask } from '@services/task/Task.hooks';
 
-import ParentTaskSelectDropdown from './ParentTaskSelectDropdown';
 import ParentTaskSelectList from './ParentTaskSelectList';
 import ProjectSelectDropdown from './ProjectSelectDropdown';
+import StatusSelectDropdown from './StatusSelectDropdown';
 import TaskManagerSelectDropdown from './TaskManagerSelectDropdown';
 import TaskParentIdSetButtonGroup from './TaskParentIdSetButtonGroup';
-import { SELECT_STATUS } from './constants';
 import {
   Container,
   ContainerContent,
@@ -61,7 +55,6 @@ export const CreateTaskModal = () => {
   // 업무 생성 모달 payload 값들을 set 해주는 actions
   const {
     setTitle,
-    setStatus,
     setDescription,
     setStartDate,
     setEndDate,
@@ -163,8 +156,8 @@ export const CreateTaskModal = () => {
         {/* project name */}
         <SectionContainer>
           <ProjectSelectDropdown />
-          {/* project name end */}
         </SectionContainer>
+        {/* project name end */}
         {/* task state */}
         <SectionContainer>
           <TaskParentIdSetButtonGroup />
@@ -264,37 +257,7 @@ export const CreateTaskModal = () => {
 
         {/*  status */}
         <SectionContainer>
-          <LabelContainer>
-            <Typography variant="small-text-b" color="black35">
-              상태
-            </Typography>
-          </LabelContainer>
-          <Select
-            listLabel="상태"
-            value={
-              <Tag
-                type="situation"
-                property={
-                  SELECT_STATUS[payload.status].value as SituationProperty
-                }
-              />
-            }
-            type="select"
-          >
-            <SelectList>
-              {Object.values(SELECT_STATUS)
-                .reverse()
-                .map((status) => (
-                  <SelectItem
-                    key={status.value}
-                    onClick={() => setStatus(status.id)}
-                  >
-                    <Tag type="situation" property={status.value} />
-                  </SelectItem>
-                ))}
-            </SelectList>
-            <SelectButton />
-          </Select>
+          <StatusSelectDropdown />
         </SectionContainer>
         {/* status end */}
 
