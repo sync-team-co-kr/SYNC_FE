@@ -13,10 +13,15 @@ import { searchFilter } from '@components/common/Select/Select.utils';
 import { LabelContainer } from '@components/common/Select/style';
 import Textfield from '@components/common/Textfield';
 import { IMember } from '@customTypes/member';
-import { useTaskState } from '@libs/store/task/task';
+import { useTaskActions, useTaskState } from '@libs/store/task/task';
 
 const TaskManagerSelectDropdown = () => {
-  const { project } = useTaskState();
+  const {
+    project,
+    payload: { taskManagers },
+  } = useTaskState();
+
+  const { setTaskManagers } = useTaskActions();
 
   const [taskManagerKeyword, setTaskManagerKeyword] = useState('');
   const [taskManagerSearchResults, setTaskManagerSearchResults] = useState<
@@ -29,6 +34,25 @@ const TaskManagerSelectDropdown = () => {
     setTaskManagerKeyword(e.target.value);
     setTaskManagerSearchResults(searchFilter(e.target.value, project.members));
   };
+
+  const handleClickTaskManagerItem = (
+    e: React.MouseEvent<HTMLDivElement>,
+    member: IMember,
+  ) => {
+    e.preventDefault();
+
+    // 담당자 목록에 선택된 담당자가 포함되어 있는지 확인
+    const includedSelectedTaskManagers = taskManagers.some(
+      (taskManager) => taskManager.id === member.id,
+    );
+
+    if (includedSelectedTaskManagers) {
+      setTaskManagers('sub', member);
+    } else {
+      setTaskManagers('add', member);
+    }
+  };
+
   return (
     <>
       <LabelContainer>
@@ -48,9 +72,13 @@ const TaskManagerSelectDropdown = () => {
           />
 
           {taskManagerSearchResults?.map((member) => (
-            <SelectItemWrapper>
+            <SelectItemWrapper
+              onClick={(e) => handleClickTaskManagerItem(e, member)}
+            >
               <SelectItem key={member.id}>{member.username}</SelectItem>
-              <CheckIcon />
+              {taskManagers.some(
+                (taskManager) => taskManager.id === member.id,
+              ) && <CheckIcon />}
             </SelectItemWrapper>
           ))}
         </SelectList>

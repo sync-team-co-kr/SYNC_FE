@@ -1,3 +1,4 @@
+import { IMember } from '@customTypes/member';
 import { IProject, RawProject } from '@customTypes/project';
 import { create } from 'zustand';
 
@@ -19,6 +20,7 @@ interface ITask {
    * 업무 상태 ( 0: 진행중, 1: 완료, 2: 보류)
    */
   status: number;
+  taskManagers: IMember[];
 }
 
 // 업무 생성 State
@@ -41,6 +43,7 @@ type TaskActions = {
     setParentTaskId: (parentTaskId: number) => void;
     setProjectId: (projectId: number) => void;
     setStatus: (status: number) => void;
+    setTaskManagers: (setType: 'add' | 'sub', member: IMember) => void;
     setImages: (image: File) => void;
 
     // titleImage
@@ -79,6 +82,7 @@ const initialState: TaskState = {
     parentTaskId: 0,
     projectId: 0,
     status: 2,
+    taskManagers: [],
   },
   project: {
     projectId: 0,
@@ -167,6 +171,19 @@ const useTaskStore = create<TaskState & TaskActions>((set) => ({
         payload: {
           ...state.payload,
           status,
+        },
+      }));
+    },
+    setTaskManagers(setType, member) {
+      set((state) => ({
+        payload: {
+          ...state.payload,
+          taskManagers:
+            setType === 'add'
+              ? [...state.payload.taskManagers, member]
+              : state.payload.taskManagers.filter(
+                  (taskManager) => taskManager.id !== member.id,
+                ),
         },
       }));
     },
