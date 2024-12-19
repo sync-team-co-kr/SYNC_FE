@@ -1,3 +1,4 @@
+import { useDraggingTempTaskActions } from '@libs/store/task/draggingTempTask';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import {
@@ -83,13 +84,31 @@ export const useGetTaskChildren = (taskId: number) => {
 
 export const useUpdateTaskStatus = () => {
   const queryClient = useQueryClient();
+  const { setOriginalTasks } = useDraggingTempTaskActions();
   const updateTaskStatusMutation = useMutation({
-    mutationFn: (willUpdateTaskParams: {
+    mutationFn: async (willUpdateTaskParams: {
       projectId: number;
       taskId: number;
       editedStatus: number;
-    }) => updateTaskStatus(willUpdateTaskParams),
-    onSuccess: () => {
+    }) => {
+      const { projectId, taskId, editedStatus } = willUpdateTaskParams;
+      await updateTaskStatus(willUpdateTaskParams);
+      const tasksBeforeUpdated = await getTaskList(projectId);
+      return {
+        tasks: tasksBeforeUpdated.data.data,
+        taskId,
+        editedStatus,
+      };
+    },
+    onSuccess: (data) => {
+      const updatedTasks = data.tasks.map((task) =>
+        task.taskId === data.taskId
+          ? { ...task, status: data.editedStatus }
+          : { ...task },
+      );
+
+      setOriginalTasks(updatedTasks);
+
       queryClient.invalidateQueries({ queryKey: ['tasks'] });
     },
   });

@@ -36,7 +36,7 @@ const TaskBoardList = () => {
     if (tasks) {
       setOriginalTasks(tasks);
     }
-  }, [id, isLoading]);
+  }, []);
 
   if (!tasks) return <div>Task가 없을 때의 페이지</div>;
   if (draggingTempTasks)

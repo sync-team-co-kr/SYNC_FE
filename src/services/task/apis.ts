@@ -145,6 +145,16 @@ export const getTaskChildren = async (taskId: number) => {
   return userApiInstance.get(`/api/task/v1/${taskId}`);
 };
 
+/**
+ * 업무의 상태 변경
+ * @param willUpdateTaskParams: {
+ *    projectId: number;
+ *    taskId: number;
+ *    editedStatus: number;
+ * }
+ * @returns
+ */
+
 export const updateTaskStatus = async (willUpdateTaskParams: {
   projectId: number;
   taskId: number;

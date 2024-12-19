@@ -130,7 +130,6 @@ const SpecificStatusTasks = ({
     accept: 'TaskBoard',
     drop(item: { id: number; status: number }, monitor) {
       if (!monitor.isOver()) return;
-      console.log(title);
       let taskBoardStatus = 2;
       if (title === '하는 중') taskBoardStatus = 1;
       if (title === '완료') taskBoardStatus = 0;
