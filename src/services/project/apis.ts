@@ -39,7 +39,7 @@ interface IMember {
  *    nickname?: string;
  *    position?: string;
  *  }[];
- * }
+ * }[]
  */
 
 export const getProjects = async (projectIds: number[]) => {

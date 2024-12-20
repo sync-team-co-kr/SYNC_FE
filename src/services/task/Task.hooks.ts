@@ -1,12 +1,18 @@
 import { useDraggingTempTaskActions } from '@libs/store/task/draggingTempTask';
+import { CreateTaskPayload } from '@services/swagger/output/data-contracts';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import convertBase64ToFile from '@utils/file/convertBase64ToFile';
+import extractImageUrls from '@utils/file/extractImageUrls';
+import getExtensionFromMimeType from '@utils/file/getExtensionFromMimeType';
+import randomUuid from '@utils/file/getRandomUuid';
 
 import {
   createTask,
   deleteTask,
+  getTask,
   getTaskChildren,
   getTaskList,
-  updateTaskStatus,
+  updateTaskStatus1,
 } from './apis';
 
 interface CreateTaskParams {
@@ -35,11 +41,11 @@ export const useGetTasks = (projectId?: number[] | number) => {
         const result = await Promise.all(
           projectId.map((id) => getTaskList(id)),
         );
-        return result.map((res) => res.data).flatMap((task) => task.data) ?? [];
+        return result.map((res) => res).flatMap((task) => task) ?? [];
       }
       if (projectId) {
         const result = await getTaskList(projectId);
-        return result.data.data;
+        return result;
       }
       return [];
     },
@@ -53,13 +59,54 @@ export const useGetTasks = (projectId?: number[] | number) => {
 export const useCreateTask = () => {
   const queryClient = useQueryClient();
 
-  const createTaskMutation = useMutation({
-    mutationFn: (newTask: CreateTaskParams) =>
-      createTask({
-        data: newTask.data,
-        images: newTask.images,
-        thumbnailImage: newTask.thumbnailImage,
-      }),
+  const addTaskMutation = useMutation({
+    mutationFn: async (newTask: CreateTaskParams) => {
+      const formData = new FormData();
+      const imageUrls = extractImageUrls(newTask.data.description);
+
+      let updatedDescription = newTask.data.description;
+      imageUrls.forEach((imageUrl) => {
+        if (imageUrl.startsWith('data:image/')) {
+          const uuid = randomUuid();
+          const prevFileName = 'description-image';
+          const extension = getExtensionFromMimeType(imageUrl);
+
+          const newImageName = `${uuid}_${prevFileName}`;
+          const newImageUrl = `https://user.sync-team.co.kr:30443/api/task/image?filename=/mnt/oraclevdb/task/description/${newImageName}.${extension}`;
+          updatedDescription = updatedDescription?.replace(
+            imageUrl,
+            newImageUrl,
+          );
+
+          try {
+            const imgFile = convertBase64ToFile(imageUrl, newImageName);
+            formData.append(`images`, imgFile);
+          } catch (error) {
+            console.error('이미지 변환 실패', error);
+          }
+        } else {
+          console.log('이미지가 포함되지 않았습니다');
+        }
+      });
+
+      const { thumbnailIcon, ...payload } = newTask.data;
+      const formDataList: CreateTaskPayload['data'] = payload;
+      const newTaskBlob = new Blob([JSON.stringify(formDataList)], {
+        type: 'application/json',
+      });
+
+      if (thumbnailIcon) {
+        formDataList.thumbnailIcon = thumbnailIcon;
+      }
+
+      formData.append('data', newTaskBlob);
+      if (newTask.thumbnailImage) {
+        formData.append('thumbnailImage', newTask.thumbnailImage);
+      }
+
+      await createTask(formData);
+    },
+
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['tasks'] });
     },
@@ -68,7 +115,7 @@ export const useCreateTask = () => {
     },
   });
 
-  return { createTaskMutate: createTaskMutation.mutate };
+  return { createTaskMutate: addTaskMutation.mutate };
 };
 
 // 프로젝트 자식 업무 가져오는 hook
@@ -92,10 +139,22 @@ export const useUpdateTaskStatus = () => {
       editedStatus: number;
     }) => {
       const { projectId, taskId, editedStatus } = willUpdateTaskParams;
-      await updateTaskStatus(willUpdateTaskParams);
+      const task = await getTask(taskId);
+
+      const formData = new FormData();
+
+      const updateStatusTaskBlob = new Blob(
+        [JSON.stringify({ ...task, projectId, status: editedStatus })],
+        {
+          type: 'application/json',
+        },
+      );
+      formData.append('data', updateStatusTaskBlob);
+
+      await updateTaskStatus1(formData);
       const tasksBeforeUpdated = await getTaskList(projectId);
       return {
-        tasks: tasksBeforeUpdated.data.data,
+        tasks: tasksBeforeUpdated,
         taskId,
         editedStatus,
       };
@@ -109,9 +168,10 @@ export const useUpdateTaskStatus = () => {
 
       setOriginalTasks(updatedTasks);
 
-      queryClient.invalidateQueries({ queryKey: ['tasks'] });
+      queryClient.invalidateQueries({ queryKey: ['tasks', data.taskId] });
     },
   });
+
   return { updateTaskStatusMutate: updateTaskStatusMutation.mutate };
 };
 
@@ -120,8 +180,8 @@ export const useDeleteTask = (projectId: number, taskId: number) => {
   const queryClient = useQueryClient();
   const deleteTaskMutation = useMutation({
     mutationFn: () => deleteTask(projectId, taskId),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['tasks'] });
+    onSuccess: (willDeleteTaskId) => {
+      queryClient.invalidateQueries({ queryKey: ['tasks', willDeleteTaskId] });
     },
   });
 

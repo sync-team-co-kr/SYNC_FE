@@ -28,7 +28,7 @@ const TaskBoardList = () => {
 
   const { id } = useParams();
 
-  const { tasks, isLoading } = useGetTasks(Number(id));
+  const { tasks } = useGetTasks(Number(id));
   const { draggingTempTasks } = useDraggingTempTaskState();
   const { setOriginalTasks } = useDraggingTempTaskActions();
 
