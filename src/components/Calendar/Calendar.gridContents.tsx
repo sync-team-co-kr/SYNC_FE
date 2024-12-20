@@ -43,22 +43,25 @@ const GridContents = ({ tasks, gridDay }: GridContentsProps) => {
     return isWithinInterval(gridDay.date, interval);
   };
 
-  const getTaskScheduleLength = (start: string, end: string) => {
-    console.log(differenceInDays(end, start));
-  };
+  const getTaskScheduleLength = (start: string, end: string) =>
+    differenceInDays(end, start);
 
   return (
     <>
       {tasks
-        ?.filter((task) => isTaskScheduleWithInInterval(task))
-        .map((task) => (
-          <div
-            key={task.taskId}
-            onClick={() => getTaskScheduleLength(task.startDate, task.endDate)}
-          >
-            {task.title}
-          </div>
-        ))}
+        ?.filter(
+          (task) =>
+            isTaskScheduleWithInInterval(task) &&
+            getTaskScheduleLength(task.startDate, task.endDate) >= 3,
+        )
+        .map((task) => <div key={task.taskId}>{task.title}</div>)}
+      {tasks
+        ?.filter(
+          (task) =>
+            isTaskScheduleWithInInterval(task) &&
+            getTaskScheduleLength(task.startDate, task.endDate) < 3,
+        )
+        .map((task) => <div key={task.taskId}>{task.title}</div>)}
     </>
   );
 };
