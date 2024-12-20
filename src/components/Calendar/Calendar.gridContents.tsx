@@ -1,18 +1,4 @@
-/*
-            {tasks
-              ?.filter((task) => {
-                const interval = {
-                  start: new Date(task.startDate),
-                  end: new Date(task.endDate),
-                };
-                const isTaskScheduleWithInInterval = isWithinInterval(
-                  day.date,
-                  interval,
-                );
-                return isTaskScheduleWithInInterval;
-              })
-              .map((task) => <div key={task.taskId}>{task.title}</div>)}
-*/
+import Graph from '@components/Graph';
 import { differenceInDays, isWithinInterval } from 'date-fns';
 
 interface TempTask {
@@ -46,22 +32,27 @@ const GridContents = ({ tasks, gridDay }: GridContentsProps) => {
   const getTaskScheduleLength = (start: string, end: string) =>
     differenceInDays(end, start);
 
+  if (!tasks) return <></>;
   return (
     <>
       {tasks
-        ?.filter(
+        .filter(
           (task) =>
             isTaskScheduleWithInInterval(task) &&
             getTaskScheduleLength(task.startDate, task.endDate) >= 3,
         )
-        .map((task) => <div key={task.taskId}>{task.title}</div>)}
+        .map((task) => (
+          <Graph key={task.taskId} task={task} gridDay={gridDay} />
+        ))}
       {tasks
-        ?.filter(
+        .filter(
           (task) =>
             isTaskScheduleWithInInterval(task) &&
             getTaskScheduleLength(task.startDate, task.endDate) < 3,
         )
-        .map((task) => <div key={task.taskId}>{task.title}</div>)}
+        .map((task) => (
+          <div key={task.taskId}>{task.title}</div>
+        ))}
     </>
   );
 };

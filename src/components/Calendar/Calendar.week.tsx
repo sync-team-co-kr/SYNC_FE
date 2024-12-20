@@ -65,7 +65,7 @@ const GridContentWrap = styled.div`
   align-items: center;
   justify-content: flex-start;
   gap: 10px;
-  padding: 18px 10px;
+  padding: 18px 0;
   width: 100%;
   height: 100%;
 `;
