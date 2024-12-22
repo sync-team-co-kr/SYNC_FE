@@ -1,13 +1,14 @@
 import { useDrag } from 'react-dnd';
 
 import meatballs from '@assets/meatballs.svg';
-import Dday from '@assets/projects/d-day-img.png';
 import workboardimg from '@assets/projects/workboard-image.png';
 import { ReactComponent as WorkboxIcon } from '@assets/projects/workbox.svg';
+import { Tag } from '@components/common/Tag';
 import { Typography } from '@components/common/Typography';
 import WorkBoardDropdownMenu from '@components/dropdown/WorkBoardDropdownMenu';
 import { useModal } from '@hooks';
 import useDropdown from '@hooks/useDropdown';
+import { differenceInDays } from 'date-fns';
 import styled from 'styled-components';
 import { vars } from 'token';
 
@@ -109,14 +110,6 @@ const TaskBoardMemberList = styled.ul`
   }
 `;
 
-const TaskBoardPeriod = styled.div`
-  background-color: ${vars.sementic.color.black10};
-  border-radius: 4px;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-`;
-
 const SubTask = styled.button`
   display: flex;
   align-items: center;
@@ -202,9 +195,10 @@ const TaskBoard = ({
         </TaskBoardContent>
         <TaskBoardFooter>
           <TaskBoardMemberList></TaskBoardMemberList>
-          <TaskBoardPeriod>
-            <img src={Dday} alt="D-Day" />
-          </TaskBoardPeriod>
+          <Tag
+            type="dday"
+            property={`D-${differenceInDays(task.endDate, task.startDate)}`}
+          />
         </TaskBoardFooter>
         <SubTask>
           <Icon>
