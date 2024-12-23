@@ -1,8 +1,8 @@
 export const SELECT_STATUS = [
   {
     id: 0,
-    value: 'todo',
-    label: '해야 할 일',
+    value: 'done',
+    label: '완료',
   },
   {
     id: 1,
@@ -11,7 +11,7 @@ export const SELECT_STATUS = [
   },
   {
     id: 2,
-    value: 'done',
-    label: '완료',
+    value: 'todo',
+    label: '해야 할 일',
   },
 ] as const;

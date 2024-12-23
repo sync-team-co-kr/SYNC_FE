@@ -56,7 +56,6 @@ const ThumbnailImagePicker = () => {
     reader.onloadend = () => {
       const readerResult = reader.result;
       if (readerResult && typeof readerResult === 'string') {
-        console.log(readerResult);
         setThumbnail('I', readerResult);
       }
     };

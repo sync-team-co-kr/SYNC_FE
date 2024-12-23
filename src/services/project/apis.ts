@@ -177,7 +177,7 @@ export const createProject = async (newProject: CreateProjectRequestDto) => {
     const extension = getExtensionFromMimeType(newProject.thumbnail);
 
     const newImageName = `${uuid}_${prevFileName}`;
-    const newImageUrl = `https://user.sync-team.co.kr:30443/node2/api/task/image?filename=/mnt/oraclevdb/project/title/${newImageName}.${extension}`;
+    const newImageUrl = `${newImageName}.${extension}`;
 
     const imgFile = convertBase64ToFile(newProject.thumbnail, newImageName);
 
@@ -185,6 +185,8 @@ export const createProject = async (newProject: CreateProjectRequestDto) => {
       ...newProject,
       thumbnail: newImageUrl,
     };
+
+    console.log(imgFile, newProjectWithCustomImage.thumbnail);
 
     const projectWithCustomImageBlobType = new Blob(
       [JSON.stringify(newProjectWithCustomImage)],

@@ -20,6 +20,8 @@ const ModalWrapperContainer = styled.div<{ $isActive: boolean }>`
 
 const Container = styled.section`
   padding: 50px;
+  max-height: 742px;
+  overflow-y: auto;
   background: #fff;
   border-radius: 12px;
   display: flex;

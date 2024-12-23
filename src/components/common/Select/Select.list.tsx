@@ -37,6 +37,12 @@ export const SelectItem = styled.div`
   }
 `;
 
+export const SelectItemWrapper = styled(SelectItem)`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
 interface SelectListProps {
   width?: string;
 }

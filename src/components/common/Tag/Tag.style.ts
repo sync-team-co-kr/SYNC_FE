@@ -26,3 +26,10 @@ export const SituationTag = styled(TagBase)<{ property: SituationProperty }>`
     SITUATION_TAGS_STYLE[property].backgroundColor};
   color: ${({ property }) => SITUATION_TAGS_STYLE[property].color};
 `;
+
+export const DdayTag = styled(TagBase)`
+  background-color: ${vars.sementic.color.black10};
+  color: ${vars.sementic.color.black35};
+  display: flex;
+  gap: 4px;
+`;

@@ -11,6 +11,8 @@ const ProjectBoards = () => {
     projectData: RawProject[];
   }>();
 
+  console.log(projectData);
+
   return (
     <StyleProjectBoards.Wrapper>
       {!projectData || projectData.length === 0 ? (
