@@ -1,5 +1,15 @@
 import Graph from '@components/Graph';
+import { TimeTable } from '@components/TimeTable/TimeTable';
 import { differenceInDays, isWithinInterval } from 'date-fns';
+import { styled } from 'styled-components';
+
+import { formatTimeIntl } from './Calendar.utils';
+
+const GraphArea = styled.section`
+  width: 100%;
+  height: 270px;
+  margin-bottom: 60px;
+`;
 
 interface TempTask {
   taskId: number;
@@ -32,18 +42,23 @@ const GridContents = ({ tasks, gridDay }: GridContentsProps) => {
   const getTaskScheduleLength = (start: string, end: string) =>
     differenceInDays(end, start);
 
+  console.log(tasks);
+
   if (!tasks) return <></>;
   return (
     <>
-      {tasks
-        .filter(
-          (task) =>
-            isTaskScheduleWithInInterval(task) &&
-            getTaskScheduleLength(task.startDate, task.endDate) >= 3,
-        )
-        .map((task) => (
-          <Graph key={task.taskId} task={task} gridDay={gridDay} />
-        ))}
+      <GraphArea>
+        {tasks
+          .filter(
+            (task) =>
+              isTaskScheduleWithInInterval(task) &&
+              getTaskScheduleLength(task.startDate, task.endDate) >= 3,
+          )
+          .map((task) => (
+            <Graph key={task.taskId} task={task} gridDay={gridDay} />
+          ))}
+      </GraphArea>
+
       {tasks
         .filter(
           (task) =>
@@ -51,7 +66,17 @@ const GridContents = ({ tasks, gridDay }: GridContentsProps) => {
             getTaskScheduleLength(task.startDate, task.endDate) < 3,
         )
         .map((task) => (
-          <div key={task.taskId}>{task.title}</div>
+          <TimeTable
+            key={task.taskId}
+            variant="timeTableMedium"
+            title={task.title}
+            description={task.description}
+            startTime={formatTimeIntl(new Date(task.startDate))}
+            endTime={formatTimeIntl(new Date(task.endDate))}
+            status={'task'}
+            parentTaskId={0}
+            images={'https://picsum.photos/200/300'}
+          />
         ))}
     </>
   );

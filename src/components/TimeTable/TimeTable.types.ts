@@ -18,7 +18,6 @@ export interface TimeTableProps {
   startTime: string;
   endTime: string;
   images: string;
-  projectId: number;
   parentTaskId: number;
   gridRowStart?: number;
   rowSpan?: number;

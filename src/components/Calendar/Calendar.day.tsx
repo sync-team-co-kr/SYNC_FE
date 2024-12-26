@@ -91,7 +91,6 @@ export const CalendarDay = () => {
                 description={schedule.description}
                 rowSpan={getRowSpan(startTime, endTime)}
                 gridRowStart={getGridRowStart(startTime)}
-                projectId={schedule.id}
                 parentTaskId={schedule.id}
                 images={'https://picsum.photos/200/300'}
                 title={schedule.title}
@@ -133,7 +132,6 @@ export const CalendarDay = () => {
                 description={schedule.description}
                 rowSpan={getRowSpan(startTime, endTime)}
                 gridRowStart={getGridRowStart(startTime)}
-                projectId={schedule.id}
                 parentTaskId={schedule.id}
                 images={'https://picsum.photos/200/300'}
                 title={schedule.title}
