@@ -1,9 +1,16 @@
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 import { useTaskState } from '@libs/store/task/task';
 import { useGetProjectIds } from '@services/project/Project.hooks';
 import { useGetTasks } from '@services/task';
-import { eachDayOfInterval, endOfWeek, format, startOfWeek } from 'date-fns';
+import {
+  differenceInDays,
+  eachDayOfInterval,
+  endOfWeek,
+  format,
+  isWithinInterval,
+  startOfWeek,
+} from 'date-fns';
 import { ko } from 'date-fns/locale';
 import styled from 'styled-components';
 import { vars } from 'token';
@@ -87,6 +94,25 @@ const getCalendarDays = (date: Date) => {
   return calendarDays;
 };
 
+interface TempTask {
+  taskId: number;
+  title: string;
+  description: string;
+  startDate: string;
+  endDate: string;
+  depth: number;
+  progress: number;
+  status: number;
+}
+
+interface ISchedule {
+  schedules: (TempTask | null)[];
+  calendarDay: {
+    date: Date;
+    formatDay: string;
+  };
+}
+
 export const CalendarWeek = () => {
   const { value } = useContext(CalendarContext);
 
@@ -98,7 +124,62 @@ export const CalendarWeek = () => {
   const { tasks } =
     useGetTasks(project.title !== '' ? project.projectId : projectIds) ?? {};
 
+  const [calendarItems, setCalendarItems] = useState<ISchedule[] | null>(null);
+
+  useEffect(() => {
+    const aa = tasks?.filter((task) => {
+      const interval = {
+        start: new Date(task.startDate),
+        end: new Date(task.endDate),
+      };
+      const test = calendarDays.some((calendarDay) =>
+        isWithinInterval(calendarDay.date, interval),
+      );
+      return test;
+    });
+    if (aa) {
+      const graphs = aa.filter(
+        (task) => differenceInDays(task.endDate, task.startDate) >= 3,
+      );
+      const bb = calendarDays.map((calendarDay) => {
+        const taskSchedules = graphs.map((graph) => {
+          const interval = {
+            start: new Date(graph.startDate),
+            end: new Date(graph.endDate),
+          };
+          if (isWithinInterval(calendarDay.date, interval)) return { ...graph };
+          return null;
+        });
+        return {
+          schedules: taskSchedules,
+          calendarDay,
+        };
+      });
+
+      setCalendarItems(bb);
+    }
+  }, [calendarDays[0].formatDay]);
+
+  if (!calendarItems) return <></>;
   return (
+    <GridContainer>
+      {calendarItems.map(({ schedules, calendarDay }) => (
+        <GridItem key={calendarDay.date?.toString()}>
+          <GridItemHeader>{calendarDay.formatDay}</GridItemHeader>
+          <GridContentWrap>
+            <GridContents
+              schedules={schedules}
+              tasks={tasks}
+              gridDay={calendarDay}
+            />
+          </GridContentWrap>
+        </GridItem>
+      ))}
+    </GridContainer>
+  );
+};
+
+/*
     <GridContainer>
       {calendarDays.map((day) => (
         <GridItem key={day?.date?.toString()}>
@@ -109,5 +190,4 @@ export const CalendarWeek = () => {
         </GridItem>
       ))}
     </GridContainer>
-  );
-};
+*/

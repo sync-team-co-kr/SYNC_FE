@@ -65,9 +65,6 @@ const TimeTable = ({
           <ImageWrapper>
             <img src={images} alt={title} />
           </ImageWrapper>
-          <Typography variant="small-text" color="black">
-            {description}
-          </Typography>
         </Row>
         <Typography variant="small-text-b" color="black">
           {title}
@@ -81,3 +78,10 @@ const TimeTable = ({
 };
 
 export { TimeTable };
+
+/*
+
+          <Typography variant="small-text" color="black">
+            {description}
+          </Typography>
+*/

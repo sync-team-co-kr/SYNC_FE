@@ -14,7 +14,7 @@ interface TempTask {
 }
 
 interface GraphProps {
-  task: TempTask;
+  schedule: TempTask;
   gridDay: {
     date: Date;
     formatDay: string;
@@ -66,25 +66,24 @@ const GraphAccent = styled.div<{ $isgraphstart: boolean; $attribute: number }>`
     props.$isgraphstart && setGraphAccentColor(props.$attribute)};
 `;
 
-const Graph = ({ task, gridDay }: GraphProps) => {
-  console.log(gridDay.date, task.endDate);
+const Graph = ({ schedule, gridDay }: GraphProps) => {
   return (
     <GraphContainer
-      $isstart={isSameDay(gridDay.date, addDays(task.startDate, 1))}
-      $isend={isSameDay(gridDay.date, task.endDate)}
+      $isstart={isSameDay(gridDay.date, addDays(schedule.startDate, 1))}
+      $isend={isSameDay(gridDay.date, schedule.endDate)}
       $attribute={0}
     >
       <GraphAccent
         $isgraphstart={
           isSameDay(startOfWeek(gridDay.date), gridDay.date) ||
-          isSameDay(gridDay.date, addDays(task.startDate, 1))
+          isSameDay(gridDay.date, addDays(schedule.startDate, 1))
         }
         $attribute={0}
       ></GraphAccent>
       <span>
         {(isSameDay(startOfWeek(gridDay.date), gridDay.date) ||
-          isSameDay(gridDay.date, addDays(task.startDate, 1))) &&
-          task.title}
+          isSameDay(gridDay.date, addDays(schedule.startDate, 1))) &&
+          schedule.title}
       </span>
     </GraphContainer>
   );

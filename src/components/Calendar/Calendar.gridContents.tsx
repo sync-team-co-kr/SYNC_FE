@@ -9,6 +9,14 @@ const GraphArea = styled.section`
   width: 100%;
   height: 270px;
   margin-bottom: 60px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+`;
+
+const EmptyGraph = styled.div`
+  width: calc(100% + 1px);
+  height: 32px;
 `;
 
 interface TempTask {
@@ -23,6 +31,7 @@ interface TempTask {
 }
 
 interface GridContentsProps {
+  schedules: (TempTask | null)[];
   tasks?: TempTask[];
   gridDay: {
     date: Date;
@@ -30,7 +39,7 @@ interface GridContentsProps {
   };
 }
 
-const GridContents = ({ tasks, gridDay }: GridContentsProps) => {
+const GridContents = ({ schedules, tasks, gridDay }: GridContentsProps) => {
   const isTaskScheduleWithInInterval = (task: TempTask) => {
     const interval = {
       start: new Date(task.startDate),
@@ -42,21 +51,21 @@ const GridContents = ({ tasks, gridDay }: GridContentsProps) => {
   const getTaskScheduleLength = (start: string, end: string) =>
     differenceInDays(end, start);
 
-  console.log(tasks);
-
   if (!tasks) return <></>;
   return (
     <>
       <GraphArea>
-        {tasks
-          .filter(
-            (task) =>
-              isTaskScheduleWithInInterval(task) &&
-              getTaskScheduleLength(task.startDate, task.endDate) >= 3,
-          )
-          .map((task) => (
-            <Graph key={task.taskId} task={task} gridDay={gridDay} />
-          ))}
+        {schedules.map((schedule) =>
+          schedule ? (
+            <Graph
+              key={schedule.taskId}
+              schedule={schedule}
+              gridDay={gridDay}
+            />
+          ) : (
+            <EmptyGraph></EmptyGraph>
+          ),
+        )}
       </GraphArea>
 
       {tasks
