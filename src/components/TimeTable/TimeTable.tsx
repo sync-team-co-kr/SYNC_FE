@@ -14,7 +14,6 @@ import { TimeTableProps } from './TimeTable.types';
 
 const TimeTable = ({
   title,
-  description,
   startTime,
   endTime,
   images,

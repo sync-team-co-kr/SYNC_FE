@@ -8,6 +8,7 @@ import {
   eachDayOfInterval,
   endOfWeek,
   format,
+  getTime,
   isWithinInterval,
   startOfWeek,
 } from 'date-fns';
@@ -127,6 +128,7 @@ export const CalendarWeek = () => {
   const [calendarItems, setCalendarItems] = useState<ISchedule[] | null>(null);
 
   useEffect(() => {
+    // 캘린더의 주중 일자 하나 이상 포함되는 업무의 일정만 필터링하기
     const aa = tasks?.filter((task) => {
       const interval = {
         start: new Date(task.startDate),
@@ -137,12 +139,29 @@ export const CalendarWeek = () => {
       );
       return test;
     });
+
     if (aa) {
       const graphs = aa.filter(
         (task) => differenceInDays(task.endDate, task.startDate) >= 3,
       );
+
+      /**
+       * 업무 그래프 정렬 순서
+       * 업무 속성 깊이가 낮은 순 (task의 perantTaskId 속성 요청해야 할 듯.)
+       * 종료 일정이 빠른 순
+       * 생성일이 빠른 순(createdAt 속성을 가져올 수 있는 지 여쭤봐야 합니다.)
+       * 제목의 가나다 순
+       */
+      const sortedGraphs = graphs.sort((firstGraph, secondGraph) => {
+        if (getTime(firstGraph.endDate) !== getTime(secondGraph.endDate)) {
+          return getTime(firstGraph.endDate) - getTime(secondGraph.endDate);
+        }
+        return firstGraph.title <= secondGraph.title ? -1 : 1;
+      });
+
+      // 주중 일자마다 필터링된 업무의 일정이 포함되는지 확인 => 없으면 null 반환
       const bb = calendarDays.map((calendarDay) => {
-        const taskSchedules = graphs.map((graph) => {
+        const taskSchedules = sortedGraphs.map((graph) => {
           const interval = {
             start: new Date(graph.startDate),
             end: new Date(graph.endDate),
@@ -150,6 +169,7 @@ export const CalendarWeek = () => {
           if (isWithinInterval(calendarDay.date, interval)) return { ...graph };
           return null;
         });
+
         return {
           schedules: taskSchedules,
           calendarDay,
