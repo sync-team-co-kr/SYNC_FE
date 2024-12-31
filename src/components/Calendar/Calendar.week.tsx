@@ -1,23 +1,16 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext } from 'react';
 
 import { useTaskState } from '@libs/store/task/task';
 import { useGetProjectIds } from '@services/project/Project.hooks';
 import { useGetTasks } from '@services/task';
-import {
-  differenceInDays,
-  eachDayOfInterval,
-  endOfWeek,
-  format,
-  getTime,
-  isWithinInterval,
-  startOfWeek,
-} from 'date-fns';
+import { eachDayOfInterval, endOfWeek, format, startOfWeek } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import styled from 'styled-components';
 import { vars } from 'token';
 
 import GridContents from './Calendar.gridContents';
 import { CalendarContext } from './Calendar.provider';
+import useFilterCalendarGraphs from './hooks/useFilterCalendarGraphs';
 
 const GridContainer = styled.div`
   display: grid;
@@ -95,25 +88,6 @@ const getCalendarDays = (date: Date) => {
   return calendarDays;
 };
 
-interface TempTask {
-  taskId: number;
-  title: string;
-  description: string;
-  startDate: string;
-  endDate: string;
-  depth: number;
-  progress: number;
-  status: number;
-}
-
-interface ISchedule {
-  schedules: (TempTask | null)[];
-  calendarDay: {
-    date: Date;
-    formatDay: string;
-  };
-}
-
 export const CalendarWeek = () => {
   const { value } = useContext(CalendarContext);
 
@@ -125,60 +99,7 @@ export const CalendarWeek = () => {
   const { tasks } =
     useGetTasks(project.title !== '' ? project.projectId : projectIds) ?? {};
 
-  const [calendarItems, setCalendarItems] = useState<ISchedule[] | null>(null);
-
-  useEffect(() => {
-    // 캘린더의 주중 일자 하나 이상 포함되는 업무의 일정만 필터링하기
-    const aa = tasks?.filter((task) => {
-      const interval = {
-        start: new Date(task.startDate),
-        end: new Date(task.endDate),
-      };
-      const test = calendarDays.some((calendarDay) =>
-        isWithinInterval(calendarDay.date, interval),
-      );
-      return test;
-    });
-
-    if (aa) {
-      const graphs = aa.filter(
-        (task) => differenceInDays(task.endDate, task.startDate) >= 3,
-      );
-
-      /**
-       * 업무 그래프 정렬 순서
-       * 업무 속성 깊이가 낮은 순 (task의 perantTaskId 속성 요청해야 할 듯.)
-       * 종료 일정이 빠른 순
-       * 생성일이 빠른 순(createdAt 속성을 가져올 수 있는 지 여쭤봐야 합니다.)
-       * 제목의 가나다 순
-       */
-      const sortedGraphs = graphs.sort((firstGraph, secondGraph) => {
-        if (getTime(firstGraph.endDate) !== getTime(secondGraph.endDate)) {
-          return getTime(firstGraph.endDate) - getTime(secondGraph.endDate);
-        }
-        return firstGraph.title <= secondGraph.title ? -1 : 1;
-      });
-
-      // 주중 일자마다 필터링된 업무의 일정이 포함되는지 확인 => 없으면 null 반환
-      const bb = calendarDays.map((calendarDay) => {
-        const taskSchedules = sortedGraphs.map((graph) => {
-          const interval = {
-            start: new Date(graph.startDate),
-            end: new Date(graph.endDate),
-          };
-          if (isWithinInterval(calendarDay.date, interval)) return { ...graph };
-          return null;
-        });
-
-        return {
-          schedules: taskSchedules,
-          calendarDay,
-        };
-      });
-
-      setCalendarItems(bb);
-    }
-  }, [calendarDays[0].formatDay]);
+  const calendarItems = useFilterCalendarGraphs(calendarDays, tasks);
 
   if (!calendarItems) return <></>;
   return (
