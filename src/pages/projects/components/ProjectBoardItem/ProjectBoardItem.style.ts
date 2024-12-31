@@ -30,6 +30,11 @@ const StyleProjectBoard: {
     flex-direction: column;
     justify-content: space-around;
     gap: 16px;
+
+    /* width: 100%; */
+    overflow: hidden;
+    box-sizing: border-box;
+    text-overflow: ellipsis;
   `,
   Header: styled.section`
     display: flex;

@@ -9,7 +9,6 @@ import { IMember } from '@customTypes/member';
  */
 
 export default interface RawProject {
-  progress?: number;
   projectId: number;
   title: string;
   thumbnail?: string;
@@ -19,4 +18,8 @@ export default interface RawProject {
   startDate?: string;
   endDate: string;
   members: IMember[];
+  task?: {
+    totalCount: number;
+    completedCount: number;
+  };
 }
