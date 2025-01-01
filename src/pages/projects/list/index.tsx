@@ -66,8 +66,8 @@ const ProjectThumbnail = ({
   }
 };
 
-const ProgressGraph = styled.div<{ width: number }>`
-  width: ${(props) => props.width}%;
+const ProgressGraph = styled.div<{ width: string }>`
+  width: ${(props) => props.width};
   align-self: stretch;
   border-radius: 2px;
   background: var(--Primary-Orange-Yellow-Orange, #ffd880);
@@ -92,14 +92,16 @@ const ProjectList = () => {
 
   // 프로젝트 진행도 계산
   const progressPercent = (task: {
-    completedCount: number;
-    totalCount: number;
-  }) =>
-    task && task.totalCount !== 0
-      ? ((Number(task.totalCount) / Number(task.completedCount)) * 100).toFixed(
-          0,
-        )
-      : 0;
+    completedCount?: number;
+    totalCount?: number;
+  }) => {
+    if (task && task.totalCount !== 0) {
+      const completedCount = Number(task?.completedCount);
+      const totalCount = Number(task?.totalCount);
+      return ((completedCount / totalCount) * 100).toFixed(0);
+    }
+    return 0;
+  };
 
   return (
     <StyleProjectList.Wrapper>
@@ -159,11 +161,7 @@ const ProjectList = () => {
                       </div>
                       <div className="BarGraphFrame2">
                         <ProgressGraph
-                          width={
-                            project.task
-                              ? Number(progressValue(project.task))
-                              : 0
-                          }
+                          width={`${project.task && progressPercent(project.task)}%`}
                         />
                       </div>
                     </div>
@@ -173,7 +171,7 @@ const ProjectList = () => {
                 <td>
                   <StyleProjectList.Members>
                     {project.members.map((member) => (
-                      <li key={member.id}>{member.username.substring(1)}</li>
+                      <li key={member.id}>{member?.username?.substring(1)}</li>
                     ))}
                   </StyleProjectList.Members>
                 </td>

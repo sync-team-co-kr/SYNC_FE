@@ -115,8 +115,8 @@ const BarGraphFrame2 = styled.div`
   background: var(--Black-White-Black-10, #f4f4f4);
 `;
 
-const ProgressGraph = styled.div<{ width: number }>`
-  width: ${(props) => props.width}%;
+const ProgressGraph = styled.div<{ width: string }>`
+  width: ${(props) => props.width};
   align-self: stretch;
   border-radius: 2px;
   background: var(--Primary-Orange-Yellow-Orange, #ffd880);
@@ -176,14 +176,14 @@ const ProjectBoardItem = ({ project }: { project: RawProject }) => {
       : `0 / 0`;
 
   // 프로젝트 진행도 계산
-  const progressPercent =
-    project.task && project.task.totalCount !== 0
-      ? (
-          (Number(project?.task.totalCount) /
-            Number(project?.task.completedCount)) *
-          100
-        ).toFixed(0)
-      : 0;
+  const progressPercent = () => {
+    if (project.task && project.task.totalCount !== 0) {
+      const completedCount = Number(project?.task.completedCount);
+      const totalCount = Number(project?.task.totalCount);
+      return ((completedCount / totalCount) * 100).toFixed(0);
+    }
+    return 0;
+  };
 
   return (
     <StyleProjectBoard.BoardArea key={project.projectId}>
@@ -221,10 +221,10 @@ const ProjectBoardItem = ({ project }: { project: RawProject }) => {
               {/* {!tasks ? <CheckText>0/0</CheckText> : <CheckText>완료된 프로젝트 / 전체 프로젝트</CheckText>} */}
               <CheckText>{progressValue}</CheckText>
             </IndexFrame>
-            <PercentText>{progressPercent} %</PercentText>
+            <PercentText>{progressPercent()} %</PercentText>
           </BarGraphFrame1>
           <BarGraphFrame2>
-            <ProgressGraph width={Number(progressValue)} />
+            <ProgressGraph width={`${progressPercent()}%`} />
           </BarGraphFrame2>
         </BarGraph>
       </ProgressFrame>
@@ -233,7 +233,7 @@ const ProjectBoardItem = ({ project }: { project: RawProject }) => {
         <StyleProjectBoard.Members>
           {project.members.map((member) => (
             <MemberItem key={member.id}>
-              {member.username.substring(1)}
+              {member?.username?.substring(1)}
             </MemberItem>
           ))}
         </StyleProjectBoard.Members>
