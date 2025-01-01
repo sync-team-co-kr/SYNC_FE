@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import sortGraphs from '@components/Calendar//utils/sortGraphs';
 import filtertasksWithinWeek from '@components/Calendar/utils/filtertasksWithinWeek';
@@ -22,6 +22,10 @@ const useFilterCalendarGraphs: useFilterCalendarGraphsType = (
   tasks,
 ) => {
   const [calendarItems, setCalendarItems] = useState<ISchedule[] | null>(null);
+  const memorizedTasks = useMemo(
+    () => tasks?.map((task) => task.taskId).join(','),
+    [tasks?.map((task) => task.taskId).join(',')],
+  );
 
   useEffect(() => {
     const aa = filtertasksWithinWeek(calendarDays, tasks);
@@ -34,9 +38,8 @@ const useFilterCalendarGraphs: useFilterCalendarGraphsType = (
     const sortedTasks = sortGraphs(taskSchedulesOf3OrMore);
 
     const graphs = findTasksEachDays(sortedTasks, calendarDays);
-
     setCalendarItems(graphs);
-  }, [calendarDays[0].formatDay]);
+  }, [memorizedTasks, calendarDays[0].formatDay]);
 
   return calendarItems;
 };

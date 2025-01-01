@@ -119,16 +119,3 @@ export const CalendarWeek = () => {
     </GridContainer>
   );
 };
-
-/*
-    <GridContainer>
-      {calendarDays.map((day) => (
-        <GridItem key={day?.date?.toString()}>
-          <GridItemHeader>{day?.formatDay}</GridItemHeader>
-          <GridContentWrap>
-            <GridContents tasks={tasks} gridDay={day} />
-          </GridContentWrap>
-        </GridItem>
-      ))}
-    </GridContainer>
-*/
