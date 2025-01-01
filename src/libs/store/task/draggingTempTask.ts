@@ -1,24 +1,14 @@
+import { ITask } from '@customTypes/task';
 import { create } from 'zustand';
 
-interface TempTask {
-  taskId: number;
-  title: string;
-  description: string;
-  startDate: string;
-  endDate: string;
-  depth: number;
-  progress: number;
-  status: number;
-}
-
 interface DraggingTempTaskState {
-  originalTasks: TempTask[] | null;
-  draggingTempTasks: TempTask[] | null;
+  originalTasks: ITask[] | null;
+  draggingTempTasks: ITask[] | null;
 }
 
 interface Actions {
   actions: {
-    setOriginalTasks: (tasks: TempTask[]) => void;
+    setOriginalTasks: (tasks: ITask[]) => void;
     setDraggingTempTasks: (
       oldStatus: number,
       newStatus: number,

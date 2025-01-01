@@ -1,18 +1,8 @@
 import { AxiosResByData } from '@customTypes/common';
+import { ITask } from '@customTypes/task';
 import { userApiInstance } from '@libs/axios/axios';
 import { CreateTaskPayload } from '@services/swagger/output/data-contracts';
 import { AxiosResponse } from 'axios';
-
-interface TempTask {
-  taskId: number;
-  title: string;
-  description: string;
-  startDate: string;
-  endDate: string;
-  depth: number;
-  progress: number;
-  status: number;
-}
 
 interface CreateTaskParams {
   thumbnailImage?: string;
@@ -30,7 +20,7 @@ interface CreateTaskParams {
 }
 
 export const getTaskList = async (projectId: number) => {
-  const response: AxiosResponse<AxiosResByData<TempTask[]>> =
+  const response: AxiosResponse<AxiosResByData<ITask[]>> =
     await userApiInstance.get(`/node2/api/task/v2`, {
       params: {
         projectId,
@@ -153,12 +143,14 @@ export const updateTaskStatus = async (willUpdateTaskParams: {
   const { taskId, projectId, editedStatus } = willUpdateTaskParams;
 
   // taskId를 통해 상태를 변경할 단일 task 데이터 가져오기
-  const task: AxiosResponse<AxiosResByData<TempTask>> =
-    await userApiInstance.get('/node2/api/task/v3', {
+  const task: AxiosResponse<AxiosResByData<ITask>> = await userApiInstance.get(
+    '/node2/api/task/v3',
+    {
       params: {
         taskId,
       },
-    });
+    },
+  );
 
   const formData = new FormData();
 
@@ -179,7 +171,7 @@ export const updateTaskStatus = async (willUpdateTaskParams: {
   formData.append('data', willUpdateTask);
 
   const response: AxiosResponse<
-    AxiosResByData<Omit<TempTask, 'progress' | 'depth'>>
+    AxiosResByData<Omit<ITask, 'progress' | 'depth'>>
   > = await userApiInstance.put('/user/api/task', formData, {
     headers: {
       'Content-Type': 'multipart/form-data',

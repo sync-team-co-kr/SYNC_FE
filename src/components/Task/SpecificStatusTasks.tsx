@@ -4,6 +4,7 @@ import { useDrop } from 'react-dnd';
 import { ReactComponent as CreateIcon } from '@assets/projects/create.svg';
 import { ReactComponent as WorkboxIcon } from '@assets/projects/workbox.svg';
 import { Typography } from '@components/common/Typography';
+import { ITask } from '@customTypes/task';
 import { useDraggingTempTaskActions } from '@libs/store/task/draggingTempTask';
 import { useUpdateTaskStatus } from '@services/task';
 import styled from 'styled-components';
@@ -88,17 +89,6 @@ const Icon = styled.div`
   margin: 0 8px 0 8px;
 `;
 
-interface TempTask {
-  taskId: number;
-  title: string;
-  description: string;
-  startDate: string;
-  endDate: string;
-  depth: number;
-  progress: number;
-  status: number;
-}
-
 interface TaskBoardItemProps {
   title: '해야할 일' | '하는 중' | '완료';
   titleColor?: TypographyColor; // 타입을 제한된 색상으로 지정
@@ -106,7 +96,7 @@ interface TaskBoardItemProps {
   backgroundColor?: string;
   workBoardVisible?: boolean;
   projectId: number;
-  tasks: TempTask[];
+  tasks: ITask[];
 }
 
 const SpecificStatusTasks = ({

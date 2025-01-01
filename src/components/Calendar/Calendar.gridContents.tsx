@@ -1,5 +1,7 @@
 import Graph from '@components/Graph';
 import { TimeTable } from '@components/TimeTable/TimeTable';
+import { ICalendarDay } from '@customTypes/calendar';
+import { ITask } from '@customTypes/task';
 import { differenceInDays, isWithinInterval } from 'date-fns';
 import { styled } from 'styled-components';
 
@@ -19,28 +21,14 @@ const EmptyGraph = styled.div`
   height: 32px;
 `;
 
-interface TempTask {
-  taskId: number;
-  title: string;
-  description: string;
-  startDate: string;
-  endDate: string;
-  depth: number;
-  progress: number;
-  status: number;
-}
-
 interface GridContentsProps {
-  schedules: (TempTask | null)[];
-  tasks?: TempTask[];
-  gridDay: {
-    date: Date;
-    formatDay: string;
-  };
+  schedules: (ITask | null)[];
+  tasks?: ITask[];
+  gridDay: ICalendarDay;
 }
 
 const GridContents = ({ schedules, tasks, gridDay }: GridContentsProps) => {
-  const isTaskScheduleWithInInterval = (task: TempTask) => {
+  const isTaskScheduleWithInInterval = (task: ITask) => {
     const interval = {
       start: new Date(task.startDate),
       end: new Date(task.endDate),

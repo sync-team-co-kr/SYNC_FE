@@ -3,33 +3,18 @@ import { useEffect, useState } from 'react';
 import sortGraphs from '@components/Calendar//utils/sortGraphs';
 import filtertasksWithinWeek from '@components/Calendar/utils/filtertasksWithinWeek';
 import findTasksEachDays from '@components/Calendar/utils/findTasksEachDays';
+import { ICalendarDay } from '@customTypes/calendar';
+import { ITask } from '@customTypes/task';
 import { differenceInDays } from 'date-fns';
 
-interface TempTask {
-  taskId: number;
-  title: string;
-  description: string;
-  startDate: string;
-  endDate: string;
-  depth: number;
-  progress: number;
-  status: number;
-}
-
 interface ISchedule {
-  schedules: (TempTask | null)[];
-  calendarDay: {
-    date: Date;
-    formatDay: string;
-  };
+  schedules: (ITask | null)[];
+  calendarDay: ICalendarDay;
 }
 
 type useFilterCalendarGraphsType = (
-  calendarDays: {
-    date: Date;
-    formatDay: string;
-  }[],
-  tasks?: TempTask[],
+  calendarDays: ICalendarDay[],
+  tasks?: ITask[],
 ) => ISchedule[] | null;
 
 const useFilterCalendarGraphs: useFilterCalendarGraphsType = (
@@ -42,13 +27,12 @@ const useFilterCalendarGraphs: useFilterCalendarGraphsType = (
     const aa = filtertasksWithinWeek(calendarDays, tasks);
 
     if (!aa) return;
-    const tasks3OrMore = aa.filter(
+    const taskSchedulesOf3OrMore = aa.filter(
       (task) => differenceInDays(task.endDate, task.startDate) >= 3,
     );
 
-    const sortedTasks = sortGraphs(tasks3OrMore);
+    const sortedTasks = sortGraphs(taskSchedulesOf3OrMore);
 
-    // 주중 일자마다 필터링된 업무의 일정이 포함되는지 확인 => 없으면 null 반환
     const graphs = findTasksEachDays(sortedTasks, calendarDays);
 
     setCalendarItems(graphs);

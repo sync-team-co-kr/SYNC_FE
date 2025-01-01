@@ -1,15 +1,5 @@
+import { ITask } from '@customTypes/task';
 import { getTime } from 'date-fns';
-
-interface TempTask {
-  taskId: number;
-  title: string;
-  description: string;
-  startDate: string;
-  endDate: string;
-  depth: number;
-  progress: number;
-  status: number;
-}
 
 /**
  * 업무 그래프 정렬 순서
@@ -20,7 +10,7 @@ interface TempTask {
  * 4. 제목의 가나다 순
  */
 
-const sortGraphs = (graphs: TempTask[]) =>
+const sortGraphs = (graphs: ITask[]) =>
   graphs.sort((firstGraph, secondGraph) => {
     if (getTime(firstGraph.endDate) !== getTime(secondGraph.endDate)) {
       return getTime(firstGraph.endDate) - getTime(secondGraph.endDate);

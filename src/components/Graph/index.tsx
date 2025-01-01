@@ -1,24 +1,12 @@
+import { ICalendarDay } from '@customTypes/calendar';
+import { ITask } from '@customTypes/task';
 import { addDays, isSameDay, startOfWeek } from 'date-fns';
 import { styled } from 'styled-components';
 import { vars } from 'token';
 
-interface TempTask {
-  taskId: number;
-  title: string;
-  description: string;
-  startDate: string;
-  endDate: string;
-  depth: number;
-  progress: number;
-  status: number;
-}
-
 interface GraphProps {
-  schedule: TempTask;
-  gridDay: {
-    date: Date;
-    formatDay: string;
-  };
+  schedule: ITask;
+  gridDay: ICalendarDay;
 }
 
 const setRadiusGraph = (isStart: boolean, isEnd: boolean) => {
