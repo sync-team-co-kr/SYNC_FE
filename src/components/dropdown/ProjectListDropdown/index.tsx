@@ -14,7 +14,7 @@ export const ProjectListDropdown = forwardRef<
   useHandleOutsideHooks(ref as RefObject<HTMLDivElement>, setClose);
   const { projects } = useGetProjects();
   return (
-    <DropdownContainer isOpen={isOpen} ref={ref}>
+    <DropdownContainer $isopen={isOpen} ref={ref}>
       {!!projects &&
         projects?.map((project) => (
           <ProjectDropdownItem

@@ -55,13 +55,13 @@ const makerTimeTableStyle = {
 };
 
 export const Marker = styled.div<{
-  statue: TimeTableStatus;
-  variant: TimeTableVariants;
+  $status: TimeTableStatus;
+  $variant: TimeTableVariants;
 }>`
-  ${(props) => makerTimeTableStyle[props.variant]};
+  ${(props) => makerTimeTableStyle[props.$variant]};
   border-radius: 999px;
   background: ${(props) => {
-    switch (props.statue) {
+    switch (props.$status) {
       case 'task':
         return vars.sementic.color.purple;
       case 'sub':
@@ -80,26 +80,26 @@ export const Marker = styled.div<{
  */
 
 export const Container = styled.div<{
-  percentage: number;
-  variant: TimeTableVariants;
-  status: TimeTableStatus;
-  gridRowStart?: number;
-  rowSpan?: number;
+  $percentage: number;
+  $variant: TimeTableVariants;
+  $status: TimeTableStatus;
+  $gridRowStart?: number;
+  $rowSpan?: number;
 }>`
   z-index: 1;
   display: flex;
   cursor: pointer;
   margin-top: 12px;
-  ${(props) => stateStyle[props.status]};
+  ${(props) => stateStyle[props.$status]};
   ${(props) =>
-    props.rowSpan &&
-    props.gridRowStart &&
+    props.$rowSpan &&
+    props.$gridRowStart &&
     `
-        grid-row-start: ${props.gridRowStart};
-        grid-row-end: ${props.rowSpan + props.gridRowStart};
+        grid-row-start: ${props.$gridRowStart};
+        grid-row-end: ${props.$rowSpan + props.$gridRowStart};
       `}
   padding: ${(props) => {
-    switch (props.variant) {
+    switch (props.$variant) {
       case 'graph':
         return '4px';
       case 'timeTableMedium':
@@ -111,7 +111,7 @@ export const Container = styled.div<{
     }
   }};
   gap: 8px;
-  width: ${(props) => props.percentage}%;
+  width: ${(props) => props.$percentage}%;
   border-radius: 4px;
   align-items: center;
 `;

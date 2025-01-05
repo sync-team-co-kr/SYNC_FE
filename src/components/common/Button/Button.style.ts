@@ -4,7 +4,7 @@ import { vars } from 'token';
 export const CommonButton = styled.button<{
   size: 'small' | 'medium';
   $fullWidth?: boolean;
-  variant:
+  $variant:
     | 'outline'
     | 'fill'
     | 'fillGray'
@@ -19,8 +19,8 @@ export const CommonButton = styled.button<{
   font-size: ${vars.sementic.typography['heading-5'].fontSize};
   font-weight: ${vars.sementic.typography['heading-5'].fontWeight};
   display: inline-flex;
-  border-radius: ${({ variant }) => {
-    if (variant === 'task' || variant === 'subTask' || variant === 'quest') {
+  border-radius: ${({ $variant }) => {
+    if ($variant === 'task' || $variant === 'subTask' || $variant === 'quest') {
       return '4px';
     }
     return '8px';
@@ -33,8 +33,8 @@ export const CommonButton = styled.button<{
   padding: ${({ $hasText }) => ($hasText ? '12px 16px' : '12px')};
   height: ${({ size }) => (size === 'small' ? '36px' : '42px')};
 
-  color: ${({ variant }) => {
-    switch (variant) {
+  color: ${({ $variant }) => {
+    switch ($variant) {
       case 'outline':
       case 'fillGray':
       case 'text':
@@ -54,8 +54,8 @@ export const CommonButton = styled.button<{
     }
   }};
 
-  background: ${({ variant }) => {
-    switch (variant) {
+  background: ${({ $variant }) => {
+    switch ($variant) {
       case 'outline':
       case 'task':
       case 'subTask':
@@ -76,8 +76,8 @@ export const CommonButton = styled.button<{
 
   border-style: solid;
   border-width: 1px;
-  border-color: ${({ variant }) => {
-    switch (variant) {
+  border-color: ${({ $variant }) => {
+    switch ($variant) {
       case 'outline':
         return vars.sementic.color.black10;
       case 'task':
@@ -100,8 +100,8 @@ export const CommonButton = styled.button<{
     background 0.3s ease-in-out,
     color 0.3s ease-in-out;
 
-  ${({ $isSelect, variant }) => {
-    switch (variant) {
+  ${({ $isSelect, $variant }) => {
+    switch ($variant) {
       case 'outline':
         return $isSelect ? `background: ${vars.sementic.color.black10};` : '';
       case 'fill':
@@ -131,8 +131,8 @@ export const CommonButton = styled.button<{
     }
   }};
   &:hover {
-    background: ${({ variant }) => {
-      switch (variant) {
+    background: ${({ $variant }) => {
+      switch ($variant) {
         case 'outline':
           return 'linear-gradient(0deg, rgba(0, 0, 0, 0.05) 0%, rgba(0, 0, 0, 0.05) 100%), #FFF';
         case 'fill':
@@ -154,8 +154,8 @@ export const CommonButton = styled.button<{
       }
     }};
 
-    color: ${({ variant }) => {
-      switch (variant) {
+    color: ${({ $variant }) => {
+      switch ($variant) {
         case 'outline':
         case 'fillGray':
           return vars.sementic.color.black70;
@@ -177,8 +177,8 @@ export const CommonButton = styled.button<{
   }
 
   &:disabled {
-    background: ${({ variant }) => {
-      switch (variant) {
+    background: ${({ $variant }) => {
+      switch ($variant) {
         case 'outline':
           return vars.sementic.color.white;
         case 'fill':

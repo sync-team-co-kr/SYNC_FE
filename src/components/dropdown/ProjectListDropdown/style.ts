@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 import { vars } from 'token';
 
-export const DropdownContainer = styled.div<{ isOpen: boolean }>`
-  display: ${({ isOpen }) => (isOpen ? 'flex' : 'none')};
+export const DropdownContainer = styled.div<{ $isopen: boolean }>`
+  display: ${({ $isopen }) => ($isopen ? 'flex' : 'none')};
   position: absolute;
   width: 300px;
   padding: 12px 6px;

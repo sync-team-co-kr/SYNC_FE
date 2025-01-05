@@ -61,7 +61,7 @@ export const Textfield = (
         )}
         <TextfieldContainer
           disabled={disabled}
-          variant={variant}
+          $variant={variant}
           isValid={isValid}
         >
           <TextfieldInput

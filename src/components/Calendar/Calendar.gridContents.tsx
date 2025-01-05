@@ -43,7 +43,7 @@ const GridContents = ({ schedules, tasks, gridDay }: GridContentsProps) => {
   return (
     <>
       <GraphArea>
-        {schedules.map((schedule) =>
+        {schedules.map((schedule, i) =>
           schedule ? (
             <Graph
               key={schedule.taskId}
@@ -51,7 +51,7 @@ const GridContents = ({ schedules, tasks, gridDay }: GridContentsProps) => {
               gridDay={gridDay}
             />
           ) : (
-            <EmptyGraph></EmptyGraph>
+            <EmptyGraph key={i}></EmptyGraph>
           ),
         )}
       </GraphArea>
