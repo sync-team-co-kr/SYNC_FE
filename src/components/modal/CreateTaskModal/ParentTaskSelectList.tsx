@@ -6,15 +6,15 @@ interface ParentTaskSelectListProps {
 }
 
 const ParentTaskSelectList = ({ parentTaskId }: ParentTaskSelectListProps) => {
-  if (parentTaskId === 1 || parentTaskId === 2)
+  if (parentTaskId && parentTaskId >= 1)
     return (
-      <SectionContainer maxWidth="100%" direction="row" gap={24}>
+      <SectionContainer maxWidth="100%" direction="row" $gap={24}>
         <ParentTaskSelectDropdown parentTaskName="테스크" />;
       </SectionContainer>
     );
-  else if (parentTaskId === 2)
+  if (parentTaskId && parentTaskId >= 2)
     return (
-      <SectionContainer maxWidth="100%" direction="row" gap={24}>
+      <SectionContainer maxWidth="100%" direction="row" $gap={24}>
         <ParentTaskSelectDropdown parentTaskName="서브 테스크" />;
       </SectionContainer>
     );
@@ -22,3 +22,5 @@ const ParentTaskSelectList = ({ parentTaskId }: ParentTaskSelectListProps) => {
 };
 
 export default ParentTaskSelectList;
+
+// parenttaskid 0 테스크 1 서브 테스크 2 테스크,

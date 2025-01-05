@@ -1,11 +1,16 @@
 import { useContext } from 'react';
 
+import { useTaskState } from '@libs/store/task/task';
+import { useGetProjectIds } from '@services/project/Project.hooks';
+import { useGetTasks } from '@services/task';
 import { eachDayOfInterval, endOfWeek, format, startOfWeek } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import styled from 'styled-components';
 import { vars } from 'token';
 
+import GridContents from './Calendar.gridContents';
 import { CalendarContext } from './Calendar.provider';
+import useFilterCalendarGraphs from './hooks/useFilterCalendarGraphs';
 
 const GridContainer = styled.div`
   display: grid;
@@ -55,13 +60,13 @@ const GridItemHeader = styled.div`
   border-bottom: 1px solid ${vars.sementic.color.black10};
 `;
 
-const GridContent = styled.div`
+const GridContentWrap = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
   gap: 10px;
-  padding: 18px 10px;
+  padding: 18px 0;
   width: 100%;
   height: 100%;
 `;
@@ -88,12 +93,27 @@ export const CalendarWeek = () => {
 
   const calendarDays = getCalendarDays(value);
 
+  const { project } = useTaskState();
+  const { projectIds } = useGetProjectIds();
+
+  const { tasks } =
+    useGetTasks(project.title !== '' ? project.projectId : projectIds) ?? {};
+
+  const calendarItems = useFilterCalendarGraphs(calendarDays, tasks);
+
+  if (!calendarItems) return <></>;
   return (
     <GridContainer>
-      {calendarDays.map((day) => (
-        <GridItem key={day?.date?.toString()}>
-          <GridItemHeader>{day?.formatDay}</GridItemHeader>
-          <GridContent></GridContent>
+      {calendarItems.map(({ schedules, calendarDay }) => (
+        <GridItem key={calendarDay.date?.toString()}>
+          <GridItemHeader>{calendarDay.formatDay}</GridItemHeader>
+          <GridContentWrap>
+            <GridContents
+              schedules={schedules}
+              tasks={tasks}
+              gridDay={calendarDay}
+            />
+          </GridContentWrap>
         </GridItem>
       ))}
     </GridContainer>

@@ -14,7 +14,6 @@ import { TimeTableProps } from './TimeTable.types';
 
 const TimeTable = ({
   title,
-  description,
   startTime,
   endTime,
   images,
@@ -35,11 +34,11 @@ const TimeTable = ({
     return (
       <Container
         onClick={onClick}
-        percentage={returnPercentage()}
-        variant={variant}
-        status={status}
+        $percentage={returnPercentage()}
+        $variant={variant}
+        $status={status}
       >
-        <Marker statue={status} variant={variant} />
+        <Marker $status={status} $variant={variant} />
         <ImageWrapper>
           <img src={images} alt={title} />
         </ImageWrapper>
@@ -52,22 +51,19 @@ const TimeTable = ({
 
   return (
     <Container
-      gridRowStart={gridRowStart}
-      rowSpan={rowSpan}
+      $gridRowStart={gridRowStart}
+      $rowSpan={rowSpan}
       onClick={onClick}
-      percentage={100}
-      variant={variant}
-      status={status}
+      $percentage={100}
+      $variant={variant}
+      $status={status}
     >
-      <Marker statue={status} variant={variant} />
+      <Marker $status={status} $variant={variant} />
       <Column gap={5}>
         <Row gap={5}>
           <ImageWrapper>
             <img src={images} alt={title} />
           </ImageWrapper>
-          <Typography variant="small-text" color="black">
-            {description}
-          </Typography>
         </Row>
         <Typography variant="small-text-b" color="black">
           {title}
@@ -81,3 +77,10 @@ const TimeTable = ({
 };
 
 export { TimeTable };
+
+/*
+
+          <Typography variant="small-text" color="black">
+            {description}
+          </Typography>
+*/

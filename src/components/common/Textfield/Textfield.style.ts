@@ -92,12 +92,12 @@ const searchInputContainerStyle = css({
 });
 
 export const TextfieldContainer = styled.div<{
-  variant: Variant;
+  $variant: Variant;
   isValid?: boolean;
   disabled?: boolean;
 }>`
   ${(props) => {
-    switch (props.variant) {
+    switch (props.$variant) {
       case 'outlined':
         return outlinedInputContainerStyle;
       case 'underlined':
@@ -108,7 +108,7 @@ export const TextfieldContainer = styled.div<{
         return outlinedInputContainerStyle;
     }
   }}
-  padding: ${(props) => props.variant !== 'search' && '12px 8px'};
+  padding: ${(props) => props.$variant !== 'search' && '12px 8px'};
   width: 100%;
   display: flex;
   align-items: center;

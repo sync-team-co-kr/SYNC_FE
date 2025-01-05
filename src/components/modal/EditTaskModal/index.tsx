@@ -200,7 +200,7 @@ export const EditTaskModal = ({
         {/* task state end */}
 
         {/* task */}
-        <SectionContainer direction="row" gap={24} maxWidth="100%">
+        <SectionContainer direction="row" $gap={24} maxWidth="100%">
           <TaskContainer>
             <LabelContainer>
               <Typography variant="small-text-b" color="negativeRed">
@@ -266,7 +266,7 @@ export const EditTaskModal = ({
               일정
             </Typography>
           </LabelContainer>
-          <SectionContainer direction="row" gap={24}>
+          <SectionContainer direction="row" $gap={24}>
             <Textfield
               variant="outlined"
               placeholder="날짜"
@@ -280,7 +280,7 @@ export const EditTaskModal = ({
               onChange={(e) => console.log(e.target.value)}
             />
           </SectionContainer>
-          <SectionContainer direction="row" gap={24}>
+          <SectionContainer direction="row" $gap={24}>
             <Textfield
               variant="outlined"
               placeholder="시간"

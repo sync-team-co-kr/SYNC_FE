@@ -24,12 +24,12 @@ export const ContainerContent = styled.div`
 export const SectionContainer = styled.div<{
   direction?: 'column' | 'row';
   maxWidth?: string;
-  gap?: number;
+  $gap?: number;
 }>`
   display: flex;
   flex-direction: ${({ direction }) => direction || 'column'};
   max-width: ${({ maxWidth }) => maxWidth || '338px'};
-  gap: ${({ gap }) => gap || 8}px;
+  gap: ${({ $gap }) => $gap || 8}px;
   position: relative;
 `;
 

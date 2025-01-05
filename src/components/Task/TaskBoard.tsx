@@ -6,6 +6,7 @@ import { ReactComponent as WorkboxIcon } from '@assets/projects/workbox.svg';
 import { Tag } from '@components/common/Tag';
 import { Typography } from '@components/common/Typography';
 import WorkBoardDropdownMenu from '@components/dropdown/WorkBoardDropdownMenu';
+import { ITask } from '@customTypes/task';
 import { useModal } from '@hooks';
 import useDropdown from '@hooks/useDropdown';
 import { differenceInDays } from 'date-fns';
@@ -124,24 +125,7 @@ const Icon = styled.div`
   margin: 0 8px 0 8px;
 `;
 
-interface TempTask {
-  taskId: number;
-  title: string;
-  description: string;
-  startDate: string;
-  endDate: string;
-  depth: number;
-  progress: number;
-  status: number;
-}
-
-const TaskBoard = ({
-  projectId,
-  task,
-}: {
-  projectId: number;
-  task: TempTask;
-}) => {
+const TaskBoard = ({ projectId, task }: { projectId: number; task: ITask }) => {
   const [
     isOpenProjectDropdownMenu,
     toggleProjectDropdownMenu,

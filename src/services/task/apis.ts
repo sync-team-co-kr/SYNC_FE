@@ -1,17 +1,7 @@
 import { AxiosResByData } from '@customTypes/common';
+import { ITask } from '@customTypes/task';
 import { userApiInstance } from '@libs/axios/axios';
 import { AxiosResponse } from 'axios';
-
-interface TempTask {
-  taskId: number;
-  title: string;
-  description: string;
-  startDate: string;
-  endDate: string;
-  depth: number;
-  progress: number;
-  status: number;
-}
 
 /**
  * 업무 목록을 가져오는 API
@@ -32,7 +22,7 @@ interface TempTask {
  */
 
 export const getTaskList = async (projectId: number) => {
-  const response: AxiosResponse<AxiosResByData<TempTask[]>> =
+  const response: AxiosResponse<AxiosResByData<ITask[]>> =
     await userApiInstance.get(`/node2/api/task/v2`, {
       params: {
         projectId,
@@ -60,7 +50,7 @@ export const getTaskList = async (projectId: number) => {
  */
 
 export const getTask = async (taskId: number) => {
-  const response: AxiosResponse<AxiosResByData<TempTask[]>> =
+  const response: AxiosResponse<AxiosResByData<ITask[]>> =
     await userApiInstance.get(`/node2/api/task/v3`, {
       params: {
         taskId,
@@ -121,7 +111,7 @@ export const getTaskChildren = async (taskId: number) => {
 
 export const updateTaskStatus1 = async (updateStatusFormData: FormData) => {
   const response: AxiosResponse<
-    AxiosResByData<Omit<TempTask, 'progress' | 'depth'>>
+    AxiosResByData<Omit<ITask, 'progress' | 'depth'>>
   > = await userApiInstance.put('/user/api/task', updateStatusFormData, {
     headers: {
       'Content-Type': 'multipart/form-data',
