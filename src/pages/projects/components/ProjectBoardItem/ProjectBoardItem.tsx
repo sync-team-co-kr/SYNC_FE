@@ -5,7 +5,6 @@ import projectCalendar from '@assets/calendar.svg';
 import meatballs from '@assets/meatballs.svg';
 import projectIcon from '@assets/project-icon.png';
 import { ReactComponent as CheckBox } from '@assets/projects/checkBox.svg';
-import { Typography } from '@components/common';
 import { RawProject } from '@customTypes/project';
 import useDropdown from '@hooks/useDropdown';
 import ProjectSettingsDropdown from '@pages/projects/components/ProjectSettingsDropdown/ProjectSettingsDropdown';
@@ -116,11 +115,20 @@ const BarGraphFrame2 = styled.div`
   background: var(--Black-White-Black-10, #f4f4f4);
 `;
 
-const ProgressGraph = styled.div<{ width: number }>`
-  width: ${(props) => props.width}%;
+const ProgressGraph = styled.div<{ width: string }>`
+  width: ${(props) => props.width};
   align-self: stretch;
   border-radius: 2px;
   background: var(--Primary-Orange-Yellow-Orange, #ffd880);
+`;
+
+const DescriptionFrame = styled.div`
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box; /* -webkit- 접두사는 크로스브라우징을 위해 추가 */
+  -webkit-line-clamp: 2; /* 보여질 줄 수  */
+  -webkit-box-orient: vertical;
+  font-size: 14px;
 `;
 
 const ProjectThumbnail = ({
@@ -161,9 +169,21 @@ const ProjectBoardItem = ({ project }: { project: RawProject }) => {
     projectDropdownMenuRef,
   ] = useDropdown();
 
-  const progressValue = project.progress
-    ? Math.abs(Number(project?.progress) * 100)
-    : 0;
+  // 진행 중 / 완료
+  const progressValue =
+    project.task && project.task.totalCount !== 0
+      ? `${project.task.completedCount} / ${project.task.totalCount}`
+      : `0 / 0`;
+
+  // 프로젝트 진행도 계산
+  const progressPercent = () => {
+    if (project.task && project.task.totalCount !== 0) {
+      const completedCount = Number(project?.task.completedCount);
+      const totalCount = Number(project?.task.totalCount);
+      return ((completedCount / totalCount) * 100).toFixed(0);
+    }
+    return 0;
+  };
 
   return (
     <StyleProjectBoard.BoardArea key={project.projectId}>
@@ -189,9 +209,7 @@ const ProjectBoardItem = ({ project }: { project: RawProject }) => {
         </MeatBalls>
       </StyleProjectBoard.Header>
 
-      <Typography variant="paragraph" color="black">
-        {project.description}
-      </Typography>
+      <DescriptionFrame>{project.description}</DescriptionFrame>
 
       <ProgressFrame>
         <BarGraph>
@@ -201,12 +219,12 @@ const ProjectBoardItem = ({ project }: { project: RawProject }) => {
                 <CheckBox />
               </CheckIcon>
               {/* {!tasks ? <CheckText>0/0</CheckText> : <CheckText>완료된 프로젝트 / 전체 프로젝트</CheckText>} */}
-              <CheckText>0/0</CheckText>
+              <CheckText>{progressValue}</CheckText>
             </IndexFrame>
-            <PercentText>{progressValue} %</PercentText>
+            <PercentText>{progressPercent()} %</PercentText>
           </BarGraphFrame1>
           <BarGraphFrame2>
-            <ProgressGraph width={progressValue} />
+            <ProgressGraph width={`${progressPercent()}%`} />
           </BarGraphFrame2>
         </BarGraph>
       </ProgressFrame>
@@ -215,7 +233,7 @@ const ProjectBoardItem = ({ project }: { project: RawProject }) => {
         <StyleProjectBoard.Members>
           {project.members.map((member) => (
             <MemberItem key={member.id}>
-              {member.username.substring(1)}
+              {member?.username?.substring(1)}
             </MemberItem>
           ))}
         </StyleProjectBoard.Members>
@@ -234,40 +252,3 @@ const ProjectBoardItem = ({ project }: { project: RawProject }) => {
 };
 
 export default ProjectBoardItem;
-
-/*
-  
-  interface Member {
-    profileImg: string;
-    userId: string;
-    username: string;
-  }
-
-  interface APIResponse {
-    value: Member;
-  }
-
-  const MemberProfile = ({ memberId }: { memberId: number }) => {
-  const [member, setMember] = useState<Member | null>(null);
-  const fetchMemberDetail = async (userId: number) => {
-    const response: AxiosResponse<APIResponse, any> =
-      await requiredJwtTokeninstance.get(`/api/user/info`, {
-        params: {
-          userId,
-        },
-      });
-    return response;
-  };
-
-  useEffect(() => {
-    fetchMemberDetail(memberId).then((res) => setMember(res.data.value));
-  }, []);
-
-  return <li>{member?.username.slice(-2)}</li>;
-};
-
-
-  project.memberIds.map((memberId) => (
-    <MemberProfile key={project.projectId} memberId={memberId} />
-  ))
-*/
