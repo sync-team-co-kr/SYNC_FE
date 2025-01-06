@@ -28,15 +28,16 @@ const TaskBoardList = () => {
 
   const { id } = useParams();
 
-  const { tasks } = useGetTasks(Number(id));
+  const { tasks, isFetching } = useGetTasks(Number(id));
   const { draggingTempTasks } = useDraggingTempTaskState();
   const { setOriginalTasks } = useDraggingTempTaskActions();
 
+  console.log(isFetching, tasks);
   useEffect(() => {
     if (tasks) {
       setOriginalTasks(tasks);
     }
-  }, []);
+  }, [isFetching]);
 
   if (!tasks) return <div>Task가 없을 때의 페이지</div>;
   if (draggingTempTasks)

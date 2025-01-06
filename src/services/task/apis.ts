@@ -35,30 +35,43 @@ export const getTaskList = async (projectId: number) => {
  * 단일 업무를 가져오는 API
  * @param taskId: number
  * @returns {
- * taskId: number;
- * title: string;
- * description: string;
- * startDate?: string;
- * endDate?: string;
- * status: number;
- * depth: number;
- * task: {
- *  totalCount: number;
- *  completedCount: number;
- * }
+ *  id: number;
+ *  title: string;
+ *  description: string;
+ *  startDate: string;
+ *  endDate: string;
+ *  depth: number;
+ *  status: number;
+ *  task: {
+ *    totalCount: number;
+ *    completedCount: number;
+ *  };
  * }
  */
 
+interface getTaskResponse {
+  id: number;
+  title: string;
+  description: string;
+  startDate: string;
+  endDate: string;
+  depth: number;
+  status: number;
+  task: {
+    totalCount: number;
+    completedCount: number;
+  };
+}
+
 export const getTask = async (taskId: number) => {
-  const response: AxiosResponse<AxiosResByData<ITask[]>> =
+  const response: AxiosResponse<AxiosResByData<getTaskResponse>> =
     await userApiInstance.get(`/node2/api/task/v3`, {
       params: {
         taskId,
       },
     });
 
-  const [task] = response.data.data;
-  return task;
+  return response.data.data;
 };
 
 /**
@@ -106,10 +119,17 @@ export const getTaskChildren = async (taskId: number) => {
  *    taskId: number;
  *    editedStatus: number;
  * }
- * @returns
+ * @return {
+ * projectId: number;
+ * taskId: number;
+ * title: string;
+ * description: string;
+ * startDate: number;
+ * endDate: number;
+ * }
  */
 
-export const updateTaskStatus1 = async (updateStatusFormData: FormData) => {
+export const updateTaskStatus = async (updateStatusFormData: FormData) => {
   const response: AxiosResponse<
     AxiosResByData<Omit<ITask, 'progress' | 'depth'>>
   > = await userApiInstance.put('/user/api/task', updateStatusFormData, {
