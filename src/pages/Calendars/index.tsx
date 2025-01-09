@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
 import { ReactComponent as ArrowBottom } from '@assets/arrow-bottom.svg';
 import { Calendar } from '@components/Calendar';
@@ -9,6 +9,7 @@ import { Tabs } from '@components/Tabs/Tabs';
 import { Button } from '@components/common/Button';
 import { ProjectListDropdown } from '@components/dropdown/ProjectListDropdown';
 import { useModalState } from '@hooks/useModalState';
+import { useBreadCrumbActions } from '@libs/store/breadcrumb/breadcrumb';
 import {
   useCalendarActions,
   useCalendarState,
@@ -37,6 +38,7 @@ export const Calendars = () => {
     openProjectListDropdown,
     closeProjectListDropdown,
   ] = useModalState();
+  const { setMainRoute, setProjectRoute } = useBreadCrumbActions();
 
   const { currentDate } = useCalendarState();
   const { setCurrentDate } = useCalendarActions();
@@ -44,6 +46,14 @@ export const Calendars = () => {
   const { project } = useTaskState();
 
   const projectListDropdownRef = useRef(null);
+
+  useEffect(() => {
+    setMainRoute('캘린더');
+    return () => {
+      setMainRoute('');
+      setProjectRoute('');
+    };
+  }, []);
 
   return (
     <CalenderContainer>

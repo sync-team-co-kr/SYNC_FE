@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 
 import { RawProject } from '@customTypes/project';
+import { useBreadCrumbActions } from '@libs/store/breadcrumb/breadcrumb';
 import { useGetProjects } from '@services/project/Project.hooks';
 import styled from 'styled-components';
 
@@ -29,6 +30,14 @@ const Project = () => {
     getUpcomingProjects,
     getMyProjects,
   } = useDataHandler({ setProjectData });
+  const { setMainRoute } = useBreadCrumbActions();
+
+  useEffect(() => {
+    setMainRoute('프로젝트');
+    return () => {
+      setMainRoute('');
+    };
+  }, []);
 
   const handleClickTabMenu = (path: string) => {
     setCurrentTabMenu(path);
