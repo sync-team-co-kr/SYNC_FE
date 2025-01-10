@@ -1,5 +1,5 @@
 import Graph from '@components/Graph';
-import { TimeTable } from '@components/TimeTable/TimeTable';
+import { TimeTable } from '@components/TimeTable';
 import { ICalendarDay } from '@customTypes/calendar';
 import { ITask } from '@customTypes/task';
 import { differenceInDays, isWithinInterval } from 'date-fns';
@@ -27,7 +27,11 @@ interface GridContentsProps {
   gridDay: ICalendarDay;
 }
 
-const WeekGridContents = ({ schedules, tasks, gridDay }: GridContentsProps) => {
+const MonthGridContents = ({
+  schedules,
+  tasks,
+  gridDay,
+}: GridContentsProps) => {
   const isTaskScheduleWithInInterval = (task: ITask) => {
     const interval = {
       start: new Date(task.startDate),
@@ -55,7 +59,6 @@ const WeekGridContents = ({ schedules, tasks, gridDay }: GridContentsProps) => {
           ),
         )}
       </GraphArea>
-
       {tasks
         .filter(
           (task) =>
@@ -79,4 +82,4 @@ const WeekGridContents = ({ schedules, tasks, gridDay }: GridContentsProps) => {
   );
 };
 
-export default WeekGridContents;
+export default MonthGridContents;

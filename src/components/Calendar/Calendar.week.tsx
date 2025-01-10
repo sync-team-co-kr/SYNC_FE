@@ -8,7 +8,7 @@ import { ko } from 'date-fns/locale';
 import styled from 'styled-components';
 import { vars } from 'token';
 
-import GridContents from './Calendar.gridContents';
+import WeekGridContents from './Calendar.gridContents';
 import { CalendarContext } from './Calendar.provider';
 import useFilterCalendarGraphs from './hooks/useFilterCalendarGraphs';
 
@@ -90,7 +90,6 @@ const getCalendarDays = (date: Date) => {
 
 export const CalendarWeek = () => {
   const { value } = useContext(CalendarContext);
-
   const calendarDays = getCalendarDays(value);
 
   const { project } = useTaskState();
@@ -108,7 +107,7 @@ export const CalendarWeek = () => {
         <GridItem key={calendarDay.date?.toString()}>
           <GridItemHeader>{calendarDay.formatDay}</GridItemHeader>
           <GridContentWrap>
-            <GridContents
+            <WeekGridContents
               schedules={schedules}
               tasks={tasks}
               gridDay={calendarDay}

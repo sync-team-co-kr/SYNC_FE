@@ -28,6 +28,7 @@ const useFilterCalendarGraphs: useFilterCalendarGraphsType = (
   );
 
   useEffect(() => {
+    if (calendarDays.length < 0) return;
     const aa = filtertasksWithinWeek(calendarDays, tasks);
 
     if (!aa) return;
@@ -38,6 +39,7 @@ const useFilterCalendarGraphs: useFilterCalendarGraphsType = (
     const sortedTasks = sortGraphs(taskSchedulesOf3OrMore);
 
     const graphs = findTasksEachDays(sortedTasks, calendarDays);
+    console.log(calendarDays[0].formatDay);
     setCalendarItems(graphs);
   }, [memorizedTasks, calendarDays[0].formatDay]);
 
