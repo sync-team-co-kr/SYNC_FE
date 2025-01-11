@@ -23,4 +23,5 @@ export interface TimeTableProps {
   rowSpan?: number;
   status: 'task' | 'sub' | 'quest';
   variant: 'graph' | 'timeTableMedium' | 'timeTableLarge';
+  moveDayCalendar?: () => void;
 }

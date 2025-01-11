@@ -44,6 +44,10 @@ const GraphContainer = styled.div<{
     color: ${vars.sementic.color.black};
     font-size: 14px;
     font-weight: 700;
+    &:hover {
+      text-decoration: underline;
+      cursor: pointer;
+    }
   }
 `;
 
@@ -54,7 +58,11 @@ const GraphAccent = styled.div<{ $isgraphstart: boolean; $attribute: number }>`
     props.$isgraphstart && setGraphAccentColor(props.$attribute)};
 `;
 
-const Graph = ({ schedule, gridDay }: GraphProps) => {
+const Graph = ({
+  schedule,
+  gridDay,
+  moveDayCalendar,
+}: GraphProps & { moveDayCalendar: () => void }) => {
   return (
     <GraphContainer
       $isstart={isSameDay(gridDay.date, addDays(schedule.startDate, 1))}
@@ -68,7 +76,7 @@ const Graph = ({ schedule, gridDay }: GraphProps) => {
         }
         $attribute={0}
       ></GraphAccent>
-      <span>
+      <span onClick={moveDayCalendar}>
         {(isSameDay(startOfWeek(gridDay.date), gridDay.date) ||
           isSameDay(gridDay.date, addDays(schedule.startDate, 1))) &&
           schedule.title}

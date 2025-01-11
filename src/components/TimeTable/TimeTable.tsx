@@ -22,6 +22,7 @@ const TimeTable = ({
   variant,
   gridRowStart,
   rowSpan,
+  moveDayCalendar,
 }: TimeTableProps) => {
   const returnPercentage = () => {
     const start = new Date(startTime).getHours();
@@ -42,9 +43,7 @@ const TimeTable = ({
         <ImageWrapper>
           <img src={images} alt={title} />
         </ImageWrapper>
-        <Typography variant="small-text-b" color="black">
-          {title}
-        </Typography>
+        <span onClick={moveDayCalendar}>{title}</span>
       </Container>
     );
   }
@@ -65,9 +64,7 @@ const TimeTable = ({
             <img src={images} alt={title} />
           </ImageWrapper>
         </Row>
-        <Typography variant="small-text-b" color="black">
-          {title}
-        </Typography>
+        <span onClick={moveDayCalendar}>{title}</span>
         <Typography variant="small-text" color="black70">
           {startTime} ~ {endTime}
         </Typography>

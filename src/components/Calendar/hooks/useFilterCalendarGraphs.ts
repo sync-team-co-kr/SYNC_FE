@@ -39,7 +39,6 @@ const useFilterCalendarGraphs: useFilterCalendarGraphsType = (
     const sortedTasks = sortGraphs(taskSchedulesOf3OrMore);
 
     const graphs = findTasksEachDays(sortedTasks, calendarDays);
-    console.log(calendarDays[0].formatDay);
     setCalendarItems(graphs);
   }, [memorizedTasks, calendarDays[0].formatDay]);
 

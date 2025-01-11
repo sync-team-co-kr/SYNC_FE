@@ -2,6 +2,7 @@ import Graph from '@components/Graph';
 import { TimeTable } from '@components/TimeTable';
 import { ICalendarDay } from '@customTypes/calendar';
 import { ITask } from '@customTypes/task';
+import { useCalendarActions } from '@libs/store/task/calendar';
 import { differenceInDays, isWithinInterval } from 'date-fns';
 import { styled } from 'styled-components';
 
@@ -32,6 +33,8 @@ const MonthGridContents = ({
   tasks,
   gridDay,
 }: GridContentsProps) => {
+  const { setSpecificDate } = useCalendarActions();
+
   const isTaskScheduleWithInInterval = (task: ITask) => {
     const interval = {
       start: new Date(task.startDate),
@@ -43,6 +46,10 @@ const MonthGridContents = ({
   const getTaskScheduleLength = (start: string, end: string) =>
     differenceInDays(end, start);
 
+  const moveDayCalendar = () => {
+    setSpecificDate(gridDay.date);
+  };
+
   if (!tasks) return <></>;
   return (
     <>
@@ -53,6 +60,7 @@ const MonthGridContents = ({
               key={schedule.taskId}
               schedule={schedule}
               gridDay={gridDay}
+              moveDayCalendar={moveDayCalendar}
             />
           ) : (
             <EmptyGraph key={i}></EmptyGraph>
