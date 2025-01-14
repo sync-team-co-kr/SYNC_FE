@@ -1,12 +1,26 @@
+import { useLocation } from 'react-router-dom';
+
+import {
+  useCalendarActions,
+  useCalendarState,
+} from '@libs/store/task/calendar';
+
 import { CalendarContent } from './Calendar.content';
 import { CalendarHeader } from './Calendar.header';
 import { CalendarProvider } from './Calendar.provider';
 import { Container } from './Calendar.style';
-import { CalenderProps } from './Calendar.types';
 
-export const Calendar = ({ type, value, setValue }: CalenderProps) => {
+export const Calendar = () => {
+  const { currentDate } = useCalendarState();
+  const { setCurrentDate } = useCalendarActions();
+  const location = useLocation();
+
   return (
-    <CalendarProvider type={type} value={value} setValue={setValue}>
+    <CalendarProvider
+      type={location.pathname.split('/')[2] as 'day' | 'week' | 'month'}
+      value={currentDate}
+      setValue={setCurrentDate}
+    >
       <Container>
         <CalendarHeader />
         <CalendarContent />

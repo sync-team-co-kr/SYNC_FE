@@ -3,6 +3,7 @@ import { vars } from 'token';
 
 export const Container = styled.div`
   display: flex;
+  padding: 24px 40px;
   justify-content: center;
   align-items: flex-start;
   width: 100%;
