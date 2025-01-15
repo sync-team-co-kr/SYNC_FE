@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useState } from 'react';
 
-import sortGraphs from '@components/Calendar//utils/sortGraphs';
-import filtertasksWithinWeek from '@components/Calendar/utils/filtertasksWithinWeek';
-import findTasksEachDays from '@components/Calendar/utils/findTasksEachDays';
 import { ICalendarDay } from '@customTypes/calendar';
 import { ITask } from '@customTypes/task';
+import filtertasksWithinWeek from '@pages/Calendars/utils/filtertasksWithinWeek';
+import findTasksEachDays from '@pages/Calendars/utils/findTasksEachDays';
+import sortGraphs from '@pages/Calendars/utils/sortGraphs';
 import { differenceInDays } from 'date-fns';
 
 interface ISchedule {

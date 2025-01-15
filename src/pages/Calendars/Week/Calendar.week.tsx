@@ -1,16 +1,15 @@
 import { useContext } from 'react';
 
+import WeekGridContents from '@components/Calendar/Calendar.gridContents';
 import { useTaskState } from '@libs/store/task/task';
+import { CalendarContext } from '@pages/Calendars/Calendar.provider';
+import useFilterCalendarGraphs from '@pages/Calendars/hooks/useFilterCalendarGraphs';
 import { useGetProjectIds } from '@services/project/Project.hooks';
 import { useGetTasks } from '@services/task';
 import { eachDayOfInterval, endOfWeek, format, startOfWeek } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import styled from 'styled-components';
 import { vars } from 'token';
-
-import WeekGridContents from './Calendar.gridContents';
-import { CalendarContext } from './Calendar.provider';
-import useFilterCalendarGraphs from './hooks/useFilterCalendarGraphs';
 
 const GridContainer = styled.div`
   display: grid;

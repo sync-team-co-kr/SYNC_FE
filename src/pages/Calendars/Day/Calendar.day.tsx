@@ -5,12 +5,14 @@ import { Typography } from '@components/common/Typography';
 import { EditTaskModal } from '@components/modal/EditTaskModal';
 import useModal from '@hooks/useModal';
 import { useTaskActions, useTaskState } from '@libs/store/task/task';
-import { useGetProjectIds } from '@services/project/Project.hooks';
-import { useGetTasks } from '@services/task/Task.hooks';
-import styled from 'styled-components';
-
-import { useRenderTaskFilter } from './Calendar.hooks';
-import { CalendarContext } from './Calendar.provider';
+import { useRenderTaskFilter } from '@pages/Calendars/Calendar.hooks';
+import { CalendarContext } from '@pages/Calendars/Calendar.provider';
+import {
+  formatTimeIntl,
+  generateTimeSlots,
+  getGridRowStart,
+  getRowSpan,
+} from '@pages/Calendars/Calendar.utils';
 import {
   GraphContainer,
   GraphItemsContainer,
@@ -18,13 +20,10 @@ import {
   TimeTableContainer,
   TimeTableItem,
   TimeTableLabel,
-} from './Calendar.style';
-import {
-  formatTimeIntl,
-  generateTimeSlots,
-  getGridRowStart,
-  getRowSpan,
-} from './Calendar.utils';
+} from '@pages/Calendars/styles/Calendar.style';
+import { useGetProjectIds } from '@services/project/Project.hooks';
+import { useGetTasks } from '@services/task/Task.hooks';
+import styled from 'styled-components';
 
 const DayContainer = styled.div`
   display: flex;

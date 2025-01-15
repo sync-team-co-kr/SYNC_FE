@@ -27,7 +27,7 @@ const ProjectListDropdownContainer = styled.div`
   position: relative;
 `;
 
-export const Calendars = () => {
+const Calendars = () => {
   // project list dropdown
   const [
     isOpenProjectListDropdown,
@@ -84,3 +84,5 @@ export const Calendars = () => {
     </CalenderContainer>
   );
 };
+
+export default Calendars;

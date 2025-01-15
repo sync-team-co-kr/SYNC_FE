@@ -1,6 +1,6 @@
 import React, { PropsWithChildren, createContext } from 'react';
 
-import type { TaskCalendar, TaskCalendarButton } from './Calendar.types';
+import type { TaskCalendar, TaskCalendarButton } from './types/Calendar.types';
 
 interface CalendarProviderProps extends PropsWithChildren {
   type: TaskCalendar;

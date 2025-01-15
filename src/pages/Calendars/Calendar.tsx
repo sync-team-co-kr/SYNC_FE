@@ -8,9 +8,9 @@ import {
 import { CalendarContent } from './Calendar.content';
 import { CalendarHeader } from './Calendar.header';
 import { CalendarProvider } from './Calendar.provider';
-import { Container } from './Calendar.style';
+import { Container } from './styles/Calendar.style';
 
-export const Calendar = () => {
+const Calendar = () => {
   const { currentDate } = useCalendarState();
   const { setCurrentDate } = useCalendarActions();
   const location = useLocation();
@@ -28,3 +28,5 @@ export const Calendar = () => {
     </CalendarProvider>
   );
 };
+
+export default Calendar;

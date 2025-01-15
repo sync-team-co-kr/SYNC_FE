@@ -1,7 +1,7 @@
 import { Route, Routes } from 'react-router-dom';
 
-import { Calendar } from '@components/Calendar';
-import { Calendars } from '@pages/Calendars';
+import Calendars from '@pages/Calendars';
+import Calendar from '@pages/Calendars/Calendar';
 
 const CalendarRoute = () => {
   return (
