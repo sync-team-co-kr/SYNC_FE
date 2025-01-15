@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 
 import { ReactComponent as ArrowBottom } from '@assets/arrow-bottom.svg';
 import TabMenu from '@components/TabMenu/TabMenu';
@@ -39,9 +39,12 @@ export const Calendars = () => {
   const { project } = useTaskState();
 
   const projectListDropdownRef = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setMainRoute('캘린더');
+    navigate('/calendars/day');
+
     return () => {
       setMainRoute('');
       setProjectRoute('');

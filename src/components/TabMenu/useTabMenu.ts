@@ -11,7 +11,9 @@ const useTabMenu: useTabMenuType = (tabMenuList) => {
   const [activeTabMenu, setActiveTabMenu] = useState(
     tabMenuList[0].tabMenuName,
   );
-  const [currentTabMenu, setCurrentTabMenu] = useState('');
+  const [currentTabMenu, setCurrentTabMenu] = useState(
+    tabMenuList[0].tabMenuName,
+  );
   const navigate = useNavigate();
 
   const activateTabMenu = (e: React.MouseEvent<HTMLButtonElement>) => {
