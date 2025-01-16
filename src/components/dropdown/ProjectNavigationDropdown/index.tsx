@@ -1,4 +1,4 @@
-import defaultProjectImg from '@assets/project-icon.png';
+import Thumbnail from '@components/Thumbnail/Thumbnail';
 import { RawProject } from '@customTypes/project';
 
 import { NavigationItem, ProjectNavigatorDropdown } from './style';
@@ -21,13 +21,10 @@ const ProjectNavigation = ({
           key={project.projectId}
           onClick={() => handleSelectNavigationItem(project)}
         >
-          <div>
-            {project.thumbnail ? (
-              <span>{project.thumbnail}</span>
-            ) : (
-              <img src={defaultProjectImg} alt="프로젝트 기본 이미지" />
-            )}
-          </div>
+          <Thumbnail
+            thumbnail={project.thumbnail}
+            thumbnailType={project.thumbnailType}
+          />
           <div>
             <span>{project.title}</span>
             <span>{project.subTitle}</span>
