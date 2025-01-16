@@ -168,25 +168,25 @@ export const getProjectListWithMember = async () => {
  * }
  */
 
-export const createProject = async (newProject: CreateProjectRequestDto) => {
+interface Temp {
+  title: string;
+  thumbnail?: string | Blob;
+  thumbnailType?: 'N' | 'I' | 'C' | 'E';
+  subTitle: string;
+  description: string;
+  startDate?: string;
+  endDate: string;
+  task?: {
+    totalCount: number;
+    completedCount: number;
+  };
+}
+
+export const createProject = async (newProject: Temp) => {
   const formData = new FormData();
 
   if (newProject.thumbnail && newProject.thumbnailType === 'I') {
-    const uuid = randomUuid();
-    const prevFileName = 'thumbnail-image';
-    const extension = getExtensionFromMimeType(newProject.thumbnail);
-
-    const newImageName = `${uuid}_${prevFileName}`;
-    const newImageUrl = `${newImageName}.${extension}`;
-
-    const imgFile = convertBase64ToFile(newProject.thumbnail, newImageName);
-
-    const newProjectWithCustomImage = {
-      ...newProject,
-      thumbnail: newImageUrl,
-    };
-
-    console.log(imgFile, newProjectWithCustomImage.thumbnail);
+    const { thumbnail, ...newProjectWithCustomImage } = newProject;
 
     const projectWithCustomImageBlobType = new Blob(
       [JSON.stringify(newProjectWithCustomImage)],
@@ -197,7 +197,13 @@ export const createProject = async (newProject: CreateProjectRequestDto) => {
 
     formData.append('data', projectWithCustomImageBlobType);
 
-    formData.append('thumbnailImage', imgFile);
+    const imageFile = new File([newProject.thumbnail], 'test.img', {
+      type: 'image/jpeg',
+    });
+
+    console.log(imageFile);
+
+    formData.append('thumbnailImage', imageFile);
   } else {
     const project = new Blob([JSON.stringify(newProject)], {
       type: 'application/json',

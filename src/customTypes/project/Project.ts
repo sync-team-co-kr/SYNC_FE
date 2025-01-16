@@ -5,7 +5,7 @@ export default interface IProject {
   title: string;
   thumbnail: {
     type: 'N' | 'I' | 'C' | 'E';
-    value: string;
+    value: string | Blob;
   };
   subTitle: string;
   description: string;

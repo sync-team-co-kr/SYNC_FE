@@ -12,17 +12,19 @@ const ProjectBoards = () => {
   }>();
 
   return (
-    <StyleProjectBoards.Wrapper>
-      {!projectData || projectData.length === 0 ? (
-        <EmptyList />
-      ) : (
-        <StyleProjectBoards.BoardList>
-          {projectData?.map((project) => (
-            <ProjectBoardItem key={project.projectId} project={project} />
-          ))}
-        </StyleProjectBoards.BoardList>
-      )}
-    </StyleProjectBoards.Wrapper>
+    <>
+      <StyleProjectBoards.Wrapper>
+        {!projectData || projectData.length === 0 ? (
+          <EmptyList />
+        ) : (
+          <StyleProjectBoards.BoardList>
+            {projectData?.map((project) => (
+              <ProjectBoardItem key={project.projectId} project={project} />
+            ))}
+          </StyleProjectBoards.BoardList>
+        )}
+      </StyleProjectBoards.Wrapper>
+    </>
   );
 };
 

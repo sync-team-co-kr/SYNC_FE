@@ -32,7 +32,6 @@ const TaskBoardList = () => {
   const { draggingTempTasks } = useDraggingTempTaskState();
   const { setOriginalTasks } = useDraggingTempTaskActions();
 
-  console.log(isFetching, tasks);
   useEffect(() => {
     if (tasks) {
       setOriginalTasks(tasks);

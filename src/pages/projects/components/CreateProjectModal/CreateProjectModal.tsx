@@ -7,6 +7,7 @@ import InputWithCalendarArea from '@components/common/InputArea/InputWithCalenda
 import InputWithIconArea from '@components/common/InputArea/InputWithIconArea';
 import InputWithTimePicker from '@components/common/InputArea/InputWithTimePicker';
 import Toggle from '@components/common/Toggle/Toggle';
+import { RawProject } from '@customTypes/project';
 import useModal from '@hooks/useModal';
 import {
   useProjectActions,
@@ -31,6 +32,20 @@ export interface ProjectPeriodTime {
   minute: number | null;
 }
 
+interface Temp {
+  title: string;
+  thumbnail?: string | Blob;
+  thumbnailType?: 'N' | 'I' | 'C' | 'E';
+  subTitle: string;
+  description: string;
+  startDate?: string;
+  endDate: string;
+  task?: {
+    totalCount: number;
+    completedCount: number;
+  };
+}
+
 function CreateProjectModal() {
   const [closeModal] = useModal();
 
@@ -52,7 +67,7 @@ function CreateProjectModal() {
     clearProject();
   }, []);
 
-  const requestCreateProject = (newProject: CreateProjectRequestDto) =>
+  const requestCreateProject = (newProject: Temp) =>
     createProjectMutate(newProject);
 
   const handleCreateProject = (e: React.MouseEvent<HTMLButtonElement>) => {

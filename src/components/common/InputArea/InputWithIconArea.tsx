@@ -37,9 +37,7 @@ const InputWithIconArea = ({
       <InputWithCoverIcon>
         <div ref={dropdownRef}>
           {thumbnail.value ? (
-            <ProjectThumbnail onClick={toggleActiveState}>
-              {thumbnail.value}
-            </ProjectThumbnail>
+            <ProjectThumbnail onClick={toggleActiveState}></ProjectThumbnail>
           ) : (
             <ProfileProject onClick={toggleActiveState} />
           )}

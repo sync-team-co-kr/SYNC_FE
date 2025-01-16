@@ -68,50 +68,26 @@ export const useGetProjectIds = () => {
 };
 
 // create project hooks
+interface Temp {
+  title: string;
+  thumbnail?: string | Blob;
+  thumbnailType?: 'N' | 'I' | 'C' | 'E';
+  subTitle: string;
+  description: string;
+  startDate?: string;
+  endDate: string;
+  task?: {
+    totalCount: number;
+    completedCount: number;
+  };
+}
+
 export const useCreateProject = () => {
   const queryClient = useQueryClient();
   const { setToastMessage } = useToastActions();
 
   const createProjectMutation = useMutation({
-    mutationFn: (newProject: CreateProjectRequestDto) =>
-      createProject(newProject),
-    onMutate: async (newProject) => {
-      //
-      await queryClient.cancelQueries({
-        queryKey: ['projects'],
-      });
-
-      const oldProjects = queryClient.getQueryData(['projects']) as
-        | RawProject[]
-        | undefined;
-
-      const {
-        result: { userId },
-      } = await getLoggedUserAPI();
-      const userInfo = await getUser(userId);
-
-      console.log([
-        ...(oldProjects || []),
-        {
-          ...newProject,
-          projectId: Date.now(),
-          process: 0,
-          members: [{ ...userInfo, id: userId }],
-        },
-      ]);
-
-      queryClient.setQueryData(['projects'], () => [
-        ...(oldProjects || []),
-        {
-          ...newProject,
-          projectId: Date.now(),
-          process: 0,
-          members: [{ ...userInfo, id: userId }],
-        },
-      ]);
-
-      return oldProjects;
-    },
+    mutationFn: (newProject: Temp) => createProject(newProject),
     onSuccess: (data) => {
       // 프로젝트 생성 반환 값이 추가되면 서버 데이터를 이용해 캐시 작업 진행 예정
       setToastMessage(`${data.title} 프로젝트가 생성되었습니다.`, 'success');

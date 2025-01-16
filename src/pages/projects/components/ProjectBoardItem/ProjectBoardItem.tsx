@@ -135,6 +135,13 @@ const ProjectThumbnail = ({
   thumbnail,
   thumbnailType,
 }: Pick<RawProject, 'thumbnail' | 'thumbnailType'>) => {
+  const visualizeImage = (imageBinary?: string | Blob) => {
+    console.log(typeof imageBinary);
+    if (imageBinary && typeof imageBinary === 'string')
+      return `https://user.sync-team.co.kr:30443/node2/api/task/image?filename=/mnt/oraclevdb/project/title/${thumbnail}`;
+    return '';
+  };
+
   switch (thumbnailType) {
     case 'E': // 이모지
       return <ThumbnailWrapper>{thumbnail}</ThumbnailWrapper>;
@@ -151,12 +158,7 @@ const ProjectThumbnail = ({
         </ThumbnailWrapper>
       );
     case 'I': // 이미지
-      return (
-        <img
-          src={`https://user.sync-team.co.kr:30443/node2/api/task/image?filename=/mnt/oraclevdb/project/title/${thumbnail}`}
-          alt="커스텀 이미지"
-        />
-      );
+      return <img src={visualizeImage(thumbnail)} alt="커스텀 이미지" />;
     default:
       return <img src={projectIcon} alt="프로젝트 대표 아이콘" />;
   }

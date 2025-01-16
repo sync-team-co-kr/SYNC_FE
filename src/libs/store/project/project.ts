@@ -6,7 +6,10 @@ interface ProjectActions {
   actions: {
     setProject: (project: RawProject) => void;
     setTitle: (title: string) => void;
-    setThumbnail: (thumbnailType: 'E' | 'C' | 'I', thumbnail: string) => void;
+    setThumbnail: (
+      thumbnailType: 'E' | 'C' | 'I',
+      thumbnail: string | Blob,
+    ) => void;
     setSubTitle: (subTitle: string) => void;
     setDescription: (description: string) => void;
     setStartDate: (date: Date) => void;

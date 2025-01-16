@@ -51,14 +51,8 @@ const ThumbnailImagePicker = () => {
   const handleUploadThumbnail = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     const file = e.target.files![0];
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onloadend = () => {
-      const readerResult = reader.result;
-      if (readerResult && typeof readerResult === 'string') {
-        setThumbnail('I', readerResult);
-      }
-    };
+    const fileBlob = new Blob([file], { type: file.type });
+    setThumbnail('I', fileBlob);
   };
 
   return (
