@@ -22,7 +22,6 @@ const Thumbnail = ({
   thumbnailType,
 }: Pick<RawProject, 'thumbnail' | 'thumbnailType'>) => {
   const visualizeImage = (imageBinary?: string | Blob) => {
-    console.log(typeof imageBinary);
     if (imageBinary && typeof imageBinary === 'string')
       return `https://user.sync-team.co.kr:30443/node2/api/task/image?filename=/mnt/oraclevdb/project/title/${thumbnail}`;
     return '';

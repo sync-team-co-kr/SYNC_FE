@@ -8,7 +8,7 @@ import ThumbnailIconPicker from './Thumbnail.icon';
 import ThumbnailImagePicker from './Thumbnail.image';
 
 const Container = styled.section<{ $isactive: boolean }>`
-  height: 400px;
+  height: 450px;
   padding: 12px;
   background: ${vars.sementic.color.white};
   border-radius: 18px;
