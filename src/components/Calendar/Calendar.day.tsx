@@ -8,23 +8,12 @@ import { useTaskActions, useTaskState } from '@libs/store/task/task';
 import { useGetProjectIds } from '@services/project/Project.hooks';
 import { useGetTasks } from '@services/task/Task.hooks';
 import styled from 'styled-components';
+import { vars } from 'token';
 
 import { useRenderTaskFilter } from './Calendar.hooks';
 import { CalendarContext } from './Calendar.provider';
-import {
-  GraphContainer,
-  GraphItemsContainer,
-  TimeContainer,
-  TimeTableContainer,
-  TimeTableItem,
-  TimeTableLabel,
-} from './Calendar.style';
-import {
-  formatTimeIntl,
-  generateTimeSlots,
-  getGridRowStart,
-  getRowSpan,
-} from './Calendar.utils';
+import { GraphContainer, GraphItemsContainer } from './Calendar.style';
+import { formatTimeIntl, getGridRowStart, getRowSpan } from './Calendar.utils';
 
 const DayContainer = styled.div`
   display: flex;
@@ -33,6 +22,29 @@ const DayContainer = styled.div`
   padding: 10px;
   width: 100%;
 `;
+
+const DayScheduleContainer = styled.section`
+  display: flex;
+  flex-direction: column;
+`;
+
+const DayScheduleItem = styled.div`
+  height: 72px;
+  display: flex;
+  gap: 16px;
+`;
+
+const TimeSlot = styled.div`
+  width: 45px;
+  color: ${vars.sementic.color.black35};
+`;
+
+const TimeTableList = styled.ul`
+  width: calc(100% - 55px);
+  padding: 10px;
+`;
+
+const timeslots = [9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22];
 
 /**
  * 시간대별로 일정을 보여주는 컴포넌트
@@ -69,6 +81,8 @@ export const CalendarDay = () => {
 
   const filteredSchedules = useRenderTaskFilter(tasks, value);
 
+  console.log(tasks);
+
   return (
     <DayContainer>
       <GraphContainer>
@@ -99,47 +113,18 @@ export const CalendarDay = () => {
           })}
         </GraphItemsContainer>
       </GraphContainer>
-      <TimeContainer>
-        <TimeTableContainer>
-          {generateTimeSlots().map((timeSlot) => (
-            <TimeTableLabel key={timeSlot}>
-              {/* 1시간 단위로 라벨을 09:00 형식으로 표시 */}
-              {
-                <Typography color="black35" variant="small-text">
-                  {timeSlot.endsWith('00') ? timeSlot : ''}
-                </Typography>
-              }
-            </TimeTableLabel>
-          ))}
-        </TimeTableContainer>
-
-        <TimeTableItem>
-          {filteredSchedules.map((schedule, i: number) => {
-            const startTime = new Date(schedule.startDate);
-            const endTime = new Date(schedule.endDate);
-
-            const rowStart = getGridRowStart(startTime);
-
-            if (rowStart > 78 || rowStart < 0) return null;
-            return (
-              <TimeTable
-                key={`${schedule.id}-${i}`}
-                variant="timeTableMedium"
-                onClick={() => EditModalOpenHandler(schedule.id)}
-                status={returnStatus(schedule.status)}
-                startTime={formatTimeIntl(startTime)}
-                endTime={formatTimeIntl(endTime)}
-                description={schedule.description}
-                rowSpan={getRowSpan(startTime, endTime)}
-                gridRowStart={getGridRowStart(startTime)}
-                parentTaskId={schedule.id}
-                images={'https://picsum.photos/200/300'}
-                title={schedule.title}
-              />
-            );
-          })}
-        </TimeTableItem>
-      </TimeContainer>
+      <DayScheduleContainer>
+        {timeslots.map((timeslot) => (
+          <DayScheduleItem key={timeslot}>
+            <TimeSlot>
+              {timeslot >= 10
+                ? `${timeslot}:00`
+                : `${String(timeslot).padStart(2, '0')}:00`}
+            </TimeSlot>
+            <TimeTableList></TimeTableList>
+          </DayScheduleItem>
+        ))}
+      </DayScheduleContainer>
     </DayContainer>
   );
 };
