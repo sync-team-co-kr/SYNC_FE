@@ -1,5 +1,6 @@
 import { useContext } from 'react';
 
+import useFilterDayCalendarTimeTables from '@components/Calendar/hooks/useFilterDayCalendarTimeTables';
 import { TimeTable } from '@components/TimeTable';
 import { Typography } from '@components/common/Typography';
 import { EditTaskModal } from '@components/modal/EditTaskModal';
@@ -81,7 +82,8 @@ export const CalendarDay = () => {
 
   const filteredSchedules = useRenderTaskFilter(tasks, value);
 
-  console.log(tasks);
+  const filteredTasks = useFilterDayCalendarTimeTables(value, tasks);
+  console.log(filteredTasks);
 
   return (
     <DayContainer>
