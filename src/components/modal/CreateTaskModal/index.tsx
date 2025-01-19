@@ -15,6 +15,7 @@ import { useTaskActions, useTaskState } from '@libs/store/task/task';
 import StyleCreateProjectModal from '@pages/projects/components/CreateProjectModal/CreateProjectModal.style';
 import { CreateTaskPayload } from '@services/swagger/output/data-contracts';
 import { useCreateTask } from '@services/task/Task.hooks';
+import { setHours, setMinutes } from 'date-fns';
 
 import ParentTaskSelectList from './ParentTaskSelectList';
 import ProjectSelectDropdown from './ProjectSelectDropdown';
@@ -103,11 +104,14 @@ export const CreateTaskModal = () => {
     if (payload.startDate && payload.endDate) {
       taskData.startDate = includeTime
         ? combineDateTime(payload.startDate!)
-        : new Date(payload.startDate!).toISOString().split('T')[0];
+        : new Date(payload.startDate!).toISOString();
 
       taskData.endDate = includeTime
         ? combineDateTime(payload.endDate!)
-        : new Date(payload.endDate!).toISOString().split('T')[0];
+        : setHours(
+            setMinutes(new Date(payload.endDate!), 59),
+            23,
+          ).toISOString();
     }
 
     createTaskMutate({
