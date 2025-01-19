@@ -1,6 +1,6 @@
 import { ICalendarDay } from '@customTypes/calendar';
 import { ITask } from '@customTypes/task';
-import { addDays, isSameDay, startOfWeek } from 'date-fns';
+import { isSameDay, startOfWeek } from 'date-fns';
 import { styled } from 'styled-components';
 import { vars } from 'token';
 
@@ -65,20 +65,20 @@ const Graph = ({
 }: GraphProps & { moveDayCalendar: () => void }) => {
   return (
     <GraphContainer
-      $isstart={isSameDay(gridDay.date, addDays(schedule.startDate, 1))}
+      $isstart={isSameDay(gridDay.date, schedule.startDate)}
       $isend={isSameDay(gridDay.date, schedule.endDate)}
       $attribute={0}
     >
       <GraphAccent
         $isgraphstart={
           isSameDay(startOfWeek(gridDay.date), gridDay.date) ||
-          isSameDay(gridDay.date, addDays(schedule.startDate, 1))
+          isSameDay(gridDay.date, schedule.startDate)
         }
         $attribute={0}
       ></GraphAccent>
       <span onClick={moveDayCalendar}>
         {(isSameDay(startOfWeek(gridDay.date), gridDay.date) ||
-          isSameDay(gridDay.date, addDays(schedule.startDate, 1))) &&
+          isSameDay(gridDay.date, schedule.startDate)) &&
           schedule.title}
       </span>
     </GraphContainer>

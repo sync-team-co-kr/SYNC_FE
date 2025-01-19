@@ -3,10 +3,12 @@ import { TimeTable } from '@components/TimeTable/TimeTable';
 import { ICalendarDay } from '@customTypes/calendar';
 import { ITask } from '@customTypes/task';
 import { useCalendarActions } from '@libs/store/task/calendar';
+import convertSharp from '@utils/date/convertSharp';
 import { differenceInDays, isWithinInterval } from 'date-fns';
 import { styled } from 'styled-components';
 
 import { formatTimeIntl } from './Calendar.utils';
+import getInterval from './utils/getInterval';
 
 const GraphArea = styled.section`
   width: 100%;
@@ -32,10 +34,9 @@ const WeekGridContents = ({ schedules, tasks, gridDay }: GridContentsProps) => {
   const { setSpecificDate } = useCalendarActions();
 
   const isTaskScheduleWithInInterval = (task: ITask) => {
-    const interval = {
-      start: new Date(task.startDate),
-      end: new Date(task.endDate),
-    };
+    const start = convertSharp(new Date(task.startDate));
+    const end = convertSharp(new Date(task.endDate));
+    const interval = getInterval(start.toISOString(), end.toISOString());
     return isWithinInterval(gridDay.date, interval);
   };
 

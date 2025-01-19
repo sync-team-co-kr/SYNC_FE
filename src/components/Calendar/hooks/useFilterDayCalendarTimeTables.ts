@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 
 import getInterval from '@components/Calendar/utils/getInterval';
 import { ITask } from '@customTypes/task';
+import convertSharp from '@utils/date/convertSharp';
 import { isWithinInterval } from 'date-fns';
 
 type useFilterDayCalendarTimeTablesType = (
@@ -22,7 +23,9 @@ const useFilterDayCalendarTimeTables: useFilterDayCalendarTimeTablesType = (
   useEffect(() => {
     if (tasks) {
       const tasksIncludeCurrentDay = tasks?.filter((task) => {
-        const interval = getInterval(task.startDate, task.endDate);
+        const start = convertSharp(new Date(task.startDate));
+        const end = convertSharp(new Date(task.endDate));
+        const interval = getInterval(start.toISOString(), end.toISOString());
         return isWithinInterval(currentDay, interval);
       });
       setCalendarItem(tasksIncludeCurrentDay);
