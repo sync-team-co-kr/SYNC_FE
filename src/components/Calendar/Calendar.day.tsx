@@ -43,9 +43,15 @@ const TimeSlot = styled.div`
 const TimeTableList = styled.ul`
   width: calc(100% - 55px);
   padding: 10px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(20%, auto));
+  column-gap: 10px;
 `;
 
-const timeslots = [9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22];
+const timeslots = [
+  0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
+  22, 23,
+];
 
 /**
  * 시간대별로 일정을 보여주는 컴포넌트
@@ -83,6 +89,7 @@ export const CalendarDay = () => {
   const filteredSchedules = useRenderTaskFilter(tasks, value);
 
   const filteredTasks = useFilterDayCalendarTimeTables(value, tasks);
+
   console.log(filteredTasks);
 
   return (
