@@ -11,7 +11,6 @@ import { useGetTasks } from '@services/task/Task.hooks';
 import styled from 'styled-components';
 import { vars } from 'token';
 
-import { useRenderTaskFilter } from './Calendar.hooks';
 import { CalendarContext } from './Calendar.provider';
 import { GraphContainer, GraphItemsContainer } from './Calendar.style';
 import { formatTimeIntl, getGridRowStart, getRowSpan } from './Calendar.utils';
@@ -86,11 +85,7 @@ export const CalendarDay = () => {
     setTaskId(taskId);
   };
 
-  const filteredSchedules = useRenderTaskFilter(tasks, value);
-
   const filteredTasks = useFilterDayCalendarTimeTables(value, tasks);
-
-  console.log(filteredTasks);
 
   return (
     <DayContainer>
@@ -99,27 +94,28 @@ export const CalendarDay = () => {
           종일
         </Typography>
         <GraphItemsContainer>
-          {filteredSchedules.map((schedule) => {
-            const startTime = new Date(schedule.startDate);
-            const endTime = new Date(schedule.endDate);
+          {filteredTasks.allDaySchedules &&
+            filteredTasks.allDaySchedules.map((schedule) => {
+              const startTime = new Date(schedule.startDate);
+              const endTime = new Date(schedule.endDate);
 
-            return (
-              <TimeTable
-                key={schedule.id}
-                onClick={() => EditModalOpenHandler(schedule.id)}
-                variant="graph"
-                status={returnStatus(schedule.status)}
-                startTime={formatTimeIntl(startTime)}
-                endTime={formatTimeIntl(endTime)}
-                description={schedule.description}
-                rowSpan={getRowSpan(startTime, endTime)}
-                gridRowStart={getGridRowStart(startTime)}
-                parentTaskId={schedule.id}
-                images={'https://picsum.photos/200/300'}
-                title={schedule.title}
-              />
-            );
-          })}
+              return (
+                <TimeTable
+                  key={schedule.taskId}
+                  onClick={() => EditModalOpenHandler(schedule.taskId)}
+                  variant="graph"
+                  status={returnStatus(schedule.status)}
+                  startTime={formatTimeIntl(startTime)}
+                  endTime={formatTimeIntl(endTime)}
+                  description={schedule.description}
+                  rowSpan={getRowSpan(startTime, endTime)}
+                  gridRowStart={getGridRowStart(startTime)}
+                  parentTaskId={schedule.taskId}
+                  images={'https://picsum.photos/200/300'}
+                  title={schedule.title}
+                />
+              );
+            })}
         </GraphItemsContainer>
       </GraphContainer>
       <DayScheduleContainer>

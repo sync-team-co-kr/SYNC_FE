@@ -13,7 +13,7 @@ interface DayCalendarItem {
 type useFilterDayCalendarTimeTablesType = (
   currentDay: Date,
   tasks?: ITask[],
-) => DayCalendarItem | null;
+) => DayCalendarItem;
 
 const timeslots = [
   0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
@@ -24,9 +24,9 @@ const useFilterDayCalendarTimeTables: useFilterDayCalendarTimeTablesType = (
   currentDay,
   tasks,
 ) => {
-  const [calendarItem, setCalendarItem] = useState<DayCalendarItem | null>({
-    allDaySchedules: null,
-    daySchedules: null,
+  const [calendarItem, setCalendarItem] = useState<DayCalendarItem>({
+    allDaySchedules: [],
+    daySchedules: [],
   });
   const memorizedTasks = useMemo(
     () => tasks?.map((task) => task.taskId).join(','),
