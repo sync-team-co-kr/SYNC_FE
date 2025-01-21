@@ -3,11 +3,20 @@ import { useEffect, useMemo, useState } from 'react';
 import getInterval from '@components/Calendar/utils/getInterval';
 import { ITask } from '@customTypes/task';
 import convertSharp from '@utils/date/convertSharp';
-import { isSameDay, isWithinInterval } from 'date-fns';
+import {
+  getHours,
+  isSameDay,
+  isWithinInterval,
+  setHours,
+  setMinutes,
+} from 'date-fns';
 
 interface DayCalendarItem {
   allDaySchedules: ITask[] | null;
-  daySchedules: ITask[] | null;
+  daySchedules: {
+    timeslot: number;
+    timeTables: ITask[] | null;
+  }[];
 }
 
 type useFilterDayCalendarTimeTablesType = (
@@ -37,7 +46,10 @@ const useFilterDayCalendarTimeTables: useFilterDayCalendarTimeTablesType = (
     if (tasks) {
       const tasksIncludeCurrentDay = tasks?.filter((task) => {
         const start = convertSharp(new Date(task.startDate));
-        const end = convertSharp(new Date(task.endDate));
+        const end = setHours(
+          setMinutes(convertSharp(new Date(task.endDate)), 59),
+          23,
+        );
         const interval = getInterval(start.toISOString(), end.toISOString());
         return isWithinInterval(currentDay, interval);
       });
@@ -50,32 +62,36 @@ const useFilterDayCalendarTimeTables: useFilterDayCalendarTimeTablesType = (
        * - 캘린더의 현재 날짜가 업무의 종료일이지만 시작일과 다르고 종료 시간이 23:59일 때
        *
        */
+
       const schedules = tasksIncludeCurrentDay.reduce<[ITask[], ITask[]]>(
         ([allDaySchedules, daySchedules], task) => {
+          const dayTypeStart = new Date(task.startDate);
+          const dayTypeEnd = new Date(task.endDate);
+
           if (
-            new Date(task.startDate).getHours() === 0 &&
-            new Date(task.startDate).getMinutes() === 0 &&
-            new Date(task.endDate).getHours() === 23 &&
-            new Date(task.endDate).getMinutes() === 59
+            dayTypeStart.getHours() === 0 &&
+            dayTypeStart.getMinutes() === 0 &&
+            dayTypeEnd.getHours() === 23 &&
+            dayTypeEnd.getMinutes() === 59
           ) {
             allDaySchedules.push(task);
           } else if (
-            !isSameDay(currentDay, task.startDate) &&
-            !isSameDay(currentDay, task.endDate)
+            !isSameDay(currentDay, dayTypeStart) &&
+            !isSameDay(currentDay, dayTypeEnd)
           ) {
             allDaySchedules.push(task);
           } else if (
-            isSameDay(currentDay, task.startDate) &&
-            !isSameDay(currentDay, task.endDate) &&
-            new Date(task.startDate).getHours() === 0 &&
-            new Date(task.startDate).getMinutes() === 0
+            isSameDay(currentDay, dayTypeStart) &&
+            !isSameDay(currentDay, dayTypeEnd) &&
+            dayTypeStart.getHours() === 0 &&
+            dayTypeStart.getMinutes() === 0
           ) {
             allDaySchedules.push(task);
           } else if (
-            isSameDay(currentDay, task.endDate) &&
-            !isSameDay(currentDay, task.startDate) &&
-            new Date(task.endDate).getHours() === 23 &&
-            new Date(task.endDate).getMinutes() === 59
+            isSameDay(currentDay, dayTypeEnd) &&
+            !isSameDay(currentDay, dayTypeStart) &&
+            dayTypeEnd.getHours() === 23 &&
+            dayTypeEnd.getMinutes() === 59
           ) {
             allDaySchedules.push(task);
           } else {
@@ -86,10 +102,42 @@ const useFilterDayCalendarTimeTables: useFilterDayCalendarTimeTablesType = (
         [[], []],
       );
 
+      /**
+       * 캘린저의 날짜와 업무의 시작일과 일치하면
+       * timeslot >= startDate.getHour();
+       *
+       * 캘린더의 날짜와 업무의 종료일과 일치하면
+       * timeslot <= endDate.getHour();  <= 13
+       */
+
+      console.log(schedules);
+
+      const timeTablesByHours = timeslots.map((timeslot) => {
+        const timeTables = schedules[1].filter((schedule) => {
+          if (
+            isSameDay(currentDay, schedule.endDate) &&
+            timeslot <= getHours(schedule.endDate)
+          ) {
+            return true;
+          }
+          if (
+            isSameDay(currentDay, schedule.startDate) &&
+            timeslot >= getHours(schedule.startDate)
+          ) {
+            return true;
+          }
+          return false;
+        });
+        return {
+          timeslot,
+          timeTables,
+        };
+      });
+
       setCalendarItem((prevState) => ({
         ...prevState,
         allDaySchedules: [...schedules[0]],
-        daySchedules: [...schedules[1]],
+        daySchedules: [...timeTablesByHours],
       }));
     }
   }, [memorizedTasks, currentDay]);
@@ -98,3 +146,9 @@ const useFilterDayCalendarTimeTables: useFilterDayCalendarTimeTablesType = (
 };
 
 export default useFilterDayCalendarTimeTables;
+
+/**
+ * 12.03 02:16 ~ 12.07 13:59
+ * 12.03 2, 3, 4, ... 23
+ * 12.06 0, 1, 2, ... 13
+ */

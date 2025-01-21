@@ -15,14 +15,7 @@ import { useTaskActions, useTaskState } from '@libs/store/task/task';
 import StyleCreateProjectModal from '@pages/projects/components/CreateProjectModal/CreateProjectModal.style';
 import { CreateTaskPayload } from '@services/swagger/output/data-contracts';
 import { useCreateTask } from '@services/task/Task.hooks';
-import {
-  addDays,
-  getDay,
-  getHours,
-  setHours,
-  setMinutes,
-  subHours,
-} from 'date-fns';
+import { addDays, getDay, setHours, setMinutes, subHours } from 'date-fns';
 
 import ParentTaskSelectList from './ParentTaskSelectList';
 import ProjectSelectDropdown from './ProjectSelectDropdown';

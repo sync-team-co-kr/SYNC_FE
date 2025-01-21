@@ -47,11 +47,6 @@ const TimeTableList = styled.ul`
   column-gap: 10px;
 `;
 
-const timeslots = [
-  0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
-  22, 23,
-];
-
 /**
  * 시간대별로 일정을 보여주는 컴포넌트
  */
@@ -85,7 +80,7 @@ export const CalendarDay = () => {
     setTaskId(taskId);
   };
 
-  const filteredTasks = useFilterDayCalendarTimeTables(value, tasks);
+  const filteredSchedules = useFilterDayCalendarTimeTables(value, tasks);
 
   return (
     <DayContainer>
@@ -94,8 +89,8 @@ export const CalendarDay = () => {
           종일
         </Typography>
         <GraphItemsContainer>
-          {filteredTasks.allDaySchedules &&
-            filteredTasks.allDaySchedules.map((schedule) => {
+          {filteredSchedules.allDaySchedules &&
+            filteredSchedules.allDaySchedules.map((schedule) => {
               const startTime = new Date(schedule.startDate);
               const endTime = new Date(schedule.endDate);
 
@@ -119,14 +114,18 @@ export const CalendarDay = () => {
         </GraphItemsContainer>
       </GraphContainer>
       <DayScheduleContainer>
-        {timeslots.map((timeslot) => (
+        {filteredSchedules.daySchedules.map(({ timeslot, timeTables }) => (
           <DayScheduleItem key={timeslot}>
             <TimeSlot>
               {timeslot >= 10
                 ? `${timeslot}:00`
                 : `${String(timeslot).padStart(2, '0')}:00`}
             </TimeSlot>
-            <TimeTableList></TimeTableList>
+            <TimeTableList>
+              {timeTables?.map((timeTable) => (
+                <li key={timeTable.taskId}>{timeTable.title}</li>
+              ))}
+            </TimeTableList>
           </DayScheduleItem>
         ))}
       </DayScheduleContainer>
