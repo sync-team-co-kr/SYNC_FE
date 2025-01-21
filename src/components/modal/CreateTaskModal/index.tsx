@@ -15,7 +15,14 @@ import { useTaskActions, useTaskState } from '@libs/store/task/task';
 import StyleCreateProjectModal from '@pages/projects/components/CreateProjectModal/CreateProjectModal.style';
 import { CreateTaskPayload } from '@services/swagger/output/data-contracts';
 import { useCreateTask } from '@services/task/Task.hooks';
-import { addDays, setHours, setMinutes } from 'date-fns';
+import {
+  addDays,
+  getDay,
+  getHours,
+  setHours,
+  setMinutes,
+  subHours,
+} from 'date-fns';
 
 import ParentTaskSelectList from './ParentTaskSelectList';
 import ProjectSelectDropdown from './ProjectSelectDropdown';
@@ -33,7 +40,9 @@ import {
 // 시간 포함 여부에 따라 날짜와 시간을 합치는 함수
 function combineDateTime(date: Date): string {
   try {
-    const koreanStandardDate = addDays(date, 1);
+    const koreanStandardDate =
+      getDay(subHours(date, 9)) !== getDay(date) ? addDays(date, 1) : date;
+
     const datePart = new Date(koreanStandardDate).toISOString().split('T')[0];
     const hour = String(new Date(date).getHours()).padStart(2, '0');
     const minute = String(new Date(date).getMinutes()).padStart(2, '0');
