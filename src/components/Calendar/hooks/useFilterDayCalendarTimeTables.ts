@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 
-import getInterval from '@components/Calendar/utils/getInterval';
 import { ITask } from '@customTypes/task';
+import getInterval from '@pages/Calendars/utils/getInterval';
 import convertSharp from '@utils/date/convertSharp';
 import {
   getHours,

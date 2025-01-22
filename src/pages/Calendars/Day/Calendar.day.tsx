@@ -6,14 +6,20 @@ import { Typography } from '@components/common/Typography';
 import { EditTaskModal } from '@components/modal/EditTaskModal';
 import useModal from '@hooks/useModal';
 import { useTaskActions, useTaskState } from '@libs/store/task/task';
+import { CalendarContext } from '@pages/Calendars/Calendar.provider';
+import {
+  formatTimeIntl,
+  getGridRowStart,
+  getRowSpan,
+} from '@pages/Calendars/Calendar.utils';
+import {
+  GraphContainer,
+  GraphItemsContainer,
+} from '@pages/Calendars/styles/Calendar.style';
 import { useGetProjectIds } from '@services/project/Project.hooks';
 import { useGetTasks } from '@services/task/Task.hooks';
 import styled from 'styled-components';
 import { vars } from 'token';
-
-import { CalendarContext } from './Calendar.provider';
-import { GraphContainer, GraphItemsContainer } from './Calendar.style';
-import { formatTimeIntl, getGridRowStart, getRowSpan } from './Calendar.utils';
 
 const DayContainer = styled.div`
   display: flex;

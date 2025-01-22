@@ -1,7 +1,10 @@
 import { useContext } from 'react';
 
+import MonthGridContents from '@components/Calendar/Calendar.monthGrids';
 import { Typography } from '@components/common/Typography';
 import { useTaskState } from '@libs/store/task/task';
+import { CalendarContext } from '@pages/Calendars/Calendar.provider';
+import useFilterCalendarGraphs from '@pages/Calendars/hooks/useFilterCalendarGraphs';
 import { useGetProjectIds } from '@services/project/Project.hooks';
 import { useGetTasks } from '@services/task';
 import {
@@ -15,10 +18,6 @@ import {
 import { ko } from 'date-fns/locale';
 import styled from 'styled-components';
 import { vars } from 'token';
-
-import MonthGridContents from './Calendar.monthGrids';
-import { CalendarContext } from './Calendar.provider';
-import useFilterCalendarGraphs from './hooks/useFilterCalendarGraphs';
 
 const GridContainer = styled.div`
   display: grid;

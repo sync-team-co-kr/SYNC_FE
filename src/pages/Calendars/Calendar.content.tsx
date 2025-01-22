@@ -3,10 +3,10 @@ import { useContext } from 'react';
 import styled from 'styled-components';
 import { vars } from 'token';
 
-import { CalendarDay } from './Calendar.day';
-import { CalendarMonth } from './Calendar.month';
 import { CalendarContext } from './Calendar.provider';
-import { CalendarWeek } from './Calendar.week';
+import { CalendarDay } from './Day/Calendar.day';
+import { CalendarMonth } from './Month/Calendar.month';
+import { CalendarWeek } from './Week/Calendar.week';
 
 const ContentContainer = styled.div`
   display: flex;

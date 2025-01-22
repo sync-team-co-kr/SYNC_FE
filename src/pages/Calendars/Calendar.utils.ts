@@ -1,6 +1,6 @@
 import { addMinutes, differenceInMinutes, isSameDay, setHours } from 'date-fns';
 
-import { TaskData } from './Calendar.types';
+import { TaskData } from '@pages/Calendars/types/Calendar.types';
 
 export const returnDate = (
   date: Date,

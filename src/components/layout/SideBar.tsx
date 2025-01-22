@@ -111,7 +111,7 @@ export default function SideBar() {
             <CalendarIcon
               fill="transparent"
               stroke={
-                location.pathname === '/calendars'
+                location.pathname.includes('/calendars')
                   ? vars.sementic.color.primaryOrange
                   : vars.sementic.color.black20
               }

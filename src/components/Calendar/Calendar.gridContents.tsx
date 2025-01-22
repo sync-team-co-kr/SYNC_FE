@@ -3,12 +3,11 @@ import { TimeTable } from '@components/TimeTable/TimeTable';
 import { ICalendarDay } from '@customTypes/calendar';
 import { ITask } from '@customTypes/task';
 import { useCalendarActions } from '@libs/store/task/calendar';
+import { formatTimeIntl } from '@pages/Calendars/Calendar.utils';
+import getInterval from '@pages/Calendars/utils/getInterval';
 import convertSharp from '@utils/date/convertSharp';
 import { differenceInDays, isWithinInterval } from 'date-fns';
 import { styled } from 'styled-components';
-
-import { formatTimeIntl } from './Calendar.utils';
-import getInterval from './utils/getInterval';
 
 const GraphArea = styled.section`
   width: 100%;
