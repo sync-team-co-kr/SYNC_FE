@@ -47,6 +47,50 @@ const TimeTableList = styled.ul`
   column-gap: 10px;
 `;
 
+const TimeTableItem = styled.li`
+  padding: 4px 12px;
+  background-color: ${vars.sementic.color.lightPurple};
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+`;
+
+const TimeTableAccent = styled.div`
+  width: 6px;
+  height: 30px;
+  background-color: ${vars.sementic.color.purple};
+  border-radius: 999px;
+`;
+
+const TimeTableContent = styled.article`
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+`;
+
+const TimeTableDescription = styled.section`
+  font-size: ${vars.sementic.typography['small-text']};
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  div {
+    width: 16px;
+    height: 16px;
+    background-color: ${vars.sementic.color.black35};
+    border-radius: 4px;
+  }
+`;
+
+const TimeTableTitle = styled.h5`
+  font-size: ${vars.sementic.typography['small-text']};
+  font-weight: 700;
+`;
+
+const TimeTablePeriod = styled.p`
+  font-size: ${vars.sementic.typography['small-text']};
+`;
+
 /**
  * 시간대별로 일정을 보여주는 컴포넌트
  */
@@ -123,7 +167,17 @@ export const CalendarDay = () => {
             </TimeSlot>
             <TimeTableList>
               {timeTables?.map((timeTable) => (
-                <li key={timeTable.taskId}>{timeTable.title}</li>
+                <TimeTableItem key={timeTable.taskId}>
+                  <TimeTableAccent></TimeTableAccent>
+                  <TimeTableContent>
+                    <TimeTableDescription>
+                      <div></div>
+                      <p>{timeTable.description}</p>
+                    </TimeTableDescription>
+                    <TimeTableTitle>{timeTable.title}</TimeTableTitle>
+                    <TimeTablePeriod></TimeTablePeriod>
+                  </TimeTableContent>
+                </TimeTableItem>
               ))}
             </TimeTableList>
           </DayScheduleItem>

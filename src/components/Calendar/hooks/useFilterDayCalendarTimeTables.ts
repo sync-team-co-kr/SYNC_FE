@@ -109,9 +109,6 @@ const useFilterDayCalendarTimeTables: useFilterDayCalendarTimeTablesType = (
        * 캘린더의 날짜와 업무의 종료일과 일치하면
        * timeslot <= endDate.getHour();  <= 13
        */
-
-      console.log(schedules);
-
       const timeTablesByHours = timeslots.map((timeslot) => {
         const timeTables = schedules[1].filter((schedule) => {
           if (
