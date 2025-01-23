@@ -1,10 +1,6 @@
 import { AxiosResByData } from '@customTypes/common';
 import { RawProject } from '@customTypes/project';
 import { userApiInstance } from '@libs/axios/axios';
-import { CreateProjectRequestDto } from '@services/swagger/output/data-contracts';
-import convertBase64ToFile from '@utils/file/convertBase64ToFile';
-import getExtensionFromMimeType from '@utils/file/getExtensionFromMimeType';
-import randomUuid from '@utils/file/getRandomUuid';
 import { AxiosResponse } from 'axios';
 
 interface GetMemberIds {
@@ -200,8 +196,6 @@ export const createProject = async (newProject: Temp) => {
     const imageFile = new File([newProject.thumbnail], 'test.img', {
       type: 'image/jpeg',
     });
-
-    console.log(imageFile);
 
     formData.append('thumbnailImage', imageFile);
   } else {

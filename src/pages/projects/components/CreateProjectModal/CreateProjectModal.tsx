@@ -7,14 +7,12 @@ import InputWithCalendarArea from '@components/common/InputArea/InputWithCalenda
 import InputWithIconArea from '@components/common/InputArea/InputWithIconArea';
 import InputWithTimePicker from '@components/common/InputArea/InputWithTimePicker';
 import Toggle from '@components/common/Toggle/Toggle';
-import { RawProject } from '@customTypes/project';
 import useModal from '@hooks/useModal';
 import {
   useProjectActions,
   useProjectState,
 } from '@libs/store/project/project';
 import { useCreateProject } from '@services/project/Project.hooks';
-import { CreateProjectRequestDto } from '@services/swagger/output/data-contracts';
 import convertSharp from '@utils/date/convertSharp';
 import isStartDateExceedsEndDate from '@utils/project/validateProject';
 

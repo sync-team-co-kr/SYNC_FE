@@ -1,8 +1,6 @@
 import { RawProject } from '@customTypes/project';
 import { useToastActions } from '@libs/store/toast/toast';
-import { getLoggedUserAPI } from '@services/api';
 import { getProjectMemberIds, getUser } from '@services/member/apis';
-import { CreateProjectRequestDto } from '@services/swagger/output/data-contracts';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import {
