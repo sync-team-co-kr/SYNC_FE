@@ -7,6 +7,7 @@ import { vars } from 'token';
 interface GraphProps {
   schedule: ITask;
   gridDay: ICalendarDay;
+  onDoubleClick: () => void;
 }
 
 const setRadiusGraph = (isStart: boolean, isEnd: boolean) => {
@@ -62,9 +63,11 @@ const Graph = ({
   schedule,
   gridDay,
   moveDayCalendar,
+  onDoubleClick,
 }: GraphProps & { moveDayCalendar: () => void }) => {
   return (
     <GraphContainer
+      onDoubleClick={onDoubleClick}
       $isstart={isSameDay(gridDay.date, schedule.startDate)}
       $isend={isSameDay(gridDay.date, schedule.endDate)}
       $attribute={0}

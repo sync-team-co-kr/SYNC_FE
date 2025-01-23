@@ -14,7 +14,7 @@ import { CSSProperties } from 'styled-components';
 export interface TimeTableProps {
   title: string;
   description: string;
-  onClick?: () => void;
+  onDoubleClick?: () => void;
   startTime: string;
   endTime: string;
   images: string;

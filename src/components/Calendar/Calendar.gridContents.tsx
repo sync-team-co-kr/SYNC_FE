@@ -1,8 +1,13 @@
+import { useNavigate } from 'react-router-dom';
+
 import Graph from '@components/Graph';
 import { TimeTable } from '@components/TimeTable/TimeTable';
+import { EditTaskModal } from '@components/modal/EditTaskModal';
 import { ICalendarDay } from '@customTypes/calendar';
 import { ITask } from '@customTypes/task';
+import useModal from '@hooks/useModal';
 import { useCalendarActions } from '@libs/store/task/calendar';
+import { useTaskActions } from '@libs/store/task/task';
 import { formatTimeIntl } from '@pages/Calendars/Calendar.utils';
 import getInterval from '@pages/Calendars/utils/getInterval';
 import convertSharp from '@utils/date/convertSharp';
@@ -30,7 +35,10 @@ interface GridContentsProps {
 }
 
 const WeekGridContents = ({ schedules, tasks, gridDay }: GridContentsProps) => {
+  const navigate = useNavigate();
+  const { setTaskId } = useTaskActions();
   const { setSpecificDate } = useCalendarActions();
+  const [openModal] = useModal();
 
   const isTaskScheduleWithInInterval = (task: ITask) => {
     const start = convertSharp(new Date(task.startDate));
@@ -44,6 +52,12 @@ const WeekGridContents = ({ schedules, tasks, gridDay }: GridContentsProps) => {
 
   const moveDayCalendar = () => {
     setSpecificDate(gridDay.date);
+    navigate(`/calendars/day`);
+  };
+
+  const EditModalOpenHandler = (taskId: number) => {
+    openModal(EditTaskModal);
+    setTaskId(taskId);
   };
 
   if (!tasks) return <></>;
@@ -57,6 +71,7 @@ const WeekGridContents = ({ schedules, tasks, gridDay }: GridContentsProps) => {
               schedule={schedule}
               gridDay={gridDay}
               moveDayCalendar={moveDayCalendar}
+              onDoubleClick={() => EditModalOpenHandler(schedule.taskId)}
             />
           ) : (
             <EmptyGraph key={i}></EmptyGraph>
@@ -82,6 +97,7 @@ const WeekGridContents = ({ schedules, tasks, gridDay }: GridContentsProps) => {
             parentTaskId={0}
             moveDayCalendar={moveDayCalendar}
             images={'https://picsum.photos/200/300'}
+            onDoubleClick={() => EditModalOpenHandler(task.taskId)}
           />
         ))}
     </>

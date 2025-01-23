@@ -147,7 +147,7 @@ export const CalendarDay = () => {
               return (
                 <TimeTable
                   key={schedule.taskId}
-                  onClick={() => EditModalOpenHandler(schedule.taskId)}
+                  onDoubleClick={() => EditModalOpenHandler(schedule.taskId)}
                   variant="graph"
                   status={returnStatus(schedule.status)}
                   startTime={formatTimeIntl(startTime)}
@@ -173,7 +173,10 @@ export const CalendarDay = () => {
             </TimeSlot>
             <TimeTableList>
               {timeTables?.map((timeTable) => (
-                <TimeTableItem key={timeTable.taskId}>
+                <TimeTableItem
+                  key={timeTable.taskId}
+                  onDoubleClick={() => EditModalOpenHandler(timeTable.taskId)}
+                >
                   <TimeTableAccent></TimeTableAccent>
                   <TimeTableContent>
                     <TimeTableDescription>

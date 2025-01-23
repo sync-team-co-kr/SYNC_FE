@@ -17,7 +17,7 @@ const TimeTable = ({
   startTime,
   endTime,
   images,
-  onClick,
+  onDoubleClick,
   status,
   variant,
   gridRowStart,
@@ -34,7 +34,7 @@ const TimeTable = ({
   if (variant === 'graph') {
     return (
       <Container
-        onClick={onClick}
+        onDoubleClick={onDoubleClick}
         $percentage={returnPercentage()}
         $variant={variant}
         $status={status}
@@ -52,7 +52,7 @@ const TimeTable = ({
     <Container
       $gridRowStart={gridRowStart}
       $rowSpan={rowSpan}
-      onClick={onClick}
+      onDoubleClick={onDoubleClick}
       $percentage={100}
       $variant={variant}
       $status={status}

@@ -1,8 +1,13 @@
+import { useNavigate } from 'react-router-dom';
+
 import Graph from '@components/Graph';
 import { TimeTable } from '@components/TimeTable';
+import { EditTaskModal } from '@components/modal/EditTaskModal';
 import { ICalendarDay } from '@customTypes/calendar';
 import { ITask } from '@customTypes/task';
+import useModal from '@hooks/useModal';
 import { useCalendarActions } from '@libs/store/task/calendar';
+import { useTaskActions } from '@libs/store/task/task';
 import { formatTimeIntl } from '@pages/Calendars/Calendar.utils';
 import { differenceInDays, isWithinInterval } from 'date-fns';
 import { styled } from 'styled-components';
@@ -32,7 +37,10 @@ const MonthGridContents = ({
   tasks,
   gridDay,
 }: GridContentsProps) => {
+  const navigate = useNavigate();
+  const { setTaskId } = useTaskActions();
   const { setSpecificDate } = useCalendarActions();
+  const [openModal] = useModal();
 
   const isTaskScheduleWithInInterval = (task: ITask) => {
     const interval = {
@@ -47,6 +55,12 @@ const MonthGridContents = ({
 
   const moveDayCalendar = () => {
     setSpecificDate(gridDay.date);
+    navigate('/calendars/day');
+  };
+
+  const EditModalOpenHandler = (taskId: number) => {
+    openModal(EditTaskModal);
+    setTaskId(taskId);
   };
 
   if (!tasks) return <></>;
@@ -60,6 +74,7 @@ const MonthGridContents = ({
               schedule={schedule}
               gridDay={gridDay}
               moveDayCalendar={moveDayCalendar}
+              onDoubleClick={() => EditModalOpenHandler(schedule.taskId)}
             />
           ) : (
             <EmptyGraph key={i}></EmptyGraph>
@@ -83,6 +98,8 @@ const MonthGridContents = ({
             status={'task'}
             parentTaskId={0}
             images={'https://picsum.photos/200/300'}
+            moveDayCalendar={moveDayCalendar}
+            onDoubleClick={() => EditModalOpenHandler(task.taskId)}
           />
         ))}
     </>
