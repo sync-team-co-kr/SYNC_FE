@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import TabMenuItem from './TabMenu.types';
 
@@ -15,6 +15,7 @@ const useTabMenu: useTabMenuType = (tabMenuList) => {
     tabMenuList[0].tabMenuName,
   );
   const navigate = useNavigate();
+  const location = useLocation();
 
   const activateTabMenu = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -28,6 +29,13 @@ const useTabMenu: useTabMenuType = (tabMenuList) => {
   useEffect(() => {
     setCurrentTabMenu(activeTabMenu);
   }, [activeTabMenu]);
+
+  useEffect(() => {
+    const [matchedTabMenu] = tabMenuList.filter(
+      (tabMenuItem) => location.pathname === tabMenuItem.route,
+    );
+    if (matchedTabMenu) setActiveTabMenu(matchedTabMenu.tabMenuName);
+  }, [location.pathname]);
 
   return [currentTabMenu, activateTabMenu];
 };
