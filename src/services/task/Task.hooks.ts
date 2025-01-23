@@ -12,7 +12,7 @@ import {
   getTask,
   getTaskChildren,
   getTaskList,
-  updateTaskStatus1,
+  updateTaskStatus,
 } from './apis';
 
 interface CreateTaskParams {
@@ -32,7 +32,7 @@ interface CreateTaskParams {
 
 // 업무 리스트 가져오는 Hook
 export const useGetTasks = (projectId?: number[] | number) => {
-  const { data, isLoading, error } = useQuery({
+  const { data, isFetching, error } = useQuery({
     queryKey: Array.isArray(projectId)
       ? ['taskList', ...projectId]
       : ['task', projectId],
@@ -52,7 +52,7 @@ export const useGetTasks = (projectId?: number[] | number) => {
     enabled: !!projectId,
   });
 
-  return { tasks: data, isLoading, error };
+  return { tasks: data, isFetching, error };
 };
 
 // 업무 생성 Hook
@@ -132,6 +132,7 @@ export const useGetTaskChildren = (taskId: number) => {
 export const useUpdateTaskStatus = () => {
   const queryClient = useQueryClient();
   const { setOriginalTasks } = useDraggingTempTaskActions();
+
   const updateTaskStatusMutation = useMutation({
     mutationFn: async (willUpdateTaskParams: {
       projectId: number;
@@ -142,33 +143,42 @@ export const useUpdateTaskStatus = () => {
       const task = await getTask(taskId);
 
       const formData = new FormData();
-
+      const updateStatusTaskBlobPart = {
+        ...task,
+        taskId: task.id,
+        projectId,
+        status: editedStatus,
+      };
       const updateStatusTaskBlob = new Blob(
-        [JSON.stringify({ ...task, projectId, status: editedStatus })],
+        [JSON.stringify(updateStatusTaskBlobPart)],
         {
           type: 'application/json',
         },
       );
       formData.append('data', updateStatusTaskBlob);
 
-      await updateTaskStatus1(formData);
-      const tasksBeforeUpdated = await getTaskList(projectId);
+      const updatedStatusTask = await updateTaskStatus(formData);
+
       return {
-        tasks: tasksBeforeUpdated,
-        taskId,
+        projectId,
+        taskId: updatedStatusTask.taskId,
         editedStatus,
       };
     },
-    onSuccess: (data) => {
-      const updatedTasks = data.tasks.map((task) =>
-        task.taskId === data.taskId
-          ? { ...task, status: data.editedStatus }
-          : { ...task },
+    onMutate: async (data) => {
+      await queryClient.cancelQueries({
+        queryKey: ['task', data.projectId],
+      });
+
+      const oldTasks = await getTaskList(data.projectId);
+      const newTasks = oldTasks.map((oldTask) =>
+        oldTask.taskId === data.taskId
+          ? { ...oldTask, status: data.editedStatus }
+          : { ...oldTask },
       );
 
-      setOriginalTasks(updatedTasks);
-
-      queryClient.invalidateQueries({ queryKey: ['tasks', data.taskId] });
+      queryClient.setQueryData(['task', data.projectId], () => newTasks);
+      setOriginalTasks(newTasks);
     },
   });
 

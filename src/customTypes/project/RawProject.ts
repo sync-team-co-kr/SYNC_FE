@@ -11,7 +11,7 @@ import { IMember } from '@customTypes/member';
 export default interface RawProject {
   projectId: number;
   title: string;
-  thumbnail?: string;
+  thumbnail?: string | Blob;
   thumbnailType?: 'N' | 'I' | 'C' | 'E';
   subTitle: string;
   description: string;

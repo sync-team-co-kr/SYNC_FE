@@ -1,8 +1,9 @@
+import Thumbnail from '@components/Thumbnail/Thumbnail';
 import { Typography } from '@components/common';
 import { useTaskActions } from '@libs/store/task/task';
 import { useGetProject } from '@services/project/Project.hooks';
 
-import { DropdownItem, DropdownItemText, ImageWrapper } from './style';
+import { DropdownItem, DropdownItemText } from './style';
 
 interface ProjectDropdownItemProps {
   projectId: number;
@@ -23,7 +24,10 @@ export const ProjectDropdownItem = ({
 
   return (
     <DropdownItem onClick={handleProjectClick}>
-      <ImageWrapper></ImageWrapper>
+      <Thumbnail
+        thumbnail={project.thumbnail}
+        thumbnailType={project.thumbnailType}
+      />
       <DropdownItemText>
         <Typography variant="heading-4" color="black">
           {project.title}

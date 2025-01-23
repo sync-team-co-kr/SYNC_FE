@@ -1,10 +1,9 @@
-import * as FaIconList from 'react-icons/fa';
 import { useOutletContext } from 'react-router-dom';
 
 import projectCalendar from '@assets/calendar.svg';
 import meatballs from '@assets/meatballs.svg';
-import projectIcon from '@assets/project-icon.png';
 import { ReactComponent as CheckBox } from '@assets/projects/checkBox.svg';
+import Thumbnail from '@components/Thumbnail/Thumbnail';
 import { RawProject } from '@customTypes/project';
 import useDropdown from '@hooks/useDropdown';
 import { EmptyList } from '@pages/projects/components/EmptyList';
@@ -18,53 +17,6 @@ const MeatBalls = styled.div`
   cursor: pointer;
   position: relative;
 `;
-
-const ThumbnailWrapper = styled.div`
-  width: 28px !important;
-  height: 28px !important;
-  font-size: 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const ProjectThumbnail = ({
-  thumbnail,
-  thumbnailType,
-}: Pick<RawProject, 'thumbnail' | 'thumbnailType'>) => {
-  switch (thumbnailType) {
-    case 'E': // 이모지
-      return <ThumbnailWrapper>{thumbnail}</ThumbnailWrapper>;
-    case 'C': // 아이콘
-      return (
-        <ThumbnailWrapper>
-          {Object.entries(FaIconList)
-            .filter(([iconName]) => iconName === thumbnail)
-            .map(([iconName, Icon]) => (
-              <div key={iconName}>
-                <Icon size="24" />
-              </div>
-            ))}
-        </ThumbnailWrapper>
-      );
-    case 'I': // 이미지
-      return (
-        <img
-          src={`https://user.sync-team.co.kr:30443/node2/api/task/image?filename=/mnt/oraclevdb/project/title/${thumbnail}`}
-          alt="커스텀 이미지"
-          style={{ height: '28px', width: '28px' }}
-        />
-      );
-    default:
-      return (
-        <img
-          src={projectIcon}
-          alt="프로젝트 대표 아이콘"
-          style={{ height: '28px', width: '28px' }}
-        />
-      );
-  }
-};
 
 const ProgressGraph = styled.div<{ width: string }>`
   width: ${(props) => props.width};
@@ -125,7 +77,7 @@ const ProjectList = () => {
                 {/* 프로젝트명 */}
                 <td>
                   <StyleProjectList.ProjectTitleText>
-                    <ProjectThumbnail
+                    <Thumbnail
                       thumbnail={project.thumbnail}
                       thumbnailType={project.thumbnailType}
                     />

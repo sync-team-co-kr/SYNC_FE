@@ -1,10 +1,7 @@
-import React from 'react';
-import * as FaIconList from 'react-icons/fa';
-
 import projectCalendar from '@assets/calendar.svg';
 import meatballs from '@assets/meatballs.svg';
-import projectIcon from '@assets/project-icon.png';
 import { ReactComponent as CheckBox } from '@assets/projects/checkBox.svg';
+import Thumbnail from '@components/Thumbnail/Thumbnail';
 import { RawProject } from '@customTypes/project';
 import useDropdown from '@hooks/useDropdown';
 import ProjectSettingsDropdown from '@pages/projects/components/ProjectSettingsDropdown/ProjectSettingsDropdown';
@@ -18,15 +15,6 @@ import StyleProjectBoard from './ProjectBoardItem.style';
 const MeatBalls = styled.div`
   cursor: pointer;
   position: relative;
-`;
-
-const ThumbnailWrapper = styled.div`
-  width: 28px;
-  height: 28px;
-  font-size: 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 `;
 
 const MemberItem = styled.li`
@@ -131,37 +119,6 @@ const DescriptionFrame = styled.div`
   font-size: 14px;
 `;
 
-const ProjectThumbnail = ({
-  thumbnail,
-  thumbnailType,
-}: Pick<RawProject, 'thumbnail' | 'thumbnailType'>) => {
-  switch (thumbnailType) {
-    case 'E': // 이모지
-      return <ThumbnailWrapper>{thumbnail}</ThumbnailWrapper>;
-    case 'C': // 아이콘
-      return (
-        <ThumbnailWrapper>
-          {Object.entries(FaIconList)
-            .filter(([iconName]) => iconName === thumbnail)
-            .map(([iconName, Icon]) => (
-              <div key={iconName}>
-                <Icon size="24" />
-              </div>
-            ))}
-        </ThumbnailWrapper>
-      );
-    case 'I': // 이미지
-      return (
-        <img
-          src={`https://user.sync-team.co.kr:30443/node2/api/task/image?filename=/mnt/oraclevdb/project/title/${thumbnail}`}
-          alt="커스텀 이미지"
-        />
-      );
-    default:
-      return <img src={projectIcon} alt="프로젝트 대표 아이콘" />;
-  }
-};
-
 const ProjectBoardItem = ({ project }: { project: RawProject }) => {
   const [
     isOpenProjectDropdownMenu,
@@ -188,7 +145,7 @@ const ProjectBoardItem = ({ project }: { project: RawProject }) => {
   return (
     <StyleProjectBoard.BoardArea key={project.projectId}>
       <StyleProjectBoard.Header>
-        <ProjectThumbnail
+        <Thumbnail
           thumbnail={project.thumbnail}
           thumbnailType={project.thumbnailType}
         />
