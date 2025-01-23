@@ -1,12 +1,13 @@
 import { ICalendarDay } from '@customTypes/calendar';
 import { ITask } from '@customTypes/task';
-import { addDays, isSameDay, startOfWeek } from 'date-fns';
+import { isSameDay, startOfWeek } from 'date-fns';
 import { styled } from 'styled-components';
 import { vars } from 'token';
 
 interface GraphProps {
   schedule: ITask;
   gridDay: ICalendarDay;
+  onDoubleClick: () => void;
 }
 
 const setRadiusGraph = (isStart: boolean, isEnd: boolean) => {
@@ -44,6 +45,10 @@ const GraphContainer = styled.div<{
     color: ${vars.sementic.color.black};
     font-size: 14px;
     font-weight: 700;
+    &:hover {
+      text-decoration: underline;
+      cursor: pointer;
+    }
   }
 `;
 
@@ -54,23 +59,29 @@ const GraphAccent = styled.div<{ $isgraphstart: boolean; $attribute: number }>`
     props.$isgraphstart && setGraphAccentColor(props.$attribute)};
 `;
 
-const Graph = ({ schedule, gridDay }: GraphProps) => {
+const Graph = ({
+  schedule,
+  gridDay,
+  moveDayCalendar,
+  onDoubleClick,
+}: GraphProps & { moveDayCalendar: () => void }) => {
   return (
     <GraphContainer
-      $isstart={isSameDay(gridDay.date, addDays(schedule.startDate, 1))}
+      onDoubleClick={onDoubleClick}
+      $isstart={isSameDay(gridDay.date, schedule.startDate)}
       $isend={isSameDay(gridDay.date, schedule.endDate)}
       $attribute={0}
     >
       <GraphAccent
         $isgraphstart={
           isSameDay(startOfWeek(gridDay.date), gridDay.date) ||
-          isSameDay(gridDay.date, addDays(schedule.startDate, 1))
+          isSameDay(gridDay.date, schedule.startDate)
         }
         $attribute={0}
       ></GraphAccent>
-      <span>
+      <span onClick={moveDayCalendar}>
         {(isSameDay(startOfWeek(gridDay.date), gridDay.date) ||
-          isSameDay(gridDay.date, addDays(schedule.startDate, 1))) &&
+          isSameDay(gridDay.date, schedule.startDate)) &&
           schedule.title}
       </span>
     </GraphContainer>

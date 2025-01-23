@@ -3,10 +3,12 @@ import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
 import TaskBoardItem from '@components/Task/SpecificStatusTasks';
+import { useBreadCrumbActions } from '@libs/store/breadcrumb/breadcrumb';
 import {
   useDraggingTempTaskActions,
   useDraggingTempTaskState,
 } from '@libs/store/task/draggingTempTask';
+import { useGetProject } from '@services/project/Project.hooks';
 import { useGetTasks } from '@services/task';
 import { vars } from 'token';
 
@@ -23,14 +25,20 @@ export interface Project {
 }
 
 const TaskBoardList = () => {
-  // const [isOpen, openModal, modalRef, CreateProjectModalWrapper, closeModal] =
-  //   useModal();
-
   const { id } = useParams();
 
   const { tasks, isFetching } = useGetTasks(Number(id));
+  const { project } = useGetProject(Number(id));
   const { draggingTempTasks } = useDraggingTempTaskState();
   const { setOriginalTasks } = useDraggingTempTaskActions();
+  const { setProjectRoute } = useBreadCrumbActions();
+
+  useEffect(() => {
+    if (project) setProjectRoute(project.title);
+    return () => {
+      setProjectRoute('');
+    };
+  }, [project]);
 
   useEffect(() => {
     if (tasks) {

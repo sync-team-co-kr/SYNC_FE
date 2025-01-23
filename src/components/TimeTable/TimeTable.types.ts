@@ -14,7 +14,7 @@ import { CSSProperties } from 'styled-components';
 export interface TimeTableProps {
   title: string;
   description: string;
-  onClick?: () => void;
+  onDoubleClick?: () => void;
   startTime: string;
   endTime: string;
   images: string;
@@ -23,4 +23,5 @@ export interface TimeTableProps {
   rowSpan?: number;
   status: 'task' | 'sub' | 'quest';
   variant: 'graph' | 'timeTableMedium' | 'timeTableLarge';
+  moveDayCalendar?: () => void;
 }

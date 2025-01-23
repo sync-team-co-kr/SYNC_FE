@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { ReactComponent as ArrowBottom } from '@assets/common/arrow/arrow-bottom.svg';
 import ProjectNavigation from '@components/dropdown/ProjectNavigationDropdown';
 import { RawProject } from '@customTypes/project';
+import { useBreadCrumbActions } from '@libs/store/breadcrumb/breadcrumb';
 import { useGetProjects } from '@services/project/Project.hooks';
 import { styled } from 'styled-components';
 import { vars } from 'token';
@@ -35,11 +36,13 @@ const ProjectNavigator = styled.section`
 
 const ProjectDropdown = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { setProjectRoute } = useBreadCrumbActions();
   const { projects } = useGetProjects();
 
   const navigate = useNavigate();
 
   const handleSelectProjectNavigationItem = (project: RawProject) => {
+    setProjectRoute(project.title);
     navigate(`/projects/${project.projectId}`);
   };
 

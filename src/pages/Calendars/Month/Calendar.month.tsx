@@ -1,6 +1,12 @@
 import { useContext } from 'react';
 
+import MonthGridContents from '@components/Calendar/Calendar.monthGrids';
 import { Typography } from '@components/common/Typography';
+import { useTaskState } from '@libs/store/task/task';
+import { CalendarContext } from '@pages/Calendars/Calendar.provider';
+import useFilterCalendarGraphs from '@pages/Calendars/hooks/useFilterCalendarGraphs';
+import { useGetProjectIds } from '@services/project/Project.hooks';
+import { useGetTasks } from '@services/task';
 import {
   eachDayOfInterval,
   endOfMonth,
@@ -12,8 +18,6 @@ import {
 import { ko } from 'date-fns/locale';
 import styled from 'styled-components';
 import { vars } from 'token';
-
-import { CalendarContext } from './Calendar.provider';
 
 const GridContainer = styled.div`
   display: grid;
@@ -51,14 +55,15 @@ const GridItemHeader = styled.div`
   justify-content: space-between;
 `;
 
-const GridContent = styled.div`
+const GridContentWrap = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  padding: 0 10px;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  padding: 18px 0;
   width: 100%;
-  height: 118px;
-  overflow-y: auto;
+  height: 100%;
 `;
 
 const GridItem = styled.div`
@@ -79,6 +84,7 @@ const getCalendarDays = (date: Date) => {
 
   const calendarDays = days.map((day) => ({
     date: day,
+    formatDay: format(day, 'd E', { locale: ko }),
     dayOfWeek: format(day, 'E', { locale: ko }),
   }));
 
@@ -90,13 +96,21 @@ const getCalendarDays = (date: Date) => {
 
 export const CalendarMonth = () => {
   const { value } = useContext(CalendarContext); // 현재 날자
-
   const calendarDays = getCalendarDays(value);
 
+  const { project } = useTaskState();
+  const { projectIds } = useGetProjectIds();
+
+  const { tasks } =
+    useGetTasks(project.title !== '' ? project.projectId : projectIds) ?? {};
+
+  const calendarItems = useFilterCalendarGraphs(calendarDays, tasks);
+
+  if (!calendarItems) return <></>;
   return (
     <GridContainer>
-      {calendarDays.map((day, index) => (
-        <GridItem key={index}>
+      {calendarItems.map(({ schedules, calendarDay }, index) => (
+        <GridItem key={calendarDay.date.toString()}>
           <GridItemHeader>
             {index < 7 ? (
               <>
@@ -106,7 +120,7 @@ export const CalendarMonth = () => {
                     index % 7 === 0 || index % 7 === 6 ? 'black20' : 'black'
                   }
                 >
-                  {format(day.date, 'd')}
+                  {format(calendarDay.date, 'd')}
                 </Typography>{' '}
                 <Typography
                   variant="small-text"
@@ -114,23 +128,29 @@ export const CalendarMonth = () => {
                     index % 7 === 0 || index % 7 === 6 ? 'black20' : 'black'
                   }
                 >
-                  {day.dayOfWeek}
+                  {calendarDay.formatDay}
                 </Typography>
               </>
             ) : (
-              day && (
+              calendarDay && (
                 <Typography
                   variant="small-text"
                   color={
                     index % 7 === 0 || index % 7 === 6 ? 'black20' : 'black'
                   }
                 >
-                  {format(day.date, 'd')}
+                  {format(calendarDay.date, 'd')}
                 </Typography>
               )
             )}
           </GridItemHeader>
-          <GridContent></GridContent>
+          <GridContentWrap>
+            <MonthGridContents
+              schedules={schedules}
+              tasks={tasks}
+              gridDay={calendarDay}
+            />
+          </GridContentWrap>
         </GridItem>
       ))}
     </GridContainer>

@@ -1,20 +1,16 @@
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
+import { Outlet, useNavigate } from 'react-router-dom';
 
 import { ReactComponent as ArrowBottom } from '@assets/arrow-bottom.svg';
-import { Calendar } from '@components/Calendar';
-import { Tab } from '@components/Tabs/Tab';
-import { TabList } from '@components/Tabs/Tab.list';
-import { TabPanel, TabPanels } from '@components/Tabs/Tab.panel';
-import { Tabs } from '@components/Tabs/Tabs';
+import TabMenu from '@components/TabMenu/TabMenu';
 import { Button } from '@components/common/Button';
 import { ProjectListDropdown } from '@components/dropdown/ProjectListDropdown';
 import { useModalState } from '@hooks/useModalState';
-import {
-  useCalendarActions,
-  useCalendarState,
-} from '@libs/store/task/calendar';
+import { useBreadCrumbActions } from '@libs/store/breadcrumb/breadcrumb';
 import { useTaskState } from '@libs/store/task/task';
 import styled from 'styled-components';
+
+import { CALENDAR_TAB_MENU_LIST } from './constants/calendarTabMenuList';
 
 const CalenderContainer = styled.div`
   display: flex;
@@ -30,20 +26,30 @@ const ProjectListDropdownContainer = styled.div`
   align-items: flex-start;
   position: relative;
 `;
-export const Calendars = () => {
+
+const Calendars = () => {
   // project list dropdown
   const [
     isOpenProjectListDropdown,
     openProjectListDropdown,
     closeProjectListDropdown,
   ] = useModalState();
-
-  const { currentDate } = useCalendarState();
-  const { setCurrentDate } = useCalendarActions();
+  const { setMainRoute, setProjectRoute } = useBreadCrumbActions();
 
   const { project } = useTaskState();
 
   const projectListDropdownRef = useRef(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    setMainRoute('캘린더');
+    navigate('/calendars/day');
+
+    return () => {
+      setMainRoute('');
+      setProjectRoute('');
+    };
+  }, []);
 
   return (
     <CalenderContainer>
@@ -73,37 +79,10 @@ export const Calendars = () => {
           ref={projectListDropdownRef}
         />
       </ProjectListDropdownContainer>
-      <Tabs>
-        <TabList>
-          <Tab>일</Tab>
-          <Tab>주</Tab>
-          <Tab>월</Tab>
-        </TabList>
-
-        <TabPanels>
-          <TabPanel>
-            <Calendar
-              type="day"
-              value={currentDate}
-              setValue={setCurrentDate}
-            />
-          </TabPanel>
-          <TabPanel>
-            <Calendar
-              type="week"
-              value={currentDate}
-              setValue={setCurrentDate}
-            />
-          </TabPanel>
-          <TabPanel>
-            <Calendar
-              value={currentDate}
-              setValue={setCurrentDate}
-              type="month"
-            />
-          </TabPanel>
-        </TabPanels>
-      </Tabs>
+      <TabMenu tabMenuList={CALENDAR_TAB_MENU_LIST} />
+      <Outlet />
     </CalenderContainer>
   );
 };
+
+export default Calendars;

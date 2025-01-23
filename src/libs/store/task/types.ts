@@ -10,6 +10,7 @@ export type CalendarStore = {
 export type CalendarActions = {
   actions: {
     setCurrentDate: (button: TaskCalendarButton, type: TaskCalendar) => void;
+    setSpecificDate: (specificDate: Date) => void;
   };
 };
 

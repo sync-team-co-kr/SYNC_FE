@@ -3,6 +3,7 @@ import { vars } from 'token';
 
 export const Container = styled.div`
   display: flex;
+  padding: 24px 40px;
   justify-content: center;
   align-items: flex-start;
   width: 100%;
@@ -10,7 +11,7 @@ export const Container = styled.div`
   flex-direction: column;
 `;
 
-export const TimeContainer = styled.div`
+export const TimeContainer = styled.section`
   display: flex;
   height: 100%;
   flex-direction: row;
@@ -32,7 +33,7 @@ export const GraphItemsContainer = styled.div`
   overflow-y: auto;
 `;
 
-export const GraphContainer = styled.div`
+export const GraphContainer = styled.section`
   display: grid;
   grid-template-columns: 33px 2fr;
   column-gap: 16px;

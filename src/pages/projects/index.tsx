@@ -1,13 +1,15 @@
 import { useEffect, useState } from 'react';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 
+import TabMenu from '@components/TabMenu/TabMenu';
 import { RawProject } from '@customTypes/project';
+import { useBreadCrumbActions } from '@libs/store/breadcrumb/breadcrumb';
 import { useGetProjects } from '@services/project/Project.hooks';
 import styled from 'styled-components';
 
-import NavBar from './NavBar';
 import ProjectDropdown from './ProjectDropdown';
 import ProjectToolbar from './ProjectToolbar';
+import { PROJECT_TAB_MENU_LIST } from './constants/projectTabMenuList';
 import useDataHandler from './hook/useDataHandler';
 
 const Container = styled.div`
@@ -19,21 +21,22 @@ const Container = styled.div`
 `;
 
 const Project = () => {
-  const [currentTabMenu, setCurrentTabMenu] = useState('board');
   const { projects } = useGetProjects();
   const [projectData, setProjectData] = useState<RawProject[]>([]);
-  const navigate = useNavigate();
   const {
     searchQuery,
     searchFilteredProjects,
     getUpcomingProjects,
     getMyProjects,
   } = useDataHandler({ setProjectData });
+  const { setMainRoute } = useBreadCrumbActions();
 
-  const handleClickTabMenu = (path: string) => {
-    setCurrentTabMenu(path);
-    navigate(`/projects/${path}`);
-  };
+  useEffect(() => {
+    setMainRoute('프로젝트');
+    return () => {
+      setMainRoute('');
+    };
+  }, []);
 
   useEffect(() => {
     if (projects) {
@@ -44,10 +47,7 @@ const Project = () => {
   return (
     <Container>
       <ProjectDropdown />
-      <NavBar
-        currentTabMenu={currentTabMenu}
-        handleClickTabMenu={handleClickTabMenu}
-      />
+      <TabMenu tabMenuList={PROJECT_TAB_MENU_LIST} />
       <ProjectToolbar
         searchQuery={searchQuery}
         searchFilteredProjects={searchFilteredProjects}

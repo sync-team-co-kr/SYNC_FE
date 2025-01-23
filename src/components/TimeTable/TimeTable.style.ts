@@ -114,4 +114,13 @@ export const Container = styled.div<{
   width: ${(props) => props.$percentage}%;
   border-radius: 4px;
   align-items: center;
+  span {
+    color: ${vars.sementic.color.black};
+    font-size: 14px;
+    font-weight: 700;
+    &:hover {
+      text-decoration: underline;
+      cursor: pointer;
+    }
+  }
 `;

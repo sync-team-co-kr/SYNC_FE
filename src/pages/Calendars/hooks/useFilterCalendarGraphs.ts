@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useState } from 'react';
 
-import sortGraphs from '@components/Calendar//utils/sortGraphs';
-import filtertasksWithinWeek from '@components/Calendar/utils/filtertasksWithinWeek';
-import findTasksEachDays from '@components/Calendar/utils/findTasksEachDays';
 import { ICalendarDay } from '@customTypes/calendar';
 import { ITask } from '@customTypes/task';
+import filtertasksWithinWeek from '@pages/Calendars/utils/filtertasksWithinWeek';
+import findTasksEachDays from '@pages/Calendars/utils/findTasksEachDays';
+import sortGraphs from '@pages/Calendars/utils/sortGraphs';
 import { differenceInDays } from 'date-fns';
 
 interface ISchedule {
@@ -28,6 +28,9 @@ const useFilterCalendarGraphs: useFilterCalendarGraphsType = (
   );
 
   useEffect(() => {
+    if (calendarDays.length < 0) return;
+
+    // 함수와 반환값 이름 변경해야 함
     const aa = filtertasksWithinWeek(calendarDays, tasks);
 
     if (!aa) return;

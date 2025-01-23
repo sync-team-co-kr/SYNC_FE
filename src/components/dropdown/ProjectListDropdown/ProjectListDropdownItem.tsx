@@ -1,5 +1,6 @@
 import Thumbnail from '@components/Thumbnail/Thumbnail';
 import { Typography } from '@components/common';
+import { useBreadCrumbActions } from '@libs/store/breadcrumb/breadcrumb';
 import { useTaskActions } from '@libs/store/task/task';
 import { useGetProject } from '@services/project/Project.hooks';
 
@@ -15,11 +16,13 @@ export const ProjectDropdownItem = ({
   const { project } = useGetProject(projectId);
 
   const { setProject } = useTaskActions();
+  const { setProjectRoute } = useBreadCrumbActions();
 
   if (!project) return null;
 
   const handleProjectClick = () => {
     setProject(project);
+    setProjectRoute(project.title);
   };
 
   return (

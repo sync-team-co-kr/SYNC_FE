@@ -14,6 +14,7 @@ const filtertasksWithinWeek = (
     const isIncludededTasksWithInWeek = calendarDays.some((calendarDay) =>
       isWithinInterval(calendarDay.date, interval),
     );
+
     return isIncludededTasksWithInWeek;
   });
   return tasksWillPlaceWeekCalendar;

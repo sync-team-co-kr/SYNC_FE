@@ -1,3 +1,4 @@
+import useBreadCrumbStore from './breadcrumb/breadcrumb';
 import modalStore from './modalStore';
 import useProjectStore from './project/project';
 import useDraggingTempTaskStore from './task/draggingTempTask';
@@ -12,4 +13,5 @@ export {
   useTaskStore,
   useToastStore,
   useDraggingTempTaskStore,
+  useBreadCrumbStore,
 };

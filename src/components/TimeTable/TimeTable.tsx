@@ -17,11 +17,12 @@ const TimeTable = ({
   startTime,
   endTime,
   images,
-  onClick,
+  onDoubleClick,
   status,
   variant,
   gridRowStart,
   rowSpan,
+  moveDayCalendar,
 }: TimeTableProps) => {
   const returnPercentage = () => {
     const start = new Date(startTime).getHours();
@@ -33,7 +34,7 @@ const TimeTable = ({
   if (variant === 'graph') {
     return (
       <Container
-        onClick={onClick}
+        onDoubleClick={onDoubleClick}
         $percentage={returnPercentage()}
         $variant={variant}
         $status={status}
@@ -42,9 +43,7 @@ const TimeTable = ({
         <ImageWrapper>
           <img src={images} alt={title} />
         </ImageWrapper>
-        <Typography variant="small-text-b" color="black">
-          {title}
-        </Typography>
+        <span onClick={moveDayCalendar}>{title}</span>
       </Container>
     );
   }
@@ -53,7 +52,7 @@ const TimeTable = ({
     <Container
       $gridRowStart={gridRowStart}
       $rowSpan={rowSpan}
-      onClick={onClick}
+      onDoubleClick={onDoubleClick}
       $percentage={100}
       $variant={variant}
       $status={status}
@@ -65,9 +64,7 @@ const TimeTable = ({
             <img src={images} alt={title} />
           </ImageWrapper>
         </Row>
-        <Typography variant="small-text-b" color="black">
-          {title}
-        </Typography>
+        <span onClick={moveDayCalendar}>{title}</span>
         <Typography variant="small-text" color="black70">
           {startTime} ~ {endTime}
         </Typography>
