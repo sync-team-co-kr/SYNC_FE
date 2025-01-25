@@ -6,13 +6,13 @@ import { InputProps } from './indexArea.types';
 const InputArea = ({
   value,
   onChange,
+  labelFC,
   placeholderText,
-  labelText,
   isDisabled = false,
 }: InputProps) => {
   return (
     <SInputArea>
-      <label>{labelText}</label>
+      {labelFC}
       <input
         type="text"
         value={value}

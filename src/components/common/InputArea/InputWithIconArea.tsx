@@ -11,7 +11,7 @@ import { InputWithCoverIcon, SInputArea } from './InputArea.style';
 interface InputWithIconAreaProps {
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  labelText?: string;
+  labelFC: JSX.Element;
   placeholderText: string;
 }
 
@@ -25,7 +25,7 @@ const ProjectThumbnail = styled.div`
 const InputWithIconArea = ({
   value,
   onChange,
-  labelText,
+  labelFC,
   placeholderText,
 }: InputWithIconAreaProps) => {
   const [isOpen, toggleActiveState, dropdownRef] = useDropdown();
@@ -33,7 +33,7 @@ const InputWithIconArea = ({
 
   return (
     <SInputArea>
-      <label>{labelText}</label>
+      {labelFC}
       <InputWithCoverIcon>
         <div ref={dropdownRef}>
           {thumbnail.value ? (

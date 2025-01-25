@@ -6,6 +6,7 @@ import InputArea from '@components/common/InputArea';
 import InputWithCalendarArea from '@components/common/InputArea/InputWithCalendar';
 import InputWithIconArea from '@components/common/InputArea/InputWithIconArea';
 import InputWithTimePicker from '@components/common/InputArea/InputWithTimePicker';
+import Label from '@components/common/Label';
 import Toggle from '@components/common/Toggle/Toggle';
 import { RawProject } from '@customTypes/project';
 import useModal from '@hooks/useModal';
@@ -102,27 +103,31 @@ function ModifyProjectModal({ projectId }: ModifyProjectModalProps) {
         <InputWithIconArea
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          labelText="커버 & 프로젝트 명"
+          labelFC={
+            <Label text="커버 & 프로젝트 명" id="title" isRequired={true} />
+          }
           placeholderText="제목"
         />
 
         <InputArea
           value={subTitle}
           onChange={(e) => setSubTitle(e.target.value)}
-          labelText="부제목"
+          labelFC={<Label text="부제목" id="subTitle" isRequired={true} />}
           placeholderText="부제목"
         />
 
         <InputArea
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-          labelText="프로젝트 설명"
+          labelFC={
+            <Label text="프로젝트 설명" id="description" isRequired={true} />
+          }
           placeholderText="프로젝트 설명"
         />
 
         <StyleModifyProjectModal.InputArea>
           <StyleModifyProjectModal.ToggleArea>
-            <label>일정</label>
+            <Label text="일정" id="schedule" isRequired={false} />
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <span>시간 포함</span>
               <Toggle

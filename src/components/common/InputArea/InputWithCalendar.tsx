@@ -10,7 +10,6 @@ import { CalendarSVG, SInputWithCalendar } from './InputArea.style';
 interface InputWithCalendarAreaProps {
   value?: Date;
   setDate: (date: Date) => void;
-  labelText?: string;
   placeholderText: string;
 }
 
