@@ -22,10 +22,16 @@ import { SELECT_STATUS } from './constants';
 import {
   Avatar,
   Breadcrumb,
+  CommentContent,
+  CommentDescription,
   CommentFormLabel,
   CommentInput,
   CommentInputForm,
   CommentInputWrapper,
+  CommentItem,
+  CommentList,
+  CommentManageButtons,
+  CommenterWrap,
   Content,
   PostAutoSummationToggle,
   PostHeader,
@@ -41,8 +47,14 @@ import {
   UpdateTaskModalPostContainer,
 } from './style';
 
-// 업무 생성 모달
+const FAKE_COMMENT_LIST = [
+  {
+    commenter: '김지용',
+    content: '안녕하세요',
+  },
+];
 
+// 업무 생성 모달
 export const UpdateTaskModal = () => {
   const { closeModal } = modalStore();
 
@@ -51,35 +63,11 @@ export const UpdateTaskModal = () => {
   const { payload, errorList } = useTaskState();
 
   // 업무 생성 모달 payload 값들을 set 해주는 actions
-  const { setStatus } = useTaskActions();
+  const { setStatus, setDescription } = useTaskActions();
 
   // projectData를 가져오는 hooks
 
   const { createTaskMutate } = useCreateTask();
-  const handleCreateTask = () => {
-    if (errorList.length > 0) {
-      alert('필수 입력값을 입력해주세요');
-      return;
-    }
-    createTaskMutate(
-      {
-        data: {
-          ...payload,
-          startDate: payload.startDate?.toISOString(),
-          endDate: payload.endDate?.toISOString(),
-        },
-      },
-      {
-        onSuccess: () => {
-          alert('업무가 생성되었습니다.');
-        },
-
-        onError: (error) => {
-          alert(error);
-        },
-      },
-    );
-  };
 
   return (
     <UpdateTaskModalContainer>
@@ -112,7 +100,10 @@ export const UpdateTaskModal = () => {
                 <Toggle isActive={true} toggleSwtich={() => ({})} />
               </PostAutoSummationToggle>
             </PostHeader>
-            <Editor value="" onChangeText={(text) => ({})} />
+            <Editor
+              value={payload.description}
+              onChangeText={(text) => setDescription(text)}
+            />
           </UpdateTaskModalPostContainer>
 
           {/* 댓글 */}
@@ -129,6 +120,34 @@ export const UpdateTaskModal = () => {
                 />
               </CommentInputWrapper>
             </CommentInputForm>
+            <CommentList>
+              {FAKE_COMMENT_LIST.map((comment) => (
+                <CommentItem key={comment.commenter}>
+                  <Avatar></Avatar>
+                  <CommentContent>
+                    <CommenterWrap>
+                      <h5>{comment.commenter}</h5>
+                      <span>2분전</span>
+                    </CommenterWrap>
+                    <CommentDescription>{comment.content}</CommentDescription>
+                    <CommentManageButtons>
+                      <Button
+                        size="medium"
+                        variant="text"
+                        onClick={() => ({})}
+                        text="편집"
+                      />
+                      <Button
+                        size="medium"
+                        variant="text"
+                        onClick={() => ({})}
+                        text="삭제"
+                      />
+                    </CommentManageButtons>
+                  </CommentContent>
+                </CommentItem>
+              ))}
+            </CommentList>
           </UpdateTaskModalCommentContainer>
         </UpdateTaskModalContent>
       </Content>

@@ -64,7 +64,6 @@ export const UpdateTaskModalContent = styled.section`
 
 // 업무 내용 영역
 export const UpdateTaskModalPostContainer = styled.section`
-  height: 200px;
   display: flex;
   flex-direction: column;
   gap: 6px;
@@ -121,4 +120,45 @@ export const CommentInput = styled.input`
   border-radius: 4px;
   display: flex;
   align-items: center;
+`;
+
+export const CommentList = styled.ul`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+`;
+
+export const CommentItem = styled.li`
+  display: flex;
+  gap: 8px;
+`;
+
+export const CommentContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  justify-content: center;
+`;
+
+export const CommenterWrap = styled.article`
+  display: flex;
+  gap: 8px;
+  h5 {
+    ${vars.sementic.typography['small-text-b']}
+  }
+  span {
+    ${vars.sementic.typography['small-text']}
+  }
+`;
+
+export const CommentDescription = styled.p`
+  ${vars.sementic.typography.paragraph}
+`;
+
+export const CommentManageButtons = styled.div`
+  display: flex;
+  gap: 8px;
+  button {
+    padding: 0;
+  }
 `;
