@@ -162,3 +162,26 @@ export const CommentManageButtons = styled.div`
     padding: 0;
   }
 `;
+
+// 세부사항
+export const UpdateTaskModalDetails = styled.section`
+  width: 338px;
+  padding: 24px;
+  border: 1px solid ${vars.sementic.color.black10};
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  h4 {
+    color: ${vars.sementic.color.black70};
+    ${vars.sementic.typography['heading-4']}
+  }
+`;
+
+export const DetailsSelectWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  max-width: 338px;
+  gap: 8px;
+  position: relative;
+`;

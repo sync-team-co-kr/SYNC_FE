@@ -14,6 +14,8 @@ import { SituationProperty } from '@components/common/Tag/types';
 import Textfield from '@components/common/Textfield';
 import Toggle from '@components/common/Toggle/Toggle';
 import { Typography } from '@components/common/Typography';
+import StatusSelectDropdown from '@components/modal/CreateTaskModal/StatusSelectDropdown';
+import TaskManagerSelectDropdown from '@components/modal/CreateTaskModal/TaskManagerSelectDropdown';
 import { modalStore } from '@libs/store';
 import { useTaskActions, useTaskState } from '@libs/store/task/task';
 import { useCreateTask } from '@services/task/Task.hooks';
@@ -33,6 +35,7 @@ import {
   CommentManageButtons,
   CommenterWrap,
   Content,
+  DetailsSelectWrapper,
   PostAutoSummationToggle,
   PostHeader,
   PostLabel,
@@ -43,6 +46,7 @@ import {
   UpdateTaskModalCommentContainer,
   UpdateTaskModalContainer,
   UpdateTaskModalContent,
+  UpdateTaskModalDetails,
   UpdateTaskModalHeader,
   UpdateTaskModalPostContainer,
 } from './style';
@@ -150,6 +154,15 @@ export const UpdateTaskModal = () => {
             </CommentList>
           </UpdateTaskModalCommentContainer>
         </UpdateTaskModalContent>
+        <UpdateTaskModalDetails>
+          <h4>세부사항</h4>
+          <DetailsSelectWrapper>
+            <StatusSelectDropdown />
+          </DetailsSelectWrapper>
+          <DetailsSelectWrapper>
+            <TaskManagerSelectDropdown />
+          </DetailsSelectWrapper>
+        </UpdateTaskModalDetails>
       </Content>
       <SubmitButtonContainer></SubmitButtonContainer>
     </UpdateTaskModalContainer>
