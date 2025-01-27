@@ -1,36 +1,40 @@
-import React from 'react';
+import { useContext } from 'react';
 
 import { ReactComponent as CalendarIcon } from '@assets/calendar.svg';
 import CalendarDropdown from '@components/dropdown/CalendarDropdown';
 import useDropdown from '@hooks/useDropdown';
-import { format } from 'date-fns';
+import { getFormatDate } from '@utils/workUnit';
+import { WorkUnitScheduleContext } from 'contexts/workUnitScheduleContext';
 
 import { CalendarSVG, SInputWithCalendar } from './InputArea.style';
 
 interface InputWithCalendarAreaProps {
-  value?: Date;
-  setDate: (date: Date) => void;
+  scheduleType: 'start' | 'end';
   placeholderText: string;
 }
 
 const InputWithCalendarArea = ({
-  value,
-  setDate,
+  scheduleType,
   placeholderText,
 }: InputWithCalendarAreaProps) => {
   const [isOpenCalendarDropdown, toggleCalendarDropdown, calendarDropdownRef] =
     useDropdown();
+  const { startDate, endDate } = useContext(WorkUnitScheduleContext);
+
   return (
     <SInputWithCalendar>
       <input
         type="text"
-        value={value ? format(value, 'yyyy-MM-dd') : ''}
+        value={getFormatDate(scheduleType, startDate, endDate)}
         placeholder={placeholderText}
         readOnly
       />
       <CalendarSVG ref={calendarDropdownRef}>
         <CalendarIcon width="18" height="18" onClick={toggleCalendarDropdown} />
-        <CalendarDropdown isOpen={isOpenCalendarDropdown} setDate={setDate} />
+        <CalendarDropdown
+          isOpen={isOpenCalendarDropdown}
+          scheduleType={scheduleType}
+        />
       </CalendarSVG>
     </SInputWithCalendar>
   );

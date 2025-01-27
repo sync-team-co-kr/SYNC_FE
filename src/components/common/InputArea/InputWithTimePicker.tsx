@@ -1,9 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 
 import { ReactComponent as TimePickerIcon } from '@assets/input/time.svg';
 import TimePickerDropdown from '@components/dropdown/TimePickerDropdown';
 import useDropdown from '@hooks/useDropdown';
 import useTimePicker from '@hooks/useTimePicker';
+import { getFormatTime } from '@utils/workUnit';
+import { WorkUnitScheduleContext } from 'contexts/workUnitScheduleContext';
 import { setHours, setMinutes } from 'date-fns';
 import { styled } from 'styled-components';
 import { vars } from 'token';
@@ -29,16 +31,14 @@ const TimePickerSvg = styled.div`
 `;
 
 interface InputWithTimePickerProps {
-  date?: Date;
-  setDate: (date: Date) => void;
+  scheduleType: 'start' | 'end';
   labelText?: string;
   placeholderText: string;
   isDisabled: boolean;
 }
 
 const InputWithTimePicker = ({
-  date,
-  setDate,
+  scheduleType,
   placeholderText,
   isDisabled,
 }: InputWithTimePickerProps) => {
@@ -48,11 +48,17 @@ const InputWithTimePicker = ({
     toggleTimePickerDropdown,
     timePickerDropdownRef,
   ] = useDropdown();
+  const { startDate, endDate, setStartDate, setEndDate } = useContext(
+    WorkUnitScheduleContext,
+  );
 
   useEffect(() => {
     const { hour, minute } = pickedTime;
-    if (date) {
-      setDate(setMinutes(setHours(date, hour), minute));
+    if (scheduleType === 'start' && startDate) {
+      setStartDate(setMinutes(setHours(startDate, hour), minute));
+    }
+    if (scheduleType === 'end' && endDate) {
+      setEndDate(setMinutes(setHours(endDate, hour), minute));
     }
   }, [pickedTime.hour, pickedTime.minute]);
 
@@ -60,11 +66,7 @@ const InputWithTimePicker = ({
     <SInputWithTimePicker $isdisabled={isDisabled}>
       <input
         type="text"
-        value={
-          date
-            ? `${date.getHours().toString().padStart(2, '0')} : ${date.getMinutes().toString().padStart(2, '0')}`
-            : ''
-        }
+        value={getFormatTime(scheduleType, startDate, endDate)}
         placeholder={placeholderText}
         readOnly
         disabled={isDisabled}

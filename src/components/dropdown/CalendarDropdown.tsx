@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
 import useCalendar from '@hooks/useCalendar';
+import { WorkUnitScheduleContext } from 'contexts/workUnitScheduleContext';
 import styled from 'styled-components';
 
 const CalendarDropdownWrapper = styled.section<{ $isopen: boolean }>`
@@ -89,19 +90,25 @@ const CalendarDateItem = styled.li<{
 
 interface CalendarDropdownProps {
   isOpen: boolean;
+  scheduleType: 'start' | 'end';
   selectedDate?: Date;
-  setDate: (date: Date) => void;
 }
 
 const DAY_LIST = ['일', '월', '화', '수', '목', '금', '토'];
 
 const CalendarDropdown = ({
   isOpen,
+  scheduleType,
   selectedDate,
-  setDate,
 }: CalendarDropdownProps) => {
   const { currentDate, monthlyCalendar, moveMonth, setCalendarDate } =
     useCalendar(selectedDate);
+  const { setStartDate, setEndDate } = useContext(WorkUnitScheduleContext);
+
+  const setDate = (date: Date) => {
+    if (scheduleType === 'start') setStartDate(date);
+    if (scheduleType === 'end') setEndDate(date);
+  };
 
   return (
     <CalendarDropdownWrapper $isopen={isOpen}>

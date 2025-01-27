@@ -1,13 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 
 import CancelButton from '@assets/cancel-x.svg';
+import ScheduleRegistForm from '@components/Organism/ScheduleRegistForm';
 import { Button } from '@components/common/Button';
 import InputArea from '@components/common/InputArea';
-import InputWithCalendarArea from '@components/common/InputArea/InputWithCalendar';
 import InputWithIconArea from '@components/common/InputArea/InputWithIconArea';
-import InputWithTimePicker from '@components/common/InputArea/InputWithTimePicker';
 import Label from '@components/common/Label';
-import Toggle from '@components/common/Toggle/Toggle';
 import useModal from '@hooks/useModal';
 import {
   useProjectActions,
@@ -59,7 +57,6 @@ function CreateProjectModal() {
     clearProject,
   } = useProjectActions();
 
-  const [includeTime, setIncludeTime] = useState(false);
   const { createProjectMutate } = useCreateProject();
 
   useEffect(() => {
@@ -82,12 +79,14 @@ function CreateProjectModal() {
       endDate &&
       !isStartDateExceedsEndDate(startDate, endDate)
     ) {
-      const projectStartDate = includeTime
-        ? startDate.toISOString()
-        : convertSharp(startDate).toISOString();
-      const projectEndDate = includeTime
-        ? endDate.toISOString()
-        : convertSharp(endDate).toISOString();
+      const projectStartDate =
+        startDate.getTime() % (60 * 60 * 24) === 0
+          ? startDate.toISOString()
+          : convertSharp(startDate).toISOString();
+      const projectEndDate =
+        endDate.getTime() % (60 * 60 * 24) === 0
+          ? endDate.toISOString()
+          : convertSharp(endDate).toISOString();
 
       requestCreateProject({
         ...newProject,
@@ -139,47 +138,12 @@ function CreateProjectModal() {
         />
 
         <StyleCreateProjectModal.InputArea>
-          <StyleCreateProjectModal.ToggleArea>
-            <Label text="일정" id="schedule" isRequired={false} />
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <span>시간 포함</span>
-              <Toggle
-                isActive={includeTime}
-                toggleSwtich={() => setIncludeTime((prevState) => !prevState)}
-              />
-            </div>
-          </StyleCreateProjectModal.ToggleArea>
-
-          <StyleCreateProjectModal.InputWithCalendarArea>
-            <InputWithCalendarArea
-              value={startDate}
-              setDate={setStartDate}
-              placeholderText="프로젝트 시작 날짜"
-            />
-
-            <StyleCreateProjectModal.CrossDash></StyleCreateProjectModal.CrossDash>
-            <InputWithCalendarArea
-              value={endDate}
-              setDate={setEndDate}
-              placeholderText="프로젝트 종료 날짜"
-            />
-          </StyleCreateProjectModal.InputWithCalendarArea>
-
-          <StyleCreateProjectModal.InputWithCalendarArea>
-            <InputWithTimePicker
-              date={startDate}
-              setDate={setStartDate}
-              placeholderText="프로젝트 시작 시간"
-              isDisabled={!includeTime}
-            />
-            <StyleCreateProjectModal.CrossDash></StyleCreateProjectModal.CrossDash>
-            <InputWithTimePicker
-              date={endDate}
-              setDate={setEndDate}
-              placeholderText="프로젝트 시작 시간"
-              isDisabled={!includeTime}
-            />
-          </StyleCreateProjectModal.InputWithCalendarArea>
+          <ScheduleRegistForm
+            startDate={startDate}
+            endDate={endDate}
+            setStartDate={setStartDate}
+            setEndDate={setEndDate}
+          />
         </StyleCreateProjectModal.InputArea>
 
         <StyleCreateProjectModal.Submit>

@@ -1,14 +1,12 @@
 // 업무 생성 모달 내 form
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent } from 'react';
 
 import { ReactComponent as CloseX } from '@assets/cancel-x.svg';
 import { Editor } from '@components/Editor';
+import ScheduleRegistForm from '@components/Organism/ScheduleRegistForm';
 import { Button } from '@components/common/Button';
-import InputWithCalendarArea from '@components/common/InputArea/InputWithCalendar';
-import InputWithTimePicker from '@components/common/InputArea/InputWithTimePicker';
 import { LabelContainer } from '@components/common/Select/style';
 import Textfield from '@components/common/Textfield';
-import Toggle from '@components/common/Toggle/Toggle';
 import { Typography } from '@components/common/Typography';
 import { modalStore } from '@libs/store';
 import { useTaskActions, useTaskState } from '@libs/store/task/task';
@@ -68,8 +66,6 @@ export const CreateTaskModal = () => {
     clearErrorList,
   } = useTaskActions();
 
-  const [includeTime, setIncludeTime] = useState(false);
-
   const { createTaskMutate } = useCreateTask();
 
   const handleCloseModal = () => {
@@ -104,16 +100,18 @@ export const CreateTaskModal = () => {
     };
 
     if (payload.startDate && payload.endDate) {
-      taskData.startDate = includeTime
-        ? combineDateTime(payload.startDate!)
-        : new Date(payload.startDate!).toISOString();
+      taskData.startDate =
+        payload.startDate.getTime() % (60 * 60 * 24) === 0
+          ? combineDateTime(payload.startDate!)
+          : new Date(payload.startDate!).toISOString();
 
-      taskData.endDate = includeTime
-        ? combineDateTime(payload.endDate!)
-        : setHours(
-            setMinutes(new Date(payload.endDate!), 59),
-            23,
-          ).toISOString();
+      taskData.endDate =
+        payload.endDate.getTime() % (60 * 60 * 24) === 0
+          ? combineDateTime(payload.endDate!)
+          : setHours(
+              setMinutes(new Date(payload.endDate!), 59),
+              23,
+            ).toISOString();
     }
 
     createTaskMutate({
@@ -124,18 +122,8 @@ export const CreateTaskModal = () => {
       thumbnailImage: titleImage?.startsWith('blob') ? titleImage : '',
     });
   };
-  // date
-  const handleChangeDate = (date: Date, type: 'startDate' | 'endDate') => {
-    if (type === 'startDate') {
-      setStartDate(date);
-    }
-    if (type === 'endDate') {
-      setEndDate(date);
-    }
-  };
 
   // validate
-
   const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
 
@@ -199,49 +187,12 @@ export const CreateTaskModal = () => {
         {/* date */}
         <SectionContainer maxWidth="500px">
           <StyleCreateProjectModal.InputArea>
-            <StyleCreateProjectModal.ToggleArea>
-              <label>일정</label>
-              <div
-                style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
-              >
-                <span>시간 포함</span>
-                <Toggle
-                  isActive={includeTime}
-                  toggleSwtich={() => setIncludeTime((prevState) => !prevState)}
-                />
-              </div>
-            </StyleCreateProjectModal.ToggleArea>
-
-            <StyleCreateProjectModal.InputWithCalendarArea>
-              <InputWithCalendarArea
-                value={payload.startDate}
-                setDate={(date) => handleChangeDate(date as Date, 'startDate')}
-                placeholderText="프로젝트 시작 날짜"
-              />
-
-              <StyleCreateProjectModal.CrossDash></StyleCreateProjectModal.CrossDash>
-              <InputWithCalendarArea
-                value={payload.endDate}
-                setDate={(date) => handleChangeDate(date as Date, 'endDate')}
-                placeholderText="프로젝트 종료 날짜"
-              />
-            </StyleCreateProjectModal.InputWithCalendarArea>
-
-            <StyleCreateProjectModal.InputWithCalendarArea>
-              <InputWithTimePicker
-                date={payload.startDate}
-                setDate={setStartDate}
-                placeholderText="프로젝트 시작 시간"
-                isDisabled={!includeTime}
-              />
-              <StyleCreateProjectModal.CrossDash></StyleCreateProjectModal.CrossDash>
-              <InputWithTimePicker
-                date={payload.endDate}
-                setDate={setEndDate}
-                placeholderText="프로젝트 종료 시간"
-                isDisabled={!includeTime}
-              />
-            </StyleCreateProjectModal.InputWithCalendarArea>
+            <ScheduleRegistForm
+              startDate={payload.startDate}
+              endDate={payload.endDate}
+              setStartDate={setStartDate}
+              setEndDate={setEndDate}
+            />
           </StyleCreateProjectModal.InputArea>
         </SectionContainer>
         {/* date end */}
