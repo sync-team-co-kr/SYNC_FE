@@ -29,7 +29,7 @@ const InputWithIconArea = ({
   placeholderText,
 }: InputWithIconAreaProps) => {
   const [isOpen, toggleActiveState, dropdownRef] = useDropdown();
-  const { thumbnail } = useProjectState();
+  const { payload: {thumbnail} } = useProjectState();
 
   return (
     <SInputArea>

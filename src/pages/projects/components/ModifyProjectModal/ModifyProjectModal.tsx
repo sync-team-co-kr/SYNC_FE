@@ -28,8 +28,9 @@ function ModifyProjectModal({ projectId }: ModifyProjectModalProps) {
   const { project, isLoading } = useGetProject(projectId);
   const { editProjectMutate } = useEditProject();
 
-  const { title, thumbnail, subTitle, description, startDate, endDate } =
-    useProjectState();
+  const {
+    payload: { title, thumbnail, subTitle, description, startDate, endDate },
+  } = useProjectState();
   const {
     setProject,
     setTitle,

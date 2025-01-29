@@ -1,9 +1,8 @@
-import { useState } from 'react';
-
 import InputWithCalendarArea from '@components/common/InputArea/InputWithCalendar';
 import InputWithTimePicker from '@components/common/InputArea/InputWithTimePicker';
 import Label from '@components/common/Label';
 import Toggle from '@components/common/Toggle/Toggle';
+import useChangeDateIncludeTimeToggle from '@hooks/useChangeDateIncludeTimeToggle';
 import { WorkUnitScheduleProvider } from 'contexts/workUnitScheduleContext';
 
 import { CrossDash, ScheduleRegistrationWrapper, ToggleArea } from './style';
@@ -16,7 +15,12 @@ interface ScheduleRegistFormProps {
 }
 
 const ScheduleRegistForm = (props: ScheduleRegistFormProps) => {
-  const [includeTime, setIncludeTime] = useState(false);
+  const [includeTime, setIncludeTime] = useChangeDateIncludeTimeToggle({
+    startDate: props.startDate,
+    endDate: props.endDate,
+    setStartDate: props.setStartDate,
+    setEndDate: props.setEndDate,
+  });
 
   return (
     <WorkUnitScheduleProvider {...props}>
