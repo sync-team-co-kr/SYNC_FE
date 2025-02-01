@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 
 import { ReactComponent as CalendarIcon } from '@assets/calendar.svg';
-import CalendarDropdown from '@components/dropdown/CalendarDropdown';
+import CalendarDropdown from '@components/Organism/CalendarDropdown';
 import useDropdown from '@hooks/useDropdown';
 import { getFormatDate } from '@utils/workUnit';
 import { WorkUnitScheduleContext } from 'contexts/workUnitScheduleContext';
@@ -21,6 +21,12 @@ const InputWithCalendarArea = ({
     useDropdown();
   const { startDate, endDate } = useContext(WorkUnitScheduleContext);
 
+  const setSelectedDate = () => {
+    if (scheduleType === 'start') return startDate;
+    if (scheduleType === 'end') return endDate;
+    return undefined;
+  };
+
   return (
     <SInputWithCalendar>
       <input
@@ -34,6 +40,7 @@ const InputWithCalendarArea = ({
         <CalendarDropdown
           isOpen={isOpenCalendarDropdown}
           scheduleType={scheduleType}
+          selectedDate={setSelectedDate()}
         />
       </CalendarSVG>
     </SInputWithCalendar>

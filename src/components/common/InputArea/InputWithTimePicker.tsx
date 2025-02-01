@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 
 import { ReactComponent as TimePickerIcon } from '@assets/input/time.svg';
-import TimePickerDropdown from '@components/dropdown/TimePickerDropdown';
+import TimePickerDropdown from '@components/Organism/TimePickerDropdown';
 import useDropdown from '@hooks/useDropdown';
 import useTimePicker from '@hooks/useTimePicker';
 import { getFormatTime } from '@utils/workUnit';
