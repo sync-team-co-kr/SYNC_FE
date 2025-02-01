@@ -10,7 +10,7 @@ import Textfield from '@components/common/Textfield';
 import { Typography } from '@components/common/Typography';
 import { modalStore } from '@libs/store';
 import { useTaskActions, useTaskState } from '@libs/store/task/task';
-import StyleCreateProjectModal from '@pages/projects/components/CreateProjectModal/CreateProjectModal.style';
+import { InputWrapper } from '@pages/projects/components/CreateProjectModal/styles';
 import { CreateTaskPayload } from '@services/swagger/output/data-contracts';
 import { useCreateTask } from '@services/task/Task.hooks';
 import { addDays, getDay, setHours, setMinutes, subHours } from 'date-fns';
@@ -186,14 +186,14 @@ export const CreateTaskModal = () => {
 
         {/* date */}
         <SectionContainer maxWidth="500px">
-          <StyleCreateProjectModal.InputArea>
+          <InputWrapper>
             <ScheduleRegistForm
               startDate={payload.startDate}
               endDate={payload.endDate}
               setStartDate={setStartDate}
               setEndDate={setEndDate}
             />
-          </StyleCreateProjectModal.InputArea>
+          </InputWrapper>
         </SectionContainer>
         {/* date end */}
 

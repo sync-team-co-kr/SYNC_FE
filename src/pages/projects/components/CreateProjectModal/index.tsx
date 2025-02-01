@@ -14,7 +14,12 @@ import {
 import { useCreateProject } from '@services/project/Project.hooks';
 import isStartDateExceedsEndDate from '@utils/project/validateProject';
 
-import StyleCreateProjectModal from './CreateProjectModal.style';
+import {
+  CreateProjectModalForm,
+  CreateProjectModalHeader,
+  InputWrapper,
+  SubmitWrapper,
+} from './styles';
 
 function CreateProjectModal() {
   const [closeModal] = useModal();
@@ -47,14 +52,14 @@ function CreateProjectModal() {
 
   return (
     <>
-      <StyleCreateProjectModal.Header>
+      <CreateProjectModalHeader>
         <h1>프로젝트 추가</h1>
         <button>
           <img src={CancelButton} alt="닫기" />
         </button>
-      </StyleCreateProjectModal.Header>
+      </CreateProjectModalHeader>
 
-      <StyleCreateProjectModal.Form>
+      <CreateProjectModalForm>
         <InputWithIconArea
           value={title}
           onChange={(e) => setTitle(e.target.value)}
@@ -80,16 +85,16 @@ function CreateProjectModal() {
           placeholderText="프로젝트 설명"
         />
 
-        <StyleCreateProjectModal.InputArea>
+        <InputWrapper>
           <ScheduleRegistForm
             startDate={startDate}
             endDate={endDate}
             setStartDate={setStartDate}
             setEndDate={setEndDate}
           />
-        </StyleCreateProjectModal.InputArea>
+        </InputWrapper>
 
-        <StyleCreateProjectModal.Submit>
+        <SubmitWrapper>
           <Button
             size="medium"
             variant="text"
@@ -104,8 +109,8 @@ function CreateProjectModal() {
             onClick={handleCreateProject}
             text="완료"
           />
-        </StyleCreateProjectModal.Submit>
-      </StyleCreateProjectModal.Form>
+        </SubmitWrapper>
+      </CreateProjectModalForm>
     </>
   );
 }

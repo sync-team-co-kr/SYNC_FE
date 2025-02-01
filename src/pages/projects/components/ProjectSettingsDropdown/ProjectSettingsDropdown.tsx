@@ -8,7 +8,7 @@ import {
 import DropdownItem from '@components/dropdown/DropdownItem';
 import useModal from '@hooks/useModal';
 import DeleteProjectModal from '@pages/projects/components/DeleteProjectModal/DeleteProjectModal';
-import ModifyProjectModal from '@pages/projects/components/ModifyProjectModal/ModifyProjectModal';
+import ModifyProjectModal from '@pages/projects/components/ModifyProjectModal';
 
 interface ProjectSettingsDropdownProps {
   isOpen: boolean;

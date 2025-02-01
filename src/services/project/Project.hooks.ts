@@ -110,7 +110,16 @@ export const useEditProject = () => {
   const { setToastMessage } = useToastActions();
 
   const editProjectMutation = useMutation({
-    mutationFn: (project: Omit<RawProject, 'members'>) => editProject(project),
+    mutationFn: (project: Temp & { projectId: number }) => {
+      const editProjectPayload = {
+        ...project,
+        startDate: project.startDate?.toISOString(),
+        endDate: project.endDate?.toISOString(),
+        thumbnailType: project.thumbnail.type,
+        thumbnail: project.thumbnail.value,
+      };
+      return editProject(editProjectPayload);
+    },
     onMutate: async (willUpdateProject) => {
       await queryClient.cancelQueries({
         queryKey: ['projects'],

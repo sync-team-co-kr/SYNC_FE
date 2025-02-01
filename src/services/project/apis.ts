@@ -227,7 +227,7 @@ export const createProject = async (newProject: Temp) => {
  * }
  */
 
-export const editProject = async (project: Omit<RawProject, 'members'>) => {
+export const editProject = async (project: Temp & { projectId: number }) => {
   const formData = new FormData();
   const blobTypeProject = new Blob([JSON.stringify(project)], {
     type: 'application/json',

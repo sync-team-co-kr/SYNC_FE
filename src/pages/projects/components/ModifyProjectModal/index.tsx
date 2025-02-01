@@ -6,17 +6,19 @@ import { Button } from '@components/common/Button';
 import InputArea from '@components/common/InputArea';
 import InputWithIconArea from '@components/common/InputArea/InputWithIconArea';
 import Label from '@components/common/Label';
-import { RawProject } from '@customTypes/project';
 import useModal from '@hooks/useModal';
 import {
   useProjectActions,
   useProjectState,
 } from '@libs/store/project/project';
+import {
+  CreateProjectModalForm,
+  CreateProjectModalHeader,
+  InputWrapper,
+  SubmitWrapper,
+} from '@pages/projects/components/CreateProjectModal/styles';
 import { useEditProject, useGetProject } from '@services/project/Project.hooks';
-import convertSharp from '@utils/date/convertSharp';
 import isStartDateExceedsEndDate from '@utils/project/validateProject';
-
-import StyleModifyProjectModal from './ModifyProjectModal.style';
 
 interface ModifyProjectModalProps {
   projectId: number;
@@ -29,7 +31,8 @@ function ModifyProjectModal({ projectId }: ModifyProjectModalProps) {
   const { editProjectMutate } = useEditProject();
 
   const {
-    payload: { title, thumbnail, subTitle, description, startDate, endDate },
+    payload,
+    payload: { title, subTitle, description, startDate, endDate },
   } = useProjectState();
   const {
     setProject,
@@ -48,58 +51,24 @@ function ModifyProjectModal({ projectId }: ModifyProjectModalProps) {
     }
   }, [isLoading]);
 
-  const requestModifyProject = (editedProject: Omit<RawProject, 'members'>) => {
-    editProjectMutate(editedProject);
-  };
-
   const handleModifyProject = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    const editedProject = {
-      projectId,
-      title,
-      thumbnail,
-      subTitle,
-      description,
-    };
-    if (
-      startDate &&
-      endDate &&
-      !isStartDateExceedsEndDate(startDate, endDate)
-    ) {
-      const projectStartDate =
-        startDate.getTime() % (60 * 60 * 24) === 0
-          ? startDate.toISOString()
-          : convertSharp(startDate).toISOString();
-      const projectEndDate =
-        endDate.getTime() % (60 * 60 * 24) === 0
-          ? endDate.toISOString()
-          : convertSharp(endDate).toISOString();
-
-      requestModifyProject({
-        ...editedProject,
-        startDate: projectStartDate,
-        endDate: projectEndDate,
-        thumbnail: thumbnail.value,
-        thumbnailType: thumbnail.type,
-      });
+    if (!isStartDateExceedsEndDate(startDate, endDate)) {
+      editProjectMutate({ ...payload, projectId });
     }
-    /*
-    프로젝트 기간이 required인 이슈가 해결될 때
-    기간이 빠진 editedProject를 서버에 보내는 함수 작성 예정
-    */
   };
 
   if (isLoading) return <></>;
   return (
     <>
-      <StyleModifyProjectModal.Header>
+      <CreateProjectModalHeader>
         <h1>프로젝트 설정</h1>
         <button>
           <img src={CancelButton} alt="닫기" />
         </button>
-      </StyleModifyProjectModal.Header>
+      </CreateProjectModalHeader>
 
-      <StyleModifyProjectModal.Form>
+      <CreateProjectModalForm>
         <InputWithIconArea
           value={title}
           onChange={(e) => setTitle(e.target.value)}
@@ -125,16 +94,16 @@ function ModifyProjectModal({ projectId }: ModifyProjectModalProps) {
           placeholderText="프로젝트 설명"
         />
 
-        <StyleModifyProjectModal.InputArea>
+        <InputWrapper>
           <ScheduleRegistForm
             startDate={startDate}
             endDate={endDate}
             setStartDate={setStartDate}
             setEndDate={setEndDate}
           />
-        </StyleModifyProjectModal.InputArea>
+        </InputWrapper>
 
-        <StyleModifyProjectModal.Submit>
+        <SubmitWrapper>
           <Button
             size="medium"
             variant="text"
@@ -149,8 +118,8 @@ function ModifyProjectModal({ projectId }: ModifyProjectModalProps) {
             onClick={handleModifyProject}
             text="완료"
           />
-        </StyleModifyProjectModal.Submit>
-      </StyleModifyProjectModal.Form>
+        </SubmitWrapper>
+      </CreateProjectModalForm>
     </>
   );
 }

@@ -2,7 +2,7 @@ import { useOutletContext } from 'react-router-dom';
 
 import { RawProject } from '@customTypes/project';
 import { EmptyList } from '@pages/projects/components/EmptyList';
-import ProjectBoardItem from '@pages/projects/components/ProjectBoardItem/ProjectBoardItem';
+import ProjectBoardItem from '@pages/projects/components/ProjectBoardItem';
 
 import StyleProjectBoards from './ProjectBoards.style';
 
