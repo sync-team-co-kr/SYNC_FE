@@ -1,5 +1,5 @@
 import { IMember } from '@customTypes/member';
-import { IProject, RawProject } from '@customTypes/project';
+import { ProjectPayload, RawProject } from '@customTypes/project';
 import { create } from 'zustand';
 
 interface ProjectActions {
@@ -19,76 +19,104 @@ interface ProjectActions {
   };
 }
 
-const initialState: IProject = {
+interface ProjectState {
+  projectId: number;
+  payload: ProjectPayload;
+  members: IMember[];
+}
+
+const initialState: ProjectState = {
   projectId: 0,
-  title: '',
-  thumbnail: {
-    type: 'N',
-    value: '',
+  payload: {
+    title: '',
+    thumbnail: {
+      type: 'N',
+      value: '',
+    },
+    subTitle: '',
+    description: '',
+    startDate: undefined,
+    endDate: undefined,
   },
-  subTitle: '',
-  description: '',
-  startDate: undefined,
-  endDate: undefined,
   members: [],
 };
 
-const useProjectStore = create<IProject & ProjectActions>((set) => ({
+const useProjectStore = create<ProjectState & ProjectActions>((set) => ({
   ...initialState,
   actions: {
-    setProject: (project) => {
-      set(() => ({
-        ...project,
-        startDate: project.startDate ? new Date(project.startDate) : undefined,
-        endDate: project.endDate ? new Date(project.endDate) : undefined,
-        thumbnail: project.thumbnail
-          ? {
-              type: 'E',
-              value: project.thumbnail,
-            }
-          : {
-              type: 'N',
-              value: '',
-            },
+    setProject: ({ projectId, ...projectPayload }) => {
+      set((state) => ({
+        ...state,
+        projectId,
+        payload: {
+          ...projectPayload,
+          startDate: projectPayload.startDate
+            ? new Date(projectPayload.startDate)
+            : undefined,
+          endDate: projectPayload.endDate
+            ? new Date(projectPayload.endDate)
+            : undefined,
+          thumbnail: projectPayload.thumbnail
+            ? {
+                type: 'E',
+                value: projectPayload.thumbnail,
+              }
+            : {
+                type: 'N',
+                value: '',
+              },
+        },
       }));
     },
     setTitle: (title) => {
       set((state) => ({
-        ...state,
-        title,
+        payload: {
+          ...state.payload,
+          title,
+        },
       }));
     },
     setThumbnail: (thumbnailType, thumbnail) => {
       set((state) => ({
-        ...state,
-        thumbnail: {
-          type: thumbnailType,
-          value: thumbnail,
+        payload: {
+          ...state.payload,
+          thumbnail: {
+            type: thumbnailType,
+            value: thumbnail,
+          },
         },
       }));
     },
     setSubTitle: (subTitle) => {
       set((state) => ({
-        ...state,
-        subTitle,
+        payload: {
+          ...state.payload,
+          subTitle,
+        },
       }));
     },
     setDescription: (description) => {
       set((state) => ({
-        ...state,
-        description,
+        payload: {
+          ...state.payload,
+          description,
+        },
       }));
     },
     setStartDate: (date) => {
       set((state) => ({
-        ...state,
-        startDate: date,
+        payload: {
+          ...state.payload,
+          startDate: date,
+        },
       }));
     },
     setEndDate: (date) => {
       set((state) => ({
-        ...state,
-        endDate: date,
+        payload: {
+          ...state.payload,
+          endDate: date,
+        },
       }));
     },
     setMembers: (members) => {

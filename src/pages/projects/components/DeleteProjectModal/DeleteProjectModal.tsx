@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 import { Button } from '@components/common/Button';
 import InputArea from '@components/common/InputArea';
+import Label from '@components/common/Label';
 import {
   useDeleteProject,
   useGetProject,
@@ -42,14 +43,16 @@ const DeleteProjectModal = ({ projectId }: DeleteProjectModalProps) => {
         <InputArea
           value={project?.title || ''}
           isDisabled={true}
-          labelText="프로젝트 명"
+          labelFC={<Label text="프로젝트 명" id="title" isRequired={false} />}
           placeholderText="프로젝트 명"
         />
 
         <InputArea
           value={retypeProjectTitle}
           onChange={(e) => setRetypeProjectTitle(e.target.value)}
-          labelText="프로젝트 재입력"
+          labelFC={
+            <Label text="프로젝트 재입력" id="retypeTitle" isRequired={true} />
+          }
           placeholderText="프로젝트 명을 그대로 입력해 주세요."
         />
 

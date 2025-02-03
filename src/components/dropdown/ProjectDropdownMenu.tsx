@@ -3,7 +3,7 @@ import trashcan from '@assets/trashcan.svg';
 import withdraw from '@assets/withdraw.svg';
 import useModal from '@hooks/useModal';
 import DeleteProjectModal from '@pages/projects/components/DeleteProjectModal/DeleteProjectModal';
-import ModifyProjectModal from '@pages/projects/components/ModifyProjectModal/ModifyProjectModal';
+import ModifyProjectModal from '@pages/projects/components/ModifyProjectModal';
 import styled from 'styled-components';
 
 const Wrapper = styled.section<{ $isopen: boolean }>`
