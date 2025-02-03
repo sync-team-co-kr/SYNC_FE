@@ -29,6 +29,7 @@ const useChangeDateIncludeTimeToggle: useChangeDateIncludeTimeToggleType = ({
     endDate: undefined,
   });
 
+  // 마운트 시 includeTime 토글의 초기 상태 할당
   useEffect(() => {
     setIncludeTime(
       !!startDate?.getHours() ||
@@ -41,30 +42,29 @@ const useChangeDateIncludeTimeToggle: useChangeDateIncludeTimeToggleType = ({
   const handleIncludeTimeToggle = () => {
     setIncludeTime((prevState) => !prevState);
     const includeTimeState = !includeTime;
-    if (startDate && endDate) {
-      // includeTime이 활성화되지 않았을 때
-      if (!includeTimeState) {
-        console.log(scheduleRef);
-        scheduleRef.current = {
-          startDate,
-          endDate,
-        };
-        setStartDate(convertSharp(startDate));
-        setEndDate(convertSharp(endDate));
-      }
-      // includeTime이 활성화 되었을 때
-      else if (scheduleRef.current.startDate && scheduleRef.current.endDate) {
-        if (isSameDay(startDate, scheduleRef.current.startDate)) {
-          setStartDate(scheduleRef.current.startDate);
-        } else {
-          setStartDate(startDate);
-        }
-        if (isSameDay(endDate, scheduleRef.current.endDate)) {
-          setEndDate(scheduleRef.current.endDate);
-        } else {
-          setEndDate(endDate);
-        }
-      }
+    if (!(startDate && endDate)) return;
+
+    // includeTime이 활성화되지 않았을 때
+    if (!includeTimeState) {
+      scheduleRef.current = {
+        startDate,
+        endDate,
+      };
+      setStartDate(convertSharp(startDate));
+      setEndDate(convertSharp(endDate));
+    }
+    // includeTime이 활성화 되었을 때
+    else if (scheduleRef.current.startDate && scheduleRef.current.endDate) {
+      setStartDate(
+        isSameDay(startDate, scheduleRef.current.startDate)
+          ? scheduleRef.current.startDate
+          : startDate,
+      );
+      setEndDate(
+        isSameDay(endDate, scheduleRef.current.endDate)
+          ? scheduleRef.current.endDate
+          : endDate,
+      );
     }
   };
 
