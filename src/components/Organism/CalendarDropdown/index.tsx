@@ -62,6 +62,7 @@ const CalendarDropdown = ({
           ))}
           {monthlyCalendar?.map((calendarDate) => (
             <CalendarDateItem
+              key={calendarDate.id}
               calendarDate={calendarDate}
               isCurrentDate={currentDate.getDate() === calendarDate.value}
               onClick={handleClickCalendarDateItem}

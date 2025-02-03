@@ -45,7 +45,8 @@ const useProjectStore = create<ProjectState & ProjectActions>((set) => ({
   ...initialState,
   actions: {
     setProject: ({ projectId, ...projectPayload }) => {
-      set(() => ({
+      set((state) => ({
+        ...state,
         projectId,
         payload: {
           ...projectPayload,

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import { useContext } from 'react';
 
 import { ReactComponent as TimePickerIcon } from '@assets/input/time.svg';
 import TimePickerDropdown from '@components/Organism/TimePickerDropdown';
@@ -6,7 +6,6 @@ import useDropdown from '@hooks/useDropdown';
 import useTimePicker from '@hooks/useTimePicker';
 import { getFormatTime } from '@utils/workUnit';
 import { WorkUnitScheduleContext } from 'contexts/workUnitScheduleContext';
-import { setHours, setMinutes } from 'date-fns';
 import { styled } from 'styled-components';
 import { vars } from 'token';
 
@@ -42,25 +41,16 @@ const InputWithTimePicker = ({
   placeholderText,
   isDisabled,
 }: InputWithTimePickerProps) => {
-  const { pickedTime, setPickedTime } = useTimePicker();
   const [
     isOpenTimePickerDropdown,
     toggleTimePickerDropdown,
     timePickerDropdownRef,
   ] = useDropdown();
-  const { startDate, endDate, setStartDate, setEndDate } = useContext(
-    WorkUnitScheduleContext,
+  const { startDate, endDate } = useContext(WorkUnitScheduleContext);
+  const { pickedTime, handleClickTimePickerElement } = useTimePicker(
+    scheduleType,
+    scheduleType === 'start' ? startDate : endDate,
   );
-
-  useEffect(() => {
-    const { hour, minute } = pickedTime;
-    if (scheduleType === 'start' && startDate) {
-      setStartDate(setMinutes(setHours(startDate, hour), minute));
-    }
-    if (scheduleType === 'end' && endDate) {
-      setEndDate(setMinutes(setHours(endDate, hour), minute));
-    }
-  }, [pickedTime.hour, pickedTime.minute]);
 
   return (
     <SInputWithTimePicker $isdisabled={isDisabled}>
@@ -80,10 +70,8 @@ const InputWithTimePicker = ({
       </TimePickerSvg>
       <TimePickerDropdown
         isOpen={isOpenTimePickerDropdown}
-        usePickedTimeState={{
-          state: pickedTime,
-          setState: setPickedTime,
-        }}
+        value={pickedTime}
+        onClick={handleClickTimePickerElement}
       />
     </SInputWithTimePicker>
   );

@@ -15,7 +15,7 @@ interface ScheduleRegistFormProps {
 }
 
 const ScheduleRegistForm = (props: ScheduleRegistFormProps) => {
-  const [includeTime, setIncludeTime] = useChangeDateIncludeTimeToggle({
+  const [includeTime, toggleswitch] = useChangeDateIncludeTimeToggle({
     startDate: props.startDate,
     endDate: props.endDate,
     setStartDate: props.setStartDate,
@@ -28,10 +28,7 @@ const ScheduleRegistForm = (props: ScheduleRegistFormProps) => {
         <Label text="일정" id="schedule" isRequired={false} />
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           <span>시간 포함</span>
-          <Toggle
-            isActive={includeTime}
-            toggleSwtich={() => setIncludeTime((prevState) => !prevState)}
-          />
+          <Toggle isActive={includeTime} toggleSwtich={toggleswitch} />
         </div>
       </ToggleArea>
 

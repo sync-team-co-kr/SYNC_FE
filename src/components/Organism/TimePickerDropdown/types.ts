@@ -2,8 +2,13 @@ import { IPickedTime } from '@hooks/useTimePicker';
 
 export interface TimePickerDropdownProps {
   isOpen: boolean;
-  usePickedTimeState: {
-    state: IPickedTime;
-    setState: React.Dispatch<React.SetStateAction<IPickedTime>>;
+  value: {
+    hour: number;
+    minute: number;
   };
+  onClick: (
+    e: React.MouseEvent<HTMLLIElement>,
+    type: 'minute' | 'hour',
+    value: number,
+  ) => void;
 }

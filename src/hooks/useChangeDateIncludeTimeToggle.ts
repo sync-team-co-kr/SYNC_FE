@@ -1,6 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import convertSharp from '@utils/date/convertSharp';
+import { isSameDay } from 'date-fns';
 
 interface useChangeDateIncludeTimeToggleProps {
   startDate?: Date;
@@ -14,10 +15,7 @@ type useChangeDateIncludeTimeToggleType = ({
   endDate,
   setStartDate,
   setEndDate,
-}: useChangeDateIncludeTimeToggleProps) => [
-  boolean,
-  React.Dispatch<React.SetStateAction<boolean>>,
-];
+}: useChangeDateIncludeTimeToggleProps) => [boolean, () => void];
 
 const useChangeDateIncludeTimeToggle: useChangeDateIncludeTimeToggleType = ({
   startDate,
@@ -32,8 +30,20 @@ const useChangeDateIncludeTimeToggle: useChangeDateIncludeTimeToggleType = ({
   });
 
   useEffect(() => {
+    setIncludeTime(
+      !!startDate?.getHours() ||
+        !!startDate?.getMinutes() ||
+        !!endDate?.getHours() ||
+        !!endDate?.getMinutes(),
+    );
+  }, []);
+
+  const handleIncludeTimeToggle = () => {
+    setIncludeTime((prevState) => !prevState);
+    const includeTimeState = !includeTime;
     if (startDate && endDate) {
-      if (!includeTime) {
+      // includeTime이 활성화되지 않았을 때
+      if (!includeTimeState) {
         console.log(scheduleRef);
         scheduleRef.current = {
           startDate,
@@ -41,14 +51,24 @@ const useChangeDateIncludeTimeToggle: useChangeDateIncludeTimeToggleType = ({
         };
         setStartDate(convertSharp(startDate));
         setEndDate(convertSharp(endDate));
-      } else if (scheduleRef.current.startDate && scheduleRef.current.endDate) {
-        setStartDate(scheduleRef.current.startDate);
-        setEndDate(scheduleRef.current.endDate);
+      }
+      // includeTime이 활성화 되었을 때
+      else if (scheduleRef.current.startDate && scheduleRef.current.endDate) {
+        if (isSameDay(startDate, scheduleRef.current.startDate)) {
+          setStartDate(scheduleRef.current.startDate);
+        } else {
+          setStartDate(startDate);
+        }
+        if (isSameDay(startDate, scheduleRef.current.startDate)) {
+          setEndDate(scheduleRef.current.endDate);
+        } else {
+          setEndDate(endDate);
+        }
       }
     }
-  }, [includeTime]);
+  };
 
-  return [includeTime, setIncludeTime];
+  return [includeTime, handleIncludeTimeToggle];
 };
 
 export default useChangeDateIncludeTimeToggle;

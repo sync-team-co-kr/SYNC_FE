@@ -49,7 +49,7 @@ function ModifyProjectModal({ projectId }: ModifyProjectModalProps) {
         ...project,
       });
     }
-  }, [isLoading]);
+  }, [isLoading, project]);
 
   const handleModifyProject = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();

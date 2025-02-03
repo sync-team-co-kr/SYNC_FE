@@ -5,10 +5,10 @@ import { TimePickerDropdownProps } from './types';
 
 const TimePickerDropdown = ({
   isOpen,
-  usePickedTimeState,
+  value,
+  onClick,
 }: TimePickerDropdownProps) => {
   const { wheelTimePicker, hourPickList, minutePickList } = useTimePicker();
-  const { state, setState } = usePickedTimeState;
 
   return (
     <CalendarDropdownWrapper $isopen={isOpen}>
@@ -16,13 +16,8 @@ const TimePickerDropdown = ({
         {hourPickList.map((hour) => (
           <PickerElement
             key={hour}
-            onClick={() =>
-              setState((prevState) => ({
-                ...prevState,
-                hour,
-              }))
-            }
-            $hasCurrent={hour === state.hour}
+            onClick={(e) => onClick(e, 'hour', hour)}
+            $hasCurrent={hour === value.hour}
           >
             {hour.toString().padStart(2, '0')}
           </PickerElement>
@@ -32,8 +27,8 @@ const TimePickerDropdown = ({
         {minutePickList.map((minute) => (
           <PickerElement
             key={minute}
-            onClick={() => setState((prevState) => ({ ...prevState, minute }))}
-            $hasCurrent={minute === state.minute}
+            onClick={(e) => onClick(e, 'minute', minute)}
+            $hasCurrent={minute === value.minute}
           >
             {minute.toString().padStart(2, '0')}
           </PickerElement>

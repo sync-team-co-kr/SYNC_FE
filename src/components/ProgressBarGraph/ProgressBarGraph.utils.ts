@@ -1,5 +1,3 @@
-import { RawProject } from '@customTypes/project';
-
 // 진행 중 / 완료 문자열 서식 반환
 export const getProgressValue = (
   totalCount?: number,
