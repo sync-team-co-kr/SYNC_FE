@@ -59,7 +59,7 @@ const useChangeDateIncludeTimeToggle: useChangeDateIncludeTimeToggleType = ({
         } else {
           setStartDate(startDate);
         }
-        if (isSameDay(startDate, scheduleRef.current.startDate)) {
+        if (isSameDay(endDate, scheduleRef.current.endDate)) {
           setEndDate(scheduleRef.current.endDate);
         } else {
           setEndDate(endDate);
