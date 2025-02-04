@@ -7,7 +7,7 @@ import InputWithCalendarArea from '@components/common/InputArea/InputWithCalenda
 import InputWithIconArea from '@components/common/InputArea/InputWithIconArea';
 import InputWithTimePicker from '@components/common/InputArea/InputWithTimePicker';
 import Toggle from '@components/common/Toggle/Toggle';
-import useModal from '@hooks/useModal';
+import { modalStore } from '@libs/store';
 import {
   useProjectActions,
   useProjectState,
@@ -45,8 +45,6 @@ interface Temp {
 }
 
 function CreateProjectModal() {
-  const [closeModal] = useModal();
-
   const { title, thumbnail, subTitle, description, startDate, endDate } =
     useProjectState();
   const {
@@ -60,6 +58,7 @@ function CreateProjectModal() {
 
   const [includeTime, setIncludeTime] = useState(false);
   const { createProjectMutate } = useCreateProject();
+  const { closeModal } = modalStore();
 
   useEffect(() => {
     clearProject();
@@ -69,13 +68,14 @@ function CreateProjectModal() {
     createProjectMutate(newProject);
 
   const handleCreateProject = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
     const newProject = {
       title,
       thumbnail,
       subTitle,
       description,
     };
+    if (!title || !subTitle || !description || !startDate || !endDate)
+      return e.preventDefault();
     if (
       startDate &&
       endDate &&
@@ -96,6 +96,7 @@ function CreateProjectModal() {
         thumbnailType: thumbnail.type,
       });
     }
+    return closeModal();
     /*
     프로젝트 기간이 required인 이슈가 해결될 때
     기간이 빠진 new Project 서버에 보내는 함수 작성 예정
@@ -106,7 +107,7 @@ function CreateProjectModal() {
     <>
       <StyleCreateProjectModal.Header>
         <h1>프로젝트 추가</h1>
-        <button>
+        <button onClick={closeModal}>
           <img src={CancelButton} alt="닫기" />
         </button>
       </StyleCreateProjectModal.Header>
@@ -182,8 +183,11 @@ function CreateProjectModal() {
             size="medium"
             variant="text"
             $hasIcon={false}
-            onClick={() => closeModal(CreateProjectModal)}
-            text="취소"
+            onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+              e.preventDefault();
+              return clearProject();
+            }}
+            text="되돌리기"
           />
           <Button
             size="medium"

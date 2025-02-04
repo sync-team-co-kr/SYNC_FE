@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 import { Button } from '@components/common/Button';
 import InputArea from '@components/common/InputArea';
+import { modalStore } from '@libs/store';
 import {
   useDeleteProject,
   useGetProject,
@@ -17,14 +18,13 @@ const DeleteProjectModal = ({ projectId }: DeleteProjectModalProps) => {
   const [retypeProjectTitle, setRetypeProjectTitle] = useState('');
   const { project } = useGetProject(projectId);
   const { deleteProjectMutate } = useDeleteProject();
+  const { closeModal } = modalStore();
 
-  const handleDeleteProject = async (
-    e: React.MouseEvent<HTMLButtonElement>,
-  ) => {
-    e.preventDefault();
+  const handleDeleteProject = () => {
     if (retypeProjectTitle === project?.title) {
       deleteProjectMutate(projectId);
     }
+    return closeModal();
   };
 
   return (
@@ -59,7 +59,7 @@ const DeleteProjectModal = ({ projectId }: DeleteProjectModalProps) => {
             variant="text"
             $hasIcon={false}
             text="취소"
-            onClick={() => console.log('취소')}
+            onClick={closeModal}
           />
           <Button
             size="medium"

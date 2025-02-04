@@ -120,11 +120,8 @@ const DescriptionFrame = styled.div`
 `;
 
 const ProjectBoardItem = ({ project }: { project: RawProject }) => {
-  const [
-    isOpenProjectDropdownMenu,
-    toggleProjectDropdownMenu,
-    projectDropdownMenuRef,
-  ] = useDropdown();
+  const [isOpenProjectDropdownMenu, toggleProjectDropdownMenu, dropdownRef] =
+    useDropdown();
 
   // 진행 중 / 완료
   const progressValue =
@@ -153,13 +150,14 @@ const ProjectBoardItem = ({ project }: { project: RawProject }) => {
           <h5>{project.subTitle}</h5>
           <h2>{project.title}</h2>
         </StyleProjectBoard.Title>
-        <MeatBalls ref={projectDropdownMenuRef}>
+        <MeatBalls ref={dropdownRef}>
           <img
             src={meatballs}
             alt="보드 더보기"
             onClick={toggleProjectDropdownMenu}
           />
           <ProjectSettingsDropdown
+            toggleProjectDropdownMenu={toggleProjectDropdownMenu}
             isOpen={isOpenProjectDropdownMenu}
             projectId={project.projectId}
           />

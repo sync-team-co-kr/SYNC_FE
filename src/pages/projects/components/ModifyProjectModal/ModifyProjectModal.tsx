@@ -8,7 +8,7 @@ import InputWithIconArea from '@components/common/InputArea/InputWithIconArea';
 import InputWithTimePicker from '@components/common/InputArea/InputWithTimePicker';
 import Toggle from '@components/common/Toggle/Toggle';
 import { RawProject } from '@customTypes/project';
-import useModal from '@hooks/useModal';
+import { modalStore } from '@libs/store';
 import {
   useProjectActions,
   useProjectState,
@@ -24,11 +24,10 @@ interface ModifyProjectModalProps {
 }
 
 function ModifyProjectModal({ projectId }: ModifyProjectModalProps) {
-  const [closeModal] = useModal();
-
   const { project, isLoading } = useGetProject(projectId);
   const { editProjectMutate } = useEditProject();
   const [includeTime, setIncludeTime] = useState(false);
+  const { closeModal } = modalStore();
 
   const { title, thumbnail, subTitle, description, startDate, endDate } =
     useProjectState();
@@ -39,6 +38,7 @@ function ModifyProjectModal({ projectId }: ModifyProjectModalProps) {
     setDescription,
     setStartDate,
     setEndDate,
+    // clearProject,
   } = useProjectActions();
 
   useEffect(() => {
@@ -53,8 +53,7 @@ function ModifyProjectModal({ projectId }: ModifyProjectModalProps) {
     editProjectMutate(editedProject);
   };
 
-  const handleModifyProject = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
+  const handleModifyProject = () => {
     const editedProject = {
       projectId,
       title,
@@ -82,6 +81,7 @@ function ModifyProjectModal({ projectId }: ModifyProjectModalProps) {
         thumbnailType: thumbnail.type,
       });
     }
+    return closeModal();
     /*
     프로젝트 기간이 required인 이슈가 해결될 때
     기간이 빠진 editedProject를 서버에 보내는 함수 작성 예정
@@ -93,7 +93,7 @@ function ModifyProjectModal({ projectId }: ModifyProjectModalProps) {
     <>
       <StyleModifyProjectModal.Header>
         <h1>프로젝트 설정</h1>
-        <button>
+        <button onClick={closeModal}>
           <img src={CancelButton} alt="닫기" />
         </button>
       </StyleModifyProjectModal.Header>
@@ -174,7 +174,7 @@ function ModifyProjectModal({ projectId }: ModifyProjectModalProps) {
             size="medium"
             variant="text"
             $hasIcon={false}
-            onClick={() => closeModal(ModifyProjectModal)}
+            onClick={closeModal}
             text="취소"
           />
           <Button
