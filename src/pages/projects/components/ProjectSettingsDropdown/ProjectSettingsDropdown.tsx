@@ -13,11 +13,13 @@ import ModifyProjectModal from '@pages/projects/components/ModifyProjectModal/Mo
 interface ProjectSettingsDropdownProps {
   isOpen: boolean;
   projectId: number;
+  toggleProjectDropdownMenu: () => void;
 }
 
 const ProjectSettingsDropdown = ({
   isOpen,
   projectId,
+  toggleProjectDropdownMenu,
 }: ProjectSettingsDropdownProps) => {
   const [openModal] = useModal();
 
@@ -27,19 +29,26 @@ const ProjectSettingsDropdown = ({
         <DropdownItem
           text="프로젝트 삭제"
           Icon={TrashCan}
-          onClick={() => openModal(() => DeleteProjectModal({ projectId }))}
+          onClick={() => {
+            openModal(() => DeleteProjectModal({ projectId }));
+            toggleProjectDropdownMenu();
+          }}
         />
         <DropdownItem
           text="프로젝트 설정"
           Icon={Settings}
           onClick={() => {
             openModal(() => ModifyProjectModal({ projectId }));
+            toggleProjectDropdownMenu();
           }}
         />
         <DropdownItem
           text="프로젝트 탈퇴"
           Icon={Withdraw}
-          onClick={() => console.log('구현 예정')}
+          onClick={() => {
+            // console.log('구현 예정');
+            toggleProjectDropdownMenu();
+          }}
         />
       </DropdownItemList>
     </DropdownWrapper>

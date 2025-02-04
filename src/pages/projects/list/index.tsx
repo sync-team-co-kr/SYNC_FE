@@ -150,6 +150,7 @@ const ProjectList = () => {
                     <ProjectSettingsDropdown
                       isOpen={isOpenProjectDropdownMenu}
                       projectId={project.projectId}
+                      toggleProjectDropdownMenu={toggleProjectDropdownMenu}
                     />
                   </MeatBalls>
                 </td>
