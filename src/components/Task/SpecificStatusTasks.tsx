@@ -120,9 +120,9 @@ const SpecificStatusTasks = ({
     accept: 'TaskBoard',
     drop(item: { id: number; status: number }, monitor) {
       if (!monitor.isOver()) return;
-      let taskBoardStatus = 2;
+      let taskBoardStatus = 0;
       if (title === '하는 중') taskBoardStatus = 1;
-      if (title === '완료') taskBoardStatus = 0;
+      if (title === '완료') taskBoardStatus = 2;
 
       updateTaskStatusMutate({
         projectId,
@@ -134,9 +134,9 @@ const SpecificStatusTasks = ({
       if (!monitor.isOver()) {
         resetDraggingTempTasks();
       } else {
-        let taskBoardStatus = 2;
+        let taskBoardStatus = 0;
         if (title === '하는 중') taskBoardStatus = 1;
-        if (title === '완료') taskBoardStatus = 0;
+        if (title === '완료') taskBoardStatus = 2;
         setDraggingTempTasks(item.status, taskBoardStatus, item.id);
       }
     },

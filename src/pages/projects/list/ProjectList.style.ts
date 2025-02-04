@@ -97,6 +97,12 @@ const StyleProjectList: {
     .ProjectTitle {
       width: 300px;
     }
+    .ProjectDescription {
+      width: 300px;
+    }
+    .Projectprogress {
+      width: 300px;
+    }
     .ProjectMembers {
       width: 160px;
     }

@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { ReactComponent as Calender } from '@assets/projects/calendarSM.svg';
 import { ReactComponent as User } from '@assets/projects/user.svg';
@@ -50,8 +50,24 @@ const ProjectFilterButton = ({
     setIsOpen((prev) => !prev);
   };
 
+  const modalOutSideClick = (e: MouseEvent) => {
+    if (
+      dropdownRef.current &&
+      !dropdownRef.current.contains(e.target as Node)
+    ) {
+      setIsOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('mousedown', modalOutSideClick);
+    return () => {
+      document.removeEventListener('mousedown', modalOutSideClick);
+    };
+  }, [dropdownRef, isOpen]);
+
   return (
-    <Container>
+    <Container ref={dropdownRef}>
       <Button
         size="medium"
         variant="outline"
@@ -62,12 +78,7 @@ const ProjectFilterButton = ({
         text="필터"
         $renderIcon={<Search />}
       />
-      <Dropdown
-        isOpen={isOpen}
-        dropdownRef={dropdownRef}
-        left="-150px"
-        bottom="-125px"
-      >
+      <Dropdown isOpen={isOpen} left="-150px" bottom="-125px">
         <FilterList onClick={toggleDropdown}>
           <FilterListItem onClick={getMyProjects}>
             <User />

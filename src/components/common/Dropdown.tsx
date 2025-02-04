@@ -35,7 +35,6 @@ const DropdownWrapper = styled.section<{
 export interface DropdownProps {
   children: React.ReactNode;
   isOpen: boolean;
-  dropdownRef: React.RefObject<HTMLTableSectionElement>;
   left: string;
   bottom: string;
 }
@@ -43,12 +42,11 @@ export interface DropdownProps {
 export default function Dropdown({
   children,
   isOpen,
-  dropdownRef,
   left,
   bottom,
 }: DropdownProps) {
   return (
-    <ClickEventContainer ref={dropdownRef}>
+    <ClickEventContainer>
       <DropdownWrapper $isActive={isOpen} $left={left} $bottom={bottom}>
         {children}
       </DropdownWrapper>
