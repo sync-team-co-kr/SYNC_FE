@@ -3,7 +3,7 @@ import { TypographyProps } from './Typography.types';
 
 export const Typography = ({ children, variant, color }: TypographyProps) => {
   return (
-    <TypographyComponent variant={variant} color={color}>
+    <TypographyComponent $variant={variant} color={color}>
       {children}
     </TypographyComponent>
   );

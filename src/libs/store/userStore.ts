@@ -3,7 +3,7 @@ import { Cookies } from 'react-cookie';
 import { create } from 'zustand';
 
 interface IUser {
-  userId: string;
+  userId: number;
   username: string;
 }
 

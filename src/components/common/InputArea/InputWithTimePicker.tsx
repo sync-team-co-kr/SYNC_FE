@@ -1,20 +1,13 @@
-import React, { useEffect } from 'react';
+import { useContext } from 'react';
 
 import { ReactComponent as TimePickerIcon } from '@assets/input/time.svg';
-import TimePickerDropdown from '@components/dropdown/TimePickerDropdown';
+import TimePickerDropdown from '@components/Organism/TimePickerDropdown';
 import useDropdown from '@hooks/useDropdown';
 import useTimePicker from '@hooks/useTimePicker';
-import { ProjectPeriodTime } from '@pages/projects/ProjectBoards/CreateProjectModal/CreateProjectModal';
+import { getFormatTime } from '@utils/workUnit';
+import { WorkUnitScheduleContext } from 'contexts/workUnitScheduleContext';
 import { styled } from 'styled-components';
 import { vars } from 'token';
-
-interface InputWithTimePickerProps {
-  value: ProjectPeriodTime;
-  setValue: React.Dispatch<React.SetStateAction<ProjectPeriodTime>>;
-  labelText?: string;
-  placeholderText: string;
-  isDisabled: boolean;
-}
 
 const SInputWithTimePicker = styled.div<{ $isdisabled: boolean }>`
   display: flex;
@@ -36,36 +29,34 @@ const TimePickerSvg = styled.div`
   right: 21px;
 `;
 
+interface InputWithTimePickerProps {
+  scheduleType: 'start' | 'end';
+  labelText?: string;
+  placeholderText: string;
+  isDisabled: boolean;
+}
+
 const InputWithTimePicker = ({
-  value,
-  setValue,
+  scheduleType,
   placeholderText,
   isDisabled,
 }: InputWithTimePickerProps) => {
-  const { pickedTime, setPickedTime } = useTimePicker();
   const [
     isOpenTimePickerDropdown,
     toggleTimePickerDropdown,
     timePickerDropdownRef,
   ] = useDropdown();
-
-  useEffect(() => {
-    const { hour, minute } = pickedTime;
-    setValue({
-      hour,
-      minute,
-    });
-  }, [pickedTime.hour, pickedTime.minute]);
+  const { startDate, endDate } = useContext(WorkUnitScheduleContext);
+  const { pickedTime, handleClickTimePickerElement } = useTimePicker(
+    scheduleType,
+    scheduleType === 'start' ? startDate : endDate,
+  );
 
   return (
     <SInputWithTimePicker $isdisabled={isDisabled}>
       <input
         type="text"
-        value={
-          value.hour && value.minute
-            ? `${value.hour.toString().padStart(2, '0')} : ${value.minute.toString().padStart(2, '0')}`
-            : ''
-        }
+        value={getFormatTime(scheduleType, startDate, endDate)}
         placeholder={placeholderText}
         readOnly
         disabled={isDisabled}
@@ -79,10 +70,8 @@ const InputWithTimePicker = ({
       </TimePickerSvg>
       <TimePickerDropdown
         isOpen={isOpenTimePickerDropdown}
-        usePickedTimeState={{
-          state: pickedTime,
-          setState: setPickedTime,
-        }}
+        value={pickedTime}
+        onClick={handleClickTimePickerElement}
       />
     </SInputWithTimePicker>
   );

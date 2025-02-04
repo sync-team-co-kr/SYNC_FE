@@ -7,3 +7,9 @@ export interface TypographyProps {
   variant: keyof typeof vars.sementic.typography;
   color: keyof typeof vars.sementic.color;
 }
+
+export interface TypographyStyledComponentsProps {
+  children: React.ReactNode;
+  $variant: keyof typeof vars.sementic.typography;
+  color: keyof typeof vars.sementic.color;
+}

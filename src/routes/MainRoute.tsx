@@ -6,7 +6,6 @@ import { Route, Routes } from 'react-router-dom';
 import { PublicLayout } from '@components/layout';
 import Layout from '@components/layout/Layout';
 import AfterInvite from '@pages/AfterInvite';
-import { Calendars } from '@pages/Calendars';
 import Home from '@pages/Home';
 import Login from '@pages/Login';
 import NotFound from '@pages/NotFound';
@@ -15,6 +14,7 @@ import FindId from '@pages/user/FindId';
 import FindPassword from '@pages/user/FindPassword';
 import ModifyUser from '@pages/user/Modify';
 
+import CalendarRoute from './CalendarRoute';
 import ProfileRoute from './ProfileRoute';
 import ProjectRoute from './ProjectRoute';
 import SettingsRoute from './SettingsRoute';
@@ -25,7 +25,6 @@ const MainRoutes = () => (
     <Route element={<Layout />}>
       <Route element={<PublicLayout />}>
         <Route path="/" element={<Home />} />
-        <Route path="/calendars" element={<Calendars />} />
         <Route path="/profile/*" element={<ProfileRoute />} />
         <Route path="/settings/*" element={<SettingsRoute />} />
         {/* 아래 user쪽 route는 추후 정리 필요해 보임 */}
@@ -34,6 +33,7 @@ const MainRoutes = () => (
         <Route path="/user/find/password" element={<FindPassword />}></Route>
 
         <Route path="/projects/*" element={<ProjectRoute />}></Route>
+        <Route path="/calendars/*" element={<CalendarRoute />}></Route>
       </Route>
     </Route>
 

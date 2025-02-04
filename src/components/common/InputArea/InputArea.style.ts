@@ -28,8 +28,14 @@ export const InputWithCoverIcon = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
+  cursor: pointer;
   input {
     flex-grow: 1;
+  }
+  & > div {
+    width: 32px;
+    height: 32px;
+    position: relative;
   }
 `;
 

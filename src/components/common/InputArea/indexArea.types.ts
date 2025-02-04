@@ -1,7 +1,7 @@
 export interface InputProps {
   value: string;
-  setValue?: React.Dispatch<React.SetStateAction<string>>;
-  labelText?: string;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  labelFC: JSX.Element;
   placeholderText: string;
   isDisabled?: boolean;
 }

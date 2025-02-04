@@ -6,10 +6,10 @@ import { TaskItem } from '@components/TaskItem';
 import { Button } from '@components/common/Button';
 import { Typography } from '@components/common/Typography';
 import { CreateTaskModal } from '@components/modal/CreateTaskModal';
-import { Project } from '@customTypes/project';
+import { RawProject } from '@customTypes/project';
 import useModal from '@hooks/useModal';
 import { useTaskActions } from '@libs/store/task/task';
-import { useGetProjectList } from '@services/project/Project.hooks';
+import { useGetProjects } from '@services/project/Project.hooks';
 
 import {
   CalendarTaskDropdownContainer,
@@ -27,11 +27,11 @@ const CalendarTaskDropdown = (
   }: CalendarTaskDropdownProps,
   ref: ForwardedRef<HTMLDivElement>,
 ) => {
-  const { projectListData } = useGetProjectList();
+  const { projects } = useGetProjects();
   const [openModal] = useModal();
 
   const { setProject } = useTaskActions();
-  const handleOpenCreateTaskModal = (project: Project) => {
+  const handleOpenCreateTaskModal = (project: RawProject) => {
     openModal(CreateTaskModal);
     setProject(project);
   };
@@ -64,15 +64,15 @@ const CalendarTaskDropdown = (
           <Button
             size="small"
             variant="text"
-            hasIcon
-            renderIcon={<Close width={24} height={24} />}
+            $hasIcon
+            $renderIcon={<Close width={24} height={24} />}
             onClick={setClose}
           />
         </CalendarTaskDropdownHeader>
 
         <CalendarTaskDropdownContent>
           <TaskSelectItemList>
-            {projectListData?.map((project) => (
+            {projects?.map((project) => (
               <TaskItem
                 situations={[]}
                 onClick={() => handleOpenCreateTaskModal(project)}
@@ -81,8 +81,8 @@ const CalendarTaskDropdown = (
                 title={project.title}
                 subTitle={project.subTitle}
                 date={{
-                  start: project.startDate,
-                  end: project.endDate,
+                  start: new Date(project.startDate || 1),
+                  end: new Date(project.endDate || 1),
                 }}
               />
             ))}

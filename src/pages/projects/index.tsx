@@ -1,71 +1,60 @@
-import { useState } from 'react';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Outlet } from 'react-router-dom';
 
+import TabMenu from '@components/TabMenu/TabMenu';
+import { RawProject } from '@customTypes/project';
+import { useBreadCrumbActions } from '@libs/store/breadcrumb/breadcrumb';
+import { useGetProjects } from '@services/project/Project.hooks';
 import styled from 'styled-components';
-import { vars } from 'token';
 
-const TabMenu = styled.ul`
-  margin-bottom: 20px;
-  padding: 12px 0 0 40px;
-  display: flex;
-  border-bottom: 1px solid ${vars.sementic.color.black10};
-  li {
-    padding: 12px 24px;
-    font-weight: 600;
-    cursor: pointer;
-  }
-`;
-
-const TabMenuItem = styled.li<{ $iscurrenttabmenu: boolean }>`
-  border-bottom: ${(props) =>
-    props.$iscurrenttabmenu
-      ? `2px solid ${vars.sementic.color.primaryOrange}`
-      : 'none'};
-  color: ${(props) => (props.$iscurrenttabmenu ? '#202020' : '#8f8f8f')};
-`;
+import ProjectDropdown from './ProjectDropdown';
+import ProjectToolbar from './ProjectToolbar';
+import { PROJECT_TAB_MENU_LIST } from './constants/projectTabMenuList';
+import useDataHandler from './hook/useDataHandler';
 
 const Container = styled.div`
   width: 100%;
   height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 `;
 
-export interface IProject {
-  projectId: number;
-  title: string;
-  subTitle: string;
-  description: string;
-  startDate: Date;
-  endDate: Date;
-  memberIds: number[];
-}
-
 const Project = () => {
-  const [currentTabMenu, setCurrentTabMenu] = useState('board');
-  const navigate = useNavigate();
+  const { projects } = useGetProjects();
+  const [projectData, setProjectData] = useState<RawProject[]>([]);
+  const {
+    searchQuery,
+    searchFilteredProjects,
+    getUpcomingProjects,
+    getMyProjects,
+  } = useDataHandler({ setProjectData });
+  const { setMainRoute } = useBreadCrumbActions();
 
-  const handleClickTabMenu = (path: string) => {
-    setCurrentTabMenu(path);
-    navigate(`/projects/${path}`);
-  };
+  useEffect(() => {
+    setMainRoute('프로젝트');
+    return () => {
+      setMainRoute('');
+    };
+  }, []);
+
+  useEffect(() => {
+    if (projects) {
+      setProjectData(projects);
+    }
+  }, [projects]);
 
   return (
     <Container>
-      
-      <TabMenu>
-        <TabMenuItem
-          onClick={() => handleClickTabMenu('board')}
-          $iscurrenttabmenu={currentTabMenu === 'board'}
-        >
-          <span>보드</span>
-        </TabMenuItem>
-        <TabMenuItem
-          onClick={() => handleClickTabMenu('list')}
-          $iscurrenttabmenu={currentTabMenu === 'list'}
-        >
-          리스트
-        </TabMenuItem>
-      </TabMenu>
-      <Outlet />
+      <ProjectDropdown />
+      <TabMenu tabMenuList={PROJECT_TAB_MENU_LIST} />
+      <ProjectToolbar
+        searchQuery={searchQuery}
+        searchFilteredProjects={searchFilteredProjects}
+        getUpcomingProjects={getUpcomingProjects}
+        getMyProjects={getMyProjects}
+      />
+      <Outlet context={{ projectData }} />
     </Container>
   );
 };

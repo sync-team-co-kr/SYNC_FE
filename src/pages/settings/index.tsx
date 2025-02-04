@@ -1,91 +1,106 @@
-import { Link, Outlet } from 'react-router-dom';
-import styled from 'styled-components';
+import { Link, Outlet, useLocation } from 'react-router-dom';
 
-const Wrapper = styled.section`
+import { ReactComponent as MemberSVG } from '@assets/settings/members.svg';
+import { ReactComponent as ProjectSVG } from '@assets/settings/projects.svg';
+import { ReactComponent as MyProfileSVG } from '@assets/settings/users.svg';
+import styled from 'styled-components';
+import { vars } from 'token';
+
+const BackGround = styled.div`
   height: 100%;
+  min-height: 840px;
+  padding: 32px 40px;
+  background-color: ${vars.sementic.color.primaryLightOrange};
   border: 1px solid #d2dbe2;
   display: flex;
-  z-index: 5;
+`;
+
+const SettingsContainer = styled.section`
+  width: 100%;
+  min-height: calc(100vh - 164px);
+  background-color: ${vars.sementic.color.white};
+  border: 1px solid #d2dbe2;
+  display: flex;
 `;
 
 const SettingsMenu = styled.ul`
   width: 237px;
   height: 100%;
-  padding: 15px;
+  padding: 24px;
+  background-color: ${vars.sementic.color.white};
   border-right: 1px solid var(--New-group-Gray, #d2dbe2);
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 18px;
 `;
 
-const SettingsMenuItem = styled.li`
-  display: flex;
-  flex-direction: column;
+const SettingsMenuItem = styled.li<{ $matchpathname: boolean }>`
+  a {
+    padding: 12px 16px;
+    background-color: ${(props) =>
+      props.$matchpathname
+        ? vars.sementic.color.primaryLightOrange
+        : vars.sementic.color.white};
+    border: 1px solid
+      ${(props) =>
+        props.$matchpathname
+          ? vars.sementic.color.primaryOrange
+          : vars.sementic.color.white};
+    border-radius: 4px;
+    font-size: ${vars.sementic.typography.paragraph};
+    font-weight: 700;
+    color: ${(props) =>
+      props.$matchpathname
+        ? vars.sementic.color.black
+        : vars.sementic.color.black20};
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
 `;
 
-const Typography = styled.p`
-  padding: 8px 0px;
-  color: var(--New-group-sub-color2, #a5aab1);
-  font-family: Pretendard;
-  font-size: 12px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: normal;
-`;
-
-const SubMenu = styled.ul``;
-
-const SubItem = styled.li`
-  padding: 16px;
-  background: white;
-  border: 1px solid var(--New-group-Gray, #d2dbe2);
-  color: var(--main-black, #000);
-  font-family: Pretendard;
-  font-size: 12px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: normal;
-  display: flex;
-  align-items: center;
-`;
-
-const SettingsContentWrapper = styled.section`
+const SettingsContentContainer = styled.section`
   width: calc(100% - 237px);
-  padding: 30px;
+  padding: 40px;
   display: flex;
   flex-direction: column;
+  gap: 32px;
 `;
 
 export default function Settings() {
+  const { pathname } = useLocation();
+
   return (
-    <Wrapper>
-      <SettingsMenu>
-        <SettingsMenuItem>
-          <Typography>프로젝트 설정</Typography>
-          <SubMenu>
+    <BackGround>
+      <SettingsContainer>
+        <SettingsMenu>
+          <SettingsMenuItem
+            $matchpathname={pathname === '/settings/profile/my'}
+          >
+            <Link to="/settings/profile/my">
+              <MyProfileSVG />
+              <span>내 계정</span>
+            </Link>
+          </SettingsMenuItem>
+
+          <SettingsMenuItem $matchpathname={pathname === '/settings/project'}>
             <Link to="/settings/project">
-              <SubItem>프로젝트 리스트</SubItem>
+              <ProjectSVG />
+              <span>프로젝트 설정</span>
             </Link>
+          </SettingsMenuItem>
 
+          <SettingsMenuItem $matchpathname={pathname === '/settings/members'}>
             <Link to="/settings/members">
-              <SubItem>주소록</SubItem>
+              <MemberSVG />
+              <span>사용자 관리</span>
             </Link>
-            <SubItem>업무명 설정</SubItem>
-          </SubMenu>
-        </SettingsMenuItem>
-
-        <SettingsMenuItem>
-          <Typography>시스템 설정</Typography>
-          <SubMenu>
-            <Link to="/settings/alarm">
-              <SubItem>알림 설정</SubItem>
-            </Link>
-          </SubMenu>
-        </SettingsMenuItem>
-      </SettingsMenu>
-      <SettingsContentWrapper>
-        <Outlet />
-      </SettingsContentWrapper>
-    </Wrapper>
+          </SettingsMenuItem>
+        </SettingsMenu>
+        <SettingsContentContainer>
+          <Outlet />
+        </SettingsContentContainer>
+      </SettingsContainer>
+    </BackGround>
   );
 }

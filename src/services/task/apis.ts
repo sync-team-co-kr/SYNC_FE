@@ -1,104 +1,152 @@
+import { AxiosResByData } from '@customTypes/common';
+import { ITask } from '@customTypes/task';
 import { userApiInstance } from '@libs/axios/axios';
-import { CreateTaskPayload } from '@services/swagger/output/data-contracts';
+import { AxiosResponse } from 'axios';
+
+/**
+ * 업무 목록을 가져오는 API
+ * @param projectId: number
+ * @returns {
+ * taskId: number;
+ * title: string;
+ * description: string;
+ * startDate?: string;
+ * endDate?: string;
+ * status: number;
+ * depth: number;
+ * task: {
+ *  totalCount: number;
+ *  completedCount: number;
+ * }
+ * }[]
+ */
 
 export const getTaskList = async (projectId: number) => {
-  return userApiInstance.get(
-    `https://150.136.153.235:30443/node2/api/task/v2?projectId=${projectId}`,
-  );
+  const response: AxiosResponse<AxiosResByData<ITask[]>> =
+    await userApiInstance.get(`/node2/api/task/v2`, {
+      params: {
+        projectId,
+      },
+    });
+  return response.data.data;
 };
 
-const randomUuid = () => {
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-    const r = Math.floor(Math.random() * 16);
-    const v = c === 'x' ? r : (r % 4) + 8;
-    return v.toString(16);
-  });
-};
+/**
+ * 단일 업무를 가져오는 API
+ * @param taskId: number
+ * @returns {
+ *  id: number;
+ *  title: string;
+ *  description: string;
+ *  startDate: string;
+ *  endDate: string;
+ *  depth: number;
+ *  status: number;
+ *  task: {
+ *    totalCount: number;
+ *    completedCount: number;
+ *  };
+ * }
+ */
 
-const extractImageUrls = (description: string | undefined): string[] => {
-  if (!description) {
-    return [];
-  }
-  const regex = /<img[^>]+src="([^">]+)"/g;
-
-  const matches = [...description.matchAll(regex)];
-
-  return matches.map((match) => match[1]);
-};
-
-const getExtensionFromMimeType = (mimeType: string): string => {
-  switch (mimeType) {
-    case 'image/jpeg':
-      return 'jpg';
-    case 'image/png':
-      return 'png';
-    case 'image/gif':
-      return 'gif';
-    case 'image/webp':
-      return 'webp';
-    default:
-      return 'png';
-  }
-};
-
-const convertBase64ToFile = (base64String: string, fileName: string): File => {
-  const byteString = atob(base64String.split(',')[1]); // base64에서 데이터 부분 추출
-  const mimeType = base64String.match(/data:(.*?);base64/)?.[1] || 'image/png';
-  const extension = getExtensionFromMimeType(mimeType);
-  const byteNumbers = new Array(byteString.length);
-
-  const byteArray = new Uint8Array(byteNumbers);
-
-  return new File([byteArray], `${fileName}.${extension}`, { type: mimeType });
-};
-
-export const createTask = async ({ ...payload }: CreateTaskPayload) => {
-  const formData = new FormData();
-  const imageUrls = extractImageUrls(payload.data.description);
-  const titleImage = payload.titleimage;
-  console.log('titleImage', titleImage);
-  let updatedDescription = payload.data.description;
-  imageUrls.forEach((imageUrl) => {
-    if (imageUrl.startsWith('data:image/')) {
-      const uuid = randomUuid();
-      const prevFileName = 'description-image';
-      const extension = getExtensionFromMimeType(imageUrl);
-
-      const newImageName = `${uuid}_${prevFileName}`;
-      const newImageUrl = `http://150.136.153.235:31585/api/task/image?filename=/mnt/oraclevdb/task/description/${newImageName}.${extension}`;
-      updatedDescription = updatedDescription?.replace(imageUrl, newImageUrl);
-      try {
-        const imgFile = convertBase64ToFile(imageUrl, newImageName);
-        console.log('이미지 변환 성공', imgFile);
-        formData.append(`images`, imgFile);
-      } catch (error) {
-        console.error('이미지 변환 실패', error);
-      }
-    } else {
-      console.log('이미지가 포함되지 않았습니다');
-    }
-  });
-  const formDataList = {
-    projectId: payload.data.projectId,
-    title: payload.data.title,
-    description: updatedDescription,
-    startDate:
-      payload.data.startDate instanceof Date ? payload.data.startDate : null,
-    endDate: payload.data.endDate instanceof Date ? payload.data.endDate : null,
-    parentTaskId: payload.data.parentTaskId,
+interface getTaskResponse {
+  id: number;
+  title: string;
+  description: string;
+  startDate: string;
+  endDate: string;
+  depth: number;
+  status: number;
+  task: {
+    totalCount: number;
+    completedCount: number;
   };
+}
 
-  formData.append('data', JSON.stringify(formDataList));
+export const getTask = async (taskId: number) => {
+  const response: AxiosResponse<AxiosResByData<getTaskResponse>> =
+    await userApiInstance.get(`/node2/api/task/v3`, {
+      params: {
+        taskId,
+      },
+    });
 
-  return userApiInstance.post('/user/api/task/v1', formData, {
+  return response.data.data;
+};
+
+/**
+ * 업무를 생성하는 API
+ * @param createTaskFormData<FormData>: {
+ * data {
+ * projectId: number;
+ * title: string;
+ * description: string;
+ * startDate?: string;
+ * endDate?: string;
+ * parentTaskId: number;
+ * status: number;
+ * }
+ * images: File;
+ * thumbnailImage: string;
+ * }
+ * @return {
+ * projectId: number;
+ * title: string;
+ * description: string;
+ * startDate?: number;
+ * endDate?: number;
+ * status: number;
+ * parentTaskId: number;
+ * thumbnailIcon?: string;
+ * }
+ */
+export const createTask = async (createTaskFormData: FormData) => {
+  await userApiInstance.post('/user/api/task/v1', createTaskFormData, {
     headers: {
       'Content-Type': 'multipart/form-data',
     },
   });
-  // formData.append('data', jsonBlob);
-  // return requiredJwtTokeninstance.post('/user/api/task/v1', formData);
 };
 
 export const getTaskChildren = async (taskId: number) => {
   return userApiInstance.get(`/api/task/v1/${taskId}`);
+};
+
+/**
+ * 업무의 상태 변경(테스트, 검증 필요)
+ * @param willUpdateTaskParams: {
+ *    projectId: number;
+ *    taskId: number;
+ *    editedStatus: number;
+ * }
+ * @return {
+ * projectId: number;
+ * taskId: number;
+ * title: string;
+ * description: string;
+ * startDate: number;
+ * endDate: number;
+ * }
+ */
+
+export const updateTaskStatus = async (updateStatusFormData: FormData) => {
+  const response: AxiosResponse<
+    AxiosResByData<Omit<ITask, 'progress' | 'depth'>>
+  > = await userApiInstance.put('/user/api/task', updateStatusFormData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+
+  return response.data.data;
+};
+
+export const deleteTask = async (projectId: number, taskId: number) => {
+  await userApiInstance.delete('user/api/task', {
+    data: {
+      projectId,
+      taskId,
+    },
+  });
+  return taskId;
 };

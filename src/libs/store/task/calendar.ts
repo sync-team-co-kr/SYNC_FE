@@ -53,6 +53,11 @@ const useCalendarStore = create<CalendarStore & CalendarActions>((set) => ({
         return state;
       });
     },
+    setSpecificDate: (specificDate) => {
+      set(() => ({
+        currentDate: specificDate,
+      }));
+    },
   },
 }));
 

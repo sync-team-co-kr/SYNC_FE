@@ -3,7 +3,7 @@ const modifyServerToClientDate = (date: Date) => new Date(date);
 const createNormalFormatDate = (date: Date) => {
   const formattedYear = date.getFullYear();
   const formattedMonth =
-    date.getMonth() > 9
+    date.getMonth() > 8
       ? String(date.getMonth() + 1)
       : String(`0${date.getMonth() + 1}`);
   const formattedDate =

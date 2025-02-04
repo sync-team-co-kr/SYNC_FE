@@ -5,18 +5,18 @@ import { InputProps } from './indexArea.types';
 
 const InputArea = ({
   value,
-  setValue,
+  onChange,
+  labelFC,
   placeholderText,
-  labelText,
   isDisabled = false,
 }: InputProps) => {
   return (
     <SInputArea>
-      <label>{labelText}</label>
+      {labelFC}
       <input
         type="text"
         value={value}
-        onChange={(e) => setValue && setValue(e.target.value)}
+        onChange={onChange}
         placeholder={placeholderText}
         disabled={isDisabled}
       />

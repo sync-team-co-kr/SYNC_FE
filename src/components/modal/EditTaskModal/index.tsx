@@ -24,7 +24,7 @@ import {
 } from '@components/modal/CreateTaskModal/style';
 import { modalStore } from '@libs/store';
 import { useTaskActions, useTaskState } from '@libs/store/task/task';
-import { useGetProjectList } from '@services/project/Project.hooks';
+import { useGetProjects } from '@services/project/Project.hooks';
 import { useCreateTask } from '@services/task/Task.hooks';
 
 import { EditTaskModalProps } from './types';
@@ -52,7 +52,7 @@ export const EditTaskModal = ({
 
   console.log(editType);
   // projectData를 가져오는 hooks
-  const { projectListData } = useGetProjectList() ?? {};
+  const { projects } = useGetProjects();
 
   // project 자식 업무를 가져오는 hooks
   // const { taskChildren } = useGetTaskChildren(taskId);
@@ -60,7 +60,7 @@ export const EditTaskModal = ({
   // 프로젝트 검색 state
   const [projectSearch, setProjectSearch] = useState('');
   // 검색 필터링된 프로젝트 리스트
-  const [projectList, setProjectList] = useState(projectListData);
+  const [projectList, setProjectList] = useState(projects);
 
   const { createTaskMutate } = useCreateTask();
   const handleCreateTask = () => {
@@ -70,7 +70,11 @@ export const EditTaskModal = ({
     }
     createTaskMutate(
       {
-        data: payload,
+        data: {
+          ...payload,
+          startDate: payload.startDate?.toISOString(),
+          endDate: payload.endDate?.toISOString(),
+        },
       },
       {
         onSuccess: () => {
@@ -88,12 +92,12 @@ export const EditTaskModal = ({
 
   const handleProjectSearch = (e: ChangeEvent<HTMLInputElement>) => {
     setProjectSearch(e.target.value);
-    setProjectList(searchFilter(e.target.value, projectListData));
+    setProjectList(searchFilter(e.target.value, projects));
   };
 
   useEffect(() => {
-    setProjectList(projectListData);
-  }, [projectListData]);
+    setProjectList(projects);
+  }, [projects]);
 
   return (
     <Container>
@@ -102,8 +106,8 @@ export const EditTaskModal = ({
           업무 수정
         </Typography>
         <Button
-          hasIcon
-          renderIcon={<CloseX width={24} height={24} />}
+          $hasIcon
+          $renderIcon={<CloseX width={24} height={24} />}
           onClick={closeModal}
           size="small"
           variant="text"
@@ -166,7 +170,7 @@ export const EditTaskModal = ({
           <ButtonGroup>
             <Button
               size="small"
-              isSelect={payload.parentTaskId === 0}
+              $isSelect={payload.parentTaskId === 0}
               variant="task"
               text="테스크"
               onClick={() => {
@@ -176,7 +180,7 @@ export const EditTaskModal = ({
             <Button
               size="small"
               variant="subTask"
-              isSelect={payload.parentTaskId === 1}
+              $isSelect={payload.parentTaskId === 1}
               text="서브 테스크"
               onClick={() => {
                 setParentTaskId(1);
@@ -185,7 +189,7 @@ export const EditTaskModal = ({
             <Button
               size="small"
               variant="quest"
-              isSelect={payload.parentTaskId === 2}
+              $isSelect={payload.parentTaskId === 2}
               text="퀘스트"
               onClick={() => {
                 setParentTaskId(2);
@@ -196,7 +200,7 @@ export const EditTaskModal = ({
         {/* task state end */}
 
         {/* task */}
-        <SectionContainer direction="row" gap={24} maxWidth="100%">
+        <SectionContainer direction="row" $gap={24} maxWidth="100%">
           <TaskContainer>
             <LabelContainer>
               <Typography variant="small-text-b" color="negativeRed">
@@ -262,7 +266,7 @@ export const EditTaskModal = ({
               일정
             </Typography>
           </LabelContainer>
-          <SectionContainer direction="row" gap={24}>
+          <SectionContainer direction="row" $gap={24}>
             <Textfield
               variant="outlined"
               placeholder="날짜"
@@ -276,7 +280,7 @@ export const EditTaskModal = ({
               onChange={(e) => console.log(e.target.value)}
             />
           </SectionContainer>
-          <SectionContainer direction="row" gap={24}>
+          <SectionContainer direction="row" $gap={24}>
             <Textfield
               variant="outlined"
               placeholder="시간"

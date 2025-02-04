@@ -1,4 +1,6 @@
-import Project from './Project';
-import EditProjectParams from './editProjectParams';
+import IProject from './Project';
+import ProjectPayload from './ProjectPayload';
+import ProjectPeriodTime from './ProjectPeriodTime';
+import RawProject from './RawProject';
 
-export type { Project, EditProjectParams };
+export type { RawProject, IProject, ProjectPeriodTime, ProjectPayload };

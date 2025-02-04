@@ -1,20 +1,6 @@
 import axios, { AxiosError, isAxiosError } from 'axios';
 import config from 'config/config';
 
-export const publicInstance = axios.create({
-  baseURL: config.backendUrl,
-});
-
-export const userApiInstance = axios.create({
-  baseURL: config.backendUrl,
-  withCredentials: true,
-});
-
-export const projectApiInstance = axios.create({
-  baseURL: config.backendProjectUrl,
-  withCredentials: true,
-});
-
 const catchJwtTokenError = async (axiosError: AxiosError) => {
   const originalRequest = axiosError.config;
 
@@ -34,6 +20,20 @@ const catchJwtTokenError = async (axiosError: AxiosError) => {
   }
   return null;
 };
+
+export const publicInstance = axios.create({
+  baseURL: config.backendUrl,
+});
+
+export const userApiInstance = axios.create({
+  baseURL: config.backendUrl,
+  withCredentials: true,
+});
+
+export const projectApiInstance = axios.create({
+  baseURL: config.backendProjectUrl,
+  withCredentials: true,
+});
 
 userApiInstance.interceptors.response.use(
   (response) => response,

@@ -16,7 +16,8 @@ export const LabelContainer = styled.div`
 
 export const TaskContainer = styled.div`
   display: flex;
-  width: 100%;
+  width: 50%;
   flex-direction: column;
   gap: 8px;
+  position: relative;
 `;

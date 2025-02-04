@@ -1,54 +1,103 @@
-import { EditProjectParams } from '@customTypes/project';
-import { CreateProjectRequestDto } from '@services/swagger/output/data-contracts';
+import { RawProject } from '@customTypes/project';
+import { useToastActions } from '@libs/store/toast/toast';
+import { getProjectMemberIds, getUser } from '@services/member/apis';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import {
   createProject,
   deleteProject,
   editProject,
-  getProject,
   getProjectIdList,
-  getProjectList,
+  getProjectIds,
+  getTempProject,
 } from './apis';
 
-// projectList hooks
-export const useGetProjectList = () => {
-  const { data: projectListData, isLoading } = useQuery({
+export const useGetProjects = () => {
+  const { data: projects, isLoading } = useQuery({
     queryKey: ['projects'],
-    queryFn: getProjectList,
+    queryFn: async () => {
+      const projectIds = await getProjectIds();
+
+      const projectsWithMembers = await Promise.all(
+        projectIds.flatMap(async (projectId) => {
+          const project = await getTempProject(projectId);
+          const [memberIds] = await getProjectMemberIds(projectId);
+
+          const members = await Promise.all(
+            memberIds.userIds.flatMap(async (userId) => {
+              const userInfo = await getUser(userId);
+              return { ...userInfo, id: userId };
+            }),
+          );
+
+          return { ...project, members };
+        }),
+      );
+
+      return projectsWithMembers;
+    },
   });
 
-  return { projectListData, isLoading };
+  return { projects, isLoading };
 };
 
-// ProjectList id list hooks
-export const useGetProjectIdList = () => {
-  const { data: projectIdsList } = useQuery({
-    queryKey: ['projectIds'],
-    queryFn: getProjectIdList,
-  });
-
-  return { projectIdsList };
-};
-
-// project hooks
 export const useGetProject = (projectId: number) => {
-  const { data: projectData } = useQuery({
+  const { data: project, isLoading } = useQuery({
     queryKey: ['projects', projectId],
-    queryFn: () => getProject(projectId),
+    queryFn: async () => {
+      const getProjectData = await getTempProject(projectId);
+      return getProjectData;
+    },
+    enabled: !!projectId,
+  });
+  return { project, isLoading };
+};
+
+export const useGetProjectIds = () => {
+  const { data: projectIds } = useQuery({
+    queryKey: ['projectIds'],
+    queryFn: async () => {
+      const projectIdList = await getProjectIdList();
+      return projectIdList;
+    },
   });
 
-  return { projectData };
+  return { projectIds };
 };
 
 // create project hooks
+interface Temp {
+  title: string;
+  thumbnail: {
+    type: 'N' | 'I' | 'C' | 'E';
+    value?: string | Blob;
+  };
+  subTitle: string;
+  description: string;
+  startDate?: Date;
+  endDate?: Date;
+}
+
 export const useCreateProject = () => {
   const queryClient = useQueryClient();
+  const { setToastMessage } = useToastActions();
 
   const createProjectMutation = useMutation({
-    mutationFn: (newProject: CreateProjectRequestDto) =>
-      createProject(newProject),
-    onSuccess: () => {
+    mutationFn: (newProject: Temp) => {
+      const newProjectPayload = {
+        ...newProject,
+        startDate: newProject.startDate?.toISOString(),
+        endDate: newProject.endDate?.toISOString(),
+        thumbnailType: newProject.thumbnail.type,
+        thumbnail: newProject.thumbnail.value,
+      };
+      return createProject(newProjectPayload);
+    },
+    onSuccess: (data) => {
+      // 프로젝트 생성 반환 값이 추가되면 서버 데이터를 이용해 캐시 작업 진행 예정
+      setToastMessage(`${data.title} 프로젝트가 생성되었습니다.`, 'success');
+    },
+    onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ['projects'] });
     },
   });
@@ -58,11 +107,43 @@ export const useCreateProject = () => {
 // edit project hooks
 export const useEditProject = () => {
   const queryClient = useQueryClient();
+  const { setToastMessage } = useToastActions();
 
   const editProjectMutation = useMutation({
-    mutationFn: (project: EditProjectParams) => editProject(project),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['projects'] });
+    mutationFn: (project: Temp & { projectId: number }) => {
+      const editProjectPayload = {
+        ...project,
+        startDate: project.startDate?.toISOString(),
+        endDate: project.endDate?.toISOString(),
+        thumbnailType: project.thumbnail.type,
+        thumbnail: project.thumbnail.value,
+      };
+      return editProject(editProjectPayload);
+    },
+    onMutate: async (willUpdateProject) => {
+      await queryClient.cancelQueries({
+        queryKey: ['projects'],
+      });
+
+      const oldProjects = queryClient.getQueryData([
+        'projects',
+      ]) as RawProject[];
+
+      queryClient.setQueryData(['projects'], () =>
+        oldProjects.map((project) =>
+          project.projectId === willUpdateProject.projectId
+            ? { ...willUpdateProject, members: project.members }
+            : { ...project },
+        ),
+      );
+    },
+    onSuccess: (data) => {
+      setToastMessage(` ${data.title} 프로젝트를 수정했습니다.`, 'error');
+    },
+    onSettled: (editedProject) => {
+      queryClient.invalidateQueries({
+        queryKey: ['projects', editedProject?.projectId],
+      });
     },
   });
 
@@ -72,10 +153,29 @@ export const useEditProject = () => {
 // delete project hooks
 export const useDeleteProject = () => {
   const queryClient = useQueryClient();
+  const { setToastMessage } = useToastActions();
 
   const deleteProjectMutation = useMutation({
     mutationFn: (projectId: number) => deleteProject(projectId),
+    onMutate: async (willDeleteProjectId) => {
+      await queryClient.cancelQueries({
+        queryKey: ['projects'],
+      });
+
+      const oldProjects = queryClient.getQueryData([
+        'projects',
+      ]) as RawProject[];
+
+      queryClient.setQueryData(['projects'], () =>
+        oldProjects.filter(
+          (project) => project.projectId !== willDeleteProjectId,
+        ),
+      );
+    },
     onSuccess: () => {
+      setToastMessage('프로젝트가 삭제되었습니다.', 'success');
+    },
+    onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ['projects'] });
     },
   });

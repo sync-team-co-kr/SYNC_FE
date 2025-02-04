@@ -1,6 +1,7 @@
 import React from 'react';
 
 import styled from 'styled-components';
+import { vars } from 'token';
 
 const ClickEventContainer = styled.div`
   display: flex;
@@ -13,41 +14,39 @@ const DropdownWrapper = styled.section<{
   $left: string;
   $bottom: string;
 }>`
-  width: 320px;
-  background: #fff;
-  border: 1px solid #b8b8b8;
+  display: ${(props) => (props.$isActive ? 'flex' : 'none')};
+  position: absolute;
+  width: 250px;
+  flex-direction: column;
+  border: 1px solid ${vars.sementic.color.black10};
+  background-color: ${vars.sementic.color.white};
   border-radius: 8px;
   box-shadow: 0px 4px 15px 0px rgba(0, 0, 0, 0.3);
-  display: ${(props) => (props.$isActive ? 'flex' : 'none')};
-  flex-direction: column;
-  position: absolute;
   left: ${(props) => props.$left};
   bottom: ${(props) => props.$bottom};
-  z-index: 50;
+  z-index: 2;
+  gap: 8px;
   cursor: pointer;
+  align-items: flex-start;
+  border-radius: 12px;
+  box-shadow: 0px 0px 25px 0px rgba(0, 0, 0, 0.05);
 `;
 
 export interface DropdownProps {
   children: React.ReactNode;
   isOpen: boolean;
-  toggleDropdown: () => void;
-  dropdownRef: React.RefObject<HTMLTableSectionElement>;
   left: string;
   bottom: string;
-  dropdownActivator: string;
 }
 
 export default function Dropdown({
   children,
   isOpen,
-  toggleDropdown,
-  dropdownRef,
   left,
   bottom,
 }: DropdownProps) {
   return (
-    <ClickEventContainer ref={dropdownRef}>
-      <button onClick={toggleDropdown}>더보기</button>
+    <ClickEventContainer>
       <DropdownWrapper $isActive={isOpen} $left={left} $bottom={bottom}>
         {children}
       </DropdownWrapper>

@@ -1,8 +1,10 @@
+import Thumbnail from '@components/Thumbnail/Thumbnail';
 import { Typography } from '@components/common';
-import { useTaskWithProjectActions } from '@libs/store/task/project';
+import { useBreadCrumbActions } from '@libs/store/breadcrumb/breadcrumb';
+import { useTaskActions } from '@libs/store/task/task';
 import { useGetProject } from '@services/project/Project.hooks';
 
-import { DropdownItem, DropdownItemText, ImageWrapper } from './style';
+import { DropdownItem, DropdownItemText } from './style';
 
 interface ProjectDropdownItemProps {
   projectId: number;
@@ -11,25 +13,30 @@ interface ProjectDropdownItemProps {
 export const ProjectDropdownItem = ({
   projectId,
 }: ProjectDropdownItemProps) => {
-  const { projectData } = useGetProject(projectId);
+  const { project } = useGetProject(projectId);
 
-  const { setProjects } = useTaskWithProjectActions();
+  const { setProject } = useTaskActions();
+  const { setProjectRoute } = useBreadCrumbActions();
 
-  if (!projectData) return null;
+  if (!project) return null;
 
   const handleProjectClick = () => {
-    setProjects([projectData]);
+    setProject(project);
+    setProjectRoute(project.title);
   };
 
   return (
     <DropdownItem onClick={handleProjectClick}>
-      <ImageWrapper></ImageWrapper>
+      <Thumbnail
+        thumbnail={project.thumbnail}
+        thumbnailType={project.thumbnailType}
+      />
       <DropdownItemText>
         <Typography variant="heading-4" color="black">
-          {projectData.title}
+          {project.title}
         </Typography>
         <Typography variant="small-text-b" color="black35">
-          {projectData.subTitle}
+          {project.subTitle}
         </Typography>
       </DropdownItemText>
     </DropdownItem>
