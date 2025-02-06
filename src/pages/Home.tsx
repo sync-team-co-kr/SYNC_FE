@@ -1,14 +1,12 @@
-import TabMenu from '@components/TabMenu/TabMenu';
+import { modalStore } from '@libs/store';
 
-const test = [
-  { route: '/', tabMenuName: '1번 메뉴' },
-  { route: '/about', tabMenuName: '2번 메뉴' },
-];
+import Modal from './Modal';
 
 function Home() {
+  const { openModal } = modalStore();
   return (
     <div>
-      <TabMenu tabMenuList={test} />
+      <button onClick={() => openModal(Modal, '홈 모달')}>모달 열기</button>
     </div>
   );
 }

@@ -1,19 +1,17 @@
 import React, { useEffect } from 'react';
 
-import CancelButton from '@assets/cancel-x.svg';
 import ScheduleRegistForm from '@components/Organism/ScheduleRegistForm';
 import { Button } from '@components/common/Button';
 import InputArea from '@components/common/InputArea';
 import InputWithIconArea from '@components/common/InputArea/InputWithIconArea';
 import Label from '@components/common/Label';
-import useModal from '@hooks/useModal';
+import { modalStore } from '@libs/store';
 import {
   useProjectActions,
   useProjectState,
 } from '@libs/store/project/project';
 import {
   CreateProjectModalForm,
-  CreateProjectModalHeader,
   InputWrapper,
   SubmitWrapper,
 } from '@pages/projects/components/CreateProjectModal/styles';
@@ -25,7 +23,7 @@ interface ModifyProjectModalProps {
 }
 
 function ModifyProjectModal({ projectId }: ModifyProjectModalProps) {
-  const [closeModal] = useModal();
+  const { closeModal } = modalStore();
 
   const { project, isLoading } = useGetProject(projectId);
   const { editProjectMutate } = useEditProject();
@@ -61,13 +59,6 @@ function ModifyProjectModal({ projectId }: ModifyProjectModalProps) {
   if (isLoading) return <></>;
   return (
     <>
-      <CreateProjectModalHeader>
-        <h1>프로젝트 설정</h1>
-        <button>
-          <img src={CancelButton} alt="닫기" />
-        </button>
-      </CreateProjectModalHeader>
-
       <CreateProjectModalForm>
         <InputWithIconArea
           value={title}
@@ -108,7 +99,7 @@ function ModifyProjectModal({ projectId }: ModifyProjectModalProps) {
             size="medium"
             variant="text"
             $hasIcon={false}
-            onClick={() => closeModal(ModifyProjectModal)}
+            onClick={closeModal}
             text="취소"
           />
           <Button

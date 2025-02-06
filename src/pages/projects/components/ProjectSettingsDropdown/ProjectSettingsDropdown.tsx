@@ -6,7 +6,7 @@ import {
   DropdownWrapper,
 } from '@components/dropdown/Dropdown.style';
 import DropdownItem from '@components/dropdown/DropdownItem';
-import useModal from '@hooks/useModal';
+import { modalStore } from '@libs/store';
 import DeleteProjectModal from '@pages/projects/components/DeleteProjectModal/DeleteProjectModal';
 import ModifyProjectModal from '@pages/projects/components/ModifyProjectModal';
 
@@ -19,7 +19,7 @@ const ProjectSettingsDropdown = ({
   isOpen,
   projectId,
 }: ProjectSettingsDropdownProps) => {
-  const [openModal] = useModal();
+  const { openModal } = modalStore();
 
   return (
     <DropdownWrapper $width={249} $isopen={isOpen} $positionLeft={-220}>
@@ -27,13 +27,15 @@ const ProjectSettingsDropdown = ({
         <DropdownItem
           text="프로젝트 삭제"
           Icon={TrashCan}
-          onClick={() => openModal(() => DeleteProjectModal({ projectId }))}
+          onClick={() =>
+            openModal(() => DeleteProjectModal({ projectId }), '프로젝트 삭제')
+          }
         />
         <DropdownItem
           text="프로젝트 설정"
           Icon={Settings}
           onClick={() => {
-            openModal(() => ModifyProjectModal({ projectId }));
+            openModal(() => ModifyProjectModal({ projectId }), '프로젝트 수정');
           }}
         />
         <DropdownItem

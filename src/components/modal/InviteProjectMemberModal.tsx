@@ -1,30 +1,9 @@
 import React, { useState } from 'react';
 
-import CancelButton from '@assets/cancel-x.svg';
 import { Button } from '@components/common/Button';
 import { RawProject } from '@customTypes/project';
 import { userApiInstance } from '@libs/axios/axios';
 import { styled } from 'styled-components';
-
-const ModalHeader = styled.article`
-  width: 500px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  h2 {
-    color: var(--Black-White-Black-100, #202020);
-    /* Heading 3 */
-    font-family: Pretendard;
-    font-size: 22px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: 31px; /* 140.909% */
-  }
-  button {
-    border: none;
-    background-color: transparent;
-  }
-`;
 
 const Description = styled.p`
   color: var(--Alert-Color-Positive-Blue, #407bd2);
@@ -99,12 +78,6 @@ const InviteProjectMemberModal = ({
 
   return (
     <>
-      <ModalHeader>
-        <h2>초대하기</h2>
-        <button>
-          <img src={CancelButton} alt="닫기" />
-        </button>
-      </ModalHeader>
       <Description>해당 인원을 프로젝트로 초대할 수 있습니다.</Description>
       <Form>
         <Label>초대인원 이메일</Label>

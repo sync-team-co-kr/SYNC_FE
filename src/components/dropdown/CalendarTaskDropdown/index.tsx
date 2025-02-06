@@ -7,7 +7,7 @@ import { Button } from '@components/common/Button';
 import { Typography } from '@components/common/Typography';
 import { CreateTaskModal } from '@components/modal/CreateTaskModal';
 import { RawProject } from '@customTypes/project';
-import useModal from '@hooks/useModal';
+import { modalStore } from '@libs/store';
 import { useTaskActions } from '@libs/store/task/task';
 import { useGetProjects } from '@services/project/Project.hooks';
 
@@ -28,11 +28,11 @@ const CalendarTaskDropdown = (
   ref: ForwardedRef<HTMLDivElement>,
 ) => {
   const { projects } = useGetProjects();
-  const [openModal] = useModal();
+  const { openModal } = modalStore();
 
   const { setProject } = useTaskActions();
   const handleOpenCreateTaskModal = (project: RawProject) => {
-    openModal(CreateTaskModal);
+    openModal(CreateTaskModal, '업무 생성');
     setProject(project);
   };
 

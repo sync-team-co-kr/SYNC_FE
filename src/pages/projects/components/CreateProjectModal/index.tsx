@@ -1,12 +1,11 @@
 import React, { useEffect } from 'react';
 
-import CancelButton from '@assets/cancel-x.svg';
 import ScheduleRegistForm from '@components/Organism/ScheduleRegistForm';
 import { Button } from '@components/common/Button';
 import InputArea from '@components/common/InputArea';
 import InputWithIconArea from '@components/common/InputArea/InputWithIconArea';
 import Label from '@components/common/Label';
-import useModal from '@hooks/useModal';
+import { modalStore } from '@libs/store';
 import {
   useProjectActions,
   useProjectState,
@@ -14,15 +13,10 @@ import {
 import { useCreateProject } from '@services/project/Project.hooks';
 import isStartDateExceedsEndDate from '@utils/project/validateProject';
 
-import {
-  CreateProjectModalForm,
-  CreateProjectModalHeader,
-  InputWrapper,
-  SubmitWrapper,
-} from './styles';
+import { CreateProjectModalForm, InputWrapper, SubmitWrapper } from './styles';
 
 function CreateProjectModal() {
-  const [closeModal] = useModal();
+  const { closeModal } = modalStore();
 
   const {
     payload,
@@ -52,13 +46,6 @@ function CreateProjectModal() {
 
   return (
     <>
-      <CreateProjectModalHeader>
-        <h1>프로젝트 추가</h1>
-        <button>
-          <img src={CancelButton} alt="닫기" />
-        </button>
-      </CreateProjectModalHeader>
-
       <CreateProjectModalForm>
         <InputWithIconArea
           value={title}
@@ -99,7 +86,7 @@ function CreateProjectModal() {
             size="medium"
             variant="text"
             $hasIcon={false}
-            onClick={() => closeModal(CreateProjectModal)}
+            onClick={closeModal}
             text="취소"
           />
           <Button

@@ -1,8 +1,11 @@
 import React, { useEffect, useRef } from 'react';
 
+import { ReactComponent as CloseX } from '@assets/cancel-x.svg';
 import { modalStore } from '@libs/store';
 import styled from 'styled-components';
+import { vars } from 'token';
 
+import { Button } from './Button';
 import ModalPortal from './ModalPortal';
 
 const ModalWrapperContainer = styled.div<{ $isActive: boolean }>`
@@ -29,13 +32,24 @@ const Container = styled.section`
   gap: 32px;
 `;
 
+export const ModalHeader = styled.div`
+  width: 100%;
+  display: inline-flex;
+  justify-content: space-between;
+  align-items: center;
+  h3 {
+    ${vars.sementic.typography['heading-3']};
+    color: ${vars.sementic.color.black};
+  }
+`;
+
 export interface ModalRef {
   children: React.ReactNode;
   isOpen: boolean;
 }
 
 export default function ModalWrapper({ children, isOpen }: ModalRef) {
-  const { closeModal } = modalStore();
+  const { title, closeModal } = modalStore();
 
   const modalRef = useRef<HTMLDivElement>(null);
 
@@ -57,7 +71,19 @@ export default function ModalWrapper({ children, isOpen }: ModalRef) {
   return (
     <ModalPortal>
       <ModalWrapperContainer $isActive={isOpen}>
-        <Container ref={modalRef}>{children}</Container>
+        <Container ref={modalRef}>
+          <ModalHeader>
+            <h3>{title}</h3>
+            <Button
+              $hasIcon
+              $renderIcon={<CloseX width={24} height={24} />}
+              onClick={closeModal}
+              size="small"
+              variant="text"
+            />
+          </ModalHeader>
+          {children}
+        </Container>
       </ModalWrapperContainer>
     </ModalPortal>
   );

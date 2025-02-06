@@ -1,19 +1,6 @@
 import { styled } from 'styled-components';
 import { vars } from 'token';
 
-export const CreateProjectModalHeader = styled.section`
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  h1 {
-    color: ${vars.sementic.color.black} ${vars.sementic.typography['heading-3']};
-  }
-  button {
-    background-color: transparent;
-    border: none;
-  }
-`;
-
 export const CreateProjectModalForm = styled.form`
   width: 472px;
   background: ${vars.sementic.color.white};

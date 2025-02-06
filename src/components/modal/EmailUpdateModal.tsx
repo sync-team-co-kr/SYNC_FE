@@ -1,14 +1,5 @@
 import styled from 'styled-components';
 
-const Title = styled.h2`
-  color: var(--main-black, #000);
-  font-family: Pretendard;
-  font-size: 24px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: normal;
-`;
-
 const Form = styled.form`
   width: 100%;
   display: flex;
@@ -27,7 +18,9 @@ const InputContainer = styled.div`
 const Label = styled.label`
   height: 12px;
   color: #a6b3be;
-  font-feature-settings: 'clig' off, 'liga' off;
+  font-feature-settings:
+    'clig' off,
+    'liga' off;
   font-family: Inter;
   font-size: 14px;
   font-style: normal;
@@ -62,7 +55,6 @@ const Submit = styled.input`
 export default function EmailUpdateModal() {
   return (
     <>
-      <Title>이메일 변경</Title>
       <Form>
         <InputContainer>
           <Label>현재 이메일</Label>

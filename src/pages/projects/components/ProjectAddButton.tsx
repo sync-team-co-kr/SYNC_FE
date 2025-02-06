@@ -1,6 +1,6 @@
 import { ReactComponent as Add } from '@assets/add.svg';
 import { Button } from '@components/common/Button';
-import useModal from '@hooks/useModal';
+import { modalStore } from '@libs/store';
 import CreateProjectModal from '@pages/projects/components/CreateProjectModal';
 import styled from 'styled-components';
 
@@ -12,7 +12,7 @@ const Container = styled.div`
 `;
 
 const ProjectAddButton = () => {
-  const [openModal] = useModal();
+  const { openModal } = modalStore();
   return (
     <Container>
       <Button
@@ -21,7 +21,9 @@ const ProjectAddButton = () => {
         $hasIcon={true}
         $isDisabled={false}
         $iconPosition="left"
-        onClick={() => openModal(CreateProjectModal)}
+        onClick={() => {
+          openModal(CreateProjectModal, '프로젝트 추가');
+        }}
         text="프로젝트 추가"
         $renderIcon={<Add />}
       />

@@ -1,7 +1,6 @@
 // 업무 생성 모달 내 form
 import { ChangeEvent } from 'react';
 
-import { ReactComponent as CloseX } from '@assets/cancel-x.svg';
 import { Editor } from '@components/Editor';
 import ScheduleRegistForm from '@components/Organism/ScheduleRegistForm';
 import { Button } from '@components/common/Button';
@@ -24,7 +23,6 @@ import {
   Container,
   ContainerContent,
   ContainerFooter,
-  ContainerHeader,
   SectionContainer,
 } from './style';
 
@@ -61,19 +59,19 @@ export const CreateTaskModal = () => {
     setStartDate,
     setEndDate,
     setTitleImage,
-    resetPayload,
     removeErrorList,
-    clearErrorList,
   } = useTaskActions();
 
   const { createTaskMutate } = useCreateTask();
 
+  /*
   const handleCloseModal = () => {
     closeModal();
 
     resetPayload();
     clearErrorList();
   };
+  */
 
   const handleCreateTask = () => {
     // 필수 입력값 체크
@@ -134,18 +132,6 @@ export const CreateTaskModal = () => {
 
   return (
     <Container>
-      <ContainerHeader>
-        <Typography variant="heading-3" color="black">
-          업무 생성
-        </Typography>
-        <Button
-          $hasIcon
-          $renderIcon={<CloseX width={24} height={24} />}
-          onClick={handleCloseModal}
-          size="small"
-          variant="text"
-        />
-      </ContainerHeader>
       <ContainerContent>
         {/* project name */}
         <SectionContainer>

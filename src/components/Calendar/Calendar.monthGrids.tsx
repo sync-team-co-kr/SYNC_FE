@@ -5,7 +5,7 @@ import { TimeTable } from '@components/TimeTable';
 import { EditTaskModal } from '@components/modal/EditTaskModal';
 import { ICalendarDay } from '@customTypes/calendar';
 import { ITask } from '@customTypes/task';
-import useModal from '@hooks/useModal';
+import { modalStore } from '@libs/store';
 import { useCalendarActions } from '@libs/store/task/calendar';
 import { useTaskActions } from '@libs/store/task/task';
 import { formatTimeIntl } from '@pages/Calendars/Calendar.utils';
@@ -40,7 +40,7 @@ const MonthGridContents = ({
   const navigate = useNavigate();
   const { setTaskId } = useTaskActions();
   const { setSpecificDate } = useCalendarActions();
-  const [openModal] = useModal();
+  const { openModal } = modalStore();
 
   const isTaskScheduleWithInInterval = (task: ITask) => {
     const interval = {
@@ -59,7 +59,7 @@ const MonthGridContents = ({
   };
 
   const EditModalOpenHandler = (taskId: number) => {
-    openModal(EditTaskModal);
+    openModal(EditTaskModal, '업무 수정');
     setTaskId(taskId);
   };
 

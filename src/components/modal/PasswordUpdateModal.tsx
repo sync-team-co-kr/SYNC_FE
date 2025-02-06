@@ -1,28 +1,5 @@
 import styled from 'styled-components';
 
-const ModalHeader = styled.article`
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  h2 {
-    color: var(--main-black, #000);
-    font-family: Pretendard;
-    font-size: 24px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: normal;
-  }
-  p {
-    color: #a6b3be;
-    font-feature-settings: 'clig' off, 'liga' off;
-    font-family: Inter;
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
-  }
-`;
-
 const Form = styled.form`
   width: 100%;
   display: flex;
@@ -41,7 +18,9 @@ const InputContainer = styled.div`
 const Label = styled.label`
   height: 12px;
   color: #a6b3be;
-  font-feature-settings: 'clig' off, 'liga' off;
+  font-feature-settings:
+    'clig' off,
+    'liga' off;
   font-family: Inter;
   font-size: 14px;
   font-style: normal;
@@ -76,11 +55,6 @@ const Submit = styled.input`
 export default function PasswordUpdateModal() {
   return (
     <>
-      <ModalHeader>
-        <h2>비밀번호 변경</h2>
-        <p>특수 문자를 포함한 OO글자 이상 입력해주세요.</p>
-      </ModalHeader>
-
       <Form>
         <InputContainer>
           <Label>현재 비밀번호</Label>
