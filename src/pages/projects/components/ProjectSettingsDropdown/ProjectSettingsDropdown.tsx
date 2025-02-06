@@ -12,11 +12,13 @@ import ModifyProjectModal from '@pages/projects/components/ModifyProjectModal';
 
 interface ProjectSettingsDropdownProps {
   isOpen: boolean;
+  closeDropdown: () => void;
   projectId: number;
 }
 
 const ProjectSettingsDropdown = ({
   isOpen,
+  closeDropdown,
   projectId,
 }: ProjectSettingsDropdownProps) => {
   const { openModal } = modalStore();
@@ -27,15 +29,17 @@ const ProjectSettingsDropdown = ({
         <DropdownItem
           text="프로젝트 삭제"
           Icon={TrashCan}
-          onClick={() =>
-            openModal(() => DeleteProjectModal({ projectId }), '프로젝트 삭제')
-          }
+          onClick={() => {
+            openModal(() => DeleteProjectModal({ projectId }), '프로젝트 삭제');
+            closeDropdown();
+          }}
         />
         <DropdownItem
           text="프로젝트 설정"
           Icon={Settings}
           onClick={() => {
             openModal(() => ModifyProjectModal({ projectId }), '프로젝트 수정');
+            closeDropdown();
           }}
         />
         <DropdownItem

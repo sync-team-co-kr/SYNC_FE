@@ -27,7 +27,7 @@ export const MeatBallsWrap = styled.section`
   width: 28px;
   height: 28px;
   cursor: pointer;
-  position: absolute;
+  position: relative;
 `;
 
 export const ProjectBoardTitle = styled.article`

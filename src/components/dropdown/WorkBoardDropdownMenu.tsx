@@ -47,12 +47,14 @@ const ProjectDropdownMenuList = styled.ul`
 
 interface WorkDropdownMenuPRops {
   isOpen: boolean;
+  closeDropdown: () => void;
   projectId: number;
   taskId: number;
 }
 
 const WorkBoardDropdownMenu = ({
   isOpen,
+  closeDropdown,
   projectId,
   taskId,
 }: WorkDropdownMenuPRops) => {
@@ -61,6 +63,7 @@ const WorkBoardDropdownMenu = ({
   const handleDeleteTask = async (e: React.MouseEvent<HTMLLIElement>) => {
     e.preventDefault();
     deleteTaskMutate();
+    closeDropdown();
   };
 
   return (

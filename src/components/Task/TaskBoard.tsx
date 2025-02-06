@@ -157,6 +157,7 @@ const TaskBoard = ({ projectId, task }: { projectId: number; task: ITask }) => {
             />
             <WorkBoardDropdownMenu
               isOpen={isOpenProjectDropdownMenu}
+              closeDropdown={toggleProjectDropdownMenu}
               projectId={projectId}
               taskId={task.taskId}
             />

@@ -40,6 +40,7 @@ const ProjectBoardItem = ({ project }: { project: RawProject }) => {
           <MeatBalls onClick={toggleProjectDropdownMenu} />
           <ProjectSettingsDropdown
             isOpen={isOpenProjectDropdownMenu}
+            closeDropdown={toggleProjectDropdownMenu}
             projectId={project.projectId}
           />
         </MeatBallsWrap>
