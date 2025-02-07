@@ -64,8 +64,8 @@ const ProjectList = () => {
           <thead>
             <tr>
               <th className="ProjectTitle">프로젝트명</th>
-              <th>설명</th>
-              <th>진행률</th>
+              <th className="ProjectDescription">설명</th>
+              <th className="Projectprogress">진행률</th>
               <th className="ProjectMembers">담당자</th>
               <th className="ProjectCalendar">남은기간</th>
               <th className="Filter">&nbsp;</th>
@@ -149,6 +149,7 @@ const ProjectList = () => {
                     />
                     <ProjectSettingsDropdown
                       isOpen={isOpenProjectDropdownMenu}
+                      closeDropdown={toggleProjectDropdownMenu}
                       projectId={project.projectId}
                     />
                   </MeatBalls>

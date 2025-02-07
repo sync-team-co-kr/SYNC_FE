@@ -3,7 +3,7 @@ import {
   EmailUpdateModal,
   PasswordUpdateModal,
 } from '@components/modal';
-import { useModal } from '@hooks';
+import { modalStore } from '@libs/store';
 import styled from 'styled-components';
 
 const AuthHeader = styled.article`
@@ -87,7 +87,7 @@ const PrivacyItem = styled.li`
 `;
 
 export default function Auth() {
-  const [openModal] = useModal();
+  const { openModal } = modalStore();
 
   return (
     <>
@@ -104,7 +104,7 @@ export default function Auth() {
               <p>아이디 : kimjiyong2523@gmail.com</p>
               <button
                 onClick={() => {
-                  openModal(EmailUpdateModal);
+                  openModal(EmailUpdateModal, '이메일 수정');
                 }}
               >
                 이메일 변경
@@ -114,7 +114,7 @@ export default function Auth() {
               <p>비밀번호 : 1234****</p>
               <button
                 onClick={() => {
-                  openModal(PasswordUpdateModal);
+                  openModal(PasswordUpdateModal, '비밀번호 수정');
                 }}
               >
                 비밀번호 변경
@@ -126,7 +126,7 @@ export default function Auth() {
             <p>계정 삭제</p>
             <button
               onClick={() => {
-                openModal(DeleteAccountModal);
+                openModal(DeleteAccountModal, '계정 삭제');
               }}
             >
               계정 삭제하기

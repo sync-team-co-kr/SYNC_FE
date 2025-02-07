@@ -4,7 +4,7 @@ import useFilterDayCalendarTimeTables from '@components/Calendar/hooks/useFilter
 import { TimeTable } from '@components/TimeTable';
 import { Typography } from '@components/common/Typography';
 import { EditTaskModal } from '@components/modal/EditTaskModal';
-import useModal from '@hooks/useModal';
+import { modalStore } from '@libs/store';
 import { useTaskActions, useTaskState } from '@libs/store/task/task';
 import { CalendarContext } from '@pages/Calendars/Calendar.provider';
 import {
@@ -102,7 +102,7 @@ const TimeTablePeriod = styled.p`
  */
 
 export const CalendarDay = () => {
-  const [openModal] = useModal();
+  const { openModal } = modalStore();
 
   const { project } = useTaskState();
   const { setTaskId } = useTaskActions();
@@ -126,7 +126,7 @@ export const CalendarDay = () => {
   };
 
   const EditModalOpenHandler = (taskId: number) => {
-    openModal(EditTaskModal);
+    openModal(EditTaskModal, '업무 수정');
     setTaskId(taskId);
   };
 

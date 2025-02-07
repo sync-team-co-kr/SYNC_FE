@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { ReactComponent as ArrowBottom } from '@assets/common/arrow/arrow-bottom.svg';
@@ -10,7 +10,7 @@ import { styled } from 'styled-components';
 import { vars } from 'token';
 
 const ProjectNavigator = styled.section`
-  width: 100%;
+  width: fit-content;
   height: 48px;
   padding: 0px 40px;
   display: flex;
@@ -40,14 +40,31 @@ const ProjectDropdown = () => {
   const { projects } = useGetProjects();
 
   const navigate = useNavigate();
-
+  const dropdownRef = useRef<HTMLDivElement>(null);
   const handleSelectProjectNavigationItem = (project: RawProject) => {
     setProjectRoute(project.title);
     navigate(`/projects/${project.projectId}`);
+    setIsOpen(false);
   };
 
+  const modalOutSideClick = (e: MouseEvent) => {
+    if (
+      dropdownRef.current &&
+      !dropdownRef.current.contains(e.target as Node)
+    ) {
+      setIsOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('mousedown', modalOutSideClick);
+    return () => {
+      document.removeEventListener('mousedown', modalOutSideClick);
+    };
+  }, [dropdownRef, isOpen]);
+
   return (
-    <ProjectNavigator>
+    <ProjectNavigator ref={dropdownRef}>
       <div onClick={() => setIsOpen((prevState) => !prevState)}>
         <h5>전체보기</h5>
         <ArrowBottom />

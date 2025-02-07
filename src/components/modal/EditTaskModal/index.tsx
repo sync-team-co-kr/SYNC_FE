@@ -1,7 +1,6 @@
 // 업무 생성 모달 내 form
 import { ChangeEvent, useEffect, useState } from 'react';
 
-import { ReactComponent as CloseX } from '@assets/cancel-x.svg';
 import { Editor } from '@components/Editor';
 import { Button } from '@components/common/Button';
 import { Select } from '@components/common/Select/Select';
@@ -19,7 +18,6 @@ import {
   Container,
   ContainerContent,
   ContainerFooter,
-  ContainerHeader,
   SectionContainer,
 } from '@components/modal/CreateTaskModal/style';
 import { modalStore } from '@libs/store';
@@ -101,18 +99,6 @@ export const EditTaskModal = ({
 
   return (
     <Container>
-      <ContainerHeader>
-        <Typography variant="heading-3" color="black">
-          업무 수정
-        </Typography>
-        <Button
-          $hasIcon
-          $renderIcon={<CloseX width={24} height={24} />}
-          onClick={closeModal}
-          size="small"
-          variant="text"
-        />
-      </ContainerHeader>
       <ContainerContent>
         {/* project name */}
         <SectionContainer>

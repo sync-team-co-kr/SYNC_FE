@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-import passwordIcon from '@assets/lock-01.svg';
-import mail from '@assets/mail-01.svg';
+import { ReactComponent as PasswordSVG } from '@assets/lock-01.svg';
+import { ReactComponent as MailSVG } from '@assets/mail-01.svg';
+import { userApiInstance } from '@libs/axios/axios';
 import { loginAPI } from '@services/api';
-import axios, { AxiosError } from 'axios';
-import config from 'config/config';
-import styled from 'styled-components';
+import { AxiosError } from 'axios';
+import { styled } from 'styled-components';
 import Cookies from 'universal-cookie';
 
 const Main = styled.main`
@@ -53,11 +53,10 @@ const InputWrapper = styled.div`
   display: flex;
   align-items: center;
   position: relative;
-`;
-
-const InputIcon = styled.img`
-  position: absolute;
-  left: 16px;
+  svg {
+    position: absolute;
+    left: 16px;
+  }
 `;
 
 const Input = styled.input`
@@ -135,7 +134,7 @@ const DEFAULT_ERROR_MESSAGE = {
   password: '',
 };
 
-export default function Login() {
+const LoginDevelopment = () => {
   const [loginForm, setLoginForm] = useState({
     userId: '',
     password: '',
@@ -197,8 +196,8 @@ export default function Login() {
         const inviteCode = cookies.get('invite-code');
 
         if (inviteCode) {
-          await axios.post(
-            `${config.backendUrl}/user/api/invite`,
+          await userApiInstance.post(
+            `/user/api/invite`,
             { token: inviteCode },
             {
               withCredentials: true,
@@ -208,7 +207,6 @@ export default function Login() {
           cookies.remove('invite-code');
         }
 
-        window.alert('로그인 성공!');
         navigate('/');
         return true;
       }
@@ -231,24 +229,13 @@ export default function Login() {
     }
   };
 
-  const naverLogin = async () => {
-    await axios.post(
-      'http://150.230.190.128:8090/oauth2/authorization/naver',
-      {},
-      {
-        withCredentials: true,
-      },
-    );
-  };
-
   return (
     <Main>
       <Wrapper>
-        <button onClick={naverLogin}>네이버 로그인</button>
         <Title>로그인</Title>
         <Form>
           <InputWrapper>
-            <InputIcon src={mail} />
+            <MailSVG />
             <Input
               type="text"
               value={loginForm.userId}
@@ -260,7 +247,7 @@ export default function Login() {
           </InputWrapper>
 
           <InputWrapper>
-            <InputIcon src={passwordIcon} />
+            <PasswordSVG />
             <Input
               type="password"
               value={loginForm.password}
@@ -289,4 +276,6 @@ export default function Login() {
       </Wrapper>
     </Main>
   );
-}
+};
+
+export default LoginDevelopment;

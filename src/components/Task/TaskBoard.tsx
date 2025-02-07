@@ -7,8 +7,8 @@ import { Tag } from '@components/common/Tag';
 import { Typography } from '@components/common/Typography';
 import WorkBoardDropdownMenu from '@components/dropdown/WorkBoardDropdownMenu';
 import { ITask } from '@customTypes/task';
-import { useModal } from '@hooks';
 import useDropdown from '@hooks/useDropdown';
+import { modalStore } from '@libs/store';
 import { useTaskActions } from '@libs/store/task/task';
 import { differenceInDays } from 'date-fns';
 import styled from 'styled-components';
@@ -134,7 +134,7 @@ const TaskBoard = ({ projectId, task }: { projectId: number; task: ITask }) => {
   ] = useDropdown();
   const { setTitle, setDescription } = useTaskActions();
 
-  const [openModal] = useModal();
+  const { openModal } = modalStore();
 
   const [, drag] = useDrag(() => ({
     type: 'TaskBoard',
@@ -159,6 +159,7 @@ const TaskBoard = ({ projectId, task }: { projectId: number; task: ITask }) => {
             />
             <WorkBoardDropdownMenu
               isOpen={isOpenProjectDropdownMenu}
+              closeDropdown={toggleProjectDropdownMenu}
               projectId={projectId}
               taskId={task.taskId}
             />
@@ -168,7 +169,8 @@ const TaskBoard = ({ projectId, task }: { projectId: number; task: ITask }) => {
           onClick={() => {
             setTitle(task.title);
             setDescription(task.description);
-            openModal(UpdateTaskModal);
+
+            openModal(UpdateTaskModal, '업무 수정');
           }}
         >
           <Description>

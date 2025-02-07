@@ -56,7 +56,7 @@ const TaskBoardList = () => {
           borderColor={vars.sementic.color.black10}
           backgroundColor={vars.sementic.color.lightRed}
           projectId={Number(id)}
-          tasks={draggingTempTasks.filter((task) => task.status === 2)}
+          tasks={draggingTempTasks.filter((task) => task.status === 0)}
         />
         <TaskBoardItem
           title="하는 중"
@@ -71,7 +71,7 @@ const TaskBoardList = () => {
           titleColor="black35"
           borderColor={vars.sementic.color.black10}
           projectId={Number(id)}
-          tasks={draggingTempTasks.filter((task) => task.status === 0)}
+          tasks={draggingTempTasks.filter((task) => task.status === 2)}
           backgroundColor={vars.sementic.color.black10}
         />
       </StyledTaskBoardList>
@@ -84,7 +84,7 @@ const TaskBoardList = () => {
         borderColor={vars.sementic.color.black10}
         backgroundColor={vars.sementic.color.lightRed}
         projectId={Number(id)}
-        tasks={tasks.filter((task) => task.status === 2)}
+        tasks={tasks.filter((task) => task.status === 0)}
       />
       <TaskBoardItem
         title="하는 중"
@@ -99,7 +99,7 @@ const TaskBoardList = () => {
         titleColor="black35"
         borderColor={vars.sementic.color.black10}
         projectId={Number(id)}
-        tasks={tasks.filter((task) => task.status === 0)}
+        tasks={tasks.filter((task) => task.status === 2)}
         backgroundColor={vars.sementic.color.black10}
       />
     </StyledTaskBoardList>

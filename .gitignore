@@ -23,6 +23,7 @@
 # localhost https
 *.pem
 cert/
+certs/*
 
 
 npm-debug.log*

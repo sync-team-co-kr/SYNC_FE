@@ -1,21 +1,20 @@
-import { ForwardedRef, forwardRef, useRef } from 'react';
+import { ForwardedRef, forwardRef } from 'react';
 
 import { ReactComponent as Search } from '@assets/searchSM.svg';
 import { Button } from '@components/common/Button';
 import { Portal } from '@components/common/Portal';
 import CalendarFilterDropdown from '@components/dropdown/CalendarFilterDropdown';
-import { useModalState } from '@hooks/useModalState';
+import useDropdown from '@hooks/useDropdown';
 
 const CalendarFilterButton = (
   _: unknown,
   ref: ForwardedRef<HTMLDivElement>,
 ) => {
-  const filterDropdownRef = useRef(null);
-  const [isOpenFilter, openFilter, closeFilter] = useModalState();
+  const [isOpenFilter, toggleFilter, filterDropdownRef] = useDropdown();
   return (
     <>
       <Button
-        onClick={openFilter}
+        onClick={toggleFilter}
         variant="outline"
         size="medium"
         text="필터"
@@ -29,7 +28,7 @@ const CalendarFilterButton = (
         <CalendarFilterDropdown
           ref={filterDropdownRef}
           isOpen={isOpenFilter}
-          setClose={closeFilter}
+          setClose={toggleFilter}
         />
       </Portal>
     </>

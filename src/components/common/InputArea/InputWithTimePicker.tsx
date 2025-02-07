@@ -1,10 +1,11 @@
-import React, { useEffect } from 'react';
+import { useContext } from 'react';
 
 import { ReactComponent as TimePickerIcon } from '@assets/input/time.svg';
-import TimePickerDropdown from '@components/dropdown/TimePickerDropdown';
+import TimePickerDropdown from '@components/Organism/TimePickerDropdown';
 import useDropdown from '@hooks/useDropdown';
 import useTimePicker from '@hooks/useTimePicker';
-import { setHours, setMinutes } from 'date-fns';
+import { getFormatTime } from '@utils/workUnit';
+import { WorkUnitScheduleContext } from 'contexts/workUnitScheduleContext';
 import { styled } from 'styled-components';
 import { vars } from 'token';
 
@@ -29,42 +30,33 @@ const TimePickerSvg = styled.div`
 `;
 
 interface InputWithTimePickerProps {
-  date?: Date;
-  setDate: (date: Date) => void;
+  scheduleType: 'start' | 'end';
   labelText?: string;
   placeholderText: string;
   isDisabled: boolean;
 }
 
 const InputWithTimePicker = ({
-  date,
-  setDate,
+  scheduleType,
   placeholderText,
   isDisabled,
 }: InputWithTimePickerProps) => {
-  const { pickedTime, setPickedTime } = useTimePicker();
   const [
     isOpenTimePickerDropdown,
     toggleTimePickerDropdown,
     timePickerDropdownRef,
   ] = useDropdown();
-
-  useEffect(() => {
-    const { hour, minute } = pickedTime;
-    if (date) {
-      setDate(setMinutes(setHours(date, hour), minute));
-    }
-  }, [pickedTime.hour, pickedTime.minute]);
+  const { startDate, endDate } = useContext(WorkUnitScheduleContext);
+  const { pickedTime, handleClickTimePickerElement } = useTimePicker(
+    scheduleType,
+    scheduleType === 'start' ? startDate : endDate,
+  );
 
   return (
     <SInputWithTimePicker $isdisabled={isDisabled}>
       <input
         type="text"
-        value={
-          date
-            ? `${date.getHours().toString().padStart(2, '0')} : ${date.getMinutes().toString().padStart(2, '0')}`
-            : ''
-        }
+        value={getFormatTime(scheduleType, startDate, endDate)}
         placeholder={placeholderText}
         readOnly
         disabled={isDisabled}
@@ -78,10 +70,8 @@ const InputWithTimePicker = ({
       </TimePickerSvg>
       <TimePickerDropdown
         isOpen={isOpenTimePickerDropdown}
-        usePickedTimeState={{
-          state: pickedTime,
-          setState: setPickedTime,
-        }}
+        value={pickedTime}
+        onClick={handleClickTimePickerElement}
       />
     </SInputWithTimePicker>
   );

@@ -1,7 +1,7 @@
 import { WithdrawProjectModal } from '@components/modal';
-import useModal from '@hooks/useModal';
+import { modalStore } from '@libs/store';
 import DeleteProjectModal from '@pages/projects/components/DeleteProjectModal/DeleteProjectModal';
-import ModifyProjectModal from '@pages/projects/components/ModifyProjectModal/ModifyProjectModal';
+import ModifyProjectModal from '@pages/projects/components/ModifyProjectModal';
 import styled from 'styled-components';
 
 const Wrapper = styled.ul<{ $isOpen: boolean }>`
@@ -52,14 +52,14 @@ interface SettingsProjectDropdownProps {
 export default function SettingsProject({
   isOpen,
 }: SettingsProjectDropdownProps) {
-  const [openModal] = useModal();
+  const { openModal } = modalStore();
 
   return (
     <>
       <Wrapper $isOpen={isOpen}>
         <SettingsItem
           onClick={() => {
-            openModal(DeleteProjectModal);
+            openModal(DeleteProjectModal, '프로젝트 삭제');
           }}
         >
           <p>프로젝트 삭제</p>
@@ -68,7 +68,7 @@ export default function SettingsProject({
 
         <SettingsItem
           onClick={() => {
-            openModal(WithdrawProjectModal);
+            openModal(WithdrawProjectModal, '프로젝트 탈퇴');
           }}
         >
           <p>프로젝트 탈퇴</p>
@@ -77,7 +77,7 @@ export default function SettingsProject({
 
         <SettingsItem
           onClick={() => {
-            openModal(ModifyProjectModal);
+            openModal(ModifyProjectModal, '프로젝트 수정');
           }}
         >
           <p>프로젝트 설정</p>

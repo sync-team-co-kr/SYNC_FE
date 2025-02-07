@@ -6,13 +6,6 @@ export const Container = styled.div`
   flex-direction: column;
 `;
 
-export const ContainerHeader = styled.div`
-  width: 100%;
-  padding-bottom: 32px;
-  display: inline-flex;
-  justify-content: space-between;
-`;
-
 export const ContainerContent = styled.div`
   display: flex;
   flex-direction: column;

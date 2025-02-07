@@ -10,8 +10,8 @@ import { SettingsMemberItem } from '@components/settings';
 import { AxiosResByData } from '@customTypes/common/AxiosRes';
 import RawProject from '@customTypes/project/RawProject';
 import useDropdown from '@hooks/useDropdown';
-import useModal from '@hooks/useModal';
 import { userApiInstance } from '@libs/axios/axios';
+import { modalStore } from '@libs/store';
 import { useGetProjectMembers } from '@services/member/Member.hooks';
 import { useGetProjects } from '@services/project/Project.hooks';
 import { AxiosResponse } from 'axios';
@@ -40,7 +40,7 @@ import {
 } from './styles';
 
 const MembersSettings = () => {
-  const [openModal] = useModal();
+  const { openModal } = modalStore();
   const [
     isOpenProjectNavigation,
     toggleProjectListDropdown,
@@ -162,13 +162,15 @@ const MembersSettings = () => {
 
               <InviteEmailButton
                 onClick={() =>
-                  openModal(() =>
-                    InviteProjectMemberModal({
-                      project: {
-                        title: selectedProject?.title || '',
-                        projectId: selectedProject?.projectId || 0,
-                      },
-                    }),
+                  openModal(
+                    () =>
+                      InviteProjectMemberModal({
+                        project: {
+                          title: selectedProject?.title || '',
+                          projectId: selectedProject?.projectId || 0,
+                        },
+                      }),
+                    '멤버 초대',
                   )
                 }
               >

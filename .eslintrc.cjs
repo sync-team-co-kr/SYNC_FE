@@ -21,7 +21,7 @@ module.exports = {
       'warn',
       { allowConstantExport: true },
     ],
-    'import/no-extraneous-dependencies': ['error', { devDependencies: true }],
+    'import/no-extraneous-dependencies': ['error', { devDependencies: false }],
     'import/extensions': [
       'error',
       'ignorePackages',

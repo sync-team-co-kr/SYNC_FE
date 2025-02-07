@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom/client';
 import 'react-quill/dist/quill.snow.css';
 import { BrowserRouter } from 'react-router-dom';
 
-import { MainRoutes } from '@routes';
+import MainRoute from '@routes/MainRoute';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import 'pretendard/dist/web/variable/pretendardvariable.css';
@@ -49,7 +49,7 @@ root.render(
       <ReactQueryDevtools initialIsOpen={false} />
       <CookiesProvider>
         <BrowserRouter>
-          <MainRoutes />
+          <MainRoute />
         </BrowserRouter>
       </CookiesProvider>
     </QueryClientProvider>

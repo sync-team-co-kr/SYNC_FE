@@ -1,5 +1,5 @@
 import { ProfileUpdateModel } from '@components/modal';
-import { useModal } from '@hooks';
+import { modalStore } from '@libs/store';
 import styled from 'styled-components';
 
 const ProfileHeader = styled.article`
@@ -133,7 +133,7 @@ const StatusMessageWrapper = styled(PrivacyItem)`
 `;
 
 export default function MyProfile() {
-  const [openModal] = useModal();
+  const { openModal } = modalStore();
 
   return (
     <>
@@ -148,7 +148,7 @@ export default function MyProfile() {
             <h5>프로필 사진</h5>
             <UpdateButton
               onClick={() => {
-                openModal(ProfileUpdateModel);
+                openModal(ProfileUpdateModel, '프로필 수정');
               }}
             >
               수정하기

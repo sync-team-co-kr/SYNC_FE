@@ -1,9 +1,9 @@
 import settings from '@assets/Settings.svg';
 import trashcan from '@assets/trashcan.svg';
 import withdraw from '@assets/withdraw.svg';
-import useModal from '@hooks/useModal';
+import { modalStore } from '@libs/store';
 import DeleteProjectModal from '@pages/projects/components/DeleteProjectModal/DeleteProjectModal';
-import ModifyProjectModal from '@pages/projects/components/ModifyProjectModal/ModifyProjectModal';
+import ModifyProjectModal from '@pages/projects/components/ModifyProjectModal';
 import styled from 'styled-components';
 
 const Wrapper = styled.section<{ $isopen: boolean }>`
@@ -55,14 +55,14 @@ const ProjectDropdownMenu = ({
   isOpen,
   projectId,
 }: ProjectDropdownMenuPRops) => {
-  const [openModal] = useModal();
+  const { openModal } = modalStore();
 
   return (
     <Wrapper $isopen={isOpen}>
       <ProjectDropdownMenuList>
         <li
           onClick={() => {
-            openModal(() => DeleteProjectModal({ projectId }));
+            openModal(() => DeleteProjectModal({ projectId }), '프로젝트 삭제');
           }}
         >
           <img src={trashcan} alt="프로젝트 삭제" />
@@ -70,7 +70,7 @@ const ProjectDropdownMenu = ({
         </li>
         <li
           onClick={() => {
-            openModal(() => ModifyProjectModal({ projectId }));
+            openModal(() => ModifyProjectModal({ projectId }), '프로젝트 수정');
           }}
         >
           <img src={settings} alt="프로젝트 설정" />

@@ -7,7 +7,7 @@ import { PublicLayout } from '@components/layout';
 import Layout from '@components/layout/Layout';
 import AfterInvite from '@pages/AfterInvite';
 import Home from '@pages/Home';
-import Login from '@pages/Login';
+import Login from '@pages/Login/Login';
 import NotFound from '@pages/NotFound';
 import SignUp from '@pages/SignUp';
 import FindId from '@pages/user/FindId';

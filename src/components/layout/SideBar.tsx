@@ -6,7 +6,7 @@ import { ReactComponent as Logo } from '@assets/sideBar/logo.svg';
 import { ReactComponent as PlusIcon } from '@assets/sideBar/plus-icon.svg';
 import { ReactComponent as ProjectIcon } from '@assets/sideBar/project-icon.svg';
 import { CreateTaskModal } from '@components/modal/CreateTaskModal';
-import { useModal } from '@hooks';
+import { modalStore } from '@libs/store';
 import styled from 'styled-components';
 import { vars } from 'token';
 
@@ -58,8 +58,7 @@ const SideBarItemWrap = styled.div`
 export default function SideBar() {
   const location = useLocation();
 
-  const [openModal] = useModal();
-
+  const { openModal } = modalStore();
   // location 이 활성화 됨에 따라 색상 변경
 
   return (
@@ -74,7 +73,7 @@ export default function SideBar() {
       <SideBarCombine>
         <SideBarItemWrap
           onClick={() => {
-            openModal(CreateTaskModal);
+            openModal(CreateTaskModal, '업무 추가');
           }}
         >
           <PlusIcon fill="transparent" stroke={vars.sementic.color.black20} />

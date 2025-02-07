@@ -142,10 +142,10 @@ const CreateTaskBoard = ({
   const handleCreateTask = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     if (!id) return;
-    let status = 2;
-    if (statusTitle === '해야할 일') status = 2;
+    let status = 0;
+    if (statusTitle === '해야할 일') status = 0;
     if (statusTitle === '하는 중') status = 1;
-    if (statusTitle === '완료') status = 0;
+    if (statusTitle === '완료') status = 2;
     createTaskMutate({
       data: {
         ...workBoard,

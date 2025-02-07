@@ -2,8 +2,8 @@ import { ReactComponent as Add } from '@assets/add.svg';
 import EmptyImage from '@assets/projects/empty-image.png';
 import { Button } from '@components/common/Button';
 import { Typography } from '@components/common/Typography';
-import { useModal } from '@hooks';
-import CreateProjectModal from '@pages/projects/components/CreateProjectModal/CreateProjectModal';
+import { modalStore } from '@libs/store';
+import CreateProjectModal from '@pages/projects/components/CreateProjectModal';
 
 import {
   EmptyListContainer,
@@ -12,7 +12,7 @@ import {
 } from './EmptyList.style';
 
 export const EmptyList = () => {
-  const [openModal] = useModal();
+  const { openModal } = modalStore();
 
   return (
     <EmptyListContainer>
@@ -33,7 +33,7 @@ export const EmptyList = () => {
         variant="fill"
         text="프로젝트 추가"
         $hasIcon
-        onClick={() => openModal(CreateProjectModal)}
+        onClick={() => openModal(CreateProjectModal, '프로젝트 추가')}
         $isDisabled={false}
         $iconPosition="left"
         $renderIcon={<Add />}

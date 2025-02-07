@@ -9,7 +9,6 @@
       "@styles/*": ["styles/*"],
       "@styles": ["styles"],
       "@routes/*": ["routes/*"],
-      "@routes": ["routes"],
       "@pages/*": ["pages/*"],
       "@pages": ["pages"],
       "@libs/*": ["libs/*"],
