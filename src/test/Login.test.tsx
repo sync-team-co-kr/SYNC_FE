@@ -1,7 +1,9 @@
-import { fireEvent, render, screen } from '@testing-library/react';
-import Login from '../pages/Login';
 import { MemoryRouter } from 'react-router-dom';
+
+import { fireEvent, render, screen } from '@testing-library/react';
+
 import App from '../App';
+import Login from '../pages/Login/Login';
 
 test.each([{ input: '아이디' }, { input: '비밀번호' }])(
   '로그인 컴포넌트에 $input 입력 요소가 작성되어있다.',
