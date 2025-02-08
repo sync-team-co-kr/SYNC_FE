@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 
-import { ReactComponent as CheckIcon } from '@assets/checkbox/check.svg';
 import { Typography } from '@components/common';
 import { Select } from '@components/common/Select/Select';
 import { SelectButton } from '@components/common/Select/Select.Button';
@@ -13,15 +12,10 @@ import { searchFilter } from '@components/common/Select/Select.utils';
 import { LabelContainer } from '@components/common/Select/style';
 import Textfield from '@components/common/Textfield';
 import { IMember } from '@customTypes/member';
-import { useTaskActions, useTaskState } from '@libs/store/task/task';
+import { useTaskState } from '@libs/store/task/task';
 
 const TaskManagerSelectDropdown = () => {
-  const {
-    project,
-    payload: { taskManagers },
-  } = useTaskState();
-
-  const { setTaskManagers } = useTaskActions();
+  const { project } = useTaskState();
 
   const [taskManagerKeyword, setTaskManagerKeyword] = useState('');
   const [taskManagerSearchResults, setTaskManagerSearchResults] = useState<
@@ -35,13 +29,11 @@ const TaskManagerSelectDropdown = () => {
     setTaskManagerSearchResults(searchFilter(e.target.value, project.members));
   };
 
-  const handleClickTaskManagerItem = (
-    e: React.MouseEvent<HTMLDivElement>,
-    member: IMember,
-  ) => {
+  const handleClickTaskManagerItem = (e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
 
     // 담당자 목록에 선택된 담당자가 포함되어 있는지 확인
+    /*
     const includedSelectedTaskManagers = taskManagers.some(
       (taskManager) => taskManager.id === member.id,
     );
@@ -51,6 +43,7 @@ const TaskManagerSelectDropdown = () => {
     } else {
       setTaskManagers('add', member);
     }
+    */
   };
 
   return (
@@ -72,13 +65,11 @@ const TaskManagerSelectDropdown = () => {
           />
 
           {taskManagerSearchResults?.map((member) => (
-            <SelectItemWrapper
-              onClick={(e) => handleClickTaskManagerItem(e, member)}
-            >
+            <SelectItemWrapper onClick={(e) => handleClickTaskManagerItem(e)}>
               <SelectItem key={member.id}>{member.username}</SelectItem>
-              {taskManagers.some(
+              {/* taskManagers.some(
                 (taskManager) => taskManager.id === member.id,
-              ) && <CheckIcon />}
+              ) && <CheckIcon /> */}
             </SelectItemWrapper>
           ))}
         </SelectList>

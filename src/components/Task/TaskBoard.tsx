@@ -170,7 +170,10 @@ const TaskBoard = ({ projectId, task }: { projectId: number; task: ITask }) => {
             setTitle(task.title);
             setDescription(task.description);
 
-            openModal(UpdateTaskModal, '업무 수정');
+            openModal(
+              () => UpdateTaskModal({ projectId, taskId: task.taskId }),
+              '업무 수정',
+            );
           }}
         >
           <Description>

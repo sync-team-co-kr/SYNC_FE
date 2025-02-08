@@ -1,29 +1,19 @@
-// 업무 생성 모달 내 form
-import { ReactComponent as CloseX } from '@assets/cancel-x.svg';
-import { ReactComponent as MeatBalls } from '@assets/meatballs.svg';
-import projectIcon from '@assets/project-icon.png';
+import React, { useEffect } from 'react';
+
 import { Editor } from '@components/Editor';
-import Thumbnail from '@components/Thumbnail/Thumbnail';
+import ScheduleRegistForm from '@components/Organism/ScheduleRegistForm';
 import { Button } from '@components/common/Button';
-import { Select } from '@components/common/Select/Select';
-import { SelectButton } from '@components/common/Select/Select.Button';
-import { SelectItem, SelectList } from '@components/common/Select/Select.list';
-import { LabelContainer } from '@components/common/Select/style';
-import { Tag } from '@components/common/Tag';
-import { SituationProperty } from '@components/common/Tag/types';
-import Textfield from '@components/common/Textfield';
 import Toggle from '@components/common/Toggle/Toggle';
-import { Typography } from '@components/common/Typography';
 import StatusSelectDropdown from '@components/modal/CreateTaskModal/StatusSelectDropdown';
 import TaskManagerSelectDropdown from '@components/modal/CreateTaskModal/TaskManagerSelectDropdown';
 import { modalStore } from '@libs/store';
 import { useTaskActions, useTaskState } from '@libs/store/task/task';
-import { useCreateTask } from '@services/task/Task.hooks';
+import { InputWrapper } from '@pages/projects/components/CreateProjectModal/styles';
+import { CreateTaskPayload } from '@services/swagger/output/data-contracts';
+import { useGetTask } from '@services/task';
 
-import { SELECT_STATUS } from './constants';
 import {
   Avatar,
-  Breadcrumb,
   CommentContent,
   CommentDescription,
   CommentFormLabel,
@@ -40,14 +30,10 @@ import {
   PostHeader,
   PostLabel,
   SubmitButtonContainer,
-  TitleWrap,
-  Tools,
-  UpdateTaskModalArticle,
   UpdateTaskModalCommentContainer,
   UpdateTaskModalContainer,
   UpdateTaskModalContent,
   UpdateTaskModalDetails,
-  UpdateTaskModalHeader,
   UpdateTaskModalPostContainer,
 } from './style';
 
@@ -59,39 +45,65 @@ const FAKE_COMMENT_LIST = [
 ];
 
 // 업무 생성 모달
-export const UpdateTaskModal = () => {
+export const UpdateTaskModal = ({
+  projectId,
+  taskId,
+}: {
+  projectId: number;
+  taskId: number;
+}) => {
   const { closeModal } = modalStore();
 
   // 업무 생성 모달 payload 값들을 가져오는 state
   // const { resetPayload } = useTaskActions();
-  const { payload, errorList } = useTaskState();
+  const { payload, errorList, titleImage } = useTaskState();
 
   // 업무 생성 모달 payload 값들을 set 해주는 actions
-  const { setStatus, setDescription } = useTaskActions();
+  const { setEditTask, setStartDate, setEndDate, setDescription } =
+    useTaskActions();
 
-  // projectData를 가져오는 hooks
+  const { task, isFetching } = useGetTask(projectId, taskId);
 
-  const { createTaskMutate } = useCreateTask();
+  console.log(task?.taskId);
+
+  useEffect(() => {
+    if (task && !isFetching) {
+      setEditTask({ projectId, ...task });
+    }
+  }, [isFetching, task?.taskId]);
+
+  const handleEditTask = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+
+    // 필수 입력값 체크
+    if (payload.title === '') {
+      errorList.push('title');
+    }
+
+    if (payload.projectId === 0) {
+      errorList.push('projectId');
+    }
+    console.log(errorList);
+    if (errorList.length > 0) {
+      alert('필수 입력값을 입력해주세요');
+      return;
+    }
+
+    const taskData: CreateTaskPayload['data'] = {
+      projectId: payload.projectId,
+      title: payload.title,
+      description: payload.description,
+      startDate: payload.startDate?.toISOString(),
+      endDate: payload.endDate?.toISOString(),
+      parentTaskId: payload.parentTaskId,
+      thumbnailIcon: titleImage?.startsWith('blob') ? '' : titleImage,
+      status: payload.status,
+    };
+    console.log(taskData);
+  };
 
   return (
     <UpdateTaskModalContainer>
-      <UpdateTaskModalHeader>
-        <UpdateTaskModalArticle>
-          <Breadcrumb>
-            <span>가상의 프로젝트</span>
-            <span>/</span>
-            <span>테스크</span>
-          </Breadcrumb>
-          <TitleWrap>
-            <Thumbnail thumbnail={''} thumbnailType="N" />
-            <h2>Title</h2>
-          </TitleWrap>
-        </UpdateTaskModalArticle>
-        <Tools>
-          <MeatBalls />
-          <CloseX />
-        </Tools>
-      </UpdateTaskModalHeader>
       <Content>
         {/* 업무 내용 및 댓글 */}
         <UpdateTaskModalContent>
@@ -119,7 +131,7 @@ export const UpdateTaskModal = () => {
                 <CommentInput
                   type="text"
                   value={''}
-                  onChange={(e) => ({})}
+                  onChange={() => ({})}
                   placeholder="댓글을 입력해주세요"
                 />
               </CommentInputWrapper>
@@ -162,9 +174,27 @@ export const UpdateTaskModal = () => {
           <DetailsSelectWrapper>
             <TaskManagerSelectDropdown />
           </DetailsSelectWrapper>
+          <DetailsSelectWrapper>
+            <InputWrapper>
+              <ScheduleRegistForm
+                startDate={payload.startDate}
+                endDate={payload.endDate}
+                setStartDate={setStartDate}
+                setEndDate={setEndDate}
+              />
+            </InputWrapper>
+          </DetailsSelectWrapper>
         </UpdateTaskModalDetails>
       </Content>
-      <SubmitButtonContainer></SubmitButtonContainer>
+      <SubmitButtonContainer>
+        <Button variant="text" size="medium" text="취소" onClick={closeModal} />
+        <Button
+          variant="fill"
+          size="medium"
+          text="저장"
+          onClick={handleEditTask}
+        />
+      </SubmitButtonContainer>
     </UpdateTaskModalContainer>
   );
 };

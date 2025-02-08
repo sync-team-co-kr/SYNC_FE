@@ -55,6 +55,20 @@ export const useGetTasks = (projectId?: number[] | number) => {
   return { tasks: data, isFetching, error };
 };
 
+export const useGetTask = (projectId: number, taskId: number) => {
+  const { data, isFetching, error } = useQuery({
+    queryKey: ['tasks', projectId],
+    queryFn: async () => {
+      const result = await getTaskList(projectId);
+      const [taskUnit] = result.filter((task) => task.taskId === taskId);
+      return taskUnit;
+    },
+    enabled: !!projectId,
+  });
+
+  return { task: data, isFetching, error };
+};
+
 // 업무 생성 Hook
 export const useCreateTask = () => {
   const queryClient = useQueryClient();
@@ -119,7 +133,6 @@ export const useCreateTask = () => {
 };
 
 // 프로젝트 자식 업무 가져오는 hook
-
 export const useGetTaskChildren = (taskId: number) => {
   const { data, isLoading, error } = useQuery({
     queryKey: ['tasks'],
@@ -129,6 +142,7 @@ export const useGetTaskChildren = (taskId: number) => {
   return { taskChildren: data, isLoading, error };
 };
 
+// 업무 수정 hook
 export const useUpdateTaskStatus = () => {
   const queryClient = useQueryClient();
   const { setOriginalTasks } = useDraggingTempTaskActions();

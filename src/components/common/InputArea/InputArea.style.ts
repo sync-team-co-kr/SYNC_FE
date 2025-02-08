@@ -41,10 +41,9 @@ export const InputWithCoverIcon = styled.div`
 
 export const SInputWithCalendar = styled.div`
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  justify-content: center;
   position: relative;
-  z-index: 1;
   input {
     width: 100%;
     padding-right: 42px;

@@ -24,7 +24,6 @@ export const Content = styled.section`
 `;
 
 export const SubmitButtonContainer = styled.section`
-  background-color: blue;
   display: flex;
   justify-content: flex-end;
 `;
