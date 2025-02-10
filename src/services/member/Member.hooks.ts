@@ -10,7 +10,7 @@ interface UpdateMemberRoleParams {
 
 export const useGetProjectMembers = (projectId: number) => {
   const { data: getMembersData } = useQuery({
-    queryKey: ['projects', projectId],
+    queryKey: ['members', projectId],
     queryFn: () => getProjectMembers(projectId),
   });
   return { getMembersData };
