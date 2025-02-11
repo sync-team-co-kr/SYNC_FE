@@ -10,7 +10,7 @@ const CalendarFilterButton = (
   _: unknown,
   ref: ForwardedRef<HTMLDivElement>,
 ) => {
-  const [isOpenFilter, toggleFilter, filterDropdownRef] = useDropdown();
+  const [isOpenFilter, toggleFilter] = useDropdown();
   return (
     <>
       <Button
@@ -25,11 +25,7 @@ const CalendarFilterButton = (
       <Portal
         container={typeof ref !== 'function' && !!ref ? ref.current : null}
       >
-        <CalendarFilterDropdown
-          ref={filterDropdownRef}
-          isOpen={isOpenFilter}
-          setClose={toggleFilter}
-        />
+        <CalendarFilterDropdown isOpen={isOpenFilter} />
       </Portal>
     </>
   );

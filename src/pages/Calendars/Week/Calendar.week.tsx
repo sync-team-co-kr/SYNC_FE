@@ -1,10 +1,10 @@
 import { useContext } from 'react';
 
 import WeekGridContents from '@components/Calendar/Calendar.gridContents';
-import useFilterSearchQuery from '@hooks/useFilterSearchQuery';
 import { useTaskState } from '@libs/store/task/task';
 import { CalendarContext } from '@pages/Calendars/Calendar.provider';
 import useFilterCalendarGraphs from '@pages/Calendars/hooks/useFilterCalendarGraphs';
+import useFilterTasks from '@pages/Calendars/hooks/useFilterTasks';
 import { useGetProjectIds } from '@services/project/Project.hooks';
 import { useGetTasks } from '@services/task';
 import { eachDayOfInterval, endOfWeek, format, startOfWeek } from 'date-fns';
@@ -97,11 +97,15 @@ export const CalendarWeek = () => {
 
   const { tasks } =
     useGetTasks(project.title !== '' ? project.projectId : projectIds) ?? {};
-  const searchQueryResult = useFilterSearchQuery(tasks);
+  // 검색 쿼리에 제목이 포함된 업무 목록
+  // const searchQueryResult = useFilterSearchQuery(tasks);
+
+  // 필터링에 통과한 업무 목록
+  const filteringResult = useFilterTasks(tasks);
 
   const calendarItems = useFilterCalendarGraphs(
     calendarDays,
-    searchQueryResult || tasks,
+    filteringResult || tasks,
   );
 
   if (!calendarItems) return <></>;

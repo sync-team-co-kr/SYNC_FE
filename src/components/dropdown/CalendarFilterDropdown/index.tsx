@@ -1,4 +1,4 @@
-import { ForwardedRef, forwardRef, useEffect, useState } from 'react';
+import { forwardRef, useState } from 'react';
 
 import { Button } from '@components/common/Button';
 import Textfield from '@components/common/Textfield';
@@ -20,41 +20,18 @@ import {
   FilterOwnerList,
   SelectFilterOwnerItemList,
 } from './style';
-import type { CalendarFilterDropdownProps } from './types';
+import type { FilterDropdownProps } from './types';
 
-const CalendarFilterDropdown = (
-  {
-    as: Component = CalendarFilterDropdownContainer,
-    isOpen,
-    setClose,
-  }: CalendarFilterDropdownProps,
-  ref: ForwardedRef<HTMLDivElement>,
-) => {
+const CalendarFilterDropdown = ({ isOpen }: FilterDropdownProps) => {
   const taskFilterState = useTaskFilterState();
   const [search, setSearch] = useState<string>('');
   const { setWorkState, setSituationState } = useTaskFilterActions();
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        typeof ref !== 'function' &&
-        !!ref &&
-        ref.current &&
-        !ref.current.contains(event.target as Node)
-      ) {
-        setClose();
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [ref]);
+  console.log(taskFilterState);
 
   if (isOpen) {
     return (
-      <Component ref={ref}>
+      <CalendarFilterDropdownContainer>
         <CalendarFilterDropdownHeader>
           <Typography color="black" variant="heading-5">
             필터
@@ -116,7 +93,7 @@ const CalendarFilterDropdown = (
             </FilterOwnerItemList>
           </FilterOwnerList>
         </FilterDetailContainer>
-      </Component>
+      </CalendarFilterDropdownContainer>
     );
   }
   return null;
