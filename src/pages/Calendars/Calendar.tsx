@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 import {
   useCalendarActions,
   useCalendarState,
-} from '@libs/store/task/calendar';
+} from '@libs/store/calendar/calendarDate';
 
 import { CalendarContent } from './Calendar.content';
 import { CalendarHeader } from './Calendar.header';

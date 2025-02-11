@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { ITask } from '@customTypes/task';
-import { useTaskFilterState } from '@libs/store/task/calendar';
+import { useTaskFilterState } from '@libs/store/calendar/filterOptions';
 
 type useFilterTasksType = (tasks?: ITask[]) => ITask[] | undefined;
 

@@ -6,7 +6,7 @@ import { EditTaskModal } from '@components/modal/EditTaskModal';
 import { ICalendarDay } from '@customTypes/calendar';
 import { ITask } from '@customTypes/task';
 import { modalStore } from '@libs/store';
-import { useCalendarActions } from '@libs/store/task/calendar';
+import { useCalendarActions } from '@libs/store/calendar/calendarDate';
 import { useTaskActions } from '@libs/store/task/task';
 import { formatTimeIntl } from '@pages/Calendars/Calendar.utils';
 import getInterval from '@pages/Calendars/utils/getInterval';

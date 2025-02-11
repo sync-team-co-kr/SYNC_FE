@@ -4,7 +4,6 @@ import useFilterDayCalendarTimeTables from '@components/Calendar/hooks/useFilter
 import { TimeTable } from '@components/TimeTable';
 import { Typography } from '@components/common/Typography';
 import { EditTaskModal } from '@components/modal/EditTaskModal';
-import useFilterSearchQuery from '@hooks/useFilterSearchQuery';
 import { modalStore } from '@libs/store';
 import { useTaskActions, useTaskState } from '@libs/store/task/task';
 import { CalendarContext } from '@pages/Calendars/Calendar.provider';
@@ -13,6 +12,7 @@ import {
   getGridRowStart,
   getRowSpan,
 } from '@pages/Calendars/Calendar.utils';
+import useFilterSearchQuery from '@pages/Calendars/hooks/useFilterSearchQuery';
 import {
   GraphContainer,
   GraphItemsContainer,

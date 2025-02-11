@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
-import { useTaskFilterState } from '@libs/store/task/calendar';
-import { WorkTags } from '@libs/store/task/types';
+import { useTaskFilterState } from '@libs/store/calendar/filterOptions';
+import { WorkTags } from '@libs/store/calendar/types';
 
 import { getSchedulesForTimeSlot } from './Calendar.utils';
 

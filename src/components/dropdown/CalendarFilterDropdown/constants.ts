@@ -1,4 +1,4 @@
-import type { Situation, WorkTags } from '@libs/store/task/types';
+import type { Situation, WorkTags } from '@libs/store/calendar/types';
 
 export const WORK_TAGS = {
   task: '테스크' as WorkTags,

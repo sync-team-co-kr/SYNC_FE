@@ -1,4 +1,4 @@
-import { Situation, WorkTags } from '@libs/store/task/types';
+import { Situation, WorkTags } from '@libs/store/calendar/types';
 
 export interface TaskItemProps {
   title: string;

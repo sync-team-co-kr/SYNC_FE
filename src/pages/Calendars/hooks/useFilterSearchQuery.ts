@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { ITask } from '@customTypes/task';
-import { useSearchQueryState } from '@libs/store/searchQuery/searchQuery';
+import { useSearchQueryState } from '@libs/store/calendar/searchQuery';
 
 type useFilterSearchQueryType = (tasks?: ITask[]) => ITask[] | undefined;
 

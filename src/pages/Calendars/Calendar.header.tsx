@@ -8,7 +8,7 @@ import { Typography } from '@components/common/Typography';
 import {
   useSearchQueryActions,
   useSearchQueryState,
-} from '@libs/store/searchQuery/searchQuery';
+} from '@libs/store/calendar/searchQuery';
 import styled from 'styled-components';
 
 import { CalendarContext } from './Calendar.provider';

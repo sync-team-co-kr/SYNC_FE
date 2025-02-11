@@ -8,19 +8,13 @@ import {
 } from 'date-fns';
 import { create } from 'zustand';
 
-import type {
-  CalendarActions,
-  CalendarStore,
-  TaskFilterActions,
-  TaskFilterStore,
-} from './types';
+import { CalendarActions, CalendarStore } from './types';
 
 // 캘린더 상태 초기값
 const initialState = {
   currentDate: new Date(),
 };
 
-// 캘린더 관련 store 생성
 const useCalendarStore = create<CalendarStore & CalendarActions>((set) => ({
   ...initialState,
   actions: {
@@ -61,47 +55,6 @@ const useCalendarStore = create<CalendarStore & CalendarActions>((set) => ({
   },
 }));
 
-// task 필터 상태 초기값
-const filterInitialState = {
-  workState: [],
-  situationState: [],
-};
-
-// task 필터 store 생성
-const useTaskFilterStore = create<TaskFilterStore & TaskFilterActions>(
-  (set) => ({
-    ...filterInitialState,
-    actions: {
-      setWorkState: (workState) => {
-        set((state) => {
-          if (state.workState.includes(workState)) {
-            return {
-              workState: state.workState.filter((s) => s !== workState),
-            };
-          }
-          return {
-            workState: [...state.workState, workState],
-          };
-        });
-      },
-      setSituationState: (situationState) => {
-        set((state) => {
-          if (state.situationState.includes(situationState)) {
-            return {
-              situationState: state.situationState.filter(
-                (s) => s !== situationState,
-              ),
-            };
-          }
-          return {
-            situationState: [...state.situationState, situationState],
-          };
-        });
-      },
-    },
-  }),
-);
-
 // 캘린더 상태와 액션 반환
 export const useCalendarState = () =>
   useCalendarStore((state) => ({
@@ -109,13 +62,3 @@ export const useCalendarState = () =>
   }));
 export const useCalendarActions = () =>
   useCalendarStore((state) => state.actions);
-
-// task 필터 상태와 액션 반환
-export const useTaskFilterState = () =>
-  useTaskFilterStore((state) => ({
-    workState: state.workState,
-    situationState: state.situationState,
-  }));
-
-export const useTaskFilterActions = () =>
-  useTaskFilterStore((state) => state.actions);

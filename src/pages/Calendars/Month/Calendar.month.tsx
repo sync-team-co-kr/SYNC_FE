@@ -2,10 +2,10 @@ import { useContext } from 'react';
 
 import MonthGridContents from '@components/Calendar/Calendar.monthGrids';
 import { Typography } from '@components/common/Typography';
-import useFilterSearchQuery from '@hooks/useFilterSearchQuery';
 import { useTaskState } from '@libs/store/task/task';
 import { CalendarContext } from '@pages/Calendars/Calendar.provider';
 import useFilterCalendarGraphs from '@pages/Calendars/hooks/useFilterCalendarGraphs';
+import useFilterSearchQuery from '@pages/Calendars/hooks/useFilterSearchQuery';
 import { useGetProjectIds } from '@services/project/Project.hooks';
 import { useGetTasks } from '@services/task';
 import {

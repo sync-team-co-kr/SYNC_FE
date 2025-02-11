@@ -6,8 +6,8 @@ import { Typography } from '@components/common/Typography';
 import {
   useTaskFilterActions,
   useTaskFilterState,
-} from '@libs/store/task/calendar';
-import { Situation, WorkTags } from '@libs/store/task/types';
+} from '@libs/store/calendar/filterOptions';
+import { Situation, WorkTags } from '@libs/store/calendar/types';
 
 import { SITUATION_TAGS, WORK_TAGS } from './constants';
 import {
