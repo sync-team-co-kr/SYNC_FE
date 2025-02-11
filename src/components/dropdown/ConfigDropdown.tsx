@@ -1,8 +1,13 @@
 import { Link } from 'react-router-dom';
+
+import { ReactComponent as MemberSVG } from '@assets/settings/members.svg';
+import { ReactComponent as ProjectSVG } from '@assets/settings/projects.svg';
+import { ReactComponent as MyProfileSVG } from '@assets/settings/users.svg';
 import styled from 'styled-components';
+import { vars } from 'token';
 
 const Wrapper = styled.ul<{ $isOpen: boolean }>`
-  width: 320px;
+  width: 250px;
   background: #fff;
   border: 1px solid #b8b8b8;
   border-radius: 8px;
@@ -10,8 +15,8 @@ const Wrapper = styled.ul<{ $isOpen: boolean }>`
   display: ${(props) => (props.$isOpen ? 'flex' : 'none')};
   flex-direction: column;
   position: absolute;
-  left: -280px;
-  bottom: -320px;
+  left: calc(-250px + 100%);
+  bottom: calc(-217px - 50%);
   z-index: 50;
 `;
 
@@ -19,34 +24,20 @@ const ConfigItem = styled.li`
   padding: 16px;
   border-bottom: 1px solid #b8b8b8;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 4px;
-  h2 {
-    color: var(--main-black, #000);
-    font-family: Pretendard;
-    font-size: 24px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: normal;
+  gap: 12px;
+  &:hover {
+    background-color: ${vars.sementic.color.black10};
   }
-  p {
-    &:first-child {
-      color: var(--main-black, #000);
-      font-family: Pretendard;
-      font-size: 14px;
-      font-style: normal;
-      font-weight: 600;
-      line-height: normal;
-    }
-    &:last-child {
-      color: #ababab;
-      font-family: Pretendard;
-      font-size: 12px;
-      font-style: normal;
-      font-weight: 600;
-      line-height: normal;
-    }
+  &:hover:not(:first-child) {
+    background-color: white;
+  }
+  h4 {
+    ${vars.sementic.typography['heading-4']}
+    color: ${vars.sementic.color.black};
+  }
+  span {
+    ${vars.sementic.typography.paragraph};
+    color: ${vars.sementic.color.black};
   }
 `;
 
@@ -55,26 +46,26 @@ export default function ConfigDropDown({ isOpen }: { isOpen: boolean }) {
     <>
       <Wrapper $isOpen={isOpen}>
         <ConfigItem>
-          <h2>설정</h2>
+          <h4>설정</h4>
         </ConfigItem>
+        <Link to="/settings/profile">
+          <ConfigItem>
+            <MyProfileSVG />
+            <span>내 계정</span>
+          </ConfigItem>
+        </Link>
+
         <Link to="/settings/project">
           <ConfigItem>
-            <p>프로젝트 설정</p>
-            <p>전체 프로젝트를 한번에 관리 할 수 있습니다.</p>
+            <ProjectSVG />
+            <span>프로젝트 설정</span>
           </ConfigItem>
         </Link>
 
         <Link to="/settings/members">
           <ConfigItem>
-            <p>주소록</p>
-            <p>멤버를 초대 및 관리할 수 있습니다.</p>
-          </ConfigItem>
-        </Link>
-
-        <Link to="/settings/alarm">
-          <ConfigItem>
-            <p>알람 설정</p>
-            <p>알람이 오는 것을 제한하거나 설정할 수 있습니다.</p>
+            <MemberSVG />
+            <span>사용자 관리</span>
           </ConfigItem>
         </Link>
       </Wrapper>
