@@ -74,10 +74,8 @@ export default function Settings() {
     <BackGround>
       <SettingsContainer>
         <SettingsMenu>
-          <SettingsMenuItem
-            $matchpathname={pathname === '/settings/profile/my'}
-          >
-            <Link to="/settings/profile/my">
+          <SettingsMenuItem $matchpathname={pathname === '/settings/profile'}>
+            <Link to="/settings/profile">
               <MyProfileSVG />
               <span>내 계정</span>
             </Link>
