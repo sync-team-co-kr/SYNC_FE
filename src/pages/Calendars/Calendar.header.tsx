@@ -1,4 +1,4 @@
-import { useContext, useRef } from 'react';
+import { useContext, useRef, useState } from 'react';
 
 import { ReactComponent as ArrowLeft } from '@assets/arrow-left.svg';
 import { ReactComponent as ArrowRight } from '@assets/arrow-right.svg';
@@ -39,6 +39,8 @@ export const CalendarHeader = () => {
     setValue('next', type);
   };
 
+  const [searchQuery, setSearchQuery] = useState('');
+
   return (
     <Container ref={calendarHeaderRef}>
       <Textfield
@@ -47,6 +49,8 @@ export const CalendarHeader = () => {
         placeholder="검색"
         type="search"
         width="198px"
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
       />
       <Section>
         <Typography color="black" variant="heading-4">

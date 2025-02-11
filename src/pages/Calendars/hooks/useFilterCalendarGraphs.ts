@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 
 import { ICalendarDay } from '@customTypes/calendar';
 import { ITask } from '@customTypes/task';
-import filtertasksWithinWeek from '@pages/Calendars/utils/filtertasksWithinWeek';
+import filterTasksWithinWeek from '@pages/Calendars/utils/filterTasksWithinWeek';
 import findTasksEachDays from '@pages/Calendars/utils/findTasksEachDays';
 import sortGraphs from '@pages/Calendars/utils/sortGraphs';
 import { differenceInDays } from 'date-fns';
@@ -31,10 +31,10 @@ const useFilterCalendarGraphs: useFilterCalendarGraphsType = (
     if (calendarDays.length < 0) return;
 
     // 함수와 반환값 이름 변경해야 함
-    const aa = filtertasksWithinWeek(calendarDays, tasks);
+    const tasksIncludeOnWeek = filterTasksWithinWeek(calendarDays, tasks);
 
-    if (!aa) return;
-    const taskSchedulesOf3OrMore = aa.filter(
+    if (!tasksIncludeOnWeek) return;
+    const taskSchedulesOf3OrMore = tasksIncludeOnWeek.filter(
       (task) => differenceInDays(task.endDate, task.startDate) >= 3,
     );
 

@@ -47,14 +47,17 @@ const WeekGridContents = ({ schedules, tasks, gridDay }: GridContentsProps) => {
     return isWithinInterval(gridDay.date, interval);
   };
 
+  // 업무 일정의 길이 구하기
   const getTaskScheduleLength = (start: string, end: string) =>
     differenceInDays(end, start);
 
+  // 일 캘린더로 이동
   const moveDayCalendar = () => {
     setSpecificDate(gridDay.date);
     navigate(`/calendars/day`);
   };
 
+  // 더블 클릭 시 업무 수정 모달 활성화
   const EditModalOpenHandler = (taskId: number) => {
     openModal(EditTaskModal, '업무 수정');
     setTaskId(taskId);

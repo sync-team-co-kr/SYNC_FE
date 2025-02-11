@@ -5,7 +5,7 @@ import { isWithinInterval } from 'date-fns';
 import getInterval from './getInterval';
 
 // 주중에 업무 일정이 하나라도 포함되어있는 업무 목록 필터링하기
-const filtertasksWithinWeek = (
+const filterTasksWithinWeek = (
   calendarDays: ICalendarDay[],
   tasks?: ITask[],
 ) => {
@@ -20,4 +20,4 @@ const filtertasksWithinWeek = (
   return tasksWillPlaceWeekCalendar;
 };
 
-export default filtertasksWithinWeek;
+export default filterTasksWithinWeek;

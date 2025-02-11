@@ -21,6 +21,7 @@ export const useGetProjects = () => {
       const projectsWithMembers = await Promise.all(
         projectIds.flatMap(async (projectId) => {
           const project = await getTempProject(projectId);
+          console.log(project);
           const [memberIds] = await getProjectMemberIds(projectId);
 
           const members = await Promise.all(
@@ -29,7 +30,6 @@ export const useGetProjects = () => {
               return { ...userInfo, id: userId };
             }),
           );
-
           return { ...project, members };
         }),
       );
