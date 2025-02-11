@@ -1,6 +1,7 @@
 import { useContext } from 'react';
 
 import WeekGridContents from '@components/Calendar/Calendar.gridContents';
+import useFilterSearchQuery from '@hooks/useFilterSearchQuery';
 import { useTaskState } from '@libs/store/task/task';
 import { CalendarContext } from '@pages/Calendars/Calendar.provider';
 import useFilterCalendarGraphs from '@pages/Calendars/hooks/useFilterCalendarGraphs';
@@ -96,8 +97,12 @@ export const CalendarWeek = () => {
 
   const { tasks } =
     useGetTasks(project.title !== '' ? project.projectId : projectIds) ?? {};
+  const searchQueryResult = useFilterSearchQuery(tasks);
 
-  const calendarItems = useFilterCalendarGraphs(calendarDays, tasks);
+  const calendarItems = useFilterCalendarGraphs(
+    calendarDays,
+    searchQueryResult || tasks,
+  );
 
   if (!calendarItems) return <></>;
   return (

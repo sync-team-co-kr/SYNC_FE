@@ -4,6 +4,7 @@ import useFilterDayCalendarTimeTables from '@components/Calendar/hooks/useFilter
 import { TimeTable } from '@components/TimeTable';
 import { Typography } from '@components/common/Typography';
 import { EditTaskModal } from '@components/modal/EditTaskModal';
+import useFilterSearchQuery from '@hooks/useFilterSearchQuery';
 import { modalStore } from '@libs/store';
 import { useTaskActions, useTaskState } from '@libs/store/task/task';
 import { CalendarContext } from '@pages/Calendars/Calendar.provider';
@@ -111,6 +112,8 @@ export const CalendarDay = () => {
   const { tasks } =
     useGetTasks(project.title !== '' ? project.projectId : projectIds) ?? {};
 
+  const searchQueryResult = useFilterSearchQuery(tasks);
+
   const { value } = useContext(CalendarContext);
   const returnStatus = (status: number) => {
     switch (status) {
@@ -130,7 +133,10 @@ export const CalendarDay = () => {
     setTaskId(taskId);
   };
 
-  const filteredSchedules = useFilterDayCalendarTimeTables(value, tasks);
+  const filteredSchedules = useFilterDayCalendarTimeTables(
+    value,
+    searchQueryResult || tasks,
+  );
 
   return (
     <DayContainer>

@@ -2,6 +2,7 @@ import { useContext } from 'react';
 
 import MonthGridContents from '@components/Calendar/Calendar.monthGrids';
 import { Typography } from '@components/common/Typography';
+import useFilterSearchQuery from '@hooks/useFilterSearchQuery';
 import { useTaskState } from '@libs/store/task/task';
 import { CalendarContext } from '@pages/Calendars/Calendar.provider';
 import useFilterCalendarGraphs from '@pages/Calendars/hooks/useFilterCalendarGraphs';
@@ -104,7 +105,12 @@ export const CalendarMonth = () => {
   const { tasks } =
     useGetTasks(project.title !== '' ? project.projectId : projectIds) ?? {};
 
-  const calendarItems = useFilterCalendarGraphs(calendarDays, tasks);
+  const searchQueryResult = useFilterSearchQuery(tasks);
+
+  const calendarItems = useFilterCalendarGraphs(
+    calendarDays,
+    searchQueryResult || tasks,
+  );
 
   if (!calendarItems) return <></>;
   return (

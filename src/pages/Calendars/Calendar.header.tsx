@@ -1,10 +1,14 @@
-import { useContext, useRef, useState } from 'react';
+import { useContext, useRef } from 'react';
 
 import { ReactComponent as ArrowLeft } from '@assets/arrow-left.svg';
 import { ReactComponent as ArrowRight } from '@assets/arrow-right.svg';
 import { Button } from '@components/common/Button';
 import Textfield from '@components/common/Textfield';
 import { Typography } from '@components/common/Typography';
+import {
+  useSearchQueryActions,
+  useSearchQueryState,
+} from '@libs/store/searchQuery/searchQuery';
 import styled from 'styled-components';
 
 import { CalendarContext } from './Calendar.provider';
@@ -39,7 +43,9 @@ export const CalendarHeader = () => {
     setValue('next', type);
   };
 
-  const [searchQuery, setSearchQuery] = useState('');
+  const { searchQuery } = useSearchQueryState();
+
+  const { setSearchQuery } = useSearchQueryActions();
 
   return (
     <Container ref={calendarHeaderRef}>

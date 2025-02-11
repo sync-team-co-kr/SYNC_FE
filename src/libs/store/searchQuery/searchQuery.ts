@@ -33,4 +33,8 @@ const useSearchQueryStore = create<SearchQueryState & SearchQueryActions>(
   }),
 );
 
+export const useSearchQueryState = () => useSearchQueryStore((state) => state);
+
+export const useSearchQueryActions = () => useSearchQueryStore().actions;
+
 export default useSearchQueryStore;
