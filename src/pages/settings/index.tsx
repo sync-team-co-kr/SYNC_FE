@@ -88,8 +88,8 @@ export default function Settings() {
             </Link>
           </SettingsMenuItem>
 
-          <SettingsMenuItem $matchpathname={pathname === '/settings/members'}>
-            <Link to="/settings/members">
+          <SettingsMenuItem $matchpathname={/settings\/members/.test(pathname)}>
+            <Link to="/settings/members/member">
               <MemberSVG />
               <span>사용자 관리</span>
             </Link>

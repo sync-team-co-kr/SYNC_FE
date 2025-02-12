@@ -80,33 +80,15 @@ export const InviteLinkDescription = styled.article`
   display: flex;
   gap: 12px;
   p {
-    font-size: ${vars.sementic.typography['small-text']};
+    ${vars.sementic.typography['small-text']};
     color: ${vars.sementic.color.black70};
   }
   a {
-    font-size: ${vars.sementic.typography['small-text']};
+    ${vars.sementic.typography['small-text']};
+    font-weight: 600;
     color: ${vars.sementic.color.positiveBlue};
     text-decoration: underline;
     cursor: pointer;
-  }
-`;
-
-export const ToggleInviteCode = styled.div`
-  width: 56px;
-  padding: 4px;
-  border-radius: 100px;
-  background-color: #4880ff;
-  display: flex;
-  align-items: center;
-  position: relative;
-  cursor: pointer;
-  div {
-    width: 24px;
-    height: 24px;
-    background-color: #fff;
-    border-radius: 100px;
-    position: absolute;
-    right: 4px;
   }
 `;
 

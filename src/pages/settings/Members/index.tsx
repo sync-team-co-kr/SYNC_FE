@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
+import { Outlet } from 'react-router-dom';
 
 import { ReactComponent as ArrowBottom } from '@assets/common/arrow/arrow-bottom.svg';
 import fakeAvatar from '@assets/rectangle-50.png';
 import search from '@assets/search.svg';
 import { ReactComponent as InviteSVG } from '@assets/settings/invite.svg';
+import TabMenu from '@components/TabMenu/TabMenu';
 import ProjectNavigation from '@components/dropdown/ProjectNavigationDropdown';
 import InviteProjectMemberModal from '@components/modal/InviteProjectMemberModal';
-import { SettingsMemberItem } from '@components/settings';
 import { AxiosResByData } from '@customTypes/common/AxiosRes';
 import RawProject from '@customTypes/project/RawProject';
 import useDropdown from '@hooks/useDropdown';
@@ -25,8 +26,6 @@ import {
   InviteLinkDescription,
   InviteLinkForm,
   InviteLinkHeader,
-  MemberItemHeader,
-  MemberList,
   MembersContainer,
   MembersHeader,
   ProjectListDropdown,
@@ -34,10 +33,18 @@ import {
   SearchForm,
   SearchIcon,
   SelectedProject,
-  TabMenuItem,
-  TabMenuList,
-  ToggleInviteCode,
 } from './styles';
+
+const memberSettingsTabMenuList = [
+  {
+    route: '/settings/members/member',
+    tabMenuName: '멤버',
+  },
+  {
+    route: '/settings/members/guest',
+    tabMenuName: '게스트',
+  },
+];
 
 const MembersSettings = () => {
   const { openModal } = modalStore();
@@ -123,9 +130,6 @@ const MembersSettings = () => {
               </p>
               <a>링크 초기화</a>
             </InviteLinkDescription>
-            <ToggleInviteCode>
-              <div></div>
-            </ToggleInviteCode>
           </InviteLinkHeader>
           <InviteLinkForm>
             <input type="text" value={inviteLink} readOnly />
@@ -142,16 +146,7 @@ const MembersSettings = () => {
 
         <MembersContainer>
           <MembersHeader>
-            <TabMenuList>
-              <TabMenuItem>
-                <span>멤버</span>
-                <span>4</span>
-              </TabMenuItem>
-              <TabMenuItem>
-                <span>게스트</span>
-                <span>4</span>
-              </TabMenuItem>
-            </TabMenuList>
+            <TabMenu tabMenuList={memberSettingsTabMenuList} />
 
             <HeaderTail>
               <SearchForm>
@@ -180,22 +175,13 @@ const MembersSettings = () => {
             </HeaderTail>
           </MembersHeader>
 
-          <MemberList>
-            <MemberItemHeader>
-              <h5>사용자</h5>
-              <p>권한</p>
-              <div></div>
-            </MemberItemHeader>
-
-            {getMembersData?.map((member) => (
-              <SettingsMemberItem
-                key={member.id}
-                {...member}
-                projectId={selectedProject?.projectId}
-                myRole={myRole}
-              />
-            ))}
-          </MemberList>
+          <Outlet
+            context={{
+              project: selectedProject,
+              members: getMembersData,
+              role: myRole,
+            }}
+          />
         </MembersContainer>
       </Content>
     </>
