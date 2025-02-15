@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import ReactQuill from 'react-quill';
 
 import Quill from 'quill';
@@ -25,9 +25,19 @@ export const Editor = ({ value, onChangeText, placeholder }: EditorProps) => {
     }
   }, []);
 
-  const modules = {
-    toolbar: [[{ header: [1, 2, 3, 4, 5, 6, false] }], ['image'], ['link']],
-  };
+  const modules = useMemo(
+    () => ({
+      toolbar: {
+        container: [
+          [{ header: [1, 2, 3, 4, 5, 6, false] }],
+          ['image'],
+          ['link'],
+        ],
+      },
+    }),
+    [],
+  );
+
   return (
     <EditorContainer>
       <ReactQuill

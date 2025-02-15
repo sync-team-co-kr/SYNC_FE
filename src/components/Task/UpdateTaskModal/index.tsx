@@ -64,8 +64,6 @@ export const UpdateTaskModal = ({
 
   const { task, isFetching } = useGetTask(projectId, taskId);
 
-  console.log(task?.taskId);
-
   useEffect(() => {
     if (task && !isFetching) {
       setEditTask({ projectId, ...task });

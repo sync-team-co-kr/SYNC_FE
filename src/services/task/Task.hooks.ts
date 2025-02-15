@@ -4,7 +4,6 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import convertBase64ToFile from '@utils/file/convertBase64ToFile';
 import extractImageUrls from '@utils/file/extractImageUrls';
 import getExtensionFromMimeType from '@utils/file/getExtensionFromMimeType';
-import randomUuid from '@utils/file/getRandomUuid';
 
 import {
   createTask,
@@ -81,12 +80,12 @@ export const useCreateTask = () => {
       let updatedDescription = newTask.data.description;
       imageUrls.forEach((imageUrl) => {
         if (imageUrl.startsWith('data:image/')) {
-          const uuid = randomUuid();
+          const uuid = crypto.randomUUID();
           const prevFileName = 'description-image';
           const extension = getExtensionFromMimeType(imageUrl);
 
           const newImageName = `${uuid}_${prevFileName}`;
-          const newImageUrl = `https://user.sync-team.co.kr:30443/api/task/image?filename=/mnt/oraclevdb/task/description/${newImageName}.${extension}`;
+          const newImageUrl = `https://user.sync-team.co.kr:30443/node2/api/task/image?filename=/mnt/oraclevdb/task/description/${newImageName}.${extension}`;
           updatedDescription = updatedDescription?.replace(
             imageUrl,
             newImageUrl,
@@ -104,7 +103,10 @@ export const useCreateTask = () => {
       });
 
       const { thumbnailIcon, ...payload } = newTask.data;
-      const formDataList: CreateTaskPayload['data'] = payload;
+      const formDataList: CreateTaskPayload['data'] = {
+        ...payload,
+        description: updatedDescription,
+      };
       const newTaskBlob = new Blob([JSON.stringify(formDataList)], {
         type: 'application/json',
       });
