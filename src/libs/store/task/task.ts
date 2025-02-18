@@ -1,5 +1,6 @@
 import { IMember } from '@customTypes/member';
 import { IProject, RawProject } from '@customTypes/project';
+import { RawTask } from '@customTypes/task';
 import { create } from 'zustand';
 
 interface ITask {
@@ -17,10 +18,10 @@ interface ITask {
   parentTaskId?: number;
   projectId: number;
   /**
-   * 업무 상태 ( 0: 진행중, 1: 완료, 2: 보류)
+   * 업무 상태 ( 0: 진행중, 1: 완료, 2: 해야할 일)
    */
   status: number;
-  taskManagers: IMember[];
+  taskManagers?: IMember[];
 }
 
 // 업무 생성 State
@@ -43,7 +44,8 @@ type TaskActions = {
     setParentTaskId: (parentTaskId: number) => void;
     setProjectId: (projectId: number) => void;
     setStatus: (status: number) => void;
-    setTaskManagers: (setType: 'add' | 'sub', member: IMember) => void;
+    // setTaskManagers: (setType: 'add' | 'sub', member: IMember) => void;
+    setTaskManagers: () => void;
     setImages: (image: File) => void;
 
     // titleImage
@@ -53,7 +55,7 @@ type TaskActions = {
     resetPayload: () => void;
 
     // edit
-    setEditTask: (task: ITask) => void;
+    setEditTask: (task: RawTask) => void;
 
     // project
     setProject: (project: RawProject) => void;
@@ -174,16 +176,11 @@ const useTaskStore = create<TaskState & TaskActions>((set) => ({
         },
       }));
     },
-    setTaskManagers(setType, member) {
+    setTaskManagers() {
       set((state) => ({
         payload: {
           ...state.payload,
-          taskManagers:
-            setType === 'add'
-              ? [...state.payload.taskManagers, member]
-              : state.payload.taskManagers.filter(
-                  (taskManager) => taskManager.id !== member.id,
-                ),
+          taskManagers: [],
         },
       }));
     },
@@ -202,10 +199,11 @@ const useTaskStore = create<TaskState & TaskActions>((set) => ({
     },
     // edit
     setEditTask: (task) => {
-      set((state) => ({
+      set(() => ({
         payload: {
-          ...state.payload,
           ...task,
+          startDate: task.startDate ? new Date(task.startDate) : undefined,
+          endDate: task.endDate ? new Date(task.endDate) : undefined,
         },
       }));
     },

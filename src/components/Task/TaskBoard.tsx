@@ -9,6 +9,7 @@ import WorkBoardDropdownMenu from '@components/dropdown/WorkBoardDropdownMenu';
 import { ITask } from '@customTypes/task';
 import useDropdown from '@hooks/useDropdown';
 import { modalStore } from '@libs/store';
+import { useTaskActions } from '@libs/store/task/task';
 import { differenceInDays } from 'date-fns';
 import styled from 'styled-components';
 import { vars } from 'token';
@@ -131,6 +132,7 @@ const TaskBoard = ({ projectId, task }: { projectId: number; task: ITask }) => {
     toggleProjectDropdownMenu,
     projectDropdownMenuRef,
   ] = useDropdown();
+  const { setTitle, setDescription } = useTaskActions();
 
   const { openModal } = modalStore();
 
@@ -165,7 +167,13 @@ const TaskBoard = ({ projectId, task }: { projectId: number; task: ITask }) => {
         </TaskBoardHeader>
         <TaskBoardContent
           onClick={() => {
-            openModal(UpdateTaskModal, '업무 수정');
+            setTitle(task.title);
+            setDescription(task.description);
+
+            openModal(
+              () => UpdateTaskModal({ projectId, taskId: task.taskId }),
+              '업무 수정',
+            );
           }}
         >
           <Description>

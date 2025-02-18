@@ -35,26 +35,23 @@ const ScheduleRegistForm = (props: ScheduleRegistFormProps) => {
       <ScheduleRegistrationWrapper>
         <InputWithCalendarArea
           scheduleType="start"
-          placeholderText="프로젝트 시작 날짜"
+          placeholderText="시작 날짜"
         />
 
         <CrossDash></CrossDash>
-        <InputWithCalendarArea
-          scheduleType="end"
-          placeholderText="프로젝트 종료 날짜"
-        />
+        <InputWithCalendarArea scheduleType="end" placeholderText="종료 날짜" />
       </ScheduleRegistrationWrapper>
 
       <ScheduleRegistrationWrapper>
         <InputWithTimePicker
           scheduleType="start"
-          placeholderText="프로젝트 시작 시간"
+          placeholderText="시작 시간"
           isDisabled={!includeTime}
         />
         <CrossDash></CrossDash>
         <InputWithTimePicker
           scheduleType="end"
-          placeholderText="프로젝트 시작 시간"
+          placeholderText="종료 시간"
           isDisabled={!includeTime}
         />
       </ScheduleRegistrationWrapper>

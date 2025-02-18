@@ -27,7 +27,7 @@ import { useCreateTask } from '@services/task/Task.hooks';
 
 import { EditTaskModalProps } from './types';
 
-// 업무 생성 모달
+// 업무 수정 모달
 
 export const EditTaskModal = ({
   editType = 'calendar',

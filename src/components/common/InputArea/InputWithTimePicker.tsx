@@ -15,6 +15,7 @@ const SInputWithTimePicker = styled.div<{ $isdisabled: boolean }>`
   justify-content: center;
   position: relative;
   input {
+    width: 100%;
     background-color: ${(props) =>
       props.$isdisabled
         ? vars.sementic.color.black10

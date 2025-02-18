@@ -1,85 +1,186 @@
 import styled from 'styled-components';
+import { vars } from 'token';
 
-export const Container = styled.div`
+export const UpdateTaskModalContainer = styled.div`
   width: 1046px;
   height: 640px;
+  padding: 32px;
+
   display: flex;
   flex-direction: column;
+  gap: 32px;
 `;
 
-export const ContainerHeader = styled.div`
-  width: 100%;
-  padding-bottom: 32px;
-  display: flex;
-  flex-direction: column;
-`;
-
-export const UpperHeader = styled.div`
-  width: 100%;
+export const UpdateTaskModalHeader = styled.section`
   display: flex;
   justify-content: space-between;
   align-items: center;
 `;
 
-export const SideHeader = styled.div`
-  display: flex;
-  justify-content: center;
-`;
-
-export const TitleHeader = styled.div`
-   display: flex;
-   align-items: center;
-    gap: 12px;
-    img {
-      width: 28px;
-      height: 28px;
-    }
-`;
-
-export const ContainerContent = styled.div`
+export const Content = styled.section`
+  padding: 12px 0;
   display: flex;
   gap: 32px;
-  padding : 12px, 32px, 12px, 32px;
-  width: 100%;
 `;
 
-export const LeftContent = styled.div`
+export const SubmitButtonContainer = styled.section`
   display: flex;
-  flex: 3;
-  flex-direction: column;
-  gap: 24px;
-  position: relative;
+  justify-content: flex-end;
 `;
 
-export const RightContent = styled.div`
+// 헤더 스타일
+export const UpdateTaskModalArticle = styled.article`
   display: flex;
   flex-direction: column;
-  gap: 24px;
-  padding: 24px;
-  position: relative;
-  border: 1px solid var(--Black-White-Black-10, #f4f4f4);
-  border-radius: 12px;
-`
-
-export const SectionContainer = styled.div<{
-  direction?: 'column' | 'row';
-  maxwidth?: string;
-  gap?: number;
-}>`
-  display: flex;
-  flex-direction: ${({ direction }) => direction || 'column'};
-  max-width: ${({ maxwidth }) => maxwidth || '302px'};
-  gap: ${({ gap }) => gap || 8}px;
-  position: relative;
+  gap: 8px;
 `;
 
-export const ButtonGroup = styled.div`
+export const Breadcrumb = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+`;
+
+export const TitleWrap = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+`;
+
+export const Tools = styled.section`
+  display: flex;
+  align-items: center;
+  gap: 18px;
+`;
+
+// 메인 콘텐츠 스타일
+export const UpdateTaskModalContent = styled.section`
+  display: flex;
+  width: 600px;
+  flex-direction: column;
+  gap: 24px;
+`;
+
+// 업무 내용 영역
+export const UpdateTaskModalPostContainer = styled.section`
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+`;
+
+export const PostHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+export const PostLabel = styled.span`
+  ${vars.sementic.typography['small-text-b']};
+`;
+
+export const PostAutoSummationToggle = styled.div`
+  display: flex;
+  gap: 8px;
+  ${vars.sementic.typography['small-text-b']}
+`;
+
+// 댓글 영역
+export const UpdateTaskModalCommentContainer = styled.section`
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+`;
+
+export const CommentInputForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+`;
+
+export const CommentFormLabel = styled.label`
+  ${vars.sementic.typography['small-text-b']}
+`;
+
+export const CommentInputWrapper = styled.div`
   display: flex;
   gap: 8px;
 `;
-export const ContainerFooter = styled.div`
+
+export const Avatar = styled.div`
+  width: 32px;
+  height: 32px;
+  background-color: black;
+  border: 1px solid ${vars.sementic.color.white};
+  border-radius: 100px;
+`;
+
+export const CommentInput = styled.input`
+  padding: 12px 8px;
+  border: 1px solid ${vars.sementic.color.black20};
+  border-radius: 4px;
   display: flex;
-  justify-content: flex-end;
-  padding: 32px;
-  gap: 12px;
+  align-items: center;
+`;
+
+export const CommentList = styled.ul`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+`;
+
+export const CommentItem = styled.li`
+  display: flex;
+  gap: 8px;
+`;
+
+export const CommentContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  justify-content: center;
+`;
+
+export const CommenterWrap = styled.article`
+  display: flex;
+  gap: 8px;
+  h5 {
+    ${vars.sementic.typography['small-text-b']}
+  }
+  span {
+    ${vars.sementic.typography['small-text']}
+  }
+`;
+
+export const CommentDescription = styled.p`
+  ${vars.sementic.typography.paragraph}
+`;
+
+export const CommentManageButtons = styled.div`
+  display: flex;
+  gap: 8px;
+  button {
+    padding: 0;
+  }
+`;
+
+// 세부사항
+export const UpdateTaskModalDetails = styled.section`
+  width: 338px;
+  padding: 24px;
+  border: 1px solid ${vars.sementic.color.black10};
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  h4 {
+    color: ${vars.sementic.color.black70};
+    ${vars.sementic.typography['heading-4']}
+  }
+`;
+
+export const DetailsSelectWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  max-width: 338px;
+  gap: 8px;
+  position: relative;
 `;

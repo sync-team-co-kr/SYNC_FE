@@ -4,7 +4,6 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import convertBase64ToFile from '@utils/file/convertBase64ToFile';
 import extractImageUrls from '@utils/file/extractImageUrls';
 import getExtensionFromMimeType from '@utils/file/getExtensionFromMimeType';
-import randomUuid from '@utils/file/getRandomUuid';
 
 import {
   createTask,
@@ -12,6 +11,7 @@ import {
   getTask,
   getTaskChildren,
   getTaskList,
+  updateTask,
   updateTaskStatus,
 } from './apis';
 
@@ -28,6 +28,22 @@ interface CreateTaskParams {
     projectId: number;
     status: number;
   };
+}
+
+interface UpdateTaskParams {
+  data: {
+    projectId: number;
+    taskId: number;
+    title: string;
+    description?: string;
+    status: number;
+    startDate?: string;
+    endDate?: string;
+    thumbnailIcon?: string;
+  };
+  images?: string[];
+  deleteImages?: File[];
+  titleImage?: string;
 }
 
 // 업무 리스트 가져오는 Hook
@@ -55,6 +71,20 @@ export const useGetTasks = (projectId?: number[] | number) => {
   return { tasks: data, isFetching, error };
 };
 
+export const useGetTask = (projectId: number, taskId: number) => {
+  const { data, isFetching, error } = useQuery({
+    queryKey: ['tasks', projectId],
+    queryFn: async () => {
+      const result = await getTaskList(projectId);
+      const [taskUnit] = result.filter((task) => task.taskId === taskId);
+      return taskUnit;
+    },
+    enabled: !!projectId,
+  });
+
+  return { task: data, isFetching, error };
+};
+
 // 업무 생성 Hook
 export const useCreateTask = () => {
   const queryClient = useQueryClient();
@@ -67,12 +97,14 @@ export const useCreateTask = () => {
       let updatedDescription = newTask.data.description;
       imageUrls.forEach((imageUrl) => {
         if (imageUrl.startsWith('data:image/')) {
-          const uuid = randomUuid();
+          const uuid = crypto.randomUUID();
           const prevFileName = 'description-image';
-          const extension = getExtensionFromMimeType(imageUrl);
+          const mimeType =
+            imageUrl.match(/data:(.*?);base64/)?.[1] || 'image/png';
+          const extension = getExtensionFromMimeType(mimeType);
 
           const newImageName = `${uuid}_${prevFileName}`;
-          const newImageUrl = `https://user.sync-team.co.kr:30443/api/task/image?filename=/mnt/oraclevdb/task/description/${newImageName}.${extension}`;
+          const newImageUrl = `https://user.sync-team.co.kr:30443/node2/api/task/image?filename=/mnt/oraclevdb/task/description/${newImageName}.${extension}`;
           updatedDescription = updatedDescription?.replace(
             imageUrl,
             newImageUrl,
@@ -90,7 +122,10 @@ export const useCreateTask = () => {
       });
 
       const { thumbnailIcon, ...payload } = newTask.data;
-      const formDataList: CreateTaskPayload['data'] = payload;
+      const formDataList: CreateTaskPayload['data'] = {
+        ...payload,
+        description: updatedDescription,
+      };
       const newTaskBlob = new Blob([JSON.stringify(formDataList)], {
         type: 'application/json',
       });
@@ -119,7 +154,6 @@ export const useCreateTask = () => {
 };
 
 // 프로젝트 자식 업무 가져오는 hook
-
 export const useGetTaskChildren = (taskId: number) => {
   const { data, isLoading, error } = useQuery({
     queryKey: ['tasks'],
@@ -129,6 +163,67 @@ export const useGetTaskChildren = (taskId: number) => {
   return { taskChildren: data, isLoading, error };
 };
 
+// 업무 수정 hook
+export const useUpdateTask = () => {
+  const updateTaskMutation = useMutation({
+    mutationFn: async (willUpdateTask: UpdateTaskParams) => {
+      const formData = new FormData();
+      const imageUrls = extractImageUrls(willUpdateTask.data.description);
+
+      let updatedDescription = willUpdateTask.data.description;
+      imageUrls.forEach((imageUrl) => {
+        console.log(imageUrls);
+        if (imageUrl.startsWith('data:image/')) {
+          const uuid = crypto.randomUUID();
+          const prevFileName = 'description-image';
+          const mimeType =
+            imageUrl.match(/data:(.*?);base64/)?.[1] || 'image/png';
+          const extension = getExtensionFromMimeType(mimeType);
+
+          const newImageName = `${uuid}_${prevFileName}`;
+          const newImageUrl = `https://user.sync-team.co.kr:30443/node2/api/task/image?filename=/mnt/oraclevdb/task/description/${newImageName}.${extension}`;
+          updatedDescription = updatedDescription?.replace(
+            imageUrl,
+            newImageUrl,
+          );
+
+          try {
+            const imgFile = convertBase64ToFile(imageUrl, newImageName);
+            formData.append(`images`, imgFile);
+          } catch (error) {
+            console.error('이미지 변환 실패', error);
+          }
+        } else {
+          console.log('이미지가 포함되지 않았습니다');
+        }
+      });
+
+      const { thumbnailIcon, ...payload } = willUpdateTask.data;
+      const formDataList: UpdateTaskParams['data'] = {
+        ...payload,
+        description: updatedDescription,
+      };
+
+      const willUpdateTaskBlob = new Blob([JSON.stringify(formDataList)], {
+        type: 'application/json',
+      });
+
+      if (thumbnailIcon) {
+        formDataList.thumbnailIcon = thumbnailIcon;
+      }
+
+      formData.append('deleteImages', JSON.stringify([]));
+      formData.append('titleImage', willUpdateTask.titleImage || '');
+      formData.append('data', willUpdateTaskBlob);
+
+      await updateTask(formData);
+    },
+  });
+
+  return { updateTaskMutate: updateTaskMutation.mutate };
+};
+
+// 업무의 상태 변경 hook
 export const useUpdateTaskStatus = () => {
   const queryClient = useQueryClient();
   const { setOriginalTasks } = useDraggingTempTaskActions();
