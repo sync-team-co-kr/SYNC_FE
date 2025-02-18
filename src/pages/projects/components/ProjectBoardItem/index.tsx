@@ -1,3 +1,5 @@
+import { useNavigate } from 'react-router-dom';
+
 import { ReactComponent as MeatBalls } from '@assets/meatballs.svg';
 import ProgressBarGraph from '@components/ProgressBarGraph';
 import Thumbnail from '@components/Thumbnail/Thumbnail';
@@ -24,9 +26,13 @@ const ProjectBoardItem = ({ project }: { project: RawProject }) => {
     toggleProjectDropdownMenu,
     projectDropdownMenuRef,
   ] = useDropdown();
+  const navigate = useNavigate();
 
   return (
-    <ProjectBoardContainer key={project.projectId}>
+    <ProjectBoardContainer
+      key={project.projectId}
+      onClick={() => navigate(`/projects/${project.projectId}`)}
+    >
       <ProjectBoardHeader>
         <Thumbnail
           thumbnail={project.thumbnail}

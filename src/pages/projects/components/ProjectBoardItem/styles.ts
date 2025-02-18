@@ -10,11 +10,18 @@ export const ProjectBoardContainer = styled.li`
   flex-direction: column;
   justify-content: space-around;
   gap: 16px;
+  cursor: pointer;
 
   /* width: 100%; */
   overflow: hidden;
   box-sizing: border-box;
   text-overflow: ellipsis;
+  transition: border 0.3s ease-in;
+  &:hover,
+  &:focus {
+    border: 1px solid ${vars.sementic.color.primaryOrange};
+    transform: scale(0.98);
+  }
 `;
 
 export const ProjectBoardHeader = styled.section`
