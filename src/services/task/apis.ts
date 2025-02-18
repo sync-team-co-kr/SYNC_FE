@@ -108,6 +108,47 @@ export const createTask = async (createTaskFormData: FormData) => {
   });
 };
 
+/**
+ * 업무를 생성하는 API
+ * @param updateTaskFormData<FormData>: {
+ * data {
+ * projectId: number;
+ * taskId: number;
+ * title: string;
+ * description: string;
+ * startDate?: string;
+ * endDate?: string;
+ * status: number;
+ * thumbnailIcon?: string;
+ * }
+ * images?: File[];
+ * deleteImages?: File[];
+ * titleImage?: string;
+ * }
+ * @return {
+ * projectId: number;
+ * title: string;
+ * description: string;
+ * startDate?: number;
+ * endDate?: number;
+ * status: number;
+ * parentTaskId: number;
+ * thumbnailIcon?: string;
+ * }
+ */
+export const updateTask = async (updateTaskFormData: FormData) => {
+  const response = await userApiInstance.put(
+    '/user/api/task',
+    updateTaskFormData,
+    {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    },
+  );
+  console.log(response);
+};
+
 export const getTaskChildren = async (taskId: number) => {
   return userApiInstance.get(`/api/task/v1/${taskId}`);
 };

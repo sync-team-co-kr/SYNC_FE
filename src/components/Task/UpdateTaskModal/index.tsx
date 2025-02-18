@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Editor } from '@components/Editor';
 import ScheduleRegistForm from '@components/Organism/ScheduleRegistForm';
@@ -9,21 +9,19 @@ import TaskManagerSelectDropdown from '@components/modal/CreateTaskModal/TaskMan
 import { modalStore } from '@libs/store';
 import { useTaskActions, useTaskState } from '@libs/store/task/task';
 import { InputWrapper } from '@pages/projects/components/CreateProjectModal/styles';
-import { CreateTaskPayload } from '@services/swagger/output/data-contracts';
 import { useGetTask } from '@services/task';
+import { useUpdateTask } from '@services/task/Task.hooks';
+import axios from 'axios';
+import { addDays, getDay, setHours, setMinutes, subHours } from 'date-fns';
 
+import Comment from './Comment';
 import {
   Avatar,
-  CommentContent,
-  CommentDescription,
   CommentFormLabel,
   CommentInput,
   CommentInputForm,
   CommentInputWrapper,
-  CommentItem,
   CommentList,
-  CommentManageButtons,
-  CommenterWrap,
   Content,
   DetailsSelectWrapper,
   PostAutoSummationToggle,
@@ -44,6 +42,36 @@ const FAKE_COMMENT_LIST = [
   },
 ];
 
+interface UpdateTaskPayload {
+  projectId: number;
+  taskId: number;
+  title: string;
+  description?: string;
+  status: number;
+  startDate?: string;
+  endDate?: string;
+  thumbnailIcon?: string;
+}
+
+// 시간 포함 여부에 따라 날짜와 시간을 합치는 함수
+function combineDateTime(date: Date): string {
+  try {
+    const koreanStandardDate =
+      getDay(subHours(date, 9)) !== getDay(date) ? addDays(date, 1) : date;
+
+    const datePart = new Date(koreanStandardDate).toISOString().split('T')[0];
+    const hour = String(new Date(date).getHours()).padStart(2, '0');
+    const minute = String(new Date(date).getMinutes()).padStart(2, '0');
+
+    const combined = new Date(`${datePart}T${hour}:${minute}:00`);
+
+    return combined.toISOString();
+  } catch (error) {
+    console.error(error);
+    throw new Error('날짜와 시간을 합치는데 실패했습니다.');
+  }
+}
+
 // 업무 생성 모달
 export const UpdateTaskModal = ({
   projectId,
@@ -53,6 +81,7 @@ export const UpdateTaskModal = ({
   taskId: number;
 }) => {
   const { closeModal } = modalStore();
+  const { updateTaskMutate } = useUpdateTask();
 
   // 업무 생성 모달 payload 값들을 가져오는 state
   // const { resetPayload } = useTaskActions();
@@ -64,9 +93,30 @@ export const UpdateTaskModal = ({
 
   const { task, isFetching } = useGetTask(projectId, taskId);
 
+  const [taskImageUrls, setTaskImageUrls] = useState<string[]>([]);
+
+  // 삭제된 이미지 src를 파악하기 위해 서버에서 받은 업무 내용의 이미지 src 검색
+  const getImageUrl = (description: string) => {
+    const splitedDescription = description.split('>');
+    const imgContents = splitedDescription.filter((content) => {
+      const matchedImgTag = content.match(/img src/);
+      if (matchedImgTag) return true;
+      return false;
+    });
+    const imageUrls = imgContents.map((imgContent) => {
+      const splitedImgContent = imgContent.split('"');
+      const [imageUrl] = splitedImgContent.filter((str) =>
+        str.includes('https'),
+      );
+      return imageUrl;
+    });
+    setTaskImageUrls(imageUrls);
+  };
+
   useEffect(() => {
     if (task && !isFetching) {
       setEditTask({ projectId, ...task });
+      getImageUrl(task.description);
     }
   }, [isFetching, task?.taskId]);
 
@@ -87,17 +137,58 @@ export const UpdateTaskModal = ({
       return;
     }
 
-    const taskData: CreateTaskPayload['data'] = {
+    const taskData: UpdateTaskPayload = {
       projectId: payload.projectId,
+      taskId,
       title: payload.title,
       description: payload.description,
       startDate: payload.startDate?.toISOString(),
       endDate: payload.endDate?.toISOString(),
-      parentTaskId: payload.parentTaskId,
       thumbnailIcon: titleImage?.startsWith('blob') ? '' : titleImage,
       status: payload.status,
     };
-    console.log(taskData);
+
+    if (payload.startDate && payload.endDate) {
+      taskData.startDate =
+        payload.startDate.getTime() % (60 * 60 * 24) === 0
+          ? combineDateTime(payload.startDate!)
+          : new Date(payload.startDate!).toISOString();
+
+      taskData.endDate =
+        payload.endDate.getTime() % (60 * 60 * 24) === 0
+          ? combineDateTime(payload.endDate!)
+          : setHours(
+              setMinutes(new Date(payload.endDate!), 59),
+              23,
+            ).toISOString();
+    }
+
+    const deleteImages: File[] = [];
+
+    // 삭제된 이미지들을 찾아 deleteImages에 할당
+    taskImageUrls.forEach(async (imageUrl) => {
+      const isDeleted = !payload.description?.includes(imageUrl);
+      if (isDeleted) {
+        const filename = imageUrl.split('description/')[1];
+        const fileType = `image/${filename.split('.')[1]}`;
+        const { data: fileData } = await axios.get<
+          string | Blob | ArrayBufferView | ArrayBuffer
+        >(imageUrl);
+        const deletedImage = new File([fileData], filename, {
+          type: fileType,
+        });
+        deleteImages.push(deletedImage);
+      }
+    });
+
+    updateTaskMutate({
+      data: {
+        ...taskData,
+      },
+      images: [],
+      deleteImages,
+      titleImage: '',
+    });
   };
 
   return (
@@ -136,30 +227,7 @@ export const UpdateTaskModal = ({
             </CommentInputForm>
             <CommentList>
               {FAKE_COMMENT_LIST.map((comment) => (
-                <CommentItem key={comment.commenter}>
-                  <Avatar></Avatar>
-                  <CommentContent>
-                    <CommenterWrap>
-                      <h5>{comment.commenter}</h5>
-                      <span>2분전</span>
-                    </CommenterWrap>
-                    <CommentDescription>{comment.content}</CommentDescription>
-                    <CommentManageButtons>
-                      <Button
-                        size="medium"
-                        variant="text"
-                        onClick={() => ({})}
-                        text="편집"
-                      />
-                      <Button
-                        size="medium"
-                        variant="text"
-                        onClick={() => ({})}
-                        text="삭제"
-                      />
-                    </CommentManageButtons>
-                  </CommentContent>
-                </CommentItem>
+                <Comment key={comment.content} comment={comment} />
               ))}
             </CommentList>
           </UpdateTaskModalCommentContainer>
