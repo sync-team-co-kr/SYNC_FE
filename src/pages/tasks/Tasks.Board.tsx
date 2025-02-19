@@ -25,7 +25,8 @@ export interface Project {
 }
 
 const TaskBoardList = () => {
-  const { id } = useParams();
+  const { id, taskId } = useParams();
+  console.log(taskId);
 
   const { tasks, isFetching } = useGetTasks(Number(id));
   const { project } = useGetProject(Number(id));

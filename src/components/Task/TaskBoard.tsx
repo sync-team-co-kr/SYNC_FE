@@ -1,4 +1,5 @@
 import { useDrag } from 'react-dnd';
+import { useNavigate } from 'react-router-dom';
 
 import meatballs from '@assets/meatballs.svg';
 import workboardimg from '@assets/projects/workboard-image.png';
@@ -112,14 +113,20 @@ const TaskBoardMemberList = styled.ul`
   }
 `;
 
-const SubTask = styled.button`
-  display: flex;
-  align-items: center;
+const SubTaskNavigation = styled.button`
   height: 36px;
+  background: ${vars.sementic.color.black10};
   border-radius: 8px;
   border: none;
   color: ${vars.sementic.color.black70};
-  background: ${vars.sementic.color.black10};
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transition: background-color 0.5s ease-out;
+  &:hover,
+  &:focus {
+    background: ${vars.sementic.color.black35};
+  }
 `;
 
 const Icon = styled.div`
@@ -133,8 +140,9 @@ const TaskBoard = ({ projectId, task }: { projectId: number; task: ITask }) => {
     projectDropdownMenuRef,
   ] = useDropdown();
   const { setTitle, setDescription } = useTaskActions();
-
   const { openModal } = modalStore();
+
+  const navigate = useNavigate();
 
   const [, drag] = useDrag(() => ({
     type: 'TaskBoard',
@@ -193,14 +201,16 @@ const TaskBoard = ({ projectId, task }: { projectId: number; task: ITask }) => {
             property={`D-${differenceInDays(task.endDate, task.startDate)}`}
           />
         </TaskBoardFooter>
-        <SubTask>
+        <SubTaskNavigation
+          onClick={() => navigate(`/projects/tasks/${task.taskId}`)}
+        >
           <Icon>
             <WorkboxIcon stroke={vars.sementic.color.black70} />
           </Icon>
           <Typography variant="heading-5" color="black70">
             하위업무
           </Typography>
-        </SubTask>
+        </SubTaskNavigation>
       </StyledTaskBoard>
     </>
   );
