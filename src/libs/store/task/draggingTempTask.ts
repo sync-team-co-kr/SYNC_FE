@@ -15,6 +15,7 @@ interface Actions {
       taskId: number,
     ) => void;
     resetDraggingTempTasks: () => void;
+    clearAllTasks: () => void;
   };
 }
 
@@ -50,6 +51,9 @@ const useDraggingTempTaskStore = create<DraggingTempTaskState & Actions>(
       },
       resetDraggingTempTasks: () => {
         set((state) => ({ ...state, draggingTempTasks: null }));
+      },
+      clearAllTasks: () => {
+        set(() => ({ ...initialState }));
       },
     },
   }),

@@ -202,7 +202,11 @@ const TaskBoard = ({ projectId, task }: { projectId: number; task: ITask }) => {
           />
         </TaskBoardFooter>
         <SubTaskNavigation
-          onClick={() => navigate(`/projects/tasks/${task.taskId}`)}
+          onClick={() => {
+            navigate(`/projects/tasks/${task.taskId}`, {
+              state: { projectId },
+            });
+          }}
         >
           <Icon>
             <WorkboxIcon stroke={vars.sementic.color.black70} />

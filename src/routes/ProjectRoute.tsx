@@ -11,7 +11,7 @@ const ProjectRoute = () => (
       <Route index element={<ProjectBoards />} />
       <Route path="board" element={<ProjectBoards />} />
       <Route path="list" element={<ProjectList />} />
-      <Route path=":id" element={<ProjectWorkBoards />} />
+      <Route path=":projectId" element={<ProjectWorkBoards />} />
       <Route path="/tasks/:taskId" element={<ProjectWorkBoards />} />
       <Route path="/subTasks/:taskId" element={<ProjectWorkBoards />} />
     </Route>

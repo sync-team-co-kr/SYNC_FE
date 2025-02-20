@@ -9,13 +9,13 @@ const ParentTaskSelectList = ({ parentTaskId }: ParentTaskSelectListProps) => {
   if (parentTaskId && parentTaskId >= 1)
     return (
       <SectionContainer maxWidth="100%" direction="row" $gap={24}>
-        <ParentTaskSelectDropdown parentTaskName="테스크" />;
+        <ParentTaskSelectDropdown parentTaskName="테스크" />
       </SectionContainer>
     );
   if (parentTaskId && parentTaskId >= 2)
     return (
       <SectionContainer maxWidth="100%" direction="row" $gap={24}>
-        <ParentTaskSelectDropdown parentTaskName="서브 테스크" />;
+        <ParentTaskSelectDropdown parentTaskName="서브 테스크" />
       </SectionContainer>
     );
   return <></>;

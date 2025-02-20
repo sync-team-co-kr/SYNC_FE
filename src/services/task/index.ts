@@ -2,6 +2,7 @@ import {
   useCreateTask,
   useDeleteTask,
   useGetTask,
+  useGetTaskChildren,
   useGetTasks,
   useUpdateTaskStatus,
 } from './Task.hooks';
@@ -9,6 +10,7 @@ import {
 export {
   useGetTasks,
   useGetTask,
+  useGetTaskChildren,
   useCreateTask,
   useUpdateTaskStatus,
   useDeleteTask,

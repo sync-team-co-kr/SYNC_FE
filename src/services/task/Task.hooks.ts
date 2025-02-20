@@ -50,8 +50,8 @@ interface UpdateTaskParams {
 export const useGetTasks = (projectId?: number[] | number) => {
   const { data, isFetching, error } = useQuery({
     queryKey: Array.isArray(projectId)
-      ? ['taskList', ...projectId]
-      : ['task', projectId],
+      ? ['tasks', ...projectId]
+      : ['tasks', projectId],
     queryFn: async () => {
       if (Array.isArray(projectId)) {
         const result = await Promise.all(
@@ -83,6 +83,17 @@ export const useGetTask = (projectId: number, taskId: number) => {
   });
 
   return { task: data, isFetching, error };
+};
+
+// 프로젝트 자식 업무 가져오는 hook
+export const useGetTaskChildren = (taskId?: number) => {
+  const { data, isFetching, error } = useQuery({
+    queryKey: ['subTasks', taskId],
+    queryFn: () => getTaskChildren(taskId),
+    enabled: !!taskId,
+  });
+
+  return { taskChildren: data, isFetching, error };
 };
 
 // 업무 생성 Hook
@@ -151,16 +162,6 @@ export const useCreateTask = () => {
   });
 
   return { createTaskMutate: addTaskMutation.mutate };
-};
-
-// 프로젝트 자식 업무 가져오는 hook
-export const useGetTaskChildren = (taskId: number) => {
-  const { data, isLoading, error } = useQuery({
-    queryKey: ['tasks'],
-    queryFn: () => getTaskChildren(taskId),
-  });
-
-  return { taskChildren: data, isLoading, error };
 };
 
 // 업무 수정 hook

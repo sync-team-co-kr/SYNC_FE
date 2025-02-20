@@ -10,4 +10,5 @@ export default interface ITask {
     totalCount: number;
     completedCount: number;
   };
+  subTasks: ITask[] | null;
 }

@@ -61,6 +61,7 @@ interface getTaskResponse {
     totalCount: number;
     completedCount: number;
   };
+  subTasks: getTaskResponse[] | null;
 }
 
 export const getTask = async (taskId: number) => {
@@ -71,6 +72,16 @@ export const getTask = async (taskId: number) => {
       },
     });
 
+  return response.data.data;
+};
+
+export const getTaskChildren = async (taskId?: number) => {
+  const response: AxiosResponse<AxiosResByData<ITask>> =
+    await userApiInstance.get(`/node2/api/task/v1`, {
+      params: {
+        taskId,
+      },
+    });
   return response.data.data;
 };
 
@@ -147,10 +158,6 @@ export const updateTask = async (updateTaskFormData: FormData) => {
     },
   );
   console.log(response);
-};
-
-export const getTaskChildren = async (taskId: number) => {
-  return userApiInstance.get(`/api/task/v1/${taskId}`);
 };
 
 /**

@@ -7,7 +7,7 @@ import { SelectItem, SelectList } from '@components/common/Select/Select.list';
 import { searchFilter } from '@components/common/Select/Select.utils';
 import { LabelContainer, TaskContainer } from '@components/common/Select/style';
 import Textfield from '@components/common/Textfield';
-import { useTaskState } from '@libs/store/task/task';
+import { useTaskActions, useTaskState } from '@libs/store/task/task';
 import { useGetTasks } from '@services/task';
 
 interface ParentTaskSelectDropdownProps {
@@ -17,12 +17,14 @@ interface ParentTaskSelectDropdownProps {
 const ParentTaskSelectDropdown = ({
   parentTaskName,
 }: ParentTaskSelectDropdownProps) => {
-  const { project, payload } = useTaskState();
+  const { project } = useTaskState();
+  const { setParentTaskId } = useTaskActions();
 
   const { tasks } = useGetTasks(project.projectId);
 
   const [parentTaskSearch, setParentTaskSearch] = useState('');
   const [taskSearchResults, setTaskSearchResults] = useState(tasks);
+  const [selectedTaskTitle, setSelectedTaskTitle] = useState('');
 
   useEffect(() => setTaskSearchResults(tasks), [tasks]);
 
@@ -44,7 +46,7 @@ const ParentTaskSelectDropdown = ({
       <Select
         listLabel={parentTaskName}
         isEssential
-        value={payload.title}
+        value={selectedTaskTitle}
         type="select"
       >
         <SelectButton />
@@ -57,7 +59,13 @@ const ParentTaskSelectDropdown = ({
             onChange={handleParentTaskSearch}
           />
           {taskSearchResults?.map((task) => (
-            <SelectItem key={task.taskId}>
+            <SelectItem
+              key={task.taskId}
+              onClick={() => {
+                setParentTaskId(task.taskId);
+                setSelectedTaskTitle(task.title);
+              }}
+            >
               <Typography variant="paragraph" color="black70">
                 {task.title}
               </Typography>

@@ -130,6 +130,8 @@ export const CreateTaskModal = () => {
     }
   };
 
+  console.log(payload);
+
   return (
     <Container>
       <ContainerContent>
