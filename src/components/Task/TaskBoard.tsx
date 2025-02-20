@@ -203,9 +203,7 @@ const TaskBoard = ({ projectId, task }: { projectId: number; task: ITask }) => {
         </TaskBoardFooter>
         <SubTaskNavigation
           onClick={() => {
-            navigate(`/projects/tasks/${task.taskId}`, {
-              state: { projectId },
-            });
+            navigate(`/projects/${projectId}/tasks/${task.taskId}`);
           }}
         >
           <Icon>

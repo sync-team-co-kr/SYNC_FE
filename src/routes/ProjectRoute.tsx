@@ -3,7 +3,9 @@ import { Route, Routes } from 'react-router-dom';
 import Project from '@pages/projects';
 import ProjectBoards from '@pages/projects/board';
 import ProjectList from '@pages/projects/list';
-import ProjectWorkBoards from '@pages/tasks';
+import QuestBoards from '@pages/tasks/QuestBoards';
+import SubTaskBoards from '@pages/tasks/SubTaskBoards';
+import TaskBoards from '@pages/tasks/TaskBoards';
 
 const ProjectRoute = () => (
   <Routes>
@@ -11,9 +13,9 @@ const ProjectRoute = () => (
       <Route index element={<ProjectBoards />} />
       <Route path="board" element={<ProjectBoards />} />
       <Route path="list" element={<ProjectList />} />
-      <Route path=":projectId" element={<ProjectWorkBoards />} />
-      <Route path="/tasks/:taskId" element={<ProjectWorkBoards />} />
-      <Route path="/subTasks/:taskId" element={<ProjectWorkBoards />} />
+      <Route path=":projectId" element={<TaskBoards />} />
+      <Route path=":projectId/tasks/:taskId" element={<SubTaskBoards />} />
+      <Route path=":projectId/subTasks/:taskId" element={<QuestBoards />} />
     </Route>
   </Routes>
 );
