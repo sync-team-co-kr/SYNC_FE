@@ -149,6 +149,8 @@ const TaskBoard = ({ projectId, task }: { projectId: number; task: ITask }) => {
     item: { id: task.taskId, status: task.status },
   }));
 
+  console.log(task);
+
   return (
     <>
       <StyledTaskBoard ref={drag}>
@@ -201,18 +203,25 @@ const TaskBoard = ({ projectId, task }: { projectId: number; task: ITask }) => {
             property={`D-${differenceInDays(task.endDate, task.startDate)}`}
           />
         </TaskBoardFooter>
-        <SubTaskNavigation
-          onClick={() => {
-            navigate(`/projects/${projectId}/tasks/${task.taskId}`);
-          }}
-        >
-          <Icon>
-            <WorkboxIcon stroke={vars.sementic.color.black70} />
-          </Icon>
-          <Typography variant="heading-5" color="black70">
-            하위업무
-          </Typography>
-        </SubTaskNavigation>
+        {task.depth < 2 && (
+          <SubTaskNavigation
+            onClick={() => {
+              if (task.depth === 1) {
+                // id 대신 taskId로 요청
+                navigate(`/projects/${projectId}/subTasks/${task.id}`);
+              } else {
+                navigate(`/projects/${projectId}/tasks/${task.taskId}`);
+              }
+            }}
+          >
+            <Icon>
+              <WorkboxIcon stroke={vars.sementic.color.black70} />
+            </Icon>
+            <Typography variant="heading-5" color="black70">
+              하위업무
+            </Typography>
+          </SubTaskNavigation>
+        )}
       </StyledTaskBoard>
     </>
   );
