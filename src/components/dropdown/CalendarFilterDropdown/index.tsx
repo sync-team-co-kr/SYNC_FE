@@ -1,4 +1,4 @@
-import { forwardRef, useState } from 'react';
+import { useState } from 'react';
 
 import { Button } from '@components/common/Button';
 import Textfield from '@components/common/Textfield';
@@ -99,4 +99,4 @@ const CalendarFilterDropdown = ({ isOpen }: FilterDropdownProps) => {
   return null;
 };
 
-export default forwardRef(CalendarFilterDropdown);
+export default CalendarFilterDropdown;

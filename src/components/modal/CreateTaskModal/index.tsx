@@ -130,8 +130,6 @@ export const CreateTaskModal = () => {
     }
   };
 
-  console.log(payload);
-
   return (
     <Container>
       <ContainerContent>
@@ -173,7 +171,7 @@ export const CreateTaskModal = () => {
         {/* icon & task end */}
 
         {/* date */}
-        <SectionContainer maxWidth="500px">
+        <SectionContainer $maxWidth="500px">
           <InputWrapper>
             <ScheduleRegistForm
               startDate={payload.startDate}
@@ -186,7 +184,7 @@ export const CreateTaskModal = () => {
         {/* date end */}
 
         {/* description */}
-        <SectionContainer maxWidth="100%">
+        <SectionContainer $maxWidth="100%">
           <LabelContainer>
             <Typography variant="small-text-b" color="black35">
               설명

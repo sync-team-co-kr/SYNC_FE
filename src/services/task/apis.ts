@@ -75,8 +75,23 @@ export const getTask = async (taskId: number) => {
   return response.data.data;
 };
 
+export default interface GetTaskChildrenResponse {
+  id: number;
+  title: string;
+  description: string;
+  startDate: string;
+  endDate: string;
+  depth: number;
+  status: number;
+  task: {
+    totalCount: number;
+    completedCount: number;
+  };
+  subTasks: GetTaskChildrenResponse[] | null;
+}
+
 export const getTaskChildren = async (taskId?: number) => {
-  const response: AxiosResponse<AxiosResByData<ITask>> =
+  const response: AxiosResponse<AxiosResByData<GetTaskChildrenResponse>> =
     await userApiInstance.get(`/node2/api/task/v1`, {
       params: {
         taskId,

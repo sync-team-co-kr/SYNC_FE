@@ -1,3 +1,4 @@
+import { ITask } from '@customTypes/task';
 import { useDraggingTempTaskActions } from '@libs/store/task/draggingTempTask';
 import { CreateTaskPayload } from '@services/swagger/output/data-contracts';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -71,15 +72,14 @@ export const useGetTasks = (projectId?: number[] | number) => {
   return { tasks: data, isFetching, error };
 };
 
-export const useGetTask = (projectId: number, taskId: number) => {
+export const useGetTask = (taskId: number) => {
   const { data, isFetching, error } = useQuery({
-    queryKey: ['tasks', projectId],
+    queryKey: ['task', taskId],
     queryFn: async () => {
-      const result = await getTaskList(projectId);
-      const [taskUnit] = result.filter((task) => task.taskId === taskId);
-      return taskUnit;
+      const task = await getTask(taskId);
+      return task;
     },
-    enabled: !!projectId,
+    enabled: !!taskId,
   });
 
   return { task: data, isFetching, error };
@@ -89,7 +89,23 @@ export const useGetTask = (projectId: number, taskId: number) => {
 export const useGetTaskChildren = (taskId?: number) => {
   const { data, isFetching, error } = useQuery({
     queryKey: ['subTasks', taskId],
-    queryFn: () => getTaskChildren(taskId),
+    queryFn: async () => {
+      const getTaskChildrenResponse = await getTaskChildren(taskId);
+      const { id: aid, ...taskChildrenData } = getTaskChildrenResponse;
+      const taskChildren = {
+        taskId: getTaskChildrenResponse.id,
+        ...taskChildrenData,
+        subTasks: getTaskChildrenResponse.subTasks!.map((subTask) => {
+          const { id: subTaskId, ...subTaskData } = subTask;
+          return {
+            taskId: subTask.id,
+            ...subTaskData,
+          };
+        }),
+      } as ITask;
+
+      return taskChildren;
+    },
     enabled: !!taskId,
   });
 

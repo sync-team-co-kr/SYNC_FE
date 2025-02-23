@@ -124,6 +124,7 @@ const SpecificStatusTasks = ({
       if (title === '하는 중') taskBoardStatus = 1;
       if (title === '완료') taskBoardStatus = 2;
 
+      console.log(projectId, item);
       updateTaskStatusMutate({
         projectId,
         taskId: item.id,
@@ -153,6 +154,7 @@ const SpecificStatusTasks = ({
 
   return (
     <SpecificStatusTasksContainer
+      key={title}
       ref={drop}
       $bordercolor={borderColor}
       $backgroundcolor={backgroundColor}
@@ -171,9 +173,7 @@ const SpecificStatusTasks = ({
         </StatusTitle>
       </Header>
       {tasks?.map((task) => (
-        <div key={task.taskId}>
-          <TaskBoard projectId={projectId} task={task} />
-        </div>
+        <TaskBoard key={task.taskId} projectId={projectId} task={task} />
       ))}
       {isClicked ? (
         <CreateTaskBoard

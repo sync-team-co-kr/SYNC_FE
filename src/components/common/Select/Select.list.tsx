@@ -1,6 +1,5 @@
 import { PropsWithChildren, useRef } from 'react';
 
-import { Typography } from '@components/common/Typography';
 import { useHandleOutsideHooks } from '@hooks/useHandleOutsideHooks';
 import { styled } from 'styled-components';
 import { vars } from 'token';
@@ -43,6 +42,11 @@ export const SelectItemWrapper = styled(SelectItem)`
   align-items: center;
 `;
 
+const SelectListLabel = styled.div`
+  ${vars.sementic.typography.paragraph};
+  ${vars.sementic.color.black70}
+`;
+
 interface SelectListProps {
   width?: string;
 }
@@ -61,9 +65,7 @@ export const SelectList = ({
 
   return (
     <ListContainer width={width} ref={selectRef}>
-      <Typography variant="paragraph" color="black70">
-        {selectContext.listLabel}
-      </Typography>
+      <SelectListLabel>{selectContext.listLabel}</SelectListLabel>
       {children}
     </ListContainer>
   );

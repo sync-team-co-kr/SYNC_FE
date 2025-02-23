@@ -1,7 +1,7 @@
 import React from 'react';
 import { CookiesProvider } from 'react-cookie';
 import ReactDOM from 'react-dom/client';
-import 'react-quill/dist/quill.snow.css';
+import 'react-quill-new/dist/quill.snow.css';
 import { BrowserRouter } from 'react-router-dom';
 
 import MainRoute from '@routes/MainRoute';
@@ -54,7 +54,12 @@ root.render(
     <QueryClientProvider client={queryClient}>
       <ReactQueryDevtools initialIsOpen={false} />
       <CookiesProvider>
-        <BrowserRouter>
+        <BrowserRouter
+          future={{
+            v7_startTransition: true,
+            v7_relativeSplatPath: true,
+          }}
+        >
           <MainRoute />
         </BrowserRouter>
       </CookiesProvider>

@@ -87,7 +87,6 @@ export const EditTaskModal = ({
   };
 
   // 프로젝트 검색
-
   const handleProjectSearch = (e: ChangeEvent<HTMLInputElement>) => {
     setProjectSearch(e.target.value);
     setProjectList(searchFilter(e.target.value, projects));
@@ -186,7 +185,7 @@ export const EditTaskModal = ({
         {/* task state end */}
 
         {/* task */}
-        <SectionContainer direction="row" $gap={24} maxWidth="100%">
+        <SectionContainer direction="row" $gap={24} $maxWidth="100%">
           <TaskContainer>
             <LabelContainer>
               <Typography variant="small-text-b" color="negativeRed">

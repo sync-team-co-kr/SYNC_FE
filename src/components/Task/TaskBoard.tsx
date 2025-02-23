@@ -149,11 +149,9 @@ const TaskBoard = ({ projectId, task }: { projectId: number; task: ITask }) => {
     item: { id: task.taskId, status: task.status },
   }));
 
-  console.log(task);
-
   return (
     <>
-      <StyledTaskBoard ref={drag}>
+      <StyledTaskBoard key={task.taskId} ref={drag}>
         <TaskBoardHeader>
           <Header>
             <img src={workboardimg} alt="작업 보드" />
@@ -208,7 +206,7 @@ const TaskBoard = ({ projectId, task }: { projectId: number; task: ITask }) => {
             onClick={() => {
               if (task.depth === 1) {
                 // id 대신 taskId로 요청
-                navigate(`/projects/${projectId}/subTasks/${task.id}`);
+                navigate(`/projects/${projectId}/subTasks/${task.taskId}`);
               } else {
                 navigate(`/projects/${projectId}/tasks/${task.taskId}`);
               }

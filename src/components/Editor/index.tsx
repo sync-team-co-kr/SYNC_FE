@@ -1,13 +1,14 @@
 import { useEffect, useMemo, useRef } from 'react';
-import ReactQuill from 'react-quill';
-
-import Quill from 'quill';
+import ReactQuill from 'react-quill-new';
 
 import { EditorContainer } from './style';
 import { EditorProps } from './types';
 
 export const Editor = ({ value, onChangeText, placeholder }: EditorProps) => {
-  const icons = Quill.import('ui/icons');
+  const icons = ReactQuill.Quill.import('ui/icons') as {
+    image: string;
+    link: string;
+  };
   const quillRef = useRef<ReactQuill>(null);
 
   icons.image = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">

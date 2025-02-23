@@ -20,11 +20,10 @@ const convertBase64ToFile = (base64String: string, fileName: string): File => {
   const extension = getExtensionFromMimeType(mimeType);
   const byteNumbers = new Array(byteString.length);
 
-  // 이미지 바이너리를 ASCII 문자열로 치환한다.
+  // 바이트 배열 각각의 원소에 바이너리를 ASCII 코드 번호를 할당한다.
   for (let i = 0; i < byteString.length; i += 1) {
     byteNumbers[i] = byteString.charCodeAt(i);
   }
-
   const byteArray = new Uint8Array(byteNumbers);
 
   return new File([byteArray], `${fileName}.${extension}`, { type: mimeType });

@@ -25,7 +25,7 @@ const returnDate = (date: Date[], variant: DayTagProps['variant']) => {
 
 export const DayTag = ({ date, variant }: DayTagProps) => {
   return (
-    <DayTagsComponent variant={variant}>
+    <DayTagsComponent $variant={variant}>
       {variant === 'period' && <Calendar />}
       {variant === 'periodB' && <Calendar stroke={vars.sementic.color.black} />}
       {variant === 'time' && <Clock />}

@@ -65,8 +65,11 @@ const TaskManagerSelectDropdown = () => {
           />
 
           {taskManagerSearchResults?.map((member) => (
-            <SelectItemWrapper onClick={(e) => handleClickTaskManagerItem(e)}>
-              <SelectItem key={member.id}>{member.username}</SelectItem>
+            <SelectItemWrapper
+              key={member.id}
+              onClick={(e) => handleClickTaskManagerItem(e)}
+            >
+              <SelectItem>{member.username}</SelectItem>
               {/* taskManagers.some(
                 (taskManager) => taskManager.id === member.id,
               ) && <CheckIcon /> */}

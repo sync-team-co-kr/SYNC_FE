@@ -91,7 +91,7 @@ export const UpdateTaskModal = ({
   const { setEditTask, setStartDate, setEndDate, setDescription } =
     useTaskActions();
 
-  const { task, isFetching } = useGetTask(projectId, taskId);
+  const { task } = useGetTask(taskId);
 
   const [taskImageUrls, setTaskImageUrls] = useState<string[]>([]);
 
@@ -114,11 +114,11 @@ export const UpdateTaskModal = ({
   };
 
   useEffect(() => {
-    if (task && !isFetching) {
+    if (task) {
       setEditTask({ projectId, ...task });
       getImageUrl(task.description);
     }
-  }, [isFetching, task?.taskId]);
+  }, [task?.id]);
 
   const handleEditTask = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
