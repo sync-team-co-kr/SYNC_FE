@@ -26,7 +26,11 @@ const SubTaskBoards = () => {
 
   useEffect(() => {
     if (taskChildren && taskChildren.subTasks) {
-      setOriginalTasks(taskChildren.subTasks);
+      const subTasksWithParentTaskId = taskChildren.subTasks.map((subTask) => ({
+        ...subTask,
+        parentTaskId: Number(taskId),
+      }));
+      setOriginalTasks(subTasksWithParentTaskId);
     }
   }, [isFetching]);
 

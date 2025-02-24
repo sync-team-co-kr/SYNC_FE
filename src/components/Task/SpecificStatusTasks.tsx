@@ -124,11 +124,11 @@ const SpecificStatusTasks = ({
       if (title === '하는 중') taskBoardStatus = 1;
       if (title === '완료') taskBoardStatus = 2;
 
-      console.log(projectId, item);
       updateTaskStatusMutate({
         projectId,
         taskId: item.id,
         editedStatus: taskBoardStatus,
+        oldTasks: tasks,
       });
     },
     hover(item: { id: number; status: number }, monitor) {

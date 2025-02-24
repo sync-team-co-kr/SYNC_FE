@@ -250,6 +250,7 @@ export const useUpdateTaskStatus = () => {
       projectId: number;
       taskId: number;
       editedStatus: number;
+      oldTasks: ITask[];
     }) => {
       const { projectId, taskId, editedStatus } = willUpdateTaskParams;
       const task = await getTask(taskId);
@@ -275,22 +276,37 @@ export const useUpdateTaskStatus = () => {
         projectId,
         taskId: updatedStatusTask.taskId,
         editedStatus,
+        oldTasks: willUpdateTaskParams.oldTasks,
       };
     },
     onMutate: async (data) => {
+      const { depth, parentTaskId } = data.oldTasks[0];
+      const queryKeySoruce =
+        depth === 0 ? ['task', data.projectId] : ['subTasks', parentTaskId];
       await queryClient.cancelQueries({
-        queryKey: ['task', data.projectId],
+        queryKey: queryKeySoruce,
       });
 
-      const oldTasks = await getTaskList(data.projectId);
-      const newTasks = oldTasks.map((oldTask) =>
+      const newTasks = data.oldTasks.map((oldTask) =>
         oldTask.taskId === data.taskId
           ? { ...oldTask, status: data.editedStatus }
           : { ...oldTask },
       );
 
-      queryClient.setQueryData(['task', data.projectId], () => newTasks);
+      queryClient.setQueryData(queryKeySoruce, () => newTasks);
       setOriginalTasks(newTasks);
+    },
+    onSettled: (data) => {
+      const depth = data?.oldTasks[0].depth || 0;
+      const parentTaskId = data?.oldTasks[0].parentTaskId || 0;
+      const queryKeySoruce =
+        depth === 0
+          ? ['task', data?.projectId || 0]
+          : ['subTasks', parentTaskId];
+      console.log(queryKeySoruce);
+      queryClient.invalidateQueries({
+        queryKey: queryKeySoruce,
+      });
     },
   });
 

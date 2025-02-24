@@ -1,5 +1,6 @@
 export default interface ITask {
   taskId: number;
+  parentTaskId?: number;
   title: string;
   description: string;
   startDate: string;
