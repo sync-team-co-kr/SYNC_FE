@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useDrag } from 'react-dnd';
 import { useNavigate } from 'react-router-dom';
 
@@ -17,15 +18,20 @@ import { vars } from 'token';
 
 import { UpdateTaskModal } from './UpdateTaskModal';
 
-const StyledTaskBoard = styled.section`
+const StyledTaskBoard = styled.section<{ $isaccent: boolean }>`
   padding: 12px;
   border-radius: 12px;
-  border: 1px solid var(--Black-White-Black-10, #f4f4f4);
+  border: 2px solid
+    ${(props) =>
+      props.$isaccent
+        ? vars.sementic.color.primaryOrange
+        : vars.sementic.color.black10};
   background: var(--Black-White-White, #fff);
   display: flex;
   flex-direction: column;
   gap: 12px;
   cursor: pointer; // 클릭 시 커서 변경
+  transition: border 0.5s ease-in;
 `;
 
 const MeatBalls = styled.div`
@@ -59,7 +65,7 @@ const TaskBoardContent = styled.div`
   height: auto;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
 `;
 
 const Description = styled.div`
@@ -134,6 +140,7 @@ const Icon = styled.div`
 `;
 
 const TaskBoard = ({ projectId, task }: { projectId: number; task: ITask }) => {
+  console.log(task);
   const [
     isOpenProjectDropdownMenu,
     toggleProjectDropdownMenu,
@@ -148,10 +155,11 @@ const TaskBoard = ({ projectId, task }: { projectId: number; task: ITask }) => {
     type: 'TaskBoard',
     item: { id: task.taskId, status: task.status },
   }));
+  const [isAccent, setIsAccent] = useState(false);
 
   return (
     <>
-      <StyledTaskBoard key={task.taskId} ref={drag}>
+      <StyledTaskBoard key={task.taskId} ref={drag} $isaccent={isAccent}>
         <TaskBoardHeader>
           <Header>
             <img src={workboardimg} alt="작업 보드" />
@@ -174,7 +182,11 @@ const TaskBoard = ({ projectId, task }: { projectId: number; task: ITask }) => {
           </MeatBalls>
         </TaskBoardHeader>
         <TaskBoardContent
-          onClick={() => {
+          onMouseOver={() => setIsAccent(true)}
+          onMouseOut={() => setIsAccent(false)}
+          onFocus={() => setIsAccent(true)}
+          onClick={(e) => {
+            e.stopPropagation();
             setTitle(task.title);
             setDescription(task.description);
 
@@ -193,14 +205,15 @@ const TaskBoard = ({ projectId, task }: { projectId: number; task: ITask }) => {
             <span>12/24</span>
             <span>50%</span>
           </BarGraph>
+          <TaskBoardFooter>
+            <TaskBoardMemberList></TaskBoardMemberList>
+            <Tag
+              type="dday"
+              property={`D-${differenceInDays(task.endDate, new Date()) >= 1 ? differenceInDays(task.endDate, new Date()) : 0}`}
+            />
+          </TaskBoardFooter>
         </TaskBoardContent>
-        <TaskBoardFooter>
-          <TaskBoardMemberList></TaskBoardMemberList>
-          <Tag
-            type="dday"
-            property={`D-${differenceInDays(task.endDate, task.startDate)}`}
-          />
-        </TaskBoardFooter>
+
         {task.depth < 2 && (
           <SubTaskNavigation
             onClick={() => {
