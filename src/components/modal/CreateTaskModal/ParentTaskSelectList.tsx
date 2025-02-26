@@ -2,22 +2,28 @@ import ParentTaskSelectDropdown from './ParentTaskSelectDropdown';
 import { SectionContainer } from './style';
 
 interface ParentTaskSelectListProps {
-  parentTaskId?: number;
+  selectedDepth: number;
 }
 
-const ParentTaskSelectList = ({ parentTaskId }: ParentTaskSelectListProps) => {
-  if (parentTaskId && parentTaskId >= 1)
+const ParentTaskSelectList = ({ selectedDepth }: ParentTaskSelectListProps) => {
+  if (selectedDepth >= 2)
+    return (
+      <>
+        <SectionContainer $maxWidth="100%" direction="row" $gap={24}>
+          <ParentTaskSelectDropdown taskDepthName="테스크" />
+        </SectionContainer>
+        <SectionContainer $maxWidth="100%" direction="row" $gap={24}>
+          <ParentTaskSelectDropdown taskDepthName="서브 테스크" />
+        </SectionContainer>
+      </>
+    );
+  if (selectedDepth >= 1)
     return (
       <SectionContainer $maxWidth="100%" direction="row" $gap={24}>
-        <ParentTaskSelectDropdown parentTaskName="테스크" />
+        <ParentTaskSelectDropdown taskDepthName="테스크" />
       </SectionContainer>
     );
-  if (parentTaskId && parentTaskId >= 2)
-    return (
-      <SectionContainer $maxWidth="100%" direction="row" $gap={24}>
-        <ParentTaskSelectDropdown parentTaskName="서브 테스크" />
-      </SectionContainer>
-    );
+
   return <></>;
 };
 

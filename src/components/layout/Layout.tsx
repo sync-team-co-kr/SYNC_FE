@@ -12,11 +12,12 @@ import SideBar from './SideBar';
 
 const Main = styled.main`
   width: 100%;
+  min-height: 100vh;
+  height: auto;
   display: flex;
   flex-direction: column;
   background-color: ${vars.sementic.color.primaryLightOrange};
-  padding: 68px 0 0 80px;
-  height: 100vh;
+  padding: 68px 0 30px 80px;
   box-sizing: border-box;
 `;
 

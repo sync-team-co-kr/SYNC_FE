@@ -1,5 +1,5 @@
 // 업무 생성 모달 내 form
-import { ChangeEvent } from 'react';
+import { ChangeEvent, useState } from 'react';
 
 import { Editor } from '@components/Editor';
 import ScheduleRegistForm from '@components/Organism/ScheduleRegistForm';
@@ -51,6 +51,7 @@ export const CreateTaskModal = () => {
 
   // 업무 생성 모달 payload 값들을 가져오는 state
   const { payload, errorList, titleImage } = useTaskState();
+  const [selectedDepth, setSelectedDepth] = useState(0);
 
   // 업무 생성 모달 payload 값들을 set 해주는 actions
   const {
@@ -140,12 +141,15 @@ export const CreateTaskModal = () => {
         {/* project name end */}
         {/* task state */}
         <SectionContainer>
-          <TaskParentIdSetButtonGroup />
+          <TaskParentIdSetButtonGroup
+            depth={selectedDepth}
+            setDepth={setSelectedDepth}
+          />
         </SectionContainer>
         {/* task state end */}
 
         {/* task */}
-        <ParentTaskSelectList parentTaskId={payload.parentTaskId} />
+        <ParentTaskSelectList selectedDepth={selectedDepth} />
         {/* task end */}
 
         {/* icon & task name */}

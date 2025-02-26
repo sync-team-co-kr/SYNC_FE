@@ -12,6 +12,8 @@ import { SELECT_STATUS } from './constants';
 const StatusSelectDropdown = () => {
   const { payload } = useTaskState();
   const { setStatus } = useTaskActions();
+
+  console.log(payload.status);
   return (
     <>
       <LabelContainer>
@@ -31,16 +33,11 @@ const StatusSelectDropdown = () => {
         type="select"
       >
         <SelectList>
-          {Object.values(SELECT_STATUS)
-            .reverse()
-            .map((status) => (
-              <SelectItem
-                key={status.value}
-                onClick={() => setStatus(status.id)}
-              >
-                <Tag type="situation" property={status.value} />
-              </SelectItem>
-            ))}
+          {Object.values(SELECT_STATUS).map((status) => (
+            <SelectItem key={status.value} onClick={() => setStatus(status.id)}>
+              <Tag type="situation" property={status.value} />
+            </SelectItem>
+          ))}
         </SelectList>
         <SelectButton />
       </Select>
