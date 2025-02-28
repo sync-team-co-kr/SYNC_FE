@@ -22,7 +22,9 @@ export const ProjectDropdownItem = ({
 
   const handleProjectClick = () => {
     setProject(project);
-    setProjectRoute(project.title);
+    setProjectRoute({
+      project: project.title,
+    });
   };
 
   return (

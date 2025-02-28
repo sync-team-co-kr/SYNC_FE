@@ -140,7 +140,6 @@ const Icon = styled.div`
 `;
 
 const TaskBoard = ({ projectId, task }: { projectId: number; task: ITask }) => {
-  console.log(task);
   const [
     isOpenProjectDropdownMenu,
     toggleProjectDropdownMenu,

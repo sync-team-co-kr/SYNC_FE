@@ -42,7 +42,9 @@ const ProjectDropdown = () => {
   const navigate = useNavigate();
   const dropdownRef = useRef<HTMLDivElement>(null);
   const handleSelectProjectNavigationItem = (project: RawProject) => {
-    setProjectRoute(project.title);
+    setProjectRoute({
+      project: project.title,
+    });
     navigate(`/projects/${project.projectId}`);
     setIsOpen(false);
   };

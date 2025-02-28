@@ -47,7 +47,9 @@ const Calendars = () => {
 
     return () => {
       setMainRoute('');
-      setProjectRoute('');
+      setProjectRoute({
+        project: '',
+      });
     };
   }, []);
 

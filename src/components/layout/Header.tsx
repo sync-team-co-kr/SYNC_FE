@@ -136,10 +136,16 @@ export default function Header() {
           {mainRoute && (
             <Breadcrumb>
               <span>{mainRoute}</span>
-              {projectRoute && (
+              {projectRoute.project && (
                 <>
                   <span>/</span>
-                  <span>{projectRoute}</span>
+                  <span>{projectRoute.project}</span>
+                  {projectRoute.task && (
+                    <>
+                      <span>/</span>
+                      <span>{projectRoute.task}</span>
+                    </>
+                  )}
                 </>
               )}
             </Breadcrumb>

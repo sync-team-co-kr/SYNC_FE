@@ -2,24 +2,30 @@ import { create } from 'zustand';
 
 interface BreadcrumbState {
   mainRoute: string;
-  projectRoute: string;
-  taskRoute: {
-    task: string;
+  projectRoute: {
+    project: string;
+    task?: string;
+    subTask?: string;
   };
 }
 
 interface BreadcrumbActions {
   actions: {
     setMainRoute: (pageName: string) => void;
-    setProjectRoute: (title: string) => void;
+    setProjectRoute: ({
+      project,
+      task,
+      subTask,
+    }: BreadcrumbState['projectRoute']) => void;
   };
 }
 
 const initialState: BreadcrumbState = {
   mainRoute: '',
-  projectRoute: '',
-  taskRoute: {
+  projectRoute: {
+    project: '',
     task: '',
+    subTask: '',
   },
 };
 
@@ -32,9 +38,13 @@ const useBreadCrumbStore = create<BreadcrumbState & BreadcrumbActions>(
           mainRoute: pageName,
         }));
       },
-      setProjectRoute(title) {
+      setProjectRoute({ project, task = '', subTask = '' }) {
         set(() => ({
-          projectRoute: title,
+          projectRoute: {
+            project,
+            task,
+            subTask,
+          },
         }));
       },
     },

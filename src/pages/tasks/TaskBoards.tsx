@@ -18,9 +18,18 @@ const TaskBoards = () => {
   const { setProjectRoute } = useBreadCrumbActions();
 
   useEffect(() => {
-    if (project) setProjectRoute(project.title);
+    if (project)
+      setProjectRoute({
+        project: project.title,
+        task: '',
+        subTask: '',
+      });
     return () => {
-      setProjectRoute('');
+      setProjectRoute({
+        project: '',
+        task: '',
+        subTask: '',
+      });
     };
   }, [project]);
 

@@ -1,7 +1,10 @@
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { useBreadCrumbActions } from '@libs/store/breadcrumb/breadcrumb';
+import {
+  useBreadCrumbActions,
+  useBreadCrumbState,
+} from '@libs/store/breadcrumb/breadcrumb';
 import { useDraggingTempTaskActions } from '@libs/store/task/draggingTempTask';
 import { useGetProject } from '@services/project/Project.hooks';
 import { useGetTaskChildren } from '@services/task';
@@ -15,16 +18,15 @@ const QuestBoards = () => {
   const { taskChildren, isFetching } = useGetTaskChildren(Number(taskId));
 
   const { setOriginalTasks } = useDraggingTempTaskActions();
+  const { projectRoute } = useBreadCrumbState();
   const { setProjectRoute } = useBreadCrumbActions();
 
   useEffect(() => {
-    if (project) setProjectRoute(project.title);
-    return () => {
-      setProjectRoute('');
-    };
-  }, [project]);
-
-  useEffect(() => {
+    setProjectRoute({
+      project: projectRoute.project,
+      task: projectRoute.task,
+      subTask: taskChildren?.title,
+    });
     if (taskChildren && taskChildren.subTasks) {
       const subTasksWithParentTaskId = taskChildren.subTasks.map((subTask) => ({
         ...subTask,
