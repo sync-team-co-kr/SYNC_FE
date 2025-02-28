@@ -5,9 +5,10 @@ import profileDefault from '@assets/man-438081_960_720.svg';
 import { ConfigDropDown, MenuDropDown } from '@components/dropdown';
 import useDropdown from '@hooks/useDropdown';
 import { useLoggedInUserStore } from '@libs/store';
-import { useBreadCrumbState } from '@libs/store/breadcrumb/breadcrumb';
 import styled from 'styled-components';
 import { vars } from 'token';
+
+import BreadCrumb from './BreadCrumb';
 
 const HeaderWrap = styled.header`
   width: calc(100% - 80px);
@@ -30,12 +31,6 @@ const HeaderList = styled.ul`
   display: flex;
   justify-content: space-between;
   align-items: center;
-`;
-
-const Breadcrumb = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 10px;
 `;
 
 const IconContainer = styled.div`
@@ -126,30 +121,13 @@ export default function Header() {
     useDropdown();
   const [isOpenConfigDropdown, toggleConfigDropdown, configDropdownRef] =
     useDropdown();
-  const { mainRoute, projectRoute } = useBreadCrumbState();
   const { loggedInUser } = useLoggedInUserStore();
 
   return (
     <HeaderWrap>
       <Navigation>
         <HeaderList>
-          {mainRoute && (
-            <Breadcrumb>
-              <span>{mainRoute}</span>
-              {projectRoute.project && (
-                <>
-                  <span>/</span>
-                  <span>{projectRoute.project}</span>
-                  {projectRoute.task && (
-                    <>
-                      <span>/</span>
-                      <span>{projectRoute.task}</span>
-                    </>
-                  )}
-                </>
-              )}
-            </Breadcrumb>
-          )}
+          <BreadCrumb />
           <div></div>
           <ToolContainer>
             <AlarmAndSetting>
