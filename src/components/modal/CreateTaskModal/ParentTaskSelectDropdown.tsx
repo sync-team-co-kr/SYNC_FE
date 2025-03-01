@@ -30,8 +30,6 @@ const ParentTaskSelectDropdown = ({
   const [taskSearchResults, setTaskSearchResults] = useState(tasks);
   const [selectedTaskTitle, setSelectedTaskTitle] = useState('');
 
-  console.log(taskSearchResults);
-
   useEffect(() => {
     if (taskDepthName === '테스크') {
       setTaskSearchResults(tasks);

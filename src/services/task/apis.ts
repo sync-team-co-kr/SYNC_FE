@@ -172,7 +172,6 @@ export const updateTask = async (updateTaskFormData: FormData) => {
       },
     },
   );
-  console.log(response);
 };
 
 /**

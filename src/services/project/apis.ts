@@ -46,7 +46,6 @@ export const getProjects = async (projectIds: number[]) => {
       `node2/project/api/v1?projectIds=${joinedProjectIds}`,
     );
 
-  console.log(getProjectListResponse);
   return getProjectListResponse.data.data;
 };
 

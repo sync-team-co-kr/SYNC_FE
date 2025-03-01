@@ -27,8 +27,6 @@ const CalendarFilterDropdown = ({ isOpen }: FilterDropdownProps) => {
   const [search, setSearch] = useState<string>('');
   const { setWorkState, setSituationState } = useTaskFilterActions();
 
-  console.log(taskFilterState);
-
   if (isOpen) {
     return (
       <CalendarFilterDropdownContainer>

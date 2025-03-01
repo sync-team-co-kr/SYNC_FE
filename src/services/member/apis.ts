@@ -150,7 +150,5 @@ export const updateMemberRole = async ({
     isManager,
   });
 
-  console.log(response);
-
   return response;
 };
