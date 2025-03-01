@@ -15,20 +15,19 @@ const TaskBoards = () => {
   const { project } = useGetProject(Number(projectId));
 
   const { setOriginalTasks } = useDraggingTempTaskActions();
-  const { setProjectRoute } = useBreadCrumbActions();
+  const { setProjectRoute, setProjectLink } = useBreadCrumbActions();
 
   useEffect(() => {
     if (project)
       setProjectRoute({
         project: project.title,
-        task: '',
-        subTask: '',
       });
+    setProjectLink({
+      projectId: project?.projectId || 0,
+    });
     return () => {
       setProjectRoute({
         project: '',
-        task: '',
-        subTask: '',
       });
     };
   }, [project]);

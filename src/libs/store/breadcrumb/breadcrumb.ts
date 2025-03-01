@@ -1,11 +1,16 @@
 import { create } from 'zustand';
 
+interface BreadCrumbValue {
+  route: string;
+  link: string;
+}
+
 interface BreadcrumbState {
-  mainRoute: string;
+  mainRoute: BreadCrumbValue;
   projectRoute: {
-    project: string;
-    task?: string;
-    subTask?: string;
+    project: BreadCrumbValue;
+    task?: BreadCrumbValue;
+    subTask?: BreadCrumbValue;
   };
 }
 
@@ -16,17 +21,47 @@ interface BreadcrumbActions {
       project,
       task,
       subTask,
-    }: BreadcrumbState['projectRoute']) => void;
+    }: {
+      project: string;
+      task?: string;
+      subTask?: string;
+    }) => void;
+    setProjectLink: ({
+      projectId,
+      taskId,
+      subTaskId,
+    }: {
+      projectId: number;
+      taskId?: number;
+      subTaskId?: number;
+    }) => void;
   };
 }
 
 const initialState: BreadcrumbState = {
-  mainRoute: '',
-  projectRoute: {
-    project: '',
-    task: '',
-    subTask: '',
+  mainRoute: {
+    route: '',
+    link: '',
   },
+  projectRoute: {
+    project: {
+      route: '',
+      link: '',
+    },
+    task: {
+      route: '',
+      link: '',
+    },
+    subTask: {
+      route: '',
+      link: '',
+    },
+  },
+};
+
+const linkOfMainRoute: Record<string, string> = {
+  프로젝트: '/projects/board',
+  캘린더: '/calendars/day',
 };
 
 const useBreadCrumbStore = create<BreadcrumbState & BreadcrumbActions>(
@@ -35,15 +70,45 @@ const useBreadCrumbStore = create<BreadcrumbState & BreadcrumbActions>(
     actions: {
       setMainRoute: (pageName) => {
         set(() => ({
-          mainRoute: pageName,
+          mainRoute: {
+            route: pageName,
+            link: linkOfMainRoute[pageName],
+          },
         }));
       },
       setProjectRoute({ project, task = '', subTask = '' }) {
-        set(() => ({
+        set((state) => ({
           projectRoute: {
-            project,
-            task,
-            subTask,
+            project: {
+              route: project,
+              link: state.projectRoute.project.link,
+            },
+            task: {
+              route: task,
+              link: state.projectRoute.task?.link || '',
+            },
+            subTask: {
+              route: subTask,
+              link: state.projectRoute.subTask?.route || '',
+            },
+          },
+        }));
+      },
+      setProjectLink: ({ projectId, taskId = 0, subTaskId = 0 }) => {
+        set((state) => ({
+          projectRoute: {
+            project: {
+              route: state.projectRoute.project.route,
+              link: `/projects/${projectId}`,
+            },
+            task: {
+              route: state.projectRoute.task?.route || '',
+              link: `/projects/${projectId}/tasks/${taskId}`,
+            },
+            subTask: {
+              route: state.projectRoute.subTask?.route || '',
+              link: `/projects/${projectId}/subTasks/${subTaskId}`,
+            },
           },
         }));
       },

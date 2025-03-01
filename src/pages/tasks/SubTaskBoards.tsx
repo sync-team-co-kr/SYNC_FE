@@ -19,13 +19,9 @@ const SubTaskBoards = () => {
 
   const { setOriginalTasks } = useDraggingTempTaskActions();
   const { projectRoute } = useBreadCrumbState();
-  const { setProjectRoute } = useBreadCrumbActions();
+  const { setProjectRoute, setProjectLink } = useBreadCrumbActions();
 
   useEffect(() => {
-    setProjectRoute({
-      project: projectRoute.project,
-      task: taskChildren?.title,
-    });
     if (taskChildren && taskChildren.subTasks) {
       const subTasksWithParentTaskId = taskChildren.subTasks.map((subTask) => ({
         ...subTask,
@@ -34,6 +30,22 @@ const SubTaskBoards = () => {
       setOriginalTasks(subTasksWithParentTaskId);
     }
   }, [isFetching]);
+
+  useEffect(() => {
+    setProjectRoute({
+      project: projectRoute.project.route,
+      task: taskChildren?.title,
+    });
+    setProjectLink({
+      projectId: project?.projectId || 0,
+      taskId: taskChildren?.taskId || 0,
+    });
+    return () => {
+      setProjectRoute({
+        project: '',
+      });
+    };
+  }, [taskChildren]);
 
   return <BoardsContainerUI project={project} />;
 };

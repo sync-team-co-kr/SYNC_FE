@@ -22,11 +22,6 @@ const QuestBoards = () => {
   const { setProjectRoute } = useBreadCrumbActions();
 
   useEffect(() => {
-    setProjectRoute({
-      project: projectRoute.project,
-      task: projectRoute.task,
-      subTask: taskChildren?.title,
-    });
     if (taskChildren && taskChildren.subTasks) {
       const subTasksWithParentTaskId = taskChildren.subTasks.map((subTask) => ({
         ...subTask,
@@ -35,6 +30,19 @@ const QuestBoards = () => {
       setOriginalTasks(subTasksWithParentTaskId);
     }
   }, [isFetching]);
+
+  useEffect(() => {
+    setProjectRoute({
+      project: projectRoute.project.route,
+      task: projectRoute.task?.route,
+      subTask: taskChildren?.title,
+    });
+    return () => {
+      setProjectRoute({
+        project: '',
+      });
+    };
+  }, [taskChildren]);
 
   return <BoardsContainerUI project={project} />;
 };

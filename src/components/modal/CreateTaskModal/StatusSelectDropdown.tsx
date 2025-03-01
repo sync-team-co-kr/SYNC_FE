@@ -13,7 +13,6 @@ const StatusSelectDropdown = () => {
   const { payload } = useTaskState();
   const { setStatus } = useTaskActions();
 
-  console.log(payload.status);
   return (
     <>
       <LabelContainer>
