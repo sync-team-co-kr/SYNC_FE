@@ -27,7 +27,7 @@ interface DropdownItemProps {
       title?: string | undefined;
     }
   >;
-  onClick: () => void;
+  onClick: (e: React.MouseEvent<HTMLLIElement>) => void;
 }
 
 const DropdownItem = ({ text, Icon, onClick }: DropdownItemProps) => {

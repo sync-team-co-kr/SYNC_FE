@@ -1,3 +1,4 @@
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { ReactComponent as MeatBalls } from '@assets/meatballs.svg';
@@ -28,6 +29,11 @@ const ProjectBoardItem = ({ project }: { project: RawProject }) => {
   ] = useDropdown();
   const navigate = useNavigate();
 
+  const handleClickMeatBalls = (event: React.MouseEvent<SVGElement>) => {
+    event.stopPropagation();
+    toggleProjectDropdownMenu();
+  };
+
   return (
     <ProjectBoardContainer
       key={project.projectId}
@@ -43,7 +49,7 @@ const ProjectBoardItem = ({ project }: { project: RawProject }) => {
           <h2>{project.title}</h2>
         </ProjectBoardTitle>
         <MeatBallsWrap ref={projectDropdownMenuRef}>
-          <MeatBalls onClick={toggleProjectDropdownMenu} />
+          <MeatBalls onClick={handleClickMeatBalls} />
           <ProjectSettingsDropdown
             isOpen={isOpenProjectDropdownMenu}
             closeDropdown={toggleProjectDropdownMenu}
