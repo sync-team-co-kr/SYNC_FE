@@ -163,15 +163,11 @@ export const createTask = async (createTaskFormData: FormData) => {
  * }
  */
 export const updateTask = async (updateTaskFormData: FormData) => {
-  const response = await userApiInstance.put(
-    '/user/api/task',
-    updateTaskFormData,
-    {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
+  await userApiInstance.put('/user/api/task', updateTaskFormData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
     },
-  );
+  });
 };
 
 /**
