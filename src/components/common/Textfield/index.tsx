@@ -1,6 +1,6 @@
 import { HTMLInputTypeAttribute, Ref, forwardRef } from 'react';
 
-import { ReactComponent as ProfileProject } from '@assets/Profile_Project.svg';
+import projectDefaultImg from '@assets/project-default.png';
 import { ReactComponent as Search } from '@assets/searchSM.svg';
 import ProfileDropdown from '@components/dropdown/ProfileDropdown';
 import styled from 'styled-components';
@@ -52,7 +52,7 @@ export const Textfield = (
         </Label>
       )}
       <Wrapper>
-        {hasIcon && <ProfileProject width={32} height={32} />}
+        {hasIcon && <img src={projectDefaultImg} alt="프로젝트 기본 이미지" />}
         {selectIcon && (
           <ProfileDropdown
             selectIconValue={selectIconValue as string}

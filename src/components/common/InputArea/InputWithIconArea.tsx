@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ReactComponent as ProfileProject } from '@assets/Profile_Project.svg';
+import projectDefaultImg from '@assets/project-default.png';
 import ThumbnailDropdown from '@components/project/ThumbnailDropdown';
 import useDropdown from '@hooks/useDropdown';
 import { useProjectState } from '@libs/store/project/project';
@@ -29,7 +29,9 @@ const InputWithIconArea = ({
   placeholderText,
 }: InputWithIconAreaProps) => {
   const [isOpen, toggleActiveState, dropdownRef] = useDropdown();
-  const { payload: {thumbnail} } = useProjectState();
+  const {
+    payload: { thumbnail },
+  } = useProjectState();
 
   return (
     <SInputArea>
@@ -39,7 +41,11 @@ const InputWithIconArea = ({
           {thumbnail.value ? (
             <ProjectThumbnail onClick={toggleActiveState}></ProjectThumbnail>
           ) : (
-            <ProfileProject onClick={toggleActiveState} />
+            <img
+              src={projectDefaultImg}
+              alt="프로젝트 기본 이미지"
+              onClick={toggleActiveState}
+            />
           )}
 
           <ThumbnailDropdown
