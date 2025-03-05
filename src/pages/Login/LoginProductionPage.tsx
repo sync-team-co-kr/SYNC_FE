@@ -1,3 +1,5 @@
+import { useNavigate } from 'react-router-dom';
+
 import { ReactComponent as RepresentImg } from '@assets/represent/represent-img.svg';
 import { ReactComponent as NaverLogo } from '@assets/social/naver-logo.svg';
 import axios from 'axios';
@@ -72,13 +74,10 @@ const NaverLoginButton = styled.div`
 `;
 
 const LoginProduction = () => {
+  const navigate = useNavigate();
+
   const naverLogin = async () => {
-    await axios.get(
-      'https://view.sync-team.co.kr:8443/oauth2/authorization/naver',
-      {
-        withCredentials: true,
-      },
-    );
+    navigate('https://view.sync-team.co.kr:8443/oauth2/authorization/naver');
   };
 
   return (
