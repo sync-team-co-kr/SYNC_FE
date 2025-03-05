@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import { ReactComponent as RepresentImg } from '@assets/represent/represent-img.svg';
 import { ReactComponent as NaverLogo } from '@assets/social/naver-logo.svg';
@@ -73,12 +73,6 @@ const NaverLoginButton = styled.div`
 `;
 
 const LoginProduction = () => {
-  const navigate = useNavigate();
-
-  const naverLogin = async () => {
-    navigate('https://view.sync-team.co.kr:8443/oauth2/authorization/naver');
-  };
-
   return (
     <Main>
       <LoginContainer>
@@ -92,10 +86,12 @@ const LoginProduction = () => {
             <h4>새로운 방식의 업무 일정 관리 협업 서비스</h4>
           </Introduction>
         </IntroContainer>
-        <NaverLoginButton onClick={naverLogin}>
-          <NaverLogo />
-          <p>네이버 로그인</p>
-        </NaverLoginButton>
+        <Link to="https://view.sync-team.co.kr:8443/oauth2/authorization/naver">
+          <NaverLoginButton>
+            <NaverLogo />
+            <p>네이버 로그인</p>
+          </NaverLoginButton>
+        </Link>
       </LoginContainer>
     </Main>
   );
