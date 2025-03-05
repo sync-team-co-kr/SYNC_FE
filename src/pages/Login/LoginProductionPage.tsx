@@ -2,7 +2,6 @@ import { useNavigate } from 'react-router-dom';
 
 import { ReactComponent as RepresentImg } from '@assets/represent/represent-img.svg';
 import { ReactComponent as NaverLogo } from '@assets/social/naver-logo.svg';
-import axios from 'axios';
 import { styled } from 'styled-components';
 import { vars } from 'token';
 
