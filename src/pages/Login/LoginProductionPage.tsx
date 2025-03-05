@@ -74,7 +74,7 @@ const NaverLoginButton = styled.div`
 const LoginProduction = () => {
   const naverLogin = async () => {
     await axios.post(
-      'http://150.230.190.128:8443/oauth2/authorization/naver',
+      'https://view.sync-team.co.kr:8443/oauth2/authorization/naver',
       {},
       {
         withCredentials: true,
