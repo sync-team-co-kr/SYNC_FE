@@ -12,6 +12,7 @@ export const useGetProjectMembers = (projectId: number) => {
   const { data: getMembersData } = useQuery({
     queryKey: ['members', projectId],
     queryFn: () => getProjectMembers(projectId),
+    enabled: !!projectId,
   });
   return { getMembersData };
 };

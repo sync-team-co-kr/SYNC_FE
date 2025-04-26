@@ -1,10 +1,12 @@
+import { useEffect, useState } from 'react';
+import { Cookies } from 'react-cookie';
+
 import more from '@assets/More.svg';
 import { ReactComponent as Bell } from '@assets/header/bell-icon.svg';
 import { ReactComponent as Setting } from '@assets/header/setting-icon.svg';
 import profileDefault from '@assets/man-438081_960_720.svg';
 import { ConfigDropDown, MenuDropDown } from '@components/dropdown';
 import useDropdown from '@hooks/useDropdown';
-import { useLoggedInUserStore } from '@libs/store';
 import styled from 'styled-components';
 import { vars } from 'token';
 
@@ -121,7 +123,12 @@ export default function Header() {
     useDropdown();
   const [isOpenConfigDropdown, toggleConfigDropdown, configDropdownRef] =
     useDropdown();
-  const { loggedInUser } = useLoggedInUserStore();
+  const [loggedUserName, setLoggedUserName] = useState('Name');
+
+  useEffect(() => {
+    const cookies = new Cookies(null, { path: '/' });
+    setLoggedUserName(decodeURI(cookies.get('sync_unm')));
+  }, []);
 
   return (
     <HeaderWrap>
@@ -145,9 +152,7 @@ export default function Header() {
               <img src={profileDefault} alt="프로필 이미지" />
               <Profile>
                 <UserInfo>
-                  <UserInfoHeader>
-                    {loggedInUser?.username || 'Name'}
-                  </UserInfoHeader>
+                  <UserInfoHeader>{loggedUserName}</UserInfoHeader>
                   <UserInfoFooter>UI Designer</UserInfoFooter>
                 </UserInfo>
               </Profile>
@@ -157,7 +162,10 @@ export default function Header() {
                   alt="프로필 더 보기"
                   onClick={toggleProfileDropdown}
                 />
-                <MenuDropDown isOpen={isOpenProfileDropdown} />
+                <MenuDropDown
+                  isOpen={isOpenProfileDropdown}
+                  loggedUserName={loggedUserName}
+                />
               </More>
             </ProfileWrap>
           </ToolContainer>

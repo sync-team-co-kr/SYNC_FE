@@ -1,7 +1,10 @@
+import { Cookies } from 'react-cookie';
+
 import { AxiosResByData } from '@customTypes/common';
 import { RawProject } from '@customTypes/project';
 import { userApiInstance } from '@libs/axios/axios';
 import { AxiosResponse } from 'axios';
+import CryptoJS from 'crypto-js';
 
 interface GetMemberIds {
   userIds: number[];
@@ -58,12 +61,18 @@ export const getProjects = async (projectIds: number[]) => {
  */
 
 export const getProjectIds = async (): Promise<number[]> => {
-  const { loggedUserId } = window.localStorage;
+  const cookies = new Cookies(null, { path: '/' });
+  const encryptedUserId = cookies.get('sync_user');
+  const cryptoSecretKey = process.env.REACT_APP_CRYPTO_KEY || '';
+  const decryptedUserId = CryptoJS.AES.decrypt(
+    encryptedUserId,
+    cryptoSecretKey,
+  ).toString(CryptoJS.enc.Utf8);
 
   const getProjectIdsRes: AxiosResponse<
     AxiosResByData<any>,
     any
-  > = await userApiInstance.get(`/project/api/v2?userId=${loggedUserId}`);
+  > = await userApiInstance.get(`/project/api/v2?userId=${decryptedUserId}`);
 
   const { projectIds } = getProjectIdsRes.data.data;
   return projectIds;
@@ -81,25 +90,37 @@ export const getTempProject = async (projectId: number) => {
  * 프로젝트 리스트의 id들만 가져오는 API
  */
 export const getProjectIdList = async () => {
-  const { loggedUserId } = window.localStorage;
+  const cookies = new Cookies(null, { path: '/' });
+  const encryptedUserId = cookies.get('sync_user');
+  const cryptoSecretKey = process.env.REACT_APP_CRYPTO_KEY || '';
+  const decryptedUserId = CryptoJS.AES.decrypt(
+    encryptedUserId,
+    cryptoSecretKey,
+  ).toString(CryptoJS.enc.Utf8);
 
   const getProjectIdsRes: AxiosResponse<
     AxiosResByData<{ projectIds: number[] }>,
     any
-  > = await userApiInstance.get(`/project/api/v2?userId=${loggedUserId}`);
+  > = await userApiInstance.get(`/project/api/v2?userId=${decryptedUserId}`);
 
   const { projectIds } = getProjectIdsRes.data.data;
   return projectIds;
 };
 
 export const getProjectListWithMember = async () => {
-  const loggedInUserId = localStorage.getItem('loggedUserId');
+  const cookies = new Cookies(null, { path: '/' });
+  const encryptedUserId = cookies.get('sync_user');
+  const cryptoSecretKey = process.env.REACT_APP_CRYPTO_KEY || '';
+  const decryptedUserId = CryptoJS.AES.decrypt(
+    encryptedUserId,
+    cryptoSecretKey,
+  ).toString(CryptoJS.enc.Utf8);
 
   // 로그인 중인 회원의 프로젝트 ID 목록 가져오기
   const getProjectIdsRes: AxiosResponse<
     AxiosResByData<{ projectIds: number[] }>,
     any
-  > = await userApiInstance.get(`/project/api/v2?userId=${loggedInUserId}`);
+  > = await userApiInstance.get(`/project/api/v2?userId=${decryptedUserId}`);
 
   const projectsWithMemberIds = await Promise.all(
     getProjectIdsRes.data.data.projectIds.flatMap(async (projectId) => {

@@ -87,9 +87,13 @@ const UserInfoFooter = styled.span`
 
 interface MenuDropDownProps {
   isOpen: boolean;
+  loggedUserName: string;
 }
 
-export default function MenuDropDown({ isOpen }: MenuDropDownProps) {
+export default function MenuDropDown({
+  isOpen,
+  loggedUserName,
+}: MenuDropDownProps) {
   return (
     <Wrapper $isOpen={isOpen}>
       <DropdownList>
@@ -97,7 +101,7 @@ export default function MenuDropDown({ isOpen }: MenuDropDownProps) {
           <Temp>
             <img src={profileDefault} alt="프로필 이미지" />
             <UserInfo>
-              <UserInfoHeader>Name</UserInfoHeader>
+              <UserInfoHeader>{loggedUserName}</UserInfoHeader>
               <UserInfoFooter>UI Designer</UserInfoFooter>
             </UserInfo>
           </Temp>
