@@ -190,8 +190,6 @@ const LoginDevelopment = () => {
     try {
       const loginResponse = await loginAPI({ ...loginForm });
       if (loginResponse.result === 'OK') {
-        localStorage.setItem('loggedUserId', loginForm.userId);
-
         const cookies = new Cookies(null, { path: '/' });
         const inviteCode = cookies.get('invite-code');
 

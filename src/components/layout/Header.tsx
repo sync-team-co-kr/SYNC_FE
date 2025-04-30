@@ -7,6 +7,7 @@ import { ReactComponent as Setting } from '@assets/header/setting-icon.svg';
 import profileDefault from '@assets/man-438081_960_720.svg';
 import { ConfigDropDown, MenuDropDown } from '@components/dropdown';
 import useDropdown from '@hooks/useDropdown';
+import { useLoggedInUserStore } from '@libs/store';
 import styled from 'styled-components';
 import { vars } from 'token';
 
@@ -124,11 +125,11 @@ export default function Header() {
   const [isOpenConfigDropdown, toggleConfigDropdown, configDropdownRef] =
     useDropdown();
   const [loggedUserName, setLoggedUserName] = useState('Name');
+  const { loggedInUser } = useLoggedInUserStore();
 
   useEffect(() => {
-    const cookies = new Cookies(null, { path: '/' });
-    setLoggedUserName(decodeURI(cookies.get('sync_unm')));
-  }, []);
+    setLoggedUserName(loggedInUser?.username || '');
+  }, [loggedInUser]);
 
   return (
     <HeaderWrap>

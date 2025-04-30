@@ -17,6 +17,7 @@ const SettingsRoute = () => (
       <Route path="profile" element={<ProfileSettings />} />
       <Route path="project" element={<ProjectSettings />} />
       <Route path="members" element={<MembersSettings />}>
+        <Route index element={<MemberListComponent />} />
         <Route path="member" element={<MemberListComponent />} />
         <Route path="guest" element={<GuestList />} />
       </Route>

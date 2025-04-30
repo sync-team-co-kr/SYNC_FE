@@ -9,12 +9,15 @@ interface UpdateMemberRoleParams {
 }
 
 export const useGetProjectMembers = (projectId: number) => {
-  const { data: getMembersData } = useQuery({
+  const { data: getMembersData, isPending } = useQuery({
     queryKey: ['members', projectId],
-    queryFn: () => getProjectMembers(projectId),
+    queryFn: async () => {
+      const getMembersResponse = await getProjectMembers(projectId);
+      return getMembersResponse;
+    },
     enabled: !!projectId,
   });
-  return { getMembersData };
+  return { getMembersData, isPending };
 };
 
 export const useUpdateMemberRole = () => {

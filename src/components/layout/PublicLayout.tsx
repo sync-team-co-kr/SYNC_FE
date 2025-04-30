@@ -2,12 +2,15 @@ import { useEffect, useState } from 'react';
 import { Cookies } from 'react-cookie';
 import { Navigate, Outlet } from 'react-router-dom';
 
+import { useLoggedInUserStore } from '@libs/store';
 import { getLoggedUserAPI } from '@services/api';
 import { getUser } from '@services/member';
 import CryptoJS from 'crypto-js';
 
 const PublicLayout = () => {
   const [failedAuth, setFailedAuth] = useState(false);
+  const { setLoggedInUser } = useLoggedInUserStore();
+
   const getLoggedUser = async () => {
     try {
       const cookies = new Cookies(null, { path: '/' });
@@ -37,6 +40,12 @@ const PublicLayout = () => {
       });
       cookies.set('sync_unm', profile.username, {
         maxAge: 1800,
+      });
+
+      setLoggedInUser({
+        uniqueId: encryptedUniqueId,
+        userId: encryptedUserId,
+        username: profile.username,
       });
       return null;
     } catch (error) {

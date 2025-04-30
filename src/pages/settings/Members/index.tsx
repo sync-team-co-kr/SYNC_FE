@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { Cookies } from 'react-cookie';
 import { Outlet } from 'react-router-dom';
 
 import { ReactComponent as ArrowBottom } from '@assets/common/arrow/arrow-bottom.svg';
@@ -13,11 +12,10 @@ import { AxiosResByData } from '@customTypes/common/AxiosRes';
 import RawProject from '@customTypes/project/RawProject';
 import useDropdown from '@hooks/useDropdown';
 import { userApiInstance } from '@libs/axios/axios';
-import { modalStore } from '@libs/store';
+import { modalStore, useLoggedInUserStore } from '@libs/store';
 import { useGetProjectMembers } from '@services/member/Member.hooks';
 import { useGetProjects } from '@services/project/Project.hooks';
 import { AxiosResponse } from 'axios';
-import CryptoJS from 'crypto-js';
 
 import {
   Content,
@@ -55,13 +53,14 @@ const MembersSettings = () => {
     toggleProjectListDropdown,
     projectDropdownRef,
   ] = useDropdown();
+  const { loggedInUser } = useLoggedInUserStore();
 
   const { projects, isLoading } = useGetProjects();
   const [selectedProject, setSelectedProject] = useState<RawProject | null>(
     projects ? projects[0] : null,
   );
 
-  const { getMembersData } = useGetProjectMembers(
+  const { getMembersData, isPending } = useGetProjectMembers(
     selectedProject?.projectId || 0,
   );
 
@@ -91,22 +90,15 @@ const MembersSettings = () => {
     toggleProjectListDropdown();
   };
   useEffect(() => {
-    const cookies = new Cookies(null, { path: '/' });
-    const encryptedUserId = cookies.get('sync_user');
-    const cryptoSecretKey = process.env.REACT_APP_CRYPTO_KEY || '';
-    const decryptedUserId = CryptoJS.AES.decrypt(
-      encryptedUserId,
-      cryptoSecretKey,
-    ).toString(CryptoJS.enc.Utf8);
-
-    const myMemberInfo = getMembersData?.filter(
-      (member) => member.userId === decryptedUserId,
-    );
-    console.log(myMemberInfo);
-    if (myMemberInfo) {
-      setMyRole(myMemberInfo[0].isManager);
+    if (loggedInUser) {
+      const myMemberInfo = getMembersData?.filter(
+        (member) => member.userId === loggedInUser.userId,
+      );
+      if (myMemberInfo) {
+        setMyRole(myMemberInfo[0].isManager);
+      }
     }
-  }, [getMembersData]);
+  }, [isPending]);
 
   return (
     <>

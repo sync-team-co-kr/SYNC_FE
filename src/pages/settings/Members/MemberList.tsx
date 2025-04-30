@@ -24,6 +24,8 @@ const MemberListComponent = () => {
   const { project, members, role } =
     useOutletContext<MemberListComponentProps>();
 
+  console.log(project, members, role);
+
   return (
     <MemberList>
       <MemberItemHeader>
