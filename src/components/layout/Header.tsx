@@ -127,6 +127,7 @@ export default function Header() {
   const [loggedUserName, setLoggedUserName] = useState('Name');
   const { loggedInUser } = useLoggedInUserStore();
 
+  console.log(loggedInUser);
   useEffect(() => {
     setLoggedUserName(loggedInUser?.username || '');
   }, [loggedInUser]);

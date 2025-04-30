@@ -37,11 +37,13 @@ const getLoggedInUser = () => {
     userId: cookies.get('sync_user') || '',
     username: cookies.get('sync_unm') || '',
   };
+  console.log(username);
   const decrypedLoggedInUser = {
     uniqueId: Number(decryptUserInfo(String(uniqueId))),
     userId: decryptUserInfo(userId),
-    username: decryptUserInfo(username),
+    username,
   };
+  console.log(decrypedLoggedInUser.username);
   return decrypedLoggedInUser;
 };
 
@@ -52,7 +54,7 @@ const useLoggedInUserStore = create<LoggedInUserState>((set) => ({
       loggedInUser: {
         uniqueId: Number(decryptUserInfo(uniqueId)),
         userId: decryptUserInfo(userId),
-        username: decryptUserInfo(username),
+        username,
       },
     })),
 }));
