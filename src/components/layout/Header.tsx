@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { Cookies } from 'react-cookie';
 
 import more from '@assets/More.svg';
 import { ReactComponent as Bell } from '@assets/header/bell-icon.svg';
