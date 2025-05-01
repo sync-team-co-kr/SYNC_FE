@@ -33,6 +33,7 @@ export const EditTaskModal = ({
   editType = 'calendar',
 }: EditTaskModalProps) => {
   const { closeModal } = modalStore();
+  console.log(editType);
 
   // 업무 생성 모달 payload 값들을 가져오는 state
   // const { resetPayload } = useTaskActions();
