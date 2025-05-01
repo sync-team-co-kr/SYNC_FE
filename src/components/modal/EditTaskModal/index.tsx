@@ -48,7 +48,6 @@ export const EditTaskModal = ({
     // setEditTask,
   } = useTaskActions();
 
-  console.log(editType);
   // projectData를 가져오는 hooks
   const { projects } = useGetProjects();
 
